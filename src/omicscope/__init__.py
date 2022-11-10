@@ -9,8 +9,6 @@ from .PeptideLens import *
 from .MultipleData.circos import circos
 from .MultipleData.multiples import multiples
 
-__version__ = get_versions()['version']
-del get_versions
 
 
 if __name__ != "__main__":
