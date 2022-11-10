@@ -1,0 +1,9 @@
+chr	-	Astrocytes	Astrocytes	0	234	chr4
+chr	-	Neurons	Neurons	0	541	chr8
+chr	-	SHSY5Y	SHSY5Y	0	329	chr3
+chr	-	CACO2	CACO2	0	368	chr18
+chr	-	Monocytes	Monocytes	0	510	chr21
+chr	-	TCell	TCell	0	153	chr19
+chr	-	Hepatocytes	Hepatocytes	0	396	chr6
+chr	-	SubcutaneousAdipocytes	SubcutaneousAdipocytes	0	268	chr17
+chr	-	ViceralAdipocytes	ViceralAdipocytes	0	206	chr15

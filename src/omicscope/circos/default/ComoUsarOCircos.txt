@@ -1,0 +1,6 @@
+Como usar o pacote circos.
+1) Salve todos os arquivos necessários para realizar a imagem em uma pasta XXX dentro do dir circos (C:\circos\XXX)
+2) Procure por Perl na aba pesquisar (vai abrir com a interfacie do strawberry)
+3) Pela linha de comando, chegue no diretório 'C:\circos\XXX'
+4) digite o código na minha de comando: perl ..\bin\circos  ##isso quer dizer que você está chamando o perl para rodar o arquivo circos no diretorio C:\circos\bin\.
+5) Na pasta que você tinha os arquivos vai aparecer a imagem em .png e .svg
