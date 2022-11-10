@@ -54,15 +54,16 @@ class Omicscope(Input):
         self.expression = self.expression()
 
         #  Has user already performed statistical analyses?
-        statistics = ['Anova \(p\)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
+        statistics = [f'Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
                     'padj', 'p-adjusted', 'p-adj']
-        if True in self.rdata.columns.str.contains('|'.join(statistics)):
+        if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat
             self.quant_data = imported_stat(self, statistics)
             print('User already performed statistical analysis')
         else:  # OmicScope perform statistics
             from .Stats.Statistic_Module import perform_stat
             self.quant_data = perform_stat(self)
+            print('OmicScope performed statistical analysis')
         self.deps = self.deps()
 
     def expression(self):
@@ -91,7 +92,7 @@ class Omicscope(Input):
         for i in pdata_columns:
             var.append(i)
 
-        expression = expression.groupby(var).mean().reset_index().rename(
+        expression = expression.groupby(var).mean(numeric_only= True).reset_index().rename(
             columns={'value': 'abundance'})
 
         expression['Sample'] = 'BioRep' + \

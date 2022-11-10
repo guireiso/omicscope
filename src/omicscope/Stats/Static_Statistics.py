@@ -16,7 +16,7 @@ def ttest(params):
     Experimental = params[2]
     quant_data = params[3]
 
-    if ind_variables == 'True':
+    if ind_variables is True:
         from scipy.stats import ttest_ind
 
         #  Perform an independent t-test
@@ -49,7 +49,7 @@ def ttest(params):
     quant_data['mean ' + Experimental] = quant_data.loc[:,
                                                         quant_data.columns.str.endswith(Experimental)].mean(axis=1)
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('\.')].mean(axis=1)
+    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.')].mean(axis=1)
     #  Protein Fold change (Experimental/Control)
     quant_data['fc'] = quant_data['mean ' + Experimental] / quant_data['mean ' + ControlGroup]
     #  Log2(FC)
@@ -104,7 +104,7 @@ def Tukey_hsd(df):
     """
     df = copy(df)
     df = df[df['pAdjusted'] < 0.05]
-    df = df.iloc[:, df.columns.str.contains('\.')]
+    df = df.iloc[:, df.columns.str.contains('.')]
     # Perform Tukey's post-hoc correction for each of differentially
     # regulated entity according ANOVA's test
     df = df.apply(lambda x: tukey_correction(x), axis = 1)
@@ -154,7 +154,7 @@ def anova(params):
     comp = quant_data
     comp['Comparison'] = comp.Comparison.str.split('-')
     comparisons = comp.Comparison
-    comp = comp.iloc[:, comp.columns.str.contains('\.')]
+    comp = comp.iloc[:, comp.columns.str.contains('.')]
     quant_data['Condition1'] = [comp.iloc[z, comp.columns.str.endswith(i[0])].mean()
                                 for z, i in enumerate(comparisons)]
     quant_data['Condition2'] = [comp.iloc[z, comp.columns.str.endswith(i[-1])].mean()
@@ -167,10 +167,10 @@ def anova(params):
     print('Anova test was performed!')
 
     # #  Mean abundance for each protein among conditions
-    quant_data.iloc[:, quant_data.columns.str.contains('\.')] = np.exp2(
-        quant_data.iloc[:, quant_data.columns.str.contains('\.')])
+    quant_data.iloc[:, quant_data.columns.str.contains('.')] = np.exp2(
+        quant_data.iloc[:, quant_data.columns.str.contains('.')])
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('\.')].mean(axis=1)
+    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.')].mean(axis=1)
     #  Log2(FC)
     quant_data['log2(fc)'] = quant_data['Condition2'] - quant_data['Condition1']
     #  -log10(pvalue)

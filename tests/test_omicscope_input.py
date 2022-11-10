@@ -1,5 +1,6 @@
-from omicscope.src.omicscope.cli import main
+from src.omicscope.Omicscope import *
 
-
-def test_main():
-    assert main([]) == 0
+def test_omicscope_progenesis():
+    df = Omicscope('tests//data//proteins//progenesis.csv',
+    Method = 'Progenesis', ControlGroup= 'KO')
+    assert df.ctrl == 'KO'

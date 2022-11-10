@@ -32,7 +32,7 @@ def perform_stat(self):
             # If true (default) independent t-test is applied.
             # If false related t-test is applied
             
-            self.ind_variables = (input('Are variables independent? [Default: True]: ') or 'True')
+            self.ind_variables = True # TODO
             params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata]
             data = ttest(params=params)
             data = params[4].merge(data, on='Accession')

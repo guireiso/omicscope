@@ -1,4 +1,4 @@
-from omicscope.src.omicscope.cli import main
+from src.omicscope.cli import main
 
 
 def test_main():
