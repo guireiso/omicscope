@@ -10,10 +10,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from copy import copy
 from matplotlib.collections import PatchCollection
+import warnings
 
-def general_data(omicsoutput, palette = 'Spectral', save = '', vector = True):
-    data = copy(omicsoutput)
-    conditions = data.groups
+def barplot(self, palette = 'Spectral', save = '', vector = True):
+    data = copy(self)
+    conditions = copy(data.groups)
     cell_data = data.original
     difreg = data.cell_data
 
@@ -70,7 +71,7 @@ def general_data(omicsoutput, palette = 'Spectral', save = '', vector = True):
         else:
             plt.savefig(save + 'bar_deps.png', dpi = 600)
 
-def upsetplot_proteins(multiples_output, dpi = 600, min_subset = 10, face_color = 'darkcyan', shad_color="#f0f0f0",
+def protein_overlap(self, dpi = 600, min_subset = 10, face_color = 'darkcyan', shad_color="#f0f0f0",
                       edge_color = 'black', linewidth = 1, save = '', vector = True,):
     import matplotlib.pyplot as plt
     from upsetplot import UpSet, from_contents
@@ -81,7 +82,7 @@ def upsetplot_proteins(multiples_output, dpi = 600, min_subset = 10, face_color 
     plt.rcParams['patch.edgecolor'] = 'black'
     plt.rcParams['patch.force_edgecolor'] = True
     
-    data = multiples_output
+    data = copy(self)
     genes = []
     for i in data.cell_data:
         genes.append(i['gene_name'].drop_duplicates())
@@ -99,7 +100,7 @@ def upsetplot_proteins(multiples_output, dpi = 600, min_subset = 10, face_color 
         else:
             plt.savefig(save + 'upset_proteins.png', dpi = 600)
 
-def upsetplot_pathways(multiples_output, dpi = 600, min_subset = 1, face_color = 'darkcyan', shad_color="#f0f0f0",
+def enrichment_overlap(self, dpi = 600, min_subset = 1, face_color = 'darkcyan', shad_color="#f0f0f0",
                       edge_color = 'black', linewidth = 1,save = '', vector = True):
     from upsetplot import UpSet, from_contents
     plt.style.context('classic')
@@ -109,8 +110,10 @@ def upsetplot_pathways(multiples_output, dpi = 600, min_subset = 1, face_color =
     plt.rcParams['patch.edgecolor'] = 'black'
     plt.rcParams['patch.force_edgecolor'] = True
     
-    data = multiples_output
+    data = copy(self)
     genes = []
+    if all(enr is None for enr in self.enrichment):
+        raise IndexError('There is not Enrichment result in data!')
     for i in data.enrichment:
         try:
             genes.append(i['Term'].drop_duplicates())
@@ -187,11 +190,14 @@ def Differentially_Regulated(multiples_output,
     plt.xticks(rotation = 45, ha = 'right')
     plt.yticks(rotation = 45)
     kw = dict(prop="sizes", num=3, color = 'black', alpha = .6)
-    legend2 = ax.legend(*scatter.legend_elements(**kw), title="# Proteins",handleheight = 3,
-                        bbox_to_anchor=(2.05, .55), markerscale = 1, edgecolor = 'white')
+    ax.legend(*scatter.legend_elements(**kw), title="# Proteins",handleheight = 2,
+                        bbox_to_anchor=(1, 1),loc="upper left", markerscale = 1,
+                        edgecolor = 'white')
+    plt.margins(x =1, y = 0.1)
+    
     if save != '':
         if vector == True:
             plt.savefig(save + 'clustermap.svg')
         else:
             plt.savefig(save + 'clustermap.png', dpi = dpi)
-    plt.plot()
+    plt.show()

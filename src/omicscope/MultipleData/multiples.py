@@ -58,3 +58,9 @@ class multiples:
         df['group'] = label
         df['color'] = df['log2(fc)'].round()
         return(df)
+    
+    from .MultipleVisualization import (barplot, protein_overlap,
+                                        enrichment_overlap, group_pearson,
+                                        Differentially_Regulated)
+    from .circos import circos_plot
+

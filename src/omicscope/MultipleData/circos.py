@@ -14,7 +14,7 @@ from itertools import repeat
 import pandas as pd
 
 
-class circos:
+class circos():
     def __init__(self, multiples_output):
         self.cell_data = multiples_output.cell_data
         self.enrichment = multiples_output.enrichment
@@ -26,66 +26,29 @@ class circos:
         self.karyotype()
         self.heatmap()
         self.linkProteins()
-        if len(self.enrichment) > 1:
+        if any(enr is not None for enr in self.enrichment):
             self.linkEnrichment()
         self.changing_folders()
         self.perl()
         self.copycircos()
         self.plot()
 
-    def read_hbl(self, folder):
-        path = folder  # use your path
-        all_files = glob.glob(path + "/*.buff")
-        groups = []
-        labels = []
-        original = []
-        enrichment = []
-        for i in all_files:
-            positions = []
-            with open(i, 'r') as archive:
-                lines = archive.readlines()
-                for n, line in enumerate(lines):
-                    if line == '-------\n':
-                        positions.append(n)
-                    if line.startswith('Experimental'):
-                        groups.append(line.split('\t')[-1].split('\n')[0])
-                        labels.append(line.split('\t')[-1].split('\n')[0])
-                if len(positions) == 1:
-                    original.append(pd.read_csv(i, header=positions[0] + 1, sep='\t'))
-                    enrichment.append(None)
-                else:
-                    original.append(pd.read_csv(i, header=positions[0] + 1, sep='\t',
-                                                 nrows=(positions[1] / 2) - 5))
-                    enrichment.append(pd.read_csv(i, header=int(positions[1] / 2) + 4,
-                                                        sep='\t'))
-                archive.close()
-            self.groups = groups
-            self.labels = labels
-            self.original = original
-            self.enrichment = enrichment
-
-    def importing(self, original, group, label):
-        df = original
-        df = df[df['Anova (p)'] < 0.05][['gene name', 'log2(fc)']].sort_values('log2(fc)',
-         ignore_index=True)
-        df['group'] = label
-        df['color'] = df['log2(fc)'].round()
-        return(df)
-
     def foldering(self):
         string = os.path.dirname(os.path.abspath(__file__))
         string = os.path.normpath(string)
         string = string.split('\\')
         string = '\\'.join(string[:-1])
-        os.makedirs(string + '\\circos\\newData\\data')
+        try:
+            os.makedirs(string + '\\circos\\newData\\data')
+        except FileExistsError:
+            shutil.rmtree(string + '\\circos\\newData')
+            os.makedirs(string + '\\circos\\newData\\data')
         self.newFolder = string + '\\circos\\newData\\data\\'
 
     def karyotype(self):
         labels = copy(self.labels)
         cell_data = copy(self.cell_data)
-        colors = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9', 'chr10',
-                  'chr11', 'chr12', 'chr13', 'chr14', 'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20',
-                  'chr21']
+        colors = ['set3-12-qual-'+str(x) for x in range(1,13)]
         karyotype = pd.DataFrame({'type': repeat('chr', len(labels)),
                                 'chr': repeat('-', len(labels)),
                                 'name': labels,
@@ -103,7 +66,7 @@ class circos:
         cell_data = copy(self.cell_data)
         labels = copy(self.labels)
         whole = pd.concat(cell_data)
-        whole['dup'] = whole['gene name'].duplicated(keep=False)
+        whole['dup'] = whole['gene_name'].duplicated(keep=False)
         whole = whole.sort_values(by=['group', 'dup'], ascending=False)
         self.whole = whole
 
@@ -111,8 +74,8 @@ class circos:
             df = whole[whole['group'] == group]
             df['type'] = 'band'
             df['chr'] = group
-            df['name'] = df['gene name']
-            df['label'] = df['gene name']
+            df['name'] = df['gene_name']
+            df['label'] = df['gene_name']
             df['START'] = range(0, len(df))
             df['END'] = range(1, len(df) + 1)
             df['COLOR'] = df['log2(fc)']
@@ -234,7 +197,7 @@ class circos:
         string = '\\'.join(string[:-1])
         string = string + '\\circos\\'
         self.string = string
-        if len(self.enrichment) > 2:
+        if any(enr is not None for enr in self.enrichment):
             shutil.copytree(string + 'default_en\\etc\\', string + 'newData\\etc\\')
         else:
             shutil.copytree(string + 'default\\etc\\', string + 'newData\\etc\\')
@@ -266,3 +229,6 @@ class circos:
         plt.imshow(img)
         plt.axis('off')
         plt.show()
+
+def circos_plot(self):
+    circos(self)
