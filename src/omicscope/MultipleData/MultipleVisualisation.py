@@ -27,12 +27,12 @@ def general_data(omicsoutput, palette = 'Spectral', save = '', vector = True):
     
     proteinsIdentified = []
     for i in cell_data:
-        proteinsIdentified.append(i['gene name'])
+        proteinsIdentified.append(i['gene_name'])
     proteinsIdentified = pd.concat(proteinsIdentified).drop_duplicates()
     
     proteinsdes = []
     for i in difreg:
-        proteinsdes.append(i['gene name'])
+        proteinsdes.append(i['gene_name'])
     proteinsdes = pd.concat(proteinsdes).drop_duplicates()
     
     whole_proteome.extend([len(proteinsIdentified)])
@@ -84,14 +84,14 @@ def upsetplot_proteins(multiples_output, dpi = 600, min_subset = 10, face_color 
     data = multiples_output
     genes = []
     for i in data.cell_data:
-        genes.append(i['gene name'].drop_duplicates())
+        genes.append(i['gene_name'].drop_duplicates())
     dictionary = dict(zip(data.groups, genes))
     upset = from_contents(dictionary)
 
     figure = UpSet(upset,  facecolor= face_color, shading_color= shad_color, min_subset_size= min_subset, show_counts=True,
         with_lines=True)
-    for i in data.groups:
-        figure.style_subsets(present = i, edgecolor=edge_color, linewidth=linewidth)
+    #for i in data.groups:
+    #    figure.style_subsets(present = i, edgecolor=edge_color, linewidth=linewidth)
     figure.plot()
     if save != '':
         if vector == True:
@@ -140,7 +140,7 @@ def group_pearson(multiples_output, pvalue = 1, palette = 'Spectral',
     colors = sns.color_palette(palette, as_cmap=False, n_colors= len(conditions))
     for i in data1:
         df = i.set_index('Accession')
-        df = df[df['Anova (p)'] < pvalue]
+        df = df[df['pvalue'] < pvalue]
         df = df[['TotalMean']]
         totalMean.append(df)
     wholedata = pd.concat(totalMean, axis = 1, join = 'outer')

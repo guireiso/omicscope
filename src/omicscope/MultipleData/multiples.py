@@ -17,14 +17,14 @@ from copy import copy
 class multiples:
     def __init__(self, folder):
         self.original_path = os.getcwd()
-        self.read_hbl(folder)
+        self.read_omics(folder)
         self.cell_data = []
         for o,g,l in zip(self.original, self.groups, self.labels):
                 self.cell_data.append(self.importing(o, g, l))
 
-    def read_hbl(self, folder):
+    def read_omics(self, folder):
         path = folder # use your path
-        all_files = glob.glob(path + "/*.buff")
+        all_files = glob.glob(path + "/*.omics")
         groups = []
         labels = [] 
         original = []
@@ -54,7 +54,7 @@ class multiples:
             self.enrichment = enrichment
     def importing(self, original, group, label):
         df = original
-        df = df[df['Anova (p)']<0.05][['gene name', 'log2(fc)']].sort_values('log2(fc)', ignore_index = True)
+        df = df[df['pvalue']<0.05][['gene_name', 'log2(fc)']].sort_values('log2(fc)', ignore_index = True)
         df['group'] = label
         df['color'] = df['log2(fc)'].round()
         return(df)
