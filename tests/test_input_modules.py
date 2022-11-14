@@ -42,4 +42,6 @@ class TestProgenesis(object):
         df = Input('tests//data//proteins//progenesis.csv', 'WT')
         pdata = df.pdata
         Conditions = list(pdata.Condition.drop_duplicates())
+        print(pdata.index)
         assert Conditions == df.Conditions
+        assert pdata.index[1] == 1

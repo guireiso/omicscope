@@ -11,7 +11,7 @@ from .Input import *
 
 class Omicscope(Input):
     def __init__(self, Table, ControlGroup, Method, FoldChange_cutoff=0,
-                 statistics = 'pAdjusted',
+                 statistics = 'pAdjusted', pdata = '', ExperimentalDesign = 'static',
                  PValue_cutoff=0.05, logTransformed=False, ExcludeKeratins=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
@@ -50,6 +50,12 @@ class Omicscope(Input):
         self.PValue_cutoff = PValue_cutoff
         self.logTransformed = logTransformed
         self.ExcludeKeratins = ExcludeKeratins
+        if pdata != '':
+            try:
+                self.pdata = pd.read_excel(pdata)
+            except:
+                self.pdata = pd.read_csv(pdata)
+
         # Construct pivot-table considering technical and biological replicates
         self.expression = self.expression()
 
@@ -60,10 +66,15 @@ class Omicscope(Input):
             from .Stats.Performed_Stat import imported_stat
             self.quant_data = imported_stat(self, statistics)
             print('User already performed statistical analysis')
-        else:  # OmicScope perform statistics
-            from .Stats.Statistic_Module import perform_stat
-            self.quant_data = perform_stat(self)
-            print('OmicScope performed statistical analysis')
+        elif ExperimentalDesign == 'static':  # OmicScope perform statistics
+            from .Stats.Statistic_Module import perform_static_stat
+            self.quant_data = perform_static_stat(self)
+            print('OmicScope performed statistical analysis (Static workflow)')
+        elif ExperimentalDesign == 'longitudinal':
+            from .Stats.Statistic_Module import perform_longitudinal_stat
+            self.quant_data = perform_longitudinal_stat(self)
+            print('OmicScope performed statistical analysis (Longitudinal workflow)')
+
         self.deps = self.deps()
 
     def expression(self):

@@ -1,5 +1,6 @@
 from src import omicscope as omics
 
+
 class TestEnrichment(object):
     def test_omicscope_progenesis(self):
         df = omics.Omicscope('tests//data//proteins//progenesis.csv',
