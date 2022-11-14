@@ -1,8 +1,9 @@
 import copy
+
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
 
 
 def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
@@ -212,15 +213,22 @@ def enrichment_network(self, *Terms, top=5, labels=False,
        df = df[df['Term'].isin(Terms)]
     df = df.iloc[0:top,]
     df = df.explode(['Genes', 'regulation'])
-            
+    if self.Analysis == 'GSEA':
+        norm = mpl.colors.TwoSlopeNorm(vmin=min(df['NES']),
+                                vmax=max(df['NES']),
+                                vcenter = 0)
+        cmap = cm.RdYlBu_r
+        m = cm.ScalarMappable(norm=norm, cmap=cmap)
+        path_color =  [mcolors.to_hex(m.to_rgba(x)) for x in df['NES']]
     source = pd.DataFrame({'ID': df['Term'],
                        'Size': df['-log10(pAdj)']*20,
                        'type': 'pathway',
                        'color': path_color})
     source = source.drop_duplicates()
  
-    norm = mpl.colors.Normalize(vmin=min(foldchange_range),
-                                vmax=max(foldchange_range))
+    norm = mpl.colors.TwoSlopeNorm(vmin=min(foldchange_range),
+                                vmax=max(foldchange_range),
+                                vcenter = 0)
     cmap = cm.RdYlBu_r
     m = cm.ScalarMappable(norm=norm, cmap=cmap)
     color_hex =  [mcolors.to_hex(m.to_rgba(x)) for x in df['regulation']]
@@ -308,16 +316,27 @@ def enrichment_map(self, *Terms, top=1000, modularity = True, labels=False,
     G = nx.from_pandas_adjacency(df)
     #removing self loops
     G.remove_edges_from(nx.selfloop_edges(G))
-    # Node attributes 
-    carac = original[['Term', '-log10(pAdj)', 'Combined Score']]
-    carac['Label'] = carac.Term
-    # Produce color palette according to p-value of each term
-    norm = mpl.colors.Normalize(vmin=0,
-                                vmax=max(carac['-log10(pAdj)']))
-    cmap = cm.PuBu
-    m = cm.ScalarMappable(norm=norm, cmap=cmap)
-    color_hex =  [mcolors.to_hex(m.to_rgba(x)) for x in carac['-log10(pAdj)']]
-    carac['color'] = color_hex
+
+    if self.Analysis == 'ORA':
+            # Node attributes 
+        carac = original[['Term', '-log10(pAdj)', 'Combined Score']]
+        carac['Label'] = carac.Term
+        # Produce color palette according to p-value of each term
+        norm = mpl.colors.Normalize(vmin=0,
+                                    vmax=max(carac['-log10(pAdj)']))
+        cmap = cm.PuBu
+        m = cm.ScalarMappable(norm=norm, cmap=cmap)
+        color_hex =  [mcolors.to_hex(m.to_rgba(x)) for x in carac['-log10(pAdj)']]
+        carac['color'] = color_hex
+    elif self.Analysis == 'GSEA':
+        carac = original[['Term', '-log10(pAdj)', 'NES']]
+        carac['Label'] = carac.Term
+        norm = mpl.colors.TwoSlopeNorm(vmin=min(carac['NES']),
+                                vmax=max(carac['NES']),
+                                vcenter = 0)
+        cmap = cm.RdYlBu_r
+        m = cm.ScalarMappable(norm=norm, cmap=cmap)
+        carac['color'] =  [mcolors.to_hex(m.to_rgba(x)) for x in carac['NES']]
     carac = carac.set_index('Term')
     # Set node attributes
     nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
@@ -325,7 +344,10 @@ def enrichment_map(self, *Terms, top=1000, modularity = True, labels=False,
     # Find Communities
     if modularity is True:
         import networkx.algorithms.community as nx_comm
-        carac = carac[['-log10(pAdj)', 'Combined Score']]
+        if self.Analysis == 'ORA':
+            carac = carac[['-log10(pAdj)', 'Combined Score']]
+        elif self.Analysis == 'GSEA':
+            carac = carac[['-log10(pAdj)', 'NES']]
         # Find communities based on label propagation
         communities = nx_comm.louvain_communities(G)
         module = []
@@ -393,3 +415,20 @@ def enrichment_map(self, *Terms, top=1000, modularity = True, labels=False,
             plt.savefig(save + 'PathMap.dpi', dpi=300)
     plt.show(block=True)
     return G
+
+def gsea_heatmap(self, save=''):
+    import copy
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    df = copy.copy(self.results)
+    df = df[df['Adjusted P-value'] <= 1]
+    df = df.set_index('Term')
+    df = df[['NES']].astype(float)
+    sns.heatmap(df, center=0, cmap='RdYlBu_r', vmin=-2, vmax=2,
+                linewidths = 0.8, linecolor = 'black')
+    plt.ylabel('')
+    plt.xticks(rotation=45, ha='right')
+    if save != '':
+        plt.savefig(save + '_gsea_heatmap.png', dpi=300)
+    plt.show()

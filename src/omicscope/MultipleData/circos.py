@@ -49,13 +49,14 @@ class circos():
         labels = copy(self.labels)
         cell_data = copy(self.cell_data)
         colors = ['set3-12-qual-'+str(x) for x in range(1,13)]
+        colors = colors[:len(labels)]
         karyotype = pd.DataFrame({'type': repeat('chr', len(labels)),
                                 'chr': repeat('-', len(labels)),
                                 'name': labels,
                                 'label': labels,
                                 'START': repeat(0, len(labels)),
                                 'END': [len(cell_data[i]) for i in range(0, len(labels))],
-                                'COLOR': random.sample(colors, len(labels))})
+                                'COLOR': colors})
         karyotype.to_csv(self.newFolder + 'karyotype.txt', sep='\t', header=False,
                           index=False)
 

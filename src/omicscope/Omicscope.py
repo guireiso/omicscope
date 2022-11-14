@@ -135,7 +135,7 @@ class Omicscope(Input):
                 sep='\t', index=False)
             f.write("Omics v1.0.0" + "\n" +
                   "This file is the output performed by OmicScope pipeline and can be used as input" +
-                  " for group comparisons having the controling group used as used according to Hubble." +
+                  " for group comparisons having the controling group used as used according to OmicScope." +
                   "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python package designed for Shotgun Proteomics" +
                   '\nControlGroup:' + '\t' + data.ctrl + '\n' +
                   'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +

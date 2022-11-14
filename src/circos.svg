@@ -5,16 +5,16 @@
 <rect x="0" y="0" width="3000px" height="3000px" style="fill:rgb(255,255,255);"/>
 </g>
 <g id="ideograms">
-<path d="M1500.000,292.500 A1207.500,1207.500 40.000 0,1 2438.504,740.219 L2461.821,721.343 A1237.500,1237.500 0.000 0,0 1500.000,262.500 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(179,222,105);" />
+<path d="M1500.000,292.500 A1207.500,1207.500 40.000 0,1 2438.504,740.219 L2461.821,721.343 A1237.500,1237.500 0.000 0,0 1500.000,262.500 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(141,211,199);" />
 <text x="2081.3" y="281.5" font-size="78.0px" font-family="CMUBright-Roman" style="text-anchor:middle;fill:rgb(0,0,0);" transform="rotate(385.5,2081.3,281.5)" >ASTROCYTES</text>
 <path d="M1500.000,292.500 A1207.500,1207.500 40.000 0,1 2438.504,740.219 L2461.821,721.343 A1237.500,1237.500 0.000 0,0 1500.000,262.500 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:none;" />
-<path d="M2482.666,798.271 A1207.500,1207.500 40.000 0,1 596.783,2301.408 L574.343,2321.319 A1237.500,1237.500 0.000 0,0 2507.080,780.837 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(190,186,218);" />
+<path d="M2482.666,798.271 A1207.500,1207.500 40.000 0,1 596.783,2301.408 L574.343,2321.319 A1237.500,1237.500 0.000 0,0 2507.080,780.837 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(255,255,179);" />
 <text x="2377.0" y="2600.3" font-size="78.0px" font-family="CMUBright-Roman" style="text-anchor:middle;fill:rgb(0,0,0);" transform="rotate(-38.6,2377.0,2600.3)" >BRAIN</text>
 <path d="M2482.666,798.271 A1207.500,1207.500 40.000 0,1 596.783,2301.408 L574.343,2321.319 A1237.500,1237.500 0.000 0,0 2507.080,780.837 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:none;" />
-<path d="M550.043,2245.411 A1207.500,1207.500 40.000 0,1 317.075,1257.629 L287.685,1251.607 A1237.500,1237.500 0.000 0,0 526.441,2263.931 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(253,180,98);" />
+<path d="M550.043,2245.411 A1207.500,1207.500 40.000 0,1 317.075,1257.629 L287.685,1251.607 A1237.500,1237.500 0.000 0,0 526.441,2263.931 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(190,186,218);" />
 <text x="128.6" y="1823.4" font-size="78.0px" font-family="CMUBright-Roman" style="text-anchor:middle;fill:rgb(0,0,0);" transform="rotate(76.7,128.6,1823.4)" >NEURONS</text>
 <path d="M550.043,2245.411 A1207.500,1207.500 40.000 0,1 317.075,1257.629 L287.685,1251.607 A1237.500,1237.500 0.000 0,0 526.441,2263.931 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:none;" />
-<path d="M333.867,1186.648 A1207.500,1207.500 40.000 0,1 1427.093,294.703 L1425.282,264.758 A1237.500,1237.500 0.000 0,0 304.895,1178.863 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(255,255,179);" />
+<path d="M333.867,1186.648 A1207.500,1207.500 40.000 0,1 1427.093,294.703 L1425.282,264.758 A1237.500,1237.500 0.000 0,0 304.895,1178.863 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:rgb(251,128,114);" />
 <text x="646.6" y="454.0" font-size="78.0px" font-family="CMUBright-Roman" style="text-anchor:middle;fill:rgb(0,0,0);" transform="rotate(-39.2,646.6,454.0)" >SH</text>
 <path d="M333.867,1186.648 A1207.500,1207.500 40.000 0,1 1427.093,294.703 L1425.282,264.758 A1237.500,1237.500 0.000 0,0 304.895,1178.863 Z" style="stroke-width:3.0;stroke:rgb(0,0,0);stroke-linecap:round;fill:none;" />
 </g>
@@ -1903,11 +1903,11 @@
 <path d="M1430.257,415.490 A1086.750,1086.750 40.000 0,1 1434.384,415.233 L1430.738,354.968 A1147.125,1147.125 0.000 0,0 1426.383,355.240 Z" style="stroke-linecap:round;fill:rgb(215,25,28);" />
 </g>
 <defs>
-<pattern id="hline-sparse" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:2" /></pattern>
 <pattern id="vline" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" style="stroke:black;stroke-width:5" /></pattern>
-<pattern id="vline-sparse" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" style="stroke:black;stroke-width:2" /></pattern>
-<pattern id="checker" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:2" /><line x1="0" y1="0" x2="0" y2="10" style="stroke:black;stroke-width:2" /></pattern>
-<pattern id="hline" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:5" /></pattern>
+<pattern id="hline-sparse" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:2" /></pattern>
 <pattern id="checker" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:5" /><line x1="0" y1="0" x2="0" y2="10" style="stroke:black;stroke-width:4" /></pattern>
+<pattern id="vline-sparse" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" style="stroke:black;stroke-width:2" /></pattern>
+<pattern id="hline" width="10" height="10" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:5" /></pattern>
+<pattern id="checker" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="0" style="stroke:black;stroke-width:2" /><line x1="0" y1="0" x2="0" y2="10" style="stroke:black;stroke-width:2" /></pattern>
 </defs>
 </svg>

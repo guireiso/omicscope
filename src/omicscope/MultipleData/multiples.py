@@ -21,7 +21,13 @@ class multiples:
         self.cell_data = []
         for o,g,l in zip(self.original, self.groups, self.labels):
                 self.cell_data.append(self.importing(o, g, l))
-
+        
+        print(f'''You imported your data successfully!
+        Data description:
+        1. N groups imported: {len(self.groups)} 
+        2. Groups: {','.join(self.groups)} 
+        3. N groups with enchment data: {sum(x is not None for x in self.enrichment)}
+        ''' )
     def read_omics(self, folder):
         path = folder # use your path
         all_files = glob.glob(path + "/*.omics")
@@ -61,6 +67,6 @@ class multiples:
     
     from .MultipleVisualization import (barplot, protein_overlap,
                                         enrichment_overlap, group_pearson,
-                                        Differentially_Regulated)
+                                        Differentially_Regulated, network)
     from .circos import circos_plot
 

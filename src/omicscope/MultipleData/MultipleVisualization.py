@@ -2,8 +2,6 @@
 """
 @author: gui_d
 """
-
-import omicscope as omics
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -201,3 +199,70 @@ def Differentially_Regulated(multiples_output,
         else:
             plt.savefig(save + 'clustermap.png', dpi = dpi)
     plt.show()
+
+def network(self, labels = False, save = '',):
+    import matplotlib as mpl
+    import matplotlib.cm as cm
+    import matplotlib.colors as mcolors
+    import networkx as nx
+
+    palette = sns.color_palette("Set3", 12).as_hex()
+    data = copy(self)
+    palette = palette[:len(data.groups)]
+    network_frame = []
+    for group, df, color in zip(data.groups, data.original, palette):
+        df['Experiment'] = group
+        df = df[df['pvalue']<0.05]
+        df['Size'] = len(df)
+        df['color'] = color
+        network_frame.append(df)
+    network_frame = pd.concat(network_frame)
+    source = pd.DataFrame({'ID': network_frame['Experiment'],
+                       'Size': network_frame['Size'],
+                       'type': 'Experiment',
+                       'color': network_frame['color']})
+    source = source.drop_duplicates()
+    norm = mpl.colors.TwoSlopeNorm(vmin=min(network_frame['log2(fc)']),
+                            vmax=max(network_frame['log2(fc)']),
+                            vcenter = 0)
+    cmap = cm.RdYlBu_r
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+    color_hex =  [mcolors.to_hex(m.to_rgba(x)) for x in network_frame['log2(fc)']]
+   
+    target = pd.DataFrame({'ID': network_frame['gene_name'],
+                       'Size':  int(min(network_frame['Size'])*0.5),
+                       'type': 'Protein',
+                       'color': color_hex})
+    target = target.drop_duplicates()
+    edgelist = network_frame[['Experiment', 'gene_name']]
+    G = nx.from_pandas_edgelist(edgelist,
+                               source='Experiment',
+                               target='gene_name',
+                               create_using=nx.Graph)
+    carac = pd.concat([source, target]).reset_index(drop = True)
+    carac = carac.drop_duplicates('ID')
+    carac = carac.set_index('ID')
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
+    pos= nx.kamada_kawai_layout(G)
+    carac=carac.reindex(G.nodes())
+    nx.draw(G,
+           pos = pos,
+           node_color=carac['color'],
+           node_size= carac['Size']/20,
+           edgecolors='black',
+           linewidths=0.4,
+           alpha=0.9,
+           width=0.2,
+           edge_color='gray')  
+    if labels is True:
+        nx.draw_networkx_labels(G,pos,font_size = 6)
+    if save != '':
+        nx.write_graphml(G, save+ 'PPNetwork.graphml', named_key_ids = True)
+        if vector == True:
+            plt.savefig(save + 'PPNetwork.svg')
+        else:
+            plt.savefig(save + 'PPNetwork.dpi', dpi=300)
+    plt.show()
+    return(G)
+
