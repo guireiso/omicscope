@@ -72,3 +72,7 @@ docs/_build
 
 # Mypy Cache
 .mypy_cache/
+
+# Own Test outside test folder
+src/longitudinal.py
+src/omics_teste.py

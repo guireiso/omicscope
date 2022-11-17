@@ -58,7 +58,7 @@ def perform_longitudinal_stat(self):
     if log is False:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
-        # Apply t-test if len(conditions) == 2
+    
     ### longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
