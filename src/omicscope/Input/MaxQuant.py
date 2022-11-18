@@ -10,18 +10,14 @@ from copy import copy
 import numpy as np
 
 class Input:
-    def __init__(self, Table, ControlGroup, pdata,
+    def __init__(self, Table, pdata,
                  quant_strategy = 'LFQ intensity', filtering_method = 70):
         self.Table = Table
-        self.ctrl = ControlGroup
         self.quant_strategy = quant_strategy
         self.rdata = self.rdata()
         self.pdata = pd.read_excel(pdata)
         self.assay = self.assay()
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
-        self.experimental = copy(self.Conditions)
-        self.experimental.remove(self.ctrl)
-        self.filtering_method = filtering_method
         self.filtering_data()
 
     

@@ -10,9 +10,9 @@ from .Input import *
 
 
 class Omicscope(Input):
-    def __init__(self, Table, ControlGroup, Method, FoldChange_cutoff=0,
-                 statistics = 'pAdjusted', pdata = '', ExperimentalDesign = 'static',
-                 PValue_cutoff=0.05, logTransformed=False, ExcludeKeratins=True, **kwargs):
+    def __init__(self, Table, ControlGroup, Method, ExperimentalDesign = 'static', 
+                statistics = 'pAdjusted', pdata = '', PValue_cutoff=0.05, 
+                FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -76,7 +76,7 @@ class Omicscope(Input):
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')
 
-        self.deps = self.deps()
+        #self.deps = self.deps()
 
     def expression(self):
         """Joins the technical replicates and organizes biological

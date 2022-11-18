@@ -17,19 +17,17 @@ import pandas as pd
 
 
 class Input:
-    def __init__(self, Table, ControlGroup, pdata = None, **kwargs):
+    def __init__(self, Table, pdata = None, **kwargs):
         """   Progenesis output for OmicScope input
 
         Args:
             Table (str): Path to Progenesis output (.xslx or .csv)
-            ControlGroup (str): Control group
             pdata (DataFrame): Phenotype data. Default: None.
             If user desires it is possible to defines externally
             the sample conditions.
         """
 
         self.Table = Table
-        self.ctrl = ControlGroup
         if len(kwargs) > 0:
             self.uniquepeptides = kwargs['UniquePeptides']
         data = self.progenesis()
@@ -55,11 +53,8 @@ class Input:
         df = df.replace("Best identification", np.nan)    
         df.iloc[1] = df.iloc[1].astype(str)
 
-        # Extracting conditions and define experimental groups
+        # Extracting conditions
         self.Conditions = list(df.iloc[0, :].dropna().drop_duplicates())
-        experimental = copy(self.Conditions)
-        experimental.remove(self.ctrl)
-        self.experimental = experimental
 
         # Adjusting dataframe
         try:

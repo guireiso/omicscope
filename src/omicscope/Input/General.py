@@ -30,16 +30,14 @@ from copy import copy
 
 
 class Input:
-    def __init__(self, Table, ControlGroup, **kwargs):
+    def __init__(self, Table, **kwargs):
         """  Format general data for OmicScope input
 
         Args:
-            Table (str): [description]
-            ControlGroup (str): [description]
+            Table (str): excel file.
         """
 
         self.Table = Table
-        self.ctrl = ControlGroup
         self.assay = self.readxl(sheetno=0)
         if ['gene_name'] is self.readxl(sheetno=1).columns:
             self.rdata = self.readxl(sheetno=1)
@@ -49,8 +47,6 @@ class Input:
                 'GN=').str[1].str.split(' ').str[0]
         self.pdata = self.readxl(sheetno=2)
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
-        self.experimental = copy(self.Conditions)
-        self.experimental.remove(self.ctrl)
         self.assay.index = self.rdata.Accession
 
     def readxl(self, sheetno):

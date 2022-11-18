@@ -13,16 +13,14 @@ import numpy as np
 from copy import copy
 
 class Input:
-    def __init__(self, Table, ControlGroup, filtering_method):
+    def __init__(self, Table, filtering_method):
         """  PatternLab V output for OmicScope input
 
         Args:
             Table (str): Path to PatternLab V output (.xslx)
-            ControlGroup (str): Control Group
         """
 
         self.Table = Table
-        self.ctrl = ControlGroup
         self.assay = self.PatternLab()[0]  # Expression data
         self.assay.columns = self.PatternLab()[1].Sample
         self.pdata = self.PatternLab()[1]  # Phenotype data
@@ -79,11 +77,6 @@ class Input:
             for j in range(1, len(df) + 1):
                 technical.append(j)
         pdata['TechRep'] = technical
-
-        # Defining experimental conditions
-        experimental = list(pdata['Condition'].drop_duplicates())
-        experimental.remove(self.ctrl)
-        self.experimental = experimental
 
         # Defining rdata
         rdata = PLV_output[['Locus', 'Description']]
