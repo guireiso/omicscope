@@ -1,9 +1,5 @@
 import omicscope as omics
 
-teste = omics.Omicscope('C:\\Users\\Guilherme\\omicscope\\omicscope\\tests\\data\\proteins\\progenesis.csv', 
-        'WT', 'Progenesis')  
+teste = omics.Omicscope('C:\\Users\\Guilherme\\Desktop\\ALL.csv', ControlGroup= False, Method = 'Progenesis',
+ExperimentalDesign='longitudinal', degrees_of_freedom = 2, pdata= 'C:\\Users\\Guilherme\\Desktop\\pdata.xls')
 
-teste2 = omics.EnrichmentScope(teste, 'GSEA')
-
-
-teste2.output('C:/Users/Guilherme/Desktop/')
