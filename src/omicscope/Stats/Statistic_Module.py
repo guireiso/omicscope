@@ -50,6 +50,7 @@ def perform_longitudinal_stat(self):
     """
     from copy import copy
     import numpy as np
+    df = copy(self.degrees_of_freedom)
     expression = copy(self.expression)
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
@@ -58,7 +59,9 @@ def perform_longitudinal_stat(self):
     if log is False:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
-    
+    from .Longitudinal_Stat import Longitudinal_Stats
+    data = Longitudinal_Stats(assay = expression, pdata = pdata, df = df)
+    data = rdata.merge(data, on='Accession')
     ### longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)

@@ -3,6 +3,8 @@ import pandas as pd
 import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import f
+from statsmodels.stats.multitest import multipletests
+from copy import copy
 
 def Spline_Model_Full(pdata, df):
     """
@@ -141,7 +143,7 @@ def Spline_Normalization(expression, full_model, null_model, plot = False):
     return F_stat
 
 
-def Longitudinal_Stats(assay, pdata, df):
+def Longitudinal_pval(assay, pdata, df):
     """
     Perform Longitudinal Statistics based on Natural Cubic Spline Regression
 
@@ -183,3 +185,33 @@ def Longitudinal_Stats(assay, pdata, df):
     pvalue = stat.apply(lambda x: 1-f.cdf(x, df1, df2))
     pvalue = pvalue
     return pvalue
+
+def Longitudinal_Stats(assay, pdata, df):
+    quant_data = copy(assay)
+    pval = Longitudinal_pval(assay = assay, pdata = pdata, df = df)
+    #  Correcting multilple hypothesis test according to fdr_bh
+    pAdjusted = multipletests(pval, alpha=0.1,
+                                          method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+    quant_data['pvalue'] = pval
+    quant_data['pAdjusted'] = pAdjusted
+    return quant_data
+    #  Mean abundance for each protein among conditions
+    quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
+        quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)])
+    quant_data['mean ' + ControlGroup] = quant_data.loc[:,
+                                                        quant_data.columns.str.endswith(ControlGroup)].mean(axis=1)
+
+    quant_data.loc[:, quant_data.columns.str.endswith(Experimental)] = np.exp2(
+        quant_data.loc[:, quant_data.columns.str.endswith(Experimental)])
+    quant_data['mean ' + Experimental] = quant_data.loc[:,
+                                                        quant_data.columns.str.endswith(Experimental)].mean(axis=1)
+    #  Mean abundance for each protein
+    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.')].mean(axis=1)
+    #  Protein Fold change (Experimental/Control)
+    quant_data['fc'] = quant_data['mean ' + Experimental] / quant_data['mean ' + ControlGroup]
+    #  Log2(FC)
+    quant_data['log2(fc)'] = np.log2(quant_data['fc'])
+    #  -log10(pvalue)
+    quant_data['-log10(p)'] = -np.log10(quant_data['pvalue'])
+    quant_data = quant_data.reset_index()
+    return(quant_data)

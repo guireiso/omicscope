@@ -51,6 +51,7 @@ class Omicscope(Input):
         self.logTransformed = logTransformed
         self.ExcludeKeratins = ExcludeKeratins
         if pdata != '':
+            import pandas as pd
             try:
                 self.pdata = pd.read_excel(pdata)
             except:
