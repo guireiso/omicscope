@@ -17,19 +17,20 @@ class Input:
         """  PatternLab V output for OmicScope input
 
         Args:
-            Table (str): Path to PatternLab V output (.xslx)
+            Table (str): Path to PatternLab V output (.xlsx)
         """
 
         self.Table = Table
-        self.assay = self.PatternLab()[0]  # Expression data
-        self.assay.columns = self.PatternLab()[1].Sample
-        self.pdata = self.PatternLab()[1]  # Phenotype data
-        self.rdata = self.PatternLab()[2]  # row/gene data
+        patternlab = self.PatternLab()
+        self.assay = patternlab[0]  # Expression data
+        self.assay.columns = patternlab[1].Sample
+        self.pdata = patternlab[1]  # Phenotype data
+        self.rdata = patternlab[2]  # row/gene data
         # Extract analyzed conditions
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
         self.filtering_method = filtering_method
         self.filtering_data()
-        
+       
     def PatternLab(self):
         """ Extract all PatternLab V information
         """
@@ -80,9 +81,11 @@ class Input:
 
         # Defining rdata
         rdata = PLV_output[['Locus', 'Description']]
-        rdata['Accession'] = rdata.Locus.str.split('|').str[1]
-        rdata['gene_name'] = rdata.Description.str.split('GN=').str[-1]
-        rdata['gene_name'] = rdata['gene_name'].str.split(' ').str[0]
+        Accession = rdata.Locus.str.split(f'|').str[1]
+        gene_name = rdata['Description'].str.split('GN=').str[-1]
+        gene_name = gene_name.str.split(' ').str[0]
+        rdata = rdata.assign(Accession = Accession,
+                             gene_name = gene_name)
         return(assay, pdata, rdata)
 
     def filtering_data(self):

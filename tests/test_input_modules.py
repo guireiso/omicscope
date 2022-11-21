@@ -4,44 +4,37 @@ from src.omicscope.cli import main
 def test_main():
     assert main([]) == 0
 
-class TestGeneral(object):
-    def test_size_data(self):
-        from src.omicscope.Input.General import Input
-        df = Input('tests//data//proteins//general.xls')
-        assert len(df.assay.columns) == len(df.pdata)
-        assert len(df.assay.index) == len(df.rdata)
-
-    def test_assay(self):
-        from src.omicscope.Input.General import Input
-        df = Input('tests//data//proteins//general.xls')
-        assay = df.assay
-        assert assay.size == 52192 - len(assay.columns)
-
-    def test_pdata(self):
-        from src.omicscope.Input.General import Input
-        df = Input('tests//data//proteins//general.xls')
-        pdata = df.pdata
-        Conditions = list(pdata.Condition.drop_duplicates())
-        assert Conditions == df.Conditions
+class TestInput(object):
+    def test_Progenesis(self):
+        from src.omicscope.Input import Input
+        ctrlWT = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis', ControlGroup='WT')
+        ctrlNone = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis', ControlGroup=None)
+        assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
+        assert ctrlWT.ControlGroup == 'WT'
+        assert ctrlNone.ControlGroup == 'KO'
     
-class TestProgenesis(object):
-    def test_size_data(self):
-        from src.omicscope.Input.Progenesis import Input
-        df = Input('tests//data//proteins//progenesis.csv')
-        assert len(df.assay.columns) == len(df.pdata)
-        assert len(df.assay.index) == len(df.rdata)
+    def test_General(self):
+        from src.omicscope.Input import Input
+        ctrlWT = Input('tests//data//proteins//general.xls', Method = 'General', ControlGroup='WT')
+        ctrlNone = Input('tests//data//proteins//general.xls', Method = 'General', ControlGroup=None)
+        assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
+        assert ctrlWT.ControlGroup == 'WT'
+        assert ctrlNone.ControlGroup == 'KO'
+    
+    def test_MaxQuant(self):
+        from src.omicscope.Input import Input
+        pdata = 'tests//data//proteins//MQ_pdata.xlsx'
+        maxquantNone = Input('tests//data//proteins//MQ.txt', ControlGroup = None,
+         Method = 'MaxQuant', pdata = pdata, filtering_method = 70)
+        maxquantWT = Input('tests//data//proteins//MQ.txt', ControlGroup = 'CoV',
+         Method = 'MaxQuant', pdata = pdata, filtering_method = 70)
+        assert len(maxquantWT.Conditions) == len(maxquantNone.Conditions)
+        assert maxquantNone.ControlGroup == maxquantWT.ControlGroup
 
-    def test_assay(self):
-        from src.omicscope.Input.Progenesis import Input
-        df = Input('tests//data//proteins//progenesis.csv', 'WT')
-        assay = df.assay
-        assert assay.size == 52192 - len(assay.columns)
-
-    def test_pdata(self):
-        from src.omicscope.Input.Progenesis import Input
-        df = Input('tests//data//proteins//progenesis.csv', 'WT')
-        pdata = df.pdata
-        Conditions = list(pdata.Condition.drop_duplicates())
-        print(pdata.index)
-        assert Conditions == df.Conditions
-        assert pdata.index[1] == 1
+    def test_PatternLab(self):
+        from src.omicscope.Input import Input
+        patternLabNone = Input('tests//data//proteins//patternlab.xlsx', ControlGroup = None,
+         Method = 'PatternLab', filtering_method = 70)
+        patternLabCN = Input('tests//data//proteins//patternlab.xlsx', ControlGroup = 'CN',
+         Method = 'PatternLab', filtering_method = 70)
+        assert patternLabNone.ControlGroup == patternLabCN.ControlGroup

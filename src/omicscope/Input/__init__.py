@@ -16,7 +16,6 @@ class Input():
 
         Args:
             Table (str): Path to quantitative data.
-            ControlGroup (str): Control group.
             Method (str): algorithm/software used to perform quantitative
             proteomics
         """
@@ -28,12 +27,20 @@ class Input():
             from .PatternLab import Input
         elif Method == 'MaxQuant':
             from .MaxQuant import Input
-        data = Input(Table, ControlGroup, **kwargs)
+        else:
+            raise IndexError('It was not possible to import your data.')
+        data = Input(Table, **kwargs)
         self.Table = Table
-        self.ctrl = ControlGroup
         self.rdata = data.rdata
         self.assay = data.assay
         self.pdata = data.pdata
         self.Conditions = data.Conditions
-        self.experimental = data.experimental
-        return(Input)
+        if ControlGroup == None:
+            Control = list(data.Conditions)
+            Control = sorted(Control)
+            self.ControlGroup = Control[0]
+            self.experimental = Control.remove(self.ControlGroup)
+        else:
+            Conditions = list(data.Conditions)
+            self.ControlGroup = ControlGroup
+            self.experimental = Conditions.remove(self.ControlGroup)

@@ -11,7 +11,7 @@ from .Input import *
 
 class Omicscope(Input):
     def __init__(self, Table, ControlGroup, Method, ExperimentalDesign = 'static', 
-                statistics = 'pAdjusted', pdata = '', PValue_cutoff=0.05, 
+                statistics = 'pAdjusted', pdata = None, PValue_cutoff=0.05, 
                 FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
@@ -44,13 +44,14 @@ class Omicscope(Input):
             Defaults to True.
         """
 
-        super().__init__(Table, ControlGroup, Method, **kwargs)
+        super().__init__(Table, Method, **kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
-        self.PValue_cutoff = PValue_cutoff
         self.logTransformed = logTransformed
         self.ExcludeKeratins = ExcludeKeratins
-        if pdata != '':
+        if pdata is not None:
+            # If pdata was assigned by user, OmicScope read
+            # excel or csv frames. 
             import pandas as pd
             try:
                 self.pdata = pd.read_excel(pdata)

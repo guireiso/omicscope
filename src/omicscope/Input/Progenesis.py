@@ -6,18 +6,15 @@ quantitative data as .csv.
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
 
-from copy import copy
 import numpy as np
 import pandas as pd
-
-
 from copy import copy
 import numpy as np
 import pandas as pd
 
 
 class Input:
-    def __init__(self, Table, pdata = None, **kwargs):
+    def __init__(self, Table, **kwargs):
         """   Progenesis output for OmicScope input
 
         Args:
@@ -26,7 +23,6 @@ class Input:
             If user desires it is possible to defines externally
             the sample conditions.
         """
-
         self.Table = Table
         if len(kwargs) > 0:
             self.uniquepeptides = kwargs['UniquePeptides']
@@ -35,10 +31,10 @@ class Input:
         self.rdata = data[1]
         self.rdata['gene_name'] = self.rdata['Description'].str.split(
             'GN=').str[1].str.split(' ').str[0]
-        self.p_data = pdata
         self.pdata = self.pdata()
-        self.assay.columns = self.assay.columns.str.split('\.').str[0]
+        self.assay.columns = self.assay.columns.str.split(f'.').str[0]
         self.assay.index = self.rdata['Accession']
+
 
     def progenesis(self, **kwargs):
         """ Extract rdata and assay from Progenesis output
@@ -77,37 +73,34 @@ class Input:
         df = df.reset_index(drop=True)
         df = df.rename(columns={'Anova (p)': 'pvalue'})
         # Defining assay
-        assay = df.iloc[:, df.columns.str.contains('\.')]
+        assay = df.iloc[:, df.columns.str.contains(f".", regex = False)]
         # Defining rdata
-        rdata = df.iloc[:, ~df.columns.str.contains('\.')]
+        rdata = df.iloc[:, ~df.columns.str.contains(".", regex = False)]
         return(assay, rdata)
 
     def pdata(self):
         """Defining pdata
         """
-        if self.p_data is None:
-            pdata = pd.Series(self.assay.columns)
-            samples = pdata.str.split('.').str[0]
-            pdata = pdata.str.split('.').str[-1]
-            pdata = pd.DataFrame([samples, pdata]).T
-            pdata.columns = ['Samples', 'Condition']
-            # Defining Biological replicates
-            Biological = []
-            for i in self.Conditions:
-                df = pdata
-                df = df[df.Condition == i]
-                for j in range(1, len(df) + 1):
-                    Biological.append(j)
-            pdata['Biological'] = Biological
-            # Defining technical replicates
-            technical = []
-            tech = pdata[['Condition', 'Biological']].drop_duplicates()
-            for i, j in zip(tech.Condition, tech.Biological):
-                df = pdata
-                df = df[(df.Condition == i) & (df.Biological == j)]
-                for j in range(1, len(df) + 1):
-                    technical.append(j)
-            pdata['TechRep'] = technical
-        else:
-            pdata = pd.read_excel(self.p_data)
+        pdata = pd.Series(self.assay.columns)
+        samples = pdata.str.split('.').str[0]
+        pdata = pdata.str.split('.').str[-1]
+        pdata = pd.DataFrame([samples, pdata]).T
+        pdata.columns = ['Samples', 'Condition']
+        # Defining Biological replicates
+        Biological = []
+        for i in self.Conditions:
+            df = pdata
+            df = df[df.Condition == i]
+            for j in range(1, len(df) + 1):
+                Biological.append(j)
+        pdata['Biological'] = Biological
+        # Defining technical replicates
+        technical = []
+        tech = pdata[['Condition', 'Biological']].drop_duplicates()
+        for i, j in zip(tech.Condition, tech.Biological):
+            df = pdata
+            df = df[(df.Condition == i) & (df.Biological == j)]
+            for j in range(1, len(df) + 1):
+                technical.append(j)
+        pdata['TechRep'] = technical
         return(pdata)
