@@ -44,32 +44,34 @@ class Omicscope(Input):
             Defaults to True.
         """
 
-        super().__init__(Table, Method, **kwargs)
+        super().__init__(Table, Method = Method, ControlGroup = ControlGroup,**kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
         self.logTransformed = logTransformed
         self.ExcludeKeratins = ExcludeKeratins
         if pdata is not None:
             # If pdata was assigned by user, OmicScope read
-            # excel or csv frames. 
+            # excel or csv frames.
             import pandas as pd
             try:
                 self.pdata = pd.read_excel(pdata)
             except:
                 self.pdata = pd.read_csv(pdata)
-
-        # Construct pivot-table considering technical and biological replicates
-        self.expression = self.expression()
-
+        self.ctrl = self.ControlGroup
         #  Has user already performed statistical analyses?
         statistics = [f'Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
                     'padj', 'p-adjusted', 'p-adj']
         if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat
+            print(self.ControlGroup)
             self.quant_data = imported_stat(self, statistics)
             print('User already performed statistical analysis')
+        
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics
             from .Stats.Statistic_Module import perform_static_stat
+            # Construct pivot-table considering technical and biological replicates
+            self.expression = self.expression()
+            # perform stat
             self.quant_data = perform_static_stat(self)
             print('OmicScope performed statistical analysis (Static workflow)')
         elif ExperimentalDesign == 'longitudinal':

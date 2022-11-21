@@ -39,8 +39,10 @@ class Input():
             Control = list(data.Conditions)
             Control = sorted(Control)
             self.ControlGroup = Control[0]
-            self.experimental = Control.remove(self.ControlGroup)
+            Control.remove(self.ControlGroup)
+            self.experimental = Control
         else:
             Conditions = list(data.Conditions)
             self.ControlGroup = ControlGroup
-            self.experimental = Conditions.remove(self.ControlGroup)
+            Conditions.remove(self.ControlGroup)
+            self.experimental = Conditions

@@ -12,6 +12,8 @@ class TestInput(object):
         assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
         assert ctrlWT.ControlGroup == 'WT'
         assert ctrlNone.ControlGroup == 'KO'
+        assert 'Sample' in ctrlWT.pdata.columns
+        assert 'Condition' in ctrlWT.pdata.columns
     
     def test_General(self):
         from src.omicscope.Input import Input
@@ -20,6 +22,8 @@ class TestInput(object):
         assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
         assert ctrlWT.ControlGroup == 'WT'
         assert ctrlNone.ControlGroup == 'KO'
+        assert 'Sample' in ctrlWT.pdata.columns
+        assert 'Condition' in ctrlWT.pdata.columns
     
     def test_MaxQuant(self):
         from src.omicscope.Input import Input
@@ -30,6 +34,10 @@ class TestInput(object):
          Method = 'MaxQuant', pdata = pdata, filtering_method = 70)
         assert len(maxquantWT.Conditions) == len(maxquantNone.Conditions)
         assert maxquantNone.ControlGroup == maxquantWT.ControlGroup
+        assert 'Sample' in maxquantNone.pdata.columns
+        assert 'Condition' in maxquantNone.pdata.columns
+
+        
 
     def test_PatternLab(self):
         from src.omicscope.Input import Input
@@ -38,3 +46,5 @@ class TestInput(object):
         patternLabCN = Input('tests//data//proteins//patternlab.xlsx', ControlGroup = 'CN',
          Method = 'PatternLab', filtering_method = 70)
         assert patternLabNone.ControlGroup == patternLabCN.ControlGroup
+        assert 'Sample' in patternLabNone.pdata.columns
+        assert 'Condition' in patternLabNone.pdata.columns

@@ -85,7 +85,7 @@ class Input:
         samples = pdata.str.split('.').str[0]
         pdata = pdata.str.split('.').str[-1]
         pdata = pd.DataFrame([samples, pdata]).T
-        pdata.columns = ['Samples', 'Condition']
+        pdata.columns = ['Sample', 'Condition']
         # Defining Biological replicates
         Biological = []
         for i in self.Conditions:
