@@ -1,54 +1,63 @@
-import omicscope as omics
 
 from copy import copy
-#general = Omicscope(Table = 'C:/Users/Guilherme/Desktop/general.xls', ControlGroup = None, Method = 'General')
-progenesis = omics.Omicscope('C:/Users/Guilherme/Desktop/progenesis.csv',ControlGroup = None, Method = 'Progenesis')
-progenesis
-def expression(self):
-        """Joins the technical replicates and organizes biological
-        conditions.
-        """
-        from copy import copy
-        pdata = []
-        for i in self.pdata.columns:
-            pdata.append(self.pdata[i])
-        expression = self.assay.T
-        expression = expression.set_index(pdata).T
 
-        rdata = []
-        for i in self.rdata.columns:
-            rdata.append(self.rdata[i])
-        expression = expression.set_index(rdata)
+import omicscope as omics
+general = omics.Omicscope(Table = 'C:/Users/Guilherme/Desktop/general.xls', ControlGroup = None, Method = 'General', pvalue = 'pAdjusted')
+
+general.quant_data
 
 
-        # Melt expression data to get all values for each sample and each gene
-        expression = expression.melt(ignore_index=False).reset_index()
-        # Getting the mean of technical replicates for each biological replicate
-        var = list(self.rdata.columns)
-        pdata_columns = list(self.pdata.columns)
-        pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples', 'TechRep']))
-        for i in pdata_columns:
-            var.append(i)
+def tukey_correction(df):
+    """Apply tukey hsd algorithm developed by
+    Statmodels
 
-        expression = expression.groupby(var).mean(numeric_only= True).reset_index().rename(
-            columns={'value': 'abundance'})
+    Args:
+        df (DataFrame): Dataframe 
+        i (Index): [description]
 
-        expression['Sample'] = 'BioRep' + \
-            expression['Biological'].astype(str) + \
-            '.' + expression['Condition']
-        
-        # New pdata
-        pdata_columns.append('Sample')
-        pdata = expression[pdata_columns]
-        self.new_pdata = pdata
+    Returns:
+       padj [list]: Adjusted p-value for each differentially regulated gene and
+       comparison
+       comparison [list]: Comparison for which p-value was evaluated
+    """
+    from statsmodels.stats.multicomp import pairwise_tukeyhsd
+    df = copy(df)
+    df = df.reset_index()
+    df.columns = ['Comparison', 'abundance']
+    df['Comparison'] = df.Comparison.str.split('.').str[-1]
+    df = pairwise_tukeyhsd(endog=df['abundance'],
+                            groups=df['Comparison'],
+                            alpha=0.05)
+    df = pd.DataFrame(data=df._results_table.data[1:], columns=df._results_table.data[0])
+    df['Comparison'] = df.group1 + '-' + df.group2
+    padj = list(df['p-adj'])
+    comparison = list(df['Comparison'])
+    return padj, comparison
 
-        # New rdata 
-        rdata = expression[copy(self.rdata.columns)]
-        self.new_rdata = rdata
-        #  data with just biological replicates abundance
-        expression = expression[['Sample', 'Accession', 'abundance']]
-        expression = expression.pivot(columns='Sample', index='Accession', values='abundance')
-        return(expression)
 
-#result = expression(copy(general))
-#result
+def Tukey_hsd(quant_data):
+    """Perform Tukey HSD test for each differentially regulated entity
+    found according ANOVA's test.
+
+    Args:
+        quant_data (DataFrame): Normalized dataframe.
+
+    Returns:
+       padj [list]: Adjusted p-value for each differentially regulated entity
+       in each comparison. Entities that were not differentially regulated
+       returned 2
+       comparison [list]: Comparison for which p-value was evaluated. Entities 
+       that were not differentially regulated returned 2
+    """
+    df = copy(quant_data)
+    df = df[df['pvalue'] < 0.05] #TODO: Trocar para pAdjust
+    df = df.iloc[:, df.columns.str.contains('.', regex = False)]
+    # Perform Tukey's post-hoc correction for each of differentially
+    # regulated entity according ANOVA's test
+    df = df.apply(lambda x: tukey_correction(x), axis = 1)
+    df = pd.DataFrame(df.to_list(), columns=['pTukey',
+                                              'Comparison'], index = df.index)
+    return df
+import numpy as np
+teste = copy(general.quant_data)
+teste
