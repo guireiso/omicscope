@@ -53,7 +53,7 @@ class Enrichment:
             omics = self.OmicScope.quant_data
             # Filtering data based on Fold Change and P-value
             omics = omics.loc[(omics['log2(fc)']<=-foldchange_cutoff) | (omics['log2(fc)']>=foldchange_cutoff)]
-            omics = omics[omics['pvalue'] < pvalue_cutoff]
+            omics = omics[omics[self.OmicScope.pvalue] < pvalue_cutoff]
             foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
             
             gsea_input = omics.set_index('gene_name')

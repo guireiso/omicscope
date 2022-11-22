@@ -44,7 +44,7 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
     # Get number of identified proteins
     identified = df.Accession.count()
     # Get number of quantified proteins
-    quantified = df.dropna(axis=0, subset=['pvalue']).Accession.count()
+    quantified = df.dropna(axis=0, subset=[OmicScope.pvalue]).Accession.count()
     # Get number of differentially regulated proteins
     deps = OmicScope.deps['Accession'].count()
     if identified != quantified:
@@ -117,10 +117,10 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     min_fc = min([x for x in fc if x > min(fc)])
     fc = fc.replace([np.inf], max_fc + 1)
     fc = fc.replace([-np.inf], min_fc - 1)
-    pval = df_initial['-log10(p)']
+    pval = df_initial[f'-log10({OmicScope.pvalue})']
     max_pval = max([x for x in pval if x < max(pval)])
     pval = pval.replace([np.inf], max_pval + 1)
-    df_initial['-log10(p)'] = pval
+    df_initial[f'-log10({OmicScope.pvalue})'] = pval
     df_initial['log2(fc)'] = fc
 
     # colors per condition
@@ -143,8 +143,8 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     col = pd.Series(col)
     comparison = pd.Series(comparison)
     df = pd.DataFrame(data=zip(pval, fc, col, comparison))
-    df.columns = ['pvalue', 'fc', 'col', 'comparison']
-    df['pvalue'] = df['pvalue'].astype(float)
+    df.columns = [OmicScope.pvalue, 'fc', 'col', 'comparison']
+    df[OmicScope.pvalue] = df[OmicScope.pvalue].astype(float)
     df['fc'] = df['fc'].astype(float)
     df['col'] = df.col.replace(color_comp_dict)
 
@@ -154,7 +154,7 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
         ls = pd.DataFrame(Proteins)
         ls.columns = ['gene_name']
         ls_final = ls.merge(df_initial)
-        ls_final = ls_final[['gene_name', '-log10(p)', 'log2(fc)']]
+        ls_final = ls_final[['gene_name', f'-log10({OmicScope.pvalue})', 'log2(fc)']]
         ls_final = ls_final.sort_values('log2(fc)', ascending=False)
 
     # dimensions
@@ -169,12 +169,12 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     plt.figure(figsize=(8, 8))
     # Scatter plot
     ax_scatter = plt.axes(rect_scatter)
-    sns.scatterplot(df.fc, df.pvalue, alpha=0.7,
+    sns.scatterplot(x = df.fc, y = df[OmicScope.pvalue], alpha=0.7,
                      hue=df.comparison,
                      palette=list(df.col.drop_duplicates()))
     sns.despine(left=False)
     plt.xlabel("log2( FC)")
-    plt.ylabel("-log10(p)")
+    plt.ylabel(f'-log10({OmicScope.pvalue})')
     ax_scatter.tick_params(direction='in', top=True, right=True)
     plt.grid(b=None)
     ax_scatter.plot(alpha=0.5)
@@ -200,7 +200,7 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     if len(Proteins) > 0:
         from adjustText import adjust_text
         texts = []
-        for a, b, c in zip(ls_final['log2(fc)'], ls_final['-log10(p)'],
+        for a, b, c in zip(ls_final['log2(fc)'], ls_final[f'-log10({OmicScope.pvalue})'],
                             ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
             adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
@@ -259,10 +259,10 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     min_fc = min([x for x in fc if x > min(fc)])
     fc = fc.replace([np.inf], max_fc + 1)
     fc = fc.replace([-np.inf], min_fc - 1)
-    pval = df_initial['-log10(p)']
+    pval = df_initial[f'-log10({OmicScope.pvalue})']
     max_pval = max([x for x in pval if x < max(pval)])
     pval = pval.replace([np.inf], max_pval + 1)
-    df_initial['-log10(p)'] = pval
+    df_initial[f'-log10({OmicScope.pvalue})'] = pval
     df_initial['log2(fc)'] = fc
     # Defining colors for dots
     col = []
@@ -289,7 +289,7 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
         ls = pd.DataFrame(Proteins)
         ls.columns = ['gene_name']
         ls_final = ls.merge(df_initial)
-        ls_final = ls_final[['gene_name', '-log10(p)', 'log2(fc)']]
+        ls_final = ls_final[['gene_name', f'-log10({OmicScope.pvalue})', 'log2(fc)']]
         ls_final = ls_final.sort_values('log2(fc)', ascending=False)
     # plot dimensions
     left, width = 0.1, 0.65
@@ -303,11 +303,11 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     plt.figure(figsize=(8, 8))
     ax_scatter = plt.axes(rect_scatter)
     # Scatter plot
-    sns.scatterplot(df.fc, df.pval, alpha=0.5, linewidth=0.5,
+    sns.scatterplot(x = df.fc, y= df.pval, alpha=0.5, linewidth=0.5,
                     hue=df.Regulation,
                     palette=list(df.col.drop_duplicates().dropna()))
     plt.xlabel("log2( FC)")
-    plt.ylabel("-log10(p)")
+    plt.ylabel(f'-log10({OmicScope.pvalue})')
     ax_scatter.tick_params(direction='in', top=True, right=True)
     plt.grid(b=None)
     ax_scatter.plot(alpha=0.5)
@@ -333,7 +333,7 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     if len(Proteins) > 0:
         from adjustText import adjust_text
         texts = []
-        for a, b, c in zip(ls_final['log2(fc)'], ls_final['-log10(p)'],
+        for a, b, c in zip(ls_final['log2(fc)'], ls_final[f'-log10({OmicScope.pvalue})'],
                            ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
             adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
@@ -403,91 +403,6 @@ def volcano(OmicScope, *Proteins,
                           pvalue=pvalue, palette=palette, bcol=bcol,
                           save='', dpi=dpi, vector=vector)
 
-
-
-def volcano_qvalue(OmicScope, color='darkcyan', palette='viridis',
-                   save='', vector=True, dpi=300,):
-    """Show distribution of p-adjusted in a Volcano plot
-
-    Args:
-        OmicScope (OmicScope object): OmicScope Experiment
-        color (str, optional): color of density plot. Defaults to 'darkcyan'.
-        palette (str, optional): Color of q-value distribution.
-        Defaults to 'viridis'.
-        save (str, optional): Path to save figure. Defaults to ''.
-        dpi (int, optional): figure resolution. Defaults to 300.
-        vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
-    """
-
-    # Volcano and histogram
-    # definitions for the axes
-    plt.style.use('default')
-    plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
-    # Definitions for the axes
-    df_initial = OmicScope.quant_data
-    fc = df_initial['log2(fc)']
-    max_fc = max([x for x in fc if x < max(fc)])
-    min_fc = min([x for x in fc if x > min(fc)])
-    fc = fc.replace([np.inf], max_fc + 1)
-    fc = fc.replace([-np.inf], min_fc - 1)
-    pval = df_initial['-log10(p)']
-    max_pval = max([x for x in pval if x < max(pval)])
-    pval = pval.replace([np.inf], max_pval + 1)
-    df_initial['-log10(p)'] = pval
-    df_initial['log2(fc)'] = fc
-    # dimensions of figure
-    left, width = 0.1, 0.65
-    bottom, height = 0.1, 0.65
-    spacing = 0.02
-    rect_scatter = [left, bottom, width, height]
-    rect_histx = [left, bottom + height + spacing, width, 0.2]
-    # Plot Scatter
-    plt.style.use('bmh')
-    fig = plt.figure(figsize=(8, 8))
-    ax_scatter = plt.axes(rect_scatter)
-    plt.xlabel("log2( FC)")
-    plt.ylabel("-log10(p)")
-    ax_scatter.tick_params(direction='in', top=True)
-    plt.grid(b=None)
-    ax_scatter.plot(alpha=0.5)
-    ax_histx = plt.axes(rect_histx)
-    plt.ylabel("Density")
-    plt.title(label=OmicScope.experimental[0] + ' - ' + OmicScope.ctrl, loc='left')
-    ax_histx.tick_params(direction='in', labelbottom=False)
-    ax_histx.set_facecolor('white')
-    ax_histx.grid(b=None)
-    # Plot Kdes
-    sns.kdeplot(fc, shade=True, color=color, alpha=0.8, edgecolor='black')
-
-    plt.xlabel("Density")
-    ax_scatter.scatter(fc, pval, c=df_initial['pAdjusted'], cmap=plt.cm.get_cmap(palette), alpha=0.5)
-
-    ax_scatter.set_facecolor('white')
-    sns.despine()
-    ax_scatter.axhline(-np.log10(0.05), c='black', linestyle='--', linewidth=0.7)
-    ax_scatter.axvline(0, c='black', linestyle='--', linewidth=0.7)
-    limh = round(fc.max(), 0)
-    liml = round(fc.min(), 0)
-    limp = round(pval.max() + 0.5, 0)
-    ax_scatter.set_xlim((liml - 0.5, limh))
-    ax_scatter.set_ylim((0, limp))
-    ax_histx.set_xlim(ax_scatter.get_xlim())
-    # Palette for q-values
-    sm = plt.cm.ScalarMappable(cmap=palette,
-                           norm=plt.Normalize(vmin=df_initial['pAdjusted'].min(),
-                                              vmax=df_initial['pAdjusted'].max()))
-    cbar = plt.colorbar(sm, cax=fig.add_axes([0.8, 0.1, 0.03, 0.65]))
-    cbar.set_label('p-Adjusted')
-    if save != '':
-        if vector == True:
-            plt.savefig(save + 'volcano_qvalue.svg')
-        else:
-            plt.savefig(save + 'volcano_qvalue.png', dpi=dpi)
-    plt.show()
-
-
 def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
             palette='RdYlBu_r', line=0.01, color_groups='tab20',
             save='', dpi=300, vector=True):
@@ -514,7 +429,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     df = OmicScope.quant_data
     Conditions = OmicScope.Conditions
     # Creating Heatmap Matrix
-    heatmap = df[df.loc[:, 'pvalue'] <= pvalue]
+    heatmap = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     heatmap = heatmap.loc[(heatmap['log2(fc)'] <= -FoldChange_cutoff)
                            | (heatmap['log2(fc)'] >= FoldChange_cutoff)]
     heatmap = heatmap.dropna()
@@ -581,7 +496,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     df = OmicScope.quant_data
     Conditions = OmicScope.Conditions
     # Selecting Matrix for correlation
-    pearson = df[df.loc[:, 'pvalue'] <= pvalue]
+    pearson = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     pearson = pearson.loc[(pearson['log2(fc)'] <= -FoldChange_cutoff)
                            | (pearson['log2(fc)'] >= FoldChange_cutoff)]
     pearson = pearson.dropna()
@@ -729,7 +644,7 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     df = OmicScope.quant_data
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Filtering P-value and Fold Change
-    df = df[df['pvalue'] < pvalue]
+    df = df[df[OmicScope.pvalue] < pvalue]
     if len(OmicScope.Conditions) == 2:
         df = df.loc[(df['log2(fc)'] <= -FoldChange_cutoff) | (df['log2(fc)'] >= FoldChange_cutoff)]
     df = df.loc[:, df.columns.str.contains('\.')]
@@ -928,7 +843,7 @@ def MAplot(OmicScope,
     df['TotalMean'] = np.log2(df['TotalMean'])
     df['TotalMean'] = df['TotalMean'].replace(-np.inf, 0.01)
     # Defining axis
-    y = df['-log10(p)']
+    y = df[f'-log10({OmicScope.pvalue})']
     x = df['log2(fc)']
     # Defining colors
     col = np.where(y > -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,

@@ -94,13 +94,4 @@ class Input:
             for j in range(1, len(df) + 1):
                 Biological.append(j)
         pdata['Biological'] = Biological
-        # Defining technical replicates
-        technical = []
-        tech = pdata[['Condition', 'Biological']].drop_duplicates()
-        for i, j in zip(tech.Condition, tech.Biological):
-            df = pdata
-            df = df[(df.Condition == i) & (df.Biological == j)]
-            for j in range(1, len(df) + 1):
-                technical.append(j)
-        pdata['TechRep'] = technical
         return(pdata)

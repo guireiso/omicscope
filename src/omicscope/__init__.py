@@ -4,7 +4,7 @@ from .Omicscope import Omicscope
 from .EnrichmentAnalysis import *
 from .GeneralVisualization import (DynamicRange, MAplot, bar_ident,
                                    bar_protein, boxplot_protein, heatmap, pca,
-                                   correlation, volcano, volcano_qvalue )
+                                   correlation, volcano)
 from .PeptideLens import *
 from .MultipleData.circos import circos
 from .MultipleData.multiples import multiples

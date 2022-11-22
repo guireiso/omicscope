@@ -15,6 +15,7 @@ def ttest(params):
     ControlGroup = params[1]
     Experimental = params[2]
     quant_data = params[3]
+    pvalue = params[5]
 
     if ind_variables is True:
         from scipy.stats import ttest_ind
@@ -55,7 +56,7 @@ def ttest(params):
     #  Log2(FC)
     quant_data['log2(fc)'] = np.log2(quant_data['fc'])
     #  -log10(pvalue)
-    quant_data['-log10(p)'] = -np.log10(quant_data['pvalue'])
+    quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.reset_index()
     return(quant_data)
 
@@ -88,12 +89,12 @@ def tukey_correction(df):
     return padj, comparison
 
 
-def Tukey_hsd(df):
+def Tukey_hsd(quant_data):
     """Perform Tukey HSD test for each differentially regulated entity
     found according ANOVA's test.
 
     Args:
-        df (DataFrame): Normalized dataframe.
+        quant_data (DataFrame): Normalized dataframe.
 
     Returns:
        padj [list]: Adjusted p-value for each differentially regulated entity
@@ -102,14 +103,14 @@ def Tukey_hsd(df):
        comparison [list]: Comparison for which p-value was evaluated. Entities 
        that were not differentially regulated returned 2
     """
-    df = copy(df)
-    df = df[df['pAdjusted'] < 0.05]
-    df = df.iloc[:, df.columns.str.contains('.')]
+    df = copy(quant_data)
+    df = df[df['pAdjusted'] < 0.05] #TODO: Trocar para pAdjust
+    df = df.iloc[:, df.columns.str.contains('.', regex = False)]
     # Perform Tukey's post-hoc correction for each of differentially
     # regulated entity according ANOVA's test
     df = df.apply(lambda x: tukey_correction(x), axis = 1)
     df = pd.DataFrame(df.to_list(), columns=['pTukey',
-                                             'Comparison'], index = df.index)
+                                              'Comparison'], index = df.index)
     return df
 
 
@@ -122,6 +123,7 @@ def anova(params):
     from scipy.stats import f_oneway
     quant_data = params[0]
     Conditions = params[2]
+    pvalue = params[3]
 
     # Perform ANOVA test according to SCI-PY algorithm
     expression = []
@@ -136,7 +138,7 @@ def anova(params):
     # BH-correction
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=0.1,
                                           method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
-
+    
     Tukey = Tukey_hsd(quant_data)
     quant_data = quant_data.join(Tukey)
     quant_data = quant_data.explode(['pTukey', 'Comparison'])
@@ -151,30 +153,29 @@ def anova(params):
     # Replace '2' with right comparisons performed
     quant_data['Comparison'] = quant_data['Comparison'].replace(np.nan,
                                                 '-'.join(Conditions))
-    comp = quant_data
+    comp = copy(quant_data)
     comp['Comparison'] = comp.Comparison.str.split('-')
-    comparisons = comp.Comparison
-    comp = comp.iloc[:, comp.columns.str.contains('.')]
-    quant_data['Condition1'] = [comp.iloc[z, comp.columns.str.endswith(i[0])].mean()
-                                for z, i in enumerate(comparisons)]
-    quant_data['Condition2'] = [comp.iloc[z, comp.columns.str.endswith(i[-1])].mean()
-                                for z, i in enumerate(comparisons)]
-    quant_data['Condition_All'] = [comp.iloc[z, ~comp.columns.str.endswith(i[0])].mean()
-                                    for z, i in enumerate(comparisons)]
+
+    quant_data['Condition1'] = comp.apply(lambda x: x[x.index.str.endswith('.'+ x.Comparison[0])].mean(),
+                             axis = 1)
+    quant_data['Condition2'] = comp.apply(lambda x: x[x.index.str.endswith('.'+ x.Comparison[-1])].mean(),
+                             axis = 1)
+    quant_data['Condition_All'] = comp.apply(lambda x: x[x.index.str.contains('.', regex = False)].mean(),
+                             axis = 1)
     quant_data['Condition2'] = np.where(
         quant_data['pvalue'] > 0.05, quant_data['Condition_All'], quant_data['Condition2'])
-    quant_data = quant_data.sort_values('pvalue')
+    quant_data = quant_data.sort_values(['pTukey', 'pAdjusted', 'pvalue'])
     print('Anova test was performed!')
 
     # #  Mean abundance for each protein among conditions
-    quant_data.iloc[:, quant_data.columns.str.contains('.')] = np.exp2(
-        quant_data.iloc[:, quant_data.columns.str.contains('.')])
+    quant_data.iloc[:, quant_data.columns.str.contains('.', regex = False)] = np.exp2(
+        quant_data.iloc[:, quant_data.columns.str.contains('.', regex = False)])
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.')].mean(axis=1)
+    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)].mean(axis=1)
     #  Log2(FC)
     quant_data['log2(fc)'] = quant_data['Condition2'] - quant_data['Condition1']
     #  -log10(pvalue)
-    quant_data['-log10(p)'] = -np.log10(quant_data['pvalue'])
+    quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.iloc[:, ~quant_data.columns.isin(['Condition_All'])]
     quant_data = quant_data.reset_index()
     return(quant_data)

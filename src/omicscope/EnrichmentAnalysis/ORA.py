@@ -61,7 +61,7 @@ class Enrichment:
         omics = self.OmicScope.quant_data
         # Filtering data based on Fold Change and P-value
         omics = omics.loc[(omics['log2(fc)']<=-foldchange_cutoff) | (omics['log2(fc)']>=foldchange_cutoff)]
-        genes = list(omics[omics['pvalue'] < pvalue_cutoff]['gene_name'].dropna())
+        genes = list(omics[omics[self.OmicScope.pvalue] < pvalue_cutoff]['gene_name'].dropna())
         # Enrichment
         enr = enrichr(gene_list=genes, #proteins diferrentially regulated
                          gene_sets=gene_set, #dbs

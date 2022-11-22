@@ -15,6 +15,7 @@ def perform_static_stat(self):
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
     pdata = copy(self.pdata)
+    pvalue = copy(self.pvalue)
     # Log-normalize data if it was not
     if log is False:
         expression = expression.replace(0, 0.01)
@@ -22,18 +23,16 @@ def perform_static_stat(self):
         # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest
-            # Are variables independent?
-            # If true (default) independent t-test is applied.
-            # If false related t-test is applied
-            
         self.ind_variables = True # TODO
-        params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata]
+        params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata,
+        pvalue]
         data = ttest(params=params)
         data = params[4].merge(data, on='Accession')
-        # Apply ANOVA if len(conditions) > 2
+
+    # Apply ANOVA if len(conditions) > 2
     elif len(self.Conditions) > 2:     
         from .Static_Statistics import anova
-        params = [expression, rdata, self.Conditions]
+        params = [expression, rdata, self.Conditions, pvalue]
         data = anova(params=params)
         data = params[1].merge(data, on='Accession')
     data = data.sort_values('pvalue')

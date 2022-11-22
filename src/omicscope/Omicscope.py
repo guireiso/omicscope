@@ -11,7 +11,7 @@ from .Input import *
 
 class Omicscope(Input):
     def __init__(self, Table, ControlGroup, Method, ExperimentalDesign = 'static', 
-                statistics = 'pAdjusted', pdata = None, PValue_cutoff=0.05, 
+                pvalue = 'pAdjusted', pdata = None, PValue_cutoff=0.05, 
                 FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
@@ -43,19 +43,22 @@ class Omicscope(Input):
             ExcludeKeratins (bool, optional): Drop keratins from dataset.
             Defaults to True.
         """
-
+        import pandas as pd
         super().__init__(Table, Method = Method, ControlGroup = ControlGroup,**kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
         self.logTransformed = logTransformed
         self.ExcludeKeratins = ExcludeKeratins
+        self.pvalue = pvalue
+        pvalues = ['pvalue', 'pAdjusted', 'pTukey']
+        if pvalue not in pvalues:
+            raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues) 
         if pdata is not None:
             # If pdata was assigned by user, OmicScope read
             # excel or csv frames.
-            import pandas as pd
             try:
                 self.pdata = pd.read_excel(pdata)
-            except:
+            except ValueError:
                 self.pdata = pd.read_csv(pdata)
         self.ctrl = self.ControlGroup
         #  Has user already performed statistical analyses?
@@ -95,37 +98,28 @@ class Omicscope(Input):
         rdata = []
         for i in self.rdata.columns:
             rdata.append(self.rdata[i])
-        expression = expression.set_index(rdata)
-
-        # Melt expression data to get all values for each sample and each gene
-        expression = expression.melt(ignore_index=False).reset_index()
-
-        # Getting the mean of technical replicates for each biological replicate
-        var = list(self.rdata.columns)
+        expression = expression.set_index(rdata).T
         pdata_columns = list(self.pdata.columns)
-        pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples', 'TechRep']))
-        for i in pdata_columns:
-            var.append(i)
+        pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples']))
+        expression = expression.groupby(pdata_columns).mean(numeric_only= True)
+        pdata = expression.index.to_frame().reset_index(drop = True)
+        Variables = pdata.loc[:, pdata.columns != 'Biological']
+        Variables = Variables.apply(lambda x: '-'.join(x.astype(str)), axis =1)
+        Sample_name =  'BioRep_' + \
+            pdata['Biological'].astype(str) + \
+            '.' + Variables
+        expression = expression.T
+        expression.columns = Sample_name
+        rdata = expression.index.to_frame().reset_index(drop = True)
+        expression = expression.set_index(rdata.Accession)
 
-        expression = expression.groupby(var).mean(numeric_only= True).reset_index().rename(
-            columns={'value': 'abundance'})
-
-        expression['Sample'] = 'BioRep' + \
-            expression['Biological'].astype(str) + \
-            '.' + expression['Condition']
-        
         # New pdata
-        pdata_columns.append('Sample')
-        pdata = expression[pdata_columns]
-        self.new_pdata = pdata
-
+        pdata['Sample'] = Sample_name
+        self.pdata = pdata
+        
         # New rdata 
-        rdata = expression[copy(self.rdata.columns)]
-        self.new_rdata = rdata
-        #  data with just biological replicates abundance
-        expression = expression[['Sample', 'Accession', 'abundance']]
-        expression = expression.pivot(columns='Sample', index='Accession', values='abundance')
-        return(expression)
+        self.rdata = rdata
+        return expression
 
     def deps(self):
         """Get a dataframe just with differentially regulated entities.

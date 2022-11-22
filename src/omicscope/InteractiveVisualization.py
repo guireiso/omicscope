@@ -42,7 +42,7 @@ def bar_ident(OmicScope, logscale=True):
     # Get number of identified proteins
     identified = df.Accession.count()
     # Get number of quantified proteins
-    quantified = df.dropna(axis=0, subset=['pvalue']).Accession.count()
+    quantified = df.dropna(axis=0, subset=[OmicScope.pvalue]).Accession.count()
     # Get number of differentially regulated proteins
     deps = OmicScope.deps['Accession'].count()
     if identified != quantified:
@@ -102,9 +102,9 @@ def volcano_Multicond(OmicScope,pvalue=0.05, palette='viridis',
     fc = df_initial['log2(fc)']
     fc = fc.replace([np.inf], fc.max() + 1)
     fc = fc.replace([-np.inf], fc.max() - 1)
-    pval = df_initial['-log10(p)']
+    pval = df_initial[f'-log10({OmicScope.pvalue})']
     pval = pval.replace([np.inf], pval.max() + 1)
-    df_initial['-log10(p)'] = pval
+    df_initial[f'-log10({OmicScope.pvalue})'] = pval
     df_initial['log2(fc)'] = fc
 
     # colors per condition
@@ -166,9 +166,9 @@ def volcano_2cond(OmicScope, pvalue=0.05,
     fc = df_initial['log2(fc)']
     fc = fc.replace([np.inf], fc.max() + 1)
     fc = fc.replace([-np.inf], fc.max() - 1)
-    pval = df_initial['-log10(p)']
+    pval = df_initial[f'-log10({OmicScope.pvalue})']
     pval = pval.replace([np.inf], pval.max() + 1)
-    df_initial['-log10(p)'] = pval
+    df_initial[f'-log10({OmicScope.pvalue})'] = pval
     df_initial['log2(fc)'] = fc
     # Defining colors for dots
     col = []
@@ -280,7 +280,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     df = OmicScope.quant_data
     Conditions = OmicScope.Conditions
     # Creating Heatmap Matrix
-    heatmap = df[df.loc[:, 'pvalue'] <= pvalue]
+    heatmap = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     heatmap = heatmap.loc[(heatmap['log2(fc)'] <= -FoldChange_cutoff)
                            | (heatmap['log2(fc)'] >= FoldChange_cutoff)]
     heatmap = heatmap.dropna()
@@ -347,7 +347,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     df = OmicScope.quant_data
     Conditions = OmicScope.Conditions
     # Selecting Matrix for correlation
-    pearson = df[df.loc[:, 'pvalue'] <= pvalue]
+    pearson = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     pearson = pearson.loc[(pearson['log2(fc)'] <= -FoldChange_cutoff)
                            | (pearson['log2(fc)'] >= FoldChange_cutoff)]
     pearson = pearson.dropna()
@@ -406,7 +406,7 @@ def Dispersion(OmicScope):
     # Dictionary for Accessions
     accession = dict(zip(df.Accession, df.gene_name))
     foldchange = dict(zip(df.Accession, df['log2(fc)']))
-    pval = dict(zip(df.Accession, df['pvalue']))
+    pval = dict(zip(df.Accession, df[OmicScope.pvalue]))
     df = df.set_index('Accession')
     df = df.loc[:, df.columns.str.contains('\.')]
     df = np.log10(df).transpose()
@@ -465,7 +465,7 @@ def pca(OmicScope, pvalue=1.00,
     df = OmicScope.quant_data
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Filtering P-value and Fold Change
-    df = df[df['pvalue'] < pvalue]
+    df = df[df[OmicScope.pvalue] < pvalue]
     if len(OmicScope.Conditions) == 2:
         df = df.loc[(df['log2(fc)'] <= -FoldChange_cutoff) | (df['log2(fc)'] >= FoldChange_cutoff)]
     df = df.loc[:, df.columns.str.contains('\.')]
