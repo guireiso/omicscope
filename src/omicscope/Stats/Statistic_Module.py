@@ -49,24 +49,25 @@ def perform_longitudinal_stat(self):
     """
     from copy import copy
     import numpy as np
-    df = copy(self.degrees_of_freedom)
+    degrees_of_freedom= copy(self.degrees_of_freedom)
     expression = copy(self.expression)
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
     pdata = copy(self.pdata)
+    pvalue = copy(self.pvalue)
     # Log-normalize data if it was not
     if log is False:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
     from .Longitudinal_Stat import Longitudinal_Stats
-    data = Longitudinal_Stats(assay = expression, pdata = pdata, df = df)
+    data = Longitudinal_Stats(assay = expression, pdata = pdata,
+     degrees_of_freedom = degrees_of_freedom, pvalue = pvalue)
     data = rdata.merge(data, on='Accession')
     ### longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # Filtering Keratin
     data['Description'] = data['Description'].astype(str)
-    # Filter Keratin proteins
     data = data[~data['Description'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
     return(data)

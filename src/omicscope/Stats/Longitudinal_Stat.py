@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import f
 from statsmodels.stats.multitest import multipletests
 from copy import copy
+from patsy import dmatrix
 
 def Spline_Model_Full(pdata, df):
     """
@@ -21,7 +21,6 @@ def Spline_Model_Full(pdata, df):
         F_stat (Values): DESCRIPTION.
 
     """
-    from patsy import dmatrix
     TimeCourse = pdata.TimeCourse #Get timecourse
     dictTC = {'TimeCourse':TimeCourse}
     adjust_variables = list(pdata.iloc[:,pdata.columns.str.startswith('feature')].columns)
@@ -60,7 +59,6 @@ def Spline_Model_Null(pdata, df):
         F_stat (Values): DESCRIPTION.
 
     """
-    from patsy import dmatrix
     TimeCourse = pdata.TimeCourse #Get timecourse
     dictTC = {'TimeCourse':TimeCourse}
     adjust_variables = list(pdata.iloc[:,pdata.columns.str.startswith('feature')].columns)
@@ -159,26 +157,27 @@ def Longitudinal_pval(assay, pdata, df):
     #Calculating full and null models
     if 'ind' in pdata.columns:
         pdata2 = pdata.loc[:, pdata.columns!='ind']
+        pdata2 = pdata.loc[:, pdata.columns!='Biological']
         full_model = Spline_Model_Full(pdata2, df)
         null_model = Spline_Model_Null(pdata2, df)
-    
         full_model = longitudinal(assay, pdata, full_model, null_model)[1]
         null_model = longitudinal(assay, pdata, full_model, null_model)[0]
         assay = longitudinal(assay, pdata, full_model, null_model)[2]
         assay = pd.DataFrame(assay)
         df1 = df
         df2 = len(assay.columns) - len(full_model[0]) - 2
+    
     else:
-        full_model = Spline_Model_Full(pdata, df)
-        null_model = Spline_Model_Null(pdata, df)
-        df1 = df
-        df2 = len(assay.columns) - len(full_model.columns)
+         full_model = Spline_Model_Full(pdata, df)
+         null_model = Spline_Model_Null(pdata, df)
+         df1 = df
+         df2 = len(assay.columns) - len(full_model.columns)
     #Fi for each gene
     Ftest = assay.apply(lambda x:
-                        Spline_Normalization(expression = x,
-                                             full_model = full_model,
-                                             null_model = null_model),
-                        axis = 1)
+                         Spline_Normalization(expression = x,
+                                              full_model = full_model,
+                                              null_model = null_model),
+                         axis = 1)
 
     stat = Ftest*df2/df1
     from scipy.stats import f
@@ -186,32 +185,32 @@ def Longitudinal_pval(assay, pdata, df):
     pvalue = pvalue
     return pvalue
 
-def Longitudinal_Stats(assay, pdata, df):
+def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue):
     quant_data = copy(assay)
-    pval = Longitudinal_pval(assay = assay, pdata = pdata, df = df)
+    pdata = copy(pdata)
+    pdata = pdata.set_index(['Biological', 'Sample'])
+    pval = Longitudinal_pval(assay = assay, pdata = pdata, df = degrees_of_freedom)
+    quant_data['pvalue'] = list(pval)
     #  Correcting multilple hypothesis test according to fdr_bh
     pAdjusted = multipletests(pval, alpha=0.1,
-                                          method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
-    quant_data['pvalue'] = pval
+                                           method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+    
     quant_data['pAdjusted'] = pAdjusted
-    return quant_data
     #  Mean abundance for each protein among conditions
-    quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
-        quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)])
-    quant_data['mean ' + ControlGroup] = quant_data.loc[:,
-                                                        quant_data.columns.str.endswith(ControlGroup)].mean(axis=1)
+    quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)] = np.exp2(
+        quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)])
+    # quant_data['mean ' + ControlGroup] = quant_data.loc[:,
+    #                                                     quant_data.columns.str.endswith(ControlGroup)].mean(axis=1)
 
-    quant_data.loc[:, quant_data.columns.str.endswith(Experimental)] = np.exp2(
-        quant_data.loc[:, quant_data.columns.str.endswith(Experimental)])
-    quant_data['mean ' + Experimental] = quant_data.loc[:,
-                                                        quant_data.columns.str.endswith(Experimental)].mean(axis=1)
+    # quant_data['mean ' + Experimental] = quant_data.loc[:,
+    #                                                     quant_data.columns.str.endswith(Experimental)].mean(axis=1)
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.')].mean(axis=1)
-    #  Protein Fold change (Experimental/Control)
-    quant_data['fc'] = quant_data['mean ' + Experimental] / quant_data['mean ' + ControlGroup]
-    #  Log2(FC)
-    quant_data['log2(fc)'] = np.log2(quant_data['fc'])
+    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)].mean(axis=1)
+    # #  Protein Fold change (Experimental/Control)
+    # quant_data['fc'] = quant_data['mean ' + Experimental] / quant_data['mean ' + ControlGroup]
+    # #  Log2(FC)
+    # quant_data['log2(fc)'] = np.log2(quant_data['fc'])
     #  -log10(pvalue)
-    quant_data['-log10(p)'] = -np.log10(quant_data['pvalue'])
+    quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.reset_index()
     return(quant_data)

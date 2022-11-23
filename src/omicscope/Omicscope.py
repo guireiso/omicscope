@@ -12,7 +12,8 @@ from .Input import *
 class Omicscope(Input):
     def __init__(self, Table, ControlGroup, Method, ExperimentalDesign = 'static', 
                 pvalue = 'pAdjusted', pdata = None, PValue_cutoff=0.05, 
-                FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True, **kwargs):
+                FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
+                degrees_of_freedom = 2, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -79,6 +80,8 @@ class Omicscope(Input):
             print('OmicScope performed statistical analysis (Static workflow)')
         elif ExperimentalDesign == 'longitudinal':
             from .Stats.Statistic_Module import perform_longitudinal_stat
+            self.expression = self.expression()
+            self.degrees_of_freedom = degrees_of_freedom
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')
 
@@ -130,8 +133,8 @@ class Omicscope(Input):
         deps = deps[deps['pvalue'] < PValue_cutoff]
         deps = deps.loc[(deps['log2(fc)'] <= -FoldChange_cutoff) |
                         (deps['log2(fc)'] >= FoldChange_cutoff)]
-        deps = deps[['gene_name', 'Accession', 'pvalue',
-                     '-log10(p)', 'log2(fc)']]
+        deps = deps[['gene_name', 'Accession', self.pvalue,
+                     f'-log10({self.pvalue})', 'log2(fc)']]
         return(deps)
 
     def savefile(self, Path: str):
@@ -140,7 +143,7 @@ class Omicscope(Input):
         experimental = data.experimental
         string = '-'.join(data.Conditions)
         with open(Path + '/' + string + '.omics', 'w') as f:
-            dfAsString = data.quant_data[['gene_name', 'Accession', 'pvalue', 'log2(fc)', 'TotalMean']].to_csv(
+            dfAsString = data.quant_data[['gene_name', 'Accession', self.pvalue, 'log2(fc)', 'TotalMean']].to_csv(
                 sep='\t', index=False)
             f.write("Omics v1.0.0" + "\n" +
                   "This file is the output performed by OmicScope pipeline and can be used as input" +
