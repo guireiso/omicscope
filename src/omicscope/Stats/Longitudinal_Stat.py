@@ -128,7 +128,7 @@ def longitudinal(expression, pdata, full_model, null_model):
     return(model_adjustment)
 
 
-def Spline_Normalization(expression, full_model, null_model, plot = False):
+def Spline_Normalization(expression, full_model, null_model):
     import numpy as np
     import statsmodels.api as sm
     import matplotlib.pyplot as plt
@@ -141,7 +141,7 @@ def Spline_Normalization(expression, full_model, null_model, plot = False):
     return F_stat
 
 
-def Longitudinal_pval(assay, pdata, df):
+def Longitudinal_pval(assay, pdata, df, ctrl):
     """
     Perform Longitudinal Statistics based on Natural Cubic Spline Regression
 
@@ -154,25 +154,36 @@ def Longitudinal_pval(assay, pdata, df):
     Returns:
         pvalue (pandas series): P-value for each gene.
     """
+    ctrl = ctrl
+    phenotypedata = copy(pdata)
+    expression = copy(assay)
     #Calculating full and null models
+    # While data from the same individuals was collected overtime
     if 'ind' in pdata.columns:
+        print('Individual columns detected')
         pdata2 = pdata.loc[:, pdata.columns!='ind']
-        pdata2 = pdata.loc[:, pdata.columns!='Biological']
+        pdata2 = pdata2.loc[:, pdata2.columns!='Biological']
         full_model = Spline_Model_Full(pdata2, df)
+        full_model_len = len(full_model.columns)
         null_model = Spline_Model_Null(pdata2, df)
-        full_model = longitudinal(assay, pdata, full_model, null_model)[1]
-        null_model = longitudinal(assay, pdata, full_model, null_model)[0]
-        assay = longitudinal(assay, pdata, full_model, null_model)[2]
+        longitudinal_workflow = longitudinal(assay, pdata, full_model, null_model)
+        full_model = longitudinal_workflow[1]
+        null_model = longitudinal_workflow[0]
+        assay = longitudinal_workflow[2]
         assay = pd.DataFrame(assay)
+        print(len(assay.columns))
         df1 = df
-        df2 = len(assay.columns) - len(full_model[0]) - 2
+        df2 =  len(assay.columns) - full_model_len
     
     else:
+    # While data from the different individuals was collected overtime
+         pdata = pdata.loc[:, pdata.columns!='Biological']
          full_model = Spline_Model_Full(pdata, df)
          null_model = Spline_Model_Null(pdata, df)
          df1 = df
          df2 = len(assay.columns) - len(full_model.columns)
     #Fi for each gene
+    print(df1, df2)
     Ftest = assay.apply(lambda x:
                          Spline_Normalization(expression = x,
                                               full_model = full_model,
@@ -183,13 +194,21 @@ def Longitudinal_pval(assay, pdata, df):
     from scipy.stats import f
     pvalue = stat.apply(lambda x: 1-f.cdf(x, df1, df2))
     pvalue = pvalue
-    return pvalue
+    # getting mean expression levels and log2fc
+    expression.columns = pd.MultiIndex.from_frame(phenotypedata)
+    Mean_Conditions = expression.groupby('Condition', axis = 1).mean(numeric_only = True)
+    control = Mean_Conditions.loc[:, Mean_Conditions.columns == ctrl].mean(axis = 1)
+    othergroups = Mean_Conditions.loc[:, Mean_Conditions.columns != ctrl].mean(axis = 1)
+    log2fc = othergroups.subtract(control)
+    return pvalue, Mean_Conditions, log2fc
 
-def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue):
+def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue, ctrl):
     quant_data = copy(assay)
     pdata = copy(pdata)
     pdata = pdata.set_index(['Biological', 'Sample'])
-    pval = Longitudinal_pval(assay = assay, pdata = pdata, df = degrees_of_freedom)
+    stat = Longitudinal_pval(assay = assay, pdata = pdata, df = degrees_of_freedom,
+                            ctrl = ctrl)
+    pval = stat[0]
     quant_data['pvalue'] = list(pval)
     #  Correcting multilple hypothesis test according to fdr_bh
     pAdjusted = multipletests(pval, alpha=0.1,
@@ -199,17 +218,11 @@ def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue):
     #  Mean abundance for each protein among conditions
     quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)] = np.exp2(
         quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)])
-    # quant_data['mean ' + ControlGroup] = quant_data.loc[:,
-    #                                                     quant_data.columns.str.endswith(ControlGroup)].mean(axis=1)
-
-    # quant_data['mean ' + Experimental] = quant_data.loc[:,
-    #                                                     quant_data.columns.str.endswith(Experimental)].mean(axis=1)
     #  Mean abundance for each protein
     quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)].mean(axis=1)
     # #  Protein Fold change (Experimental/Control)
-    # quant_data['fc'] = quant_data['mean ' + Experimental] / quant_data['mean ' + ControlGroup]
-    # #  Log2(FC)
-    # quant_data['log2(fc)'] = np.log2(quant_data['fc'])
+    #  Log2(FC)
+    quant_data['log2(fc)'] = list(stat[2])
     #  -log10(pvalue)
     quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.reset_index()

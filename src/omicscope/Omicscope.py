@@ -45,12 +45,14 @@ class Omicscope(Input):
             Defaults to True.
         """
         import pandas as pd
-        super().__init__(Table, Method = Method, ControlGroup = ControlGroup,**kwargs)
+        from copy import copy
+        super().__init__(Table, Method = Method,**kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
         self.logTransformed = logTransformed
         self.ExcludeKeratins = ExcludeKeratins
         self.pvalue = pvalue
+        self.ControlGroup = ControlGroup
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
             raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues) 
@@ -61,6 +63,8 @@ class Omicscope(Input):
                 self.pdata = pd.read_excel(pdata)
             except ValueError:
                 self.pdata = pd.read_csv(pdata)
+        self.define_conditions()
+
         self.ctrl = self.ControlGroup
         #  Has user already performed statistical analyses?
         statistics = [f'Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
@@ -85,8 +89,22 @@ class Omicscope(Input):
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')
 
-        #self.deps = self.deps()
+        self.deps = self.deps()
 
+    def define_conditions(self):
+        """Determine conditions for statistical analysis
+        """
+        if self.ControlGroup == None:
+             Control = list(self.pdata.Condition.drop_duplicates())
+             Control = sorted(Control)
+             self.ControlGroup = Control[0]
+             Control.remove(self.ControlGroup)
+             self.experimental = Control
+        else:
+             Conditions = list(self.pdata.Condition.drop_duplicates())
+             Conditions.remove(self.ControlGroup)
+             self.experimental = Conditions
+    
     def expression(self):
         """Joins the technical replicates and organizes biological
         conditions.

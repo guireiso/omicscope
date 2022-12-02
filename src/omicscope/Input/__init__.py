@@ -11,7 +11,7 @@ from what software the data came from.
 
 
 class Input():
-    def __init__(self, Table, ControlGroup, Method, **kwargs):
+    def __init__(self, Table, Method, **kwargs):
         """  Input data from several software sources
 
         Args:
@@ -19,7 +19,7 @@ class Input():
             Method (str): algorithm/software used to perform quantitative
             proteomics
         """
-        Methods = ['Progenesis', 'General', 'PatternLab', 'Maxquant']
+        Methods = ['Progenesis', 'General', 'PatternLab', 'MaxQuant']
         if Method not in Methods:
             raise ValueError("Invalid Method input. Expected one of: %s" % Methods)
         if Method == 'Progenesis':
@@ -36,14 +36,3 @@ class Input():
         self.assay = data.assay
         self.pdata = data.pdata
         self.Conditions = data.Conditions
-        if ControlGroup == None:
-            Control = list(data.Conditions)
-            Control = sorted(Control)
-            self.ControlGroup = Control[0]
-            Control.remove(self.ControlGroup)
-            self.experimental = Control
-        else:
-            Conditions = list(data.Conditions)
-            self.ControlGroup = ControlGroup
-            Conditions.remove(self.ControlGroup)
-            self.experimental = Conditions

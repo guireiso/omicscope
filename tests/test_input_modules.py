@@ -7,33 +7,26 @@ def test_main():
 class TestInput(object):
     def test_Progenesis(self):
         from src.omicscope.Input import Input
-        ctrlWT = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis', ControlGroup='WT')
-        ctrlNone = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis', ControlGroup=None)
+        ctrlWT = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis')
+        ctrlNone = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis')
         assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
-        assert ctrlWT.ControlGroup == 'WT'
-        assert ctrlNone.ControlGroup == 'KO'
         assert 'Sample' in ctrlWT.pdata.columns
         assert 'Condition' in ctrlWT.pdata.columns
     
     def test_General(self):
         from src.omicscope.Input import Input
-        ctrlWT = Input('tests//data//proteins//general.xls', Method = 'General', ControlGroup='WT')
-        ctrlNone = Input('tests//data//proteins//general.xls', Method = 'General', ControlGroup=None)
-        assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
-        assert ctrlWT.ControlGroup == 'WT'
-        assert ctrlNone.ControlGroup == 'KO'
+        ctrlWT = Input('tests//data//proteins//general.xls', Method = 'General')
         assert 'Sample' in ctrlWT.pdata.columns
         assert 'Condition' in ctrlWT.pdata.columns
     
     def test_MaxQuant(self):
         from src.omicscope.Input import Input
         pdata = 'tests//data//proteins//MQ_pdata.xlsx'
-        maxquantNone = Input('tests//data//proteins//MQ.txt', ControlGroup = None,
+        maxquantNone = Input('tests//data//proteins//MQ.txt',
          Method = 'MaxQuant', pdata = pdata, filtering_method = 70)
-        maxquantWT = Input('tests//data//proteins//MQ.txt', ControlGroup = 'CoV',
+        maxquantWT = Input('tests//data//proteins//MQ.txt',
          Method = 'MaxQuant', pdata = pdata, filtering_method = 70)
         assert len(maxquantWT.Conditions) == len(maxquantNone.Conditions)
-        assert maxquantNone.ControlGroup == maxquantWT.ControlGroup
         assert 'Sample' in maxquantNone.pdata.columns
         assert 'Condition' in maxquantNone.pdata.columns
 
@@ -41,10 +34,7 @@ class TestInput(object):
 
     def test_PatternLab(self):
         from src.omicscope.Input import Input
-        patternLabNone = Input('tests//data//proteins//patternlab.xlsx', ControlGroup = None,
+        patternLabNone = Input('tests//data//proteins//patternlab.xlsx',
          Method = 'PatternLab', filtering_method = 70)
-        patternLabCN = Input('tests//data//proteins//patternlab.xlsx', ControlGroup = 'CN',
-         Method = 'PatternLab', filtering_method = 70)
-        assert patternLabNone.ControlGroup == patternLabCN.ControlGroup
         assert 'Sample' in patternLabNone.pdata.columns
         assert 'Condition' in patternLabNone.pdata.columns

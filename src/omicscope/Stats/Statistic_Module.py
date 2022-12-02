@@ -45,7 +45,8 @@ def perform_static_stat(self):
     return(data)
 
 def perform_longitudinal_stat(self):
-    """log2 transformation for expression
+    """log2 transformation for e
+    xpression
     """
     from copy import copy
     import numpy as np
@@ -55,18 +56,19 @@ def perform_longitudinal_stat(self):
     rdata = copy(self.rdata)
     pdata = copy(self.pdata)
     pvalue = copy(self.pvalue)
+    ctrl = copy(self.ctrl)
     # Log-normalize data if it was not
     if log is False:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
     from .Longitudinal_Stat import Longitudinal_Stats
     data = Longitudinal_Stats(assay = expression, pdata = pdata,
-     degrees_of_freedom = degrees_of_freedom, pvalue = pvalue)
+     degrees_of_freedom = degrees_of_freedom, pvalue = pvalue, ctrl = ctrl)
     data = rdata.merge(data, on='Accession')
     ### longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
-    # Filtering Keratin
+    # # Filtering Keratin
     data['Description'] = data['Description'].astype(str)
     data = data[~data['Description'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
