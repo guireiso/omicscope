@@ -26,6 +26,8 @@ def Spline_Model_Full(pdata, df):
     adjust_variables = list(pdata.iloc[:,pdata.columns.str.startswith('feature')].columns)
     variables = list(pdata.iloc[:,~pdata.columns.str.startswith('feature')].columns)
     variables.remove('TimeCourse')
+    if len(pdata.Condition.drop_duplicates()) == 1:
+        variables = []
     if len(variables)>0:
         variables = '+'.join(variables)
         dictVAR = dict(zip(variables.split('+'), [pdata[x] for x in variables.split('+')]))
@@ -64,6 +66,8 @@ def Spline_Model_Null(pdata, df):
     adjust_variables = list(pdata.iloc[:,pdata.columns.str.startswith('feature')].columns)
     variables = list(pdata.iloc[:,~pdata.columns.str.startswith('feature')].columns)
     variables.remove('TimeCourse')
+    if len(pdata.Condition.drop_duplicates()) == 1:
+        variables = []
     if len(variables)>0:
         variables = '+'.join(variables)
         dictVAR = dict(zip(variables.split('+'), [pdata[x] for x in variables.split('+')]))
@@ -114,10 +118,15 @@ def Model_Adjustments(full_model, null_model, Individuals):
     full_model = np.asmatrix(full_model)
     full_model = full_model - (Hi@full_model)
     full_model = rm_zero_cols(full_model)
-    #Null model    
-    null_model = np.asmatrix(null_model)
-    null_model = null_model - (Hi@null_model)
-    null_model = rm_zero_cols(null_model)
+    #Null model
+    null_model_original = copy(null_model)
+    null_model_adj = np.asmatrix(copy(null_model))
+    null_model_adj = null_model_adj - (Hi@null_model_adj)
+    null_model_adj = rm_zero_cols(null_model_adj)
+    if null_model_adj.size == 0:
+        null_model = null_model_original
+    else:
+        null_model = null_model_adj
     return null_model, full_model, expression
 
 def longitudinal(expression, pdata, full_model, null_model):
@@ -160,7 +169,6 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
     #Calculating full and null models
     # While data from the same individuals was collected overtime
     if 'ind' in pdata.columns:
-        print('Individual columns detected')
         pdata2 = pdata.loc[:, pdata.columns!='ind']
         pdata2 = pdata2.loc[:, pdata2.columns!='Biological']
         full_model = Spline_Model_Full(pdata2, df)
@@ -171,7 +179,6 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
         null_model = longitudinal_workflow[0]
         assay = longitudinal_workflow[2]
         assay = pd.DataFrame(assay)
-        print(len(assay.columns))
         df1 = df
         df2 =  len(assay.columns) - full_model_len
     
@@ -183,13 +190,11 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
          df1 = df
          df2 = len(assay.columns) - len(full_model.columns)
     #Fi for each gene
-    print(df1, df2)
     Ftest = assay.apply(lambda x:
                          Spline_Normalization(expression = x,
                                               full_model = full_model,
                                               null_model = null_model),
                          axis = 1)
-
     stat = Ftest*df2/df1
     from scipy.stats import f
     pvalue = stat.apply(lambda x: 1-f.cdf(x, df1, df2))
@@ -200,6 +205,13 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
     control = Mean_Conditions.loc[:, Mean_Conditions.columns == ctrl].mean(axis = 1)
     othergroups = Mean_Conditions.loc[:, Mean_Conditions.columns != ctrl].mean(axis = 1)
     log2fc = othergroups.subtract(control)
+    if log2fc.isnull().sum() > 0.5*len(log2fc):
+        first_TC = pdata.TimeCourse.min()
+        last_TC = pdata.TimeCourse.max()
+        Mean_Conditions = expression.groupby('TimeCourse', axis = 1).mean(numeric_only = True)
+        first_TC = Mean_Conditions.loc[:, Mean_Conditions.columns == first_TC].mean(axis = 1)
+        last_TC = Mean_Conditions.loc[:, Mean_Conditions.columns == last_TC].mean(axis = 1)
+        log2fc = last_TC.subtract(first_TC)
     return pvalue, Mean_Conditions, log2fc
 
 def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue, ctrl):

@@ -427,6 +427,21 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     OmicScope = copy.copy(OmicScope)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     df = OmicScope.quant_data
+    pdata = OmicScope.pdata
+    sample_condition = dict(zip(pdata.Sample, pdata.Condition))
+    sort_columns = list(pdata.sort_values(['Condition'])['Sample'])
+    if 'TimeCourse' in pdata.columns:
+        sort_columns = list(pdata.sort_values(['Condition', 'TimeCourse'])['Sample'])
+        times = pdata.TimeCourse.drop_duplicates()
+        ntimes = len(times)
+        pal = sns.color_palette(palette='BuPu', as_cmap=False, n_colors=ntimes)
+        dic = {}
+        for C, c in zip(times, pal):
+            dic.update({C: c})
+        replacer = dic.get
+        time_colors = [replacer(n, n) for n in list(pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
+    else:
+        time_colors = []
     Conditions = OmicScope.Conditions
     # Creating Heatmap Matrix
     heatmap = df[df.loc[:, OmicScope.pvalue] <= pvalue]
@@ -437,16 +452,12 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     if len(Proteins) > 0:
         heatmap = heatmap[heatmap['gene_name'].isin(Proteins)]
     heatmap = heatmap.set_index('gene_name')
-    heatmap = heatmap.loc[:, heatmap.columns.str.contains('\.')]
+    heatmap = heatmap.loc[:, heatmap.columns.str.contains('.', regex = False)]
     # Log2 transform
     heatmap = np.log2(heatmap).replace([-np.inf], int(0))
-    colnames = heatmap.columns.str.split('.')
-    Col = []
-    for lists in colnames:
-        for i, c in enumerate(lists):
-            if i == 1:
-                Col.append(c)
-    heatmap.columns = Col
+    heatmap = heatmap[sort_columns]
+    heatmap = heatmap.rename(columns = sample_condition)
+    Col = list(heatmap.columns)
     # Creating matrix for group colors
     ngroup = len(Conditions)
     pal = sns.color_palette(palette=color_groups, as_cmap=False, n_colors=ngroup)
@@ -455,11 +466,13 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
         dic.update({C: c})
     replacer = dic.get
     colcolors = [replacer(n, n) for n in Col]
+    colors = [colcolors] + [time_colors]
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     sns.clustermap(heatmap,
-              cmap=palette, z_score=0, linewidths=line, linecolor='black', col_colors=colcolors,
+              cmap=palette, z_score=0, linewidths=line, linecolor='black',
+              col_colors=colors,
               col_cluster=c_cluster,
               figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
     # Save
@@ -494,6 +507,21 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     OmicScope = copy.copy(OmicScope)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     df = OmicScope.quant_data
+    pdata = OmicScope.pdata
+    sample_condition = dict(zip(pdata.Sample, pdata.Condition))
+    sort_columns = list(pdata.sort_values(['Condition'])['Sample'])
+    if 'TimeCourse' in pdata.columns:
+        sort_columns = list(pdata.sort_values(['Condition', 'TimeCourse'])['Sample'])
+        times = pdata.TimeCourse.drop_duplicates()
+        ntimes = len(times)
+        pal = sns.color_palette(palette='BuPu', as_cmap=False, n_colors=ntimes)
+        dic = {}
+        for C, c in zip(times, pal):
+            dic.update({C: c})
+        replacer = dic.get
+        time_colors = [replacer(n, n) for n in list(pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
+    else:
+        time_colors = []
     Conditions = OmicScope.Conditions
     # Selecting Matrix for correlation
     pearson = df[df.loc[:, OmicScope.pvalue] <= pvalue]
@@ -504,19 +532,17 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     if len(Proteins) > 0:
         pearson = pearson[pearson['gene_name'].isin(Proteins)]
     pearson = pearson.set_index('gene_name')
-    pearson = pearson.loc[:, pearson.columns.str.contains('\.')]
+    pearson = pearson.loc[:, pearson.columns.str.contains('.', regex = False)]
     # log2 transform
     pearson = np.log2(pearson).replace([-np.inf], int(0))
     # Performing Pearson's Correlation
     corr_matrix = pearson.corr(method=Method)
     # Creating matrix for group colors
-    colnames = corr_matrix.columns.str.split('.')
-    Col = []
-    for lists in colnames:
-        for i, c in enumerate(lists):
-            if i == 1:
-                Col.append(c)
-    corr_matrix.columns = Col
+    
+    corr_matrix = corr_matrix[sort_columns]
+    corr_matrix = corr_matrix.rename(columns = sample_condition)
+    Col = list(corr_matrix.columns)
+    # Creating matrix for group colors
     ngroup = len(Conditions)
     pal = sns.color_palette(palette=color_groups, as_cmap=False, n_colors=ngroup)
     dic = {}
@@ -524,12 +550,13 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
         dic.update({C: c})
     replacer = dic.get
     colcolors = [replacer(n, n) for n in Col]
+    colors = [colcolors] + [time_colors]
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     sns.clustermap(corr_matrix,
-                    xticklabels=corr_matrix.columns, row_colors=colcolors,
-                    yticklabels=corr_matrix.columns, col_colors=colcolors,
+                    xticklabels=corr_matrix.columns, row_colors=colors,
+                    yticklabels=corr_matrix.columns, col_colors=colors,
                     cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
     if save != '':
         if vector == True:
@@ -677,7 +704,16 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     ax1.grid(b=False)
     # PC1 vs PC2 plot
     pca_df = pd.DataFrame(pca_data, index=samples, columns=labels)
-    sns.scatterplot(x="PC1", y="PC2", data=pca_df, hue=list(pca_df.index.str.split('\.').str[1]), palette=palette,
+    pdata = OmicScope.pdata 
+    conditions = pdata.set_index('Sample')[['Condition']]
+    if 'TimeCourse' in pdata.columns:
+        conditions = pdata.set_index('Sample')[['Condition', 'TimeCourse']]
+        pca_df = pca_df.merge(conditions, right_index= True, left_index=True)
+        pca_df = pca_df.set_index(['Condition', 'TimeCourse'])
+    else:
+        pca_df = pca_df.merge(conditions, right_index= True, left_index=True)
+        pca_df = pca_df.set_index(['Condition'])
+    sns.scatterplot(x="PC1", y="PC2", data=pca_df, hue=list(pca_df.index), palette=palette,
                     edgecolor='black', linewidth=1, s=100, alpha=0.7)
     plt.title('Principal Component Analysis ' + '(pvalue=' + str(pvalue) + ')')
     plt.xlabel('PC1 - {0}%'.format(per_var[0]))

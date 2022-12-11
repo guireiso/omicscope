@@ -94,6 +94,7 @@ class Omicscope(Input):
     def define_conditions(self):
         """Determine conditions for statistical analysis
         """
+        from copy import copy
         if self.ControlGroup == None:
              Control = list(self.pdata.Condition.drop_duplicates())
              Control = sorted(Control)
@@ -104,6 +105,7 @@ class Omicscope(Input):
              Conditions = list(self.pdata.Condition.drop_duplicates())
              Conditions.remove(self.ControlGroup)
              self.experimental = Conditions
+        self.Conditions = copy([self.ControlGroup]) + copy(self.experimental)
     
     def expression(self):
         """Joins the technical replicates and organizes biological
