@@ -15,6 +15,11 @@ import pandas as pd
 import seaborn as sns
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from scipy.stats import zscore
+import random
+from kneed import KneeLocator
+
 
 
 def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
@@ -732,11 +737,42 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     plt.show()
 
 
-def bar_protein(OmicScope, *Proteins, logscale=True,
-                palette='Spectral', save='', dpi=300,
-                vector=True):
-    """Bar plot to show protein abundance in each condition
+def color_scheme(df, palette):
+    """Generate colors to barplot and 
 
+    Args:
+        df (DataFrame): dataframe
+        palette (str): palette
+
+    Returns:
+        color (dict): dictionary assign each condition with respective color. 
+    """
+    color = df.index.to_frame().reset_index(drop = True)
+    color['variable']= color.astype(str).apply(lambda x: '_'.join(x), axis = 1)
+    color = color.drop_duplicates().sort_values('variable')
+    colors_scheme = ['red', 'blue', 'orange', 'green', 'darkcyan', 'magenta']
+    if 'TimeCourse' in color.columns:
+        timecourse = len(color.TimeCourse.drop_duplicates())
+    else:
+        timecourse = 1 
+    random.seed(10)
+    colors_random = random.sample(colors_scheme, color.Condition.nunique())
+    palettes = []
+    if timecourse > 1:
+        for i in colors_random:
+            palette = sns.light_palette(i,n_colors = timecourse).as_hex()
+            palettes.append(palette)
+    else:
+            ncolors = color.Condition.nunique()
+            palettes = sns.color_palette(palette=palette, n_colors = ncolors).as_hex()
+    color['colors'] = list(pd.Series(palettes).explode())
+    color = dict(zip(color.variable, color.colors))
+    return color
+
+def bar_protein(OmicScope, *Proteins, logscale=True,
+                  palette='Spectral', save='', dpi=300,
+                  vector=True):
+    """Bar plot to show protein abundance in each condition
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
         logscale (bool, optional): Apply abundance log-transformed.
@@ -757,31 +793,45 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
     conditions.remove(ctrl[0])
     # Get protein abundance for each condition 
     df = df.set_index('gene_name')
-    df = df.iloc[:,df.columns.str.contains('\.')]
-    df = df.melt(ignore_index=False)
+    df = df.iloc[:,df.columns.str.contains('.', regex = False)]
+    df = df.melt(var_name = 'variable', ignore_index=False)
     df = df.reset_index()
-    df[['Sample', 'Condition']] = df['variable'].str.split('.', expand=True)
-    df = df[['Sample', 'Condition', 'gene_name', 'value']]
+    pdata = copy.copy(OmicScope.pdata)
+    pdata = pdata.set_index('Sample')
+    df = df.set_index('variable')
+    df = pdata.merge(df, left_index = True, right_index = True)
+    if 'TimeCourse' in df.columns:
+        df = df[[ 'Condition',  'TimeCourse','gene_name', 'value']]
+        df = df.set_index(['Condition', 'TimeCourse'])
+    else:
+        df = df[['Condition', 'gene_name', 'value']]
+        df = df.set_index('Condition')
     # Apply log transformation
     if logscale == True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
+
+    color = color_scheme(df, palette = palette)
+    df_index = df.index.to_frame().reset_index(drop = True)
+    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis = 1) 
+    df.index = df_index   
     # Size of figure
     sns.set(rc={'figure.figsize': (1.5*len(Proteins),5)})
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(style="ticks", rc=custom_params)
     # Plot
     if len(Proteins) == 1:
-        sns.barplot(x='Condition', y='value',
-                   data=df, errwidth=1, capsize=0.07,
-                   palette=palette, order=ctrl + conditions,
-                   edgecolor='black', linewidth=1, dodge=False)
-    else:
-        sns.barplot(x='gene_name', y='value', hue='Condition',
+        sns.barplot(x=df.index, y='value',
                     data=df, errwidth=1, capsize=0.07,
-                    palette=palette,
-                    edgecolor='black', linewidth=1)
-        plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
+                    palette=color,
+                    edgecolor='black', linewidth=1, dodge=False)
+    else:
+        sns.barplot(x='gene_name', y='value', hue=list(df.index),
+                        data=df, errwidth=1,
+                        capsize=0.07,edgecolor='black',
+                        palette= color,
+                        linewidth=1)
+    plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
     sns.despine()
     plt.title('Abundance - ' + ' and '.join(Proteins))
     plt.xlabel('')
@@ -794,20 +844,19 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
     plt.show()
 
 def boxplot_protein(OmicScope, *Proteins, logscale=True,
-                    palette='Spectral',
-                    save='', dpi=300, vector=True):
+                  palette='Spectral', save='', dpi=300,
+                  vector=True):
     """Boxplot to show protein abundance in each condition
-
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
-        logscale (bool, optional): Abundance log-transformed. Defaults to True.
-        palette (str, optional): Palette for conditions. Defaults to 'Spectral'.
+        logscale (bool, optional): Apply abundance log-transformed.
+        Defaults to True.
+        palette (str, optional): Palette for groups. Defaults to 'Spectral'.
         save (str, optional): Path to save figure. Defaults to ''.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
     """
-
     plt.rcParams['figure.dpi']=dpi
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
@@ -818,41 +867,54 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
     conditions.remove(ctrl[0])
     # Get protein abundance for each condition 
     df = df.set_index('gene_name')
-    df = df.iloc[:,df.columns.str.contains('\.')]
-    df = df.melt(ignore_index=False)
+    df = df.iloc[:,df.columns.str.contains('.', regex = False)]
+    df = df.melt(var_name = 'variable', ignore_index=False)
     df = df.reset_index()
-    df[['Sample', 'Condition']] = df['variable'].str.split('.', expand=True)
-    df = df[['Sample', 'Condition', 'gene_name', 'value']]
+    pdata = copy.copy(OmicScope.pdata)
+    pdata = pdata.set_index('Sample')
+    df = df.set_index('variable')
+    df = pdata.merge(df, left_index = True, right_index = True)
+    if 'TimeCourse' in df.columns:
+        df = df[[ 'Condition',  'TimeCourse','gene_name', 'value']]
+        df = df.set_index(['Condition', 'TimeCourse'])
+    else:
+        df = df[['Condition', 'gene_name', 'value']]
+        df = df.set_index('Condition')
     # Apply log transformation
     if logscale == True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
+
+    color = color_scheme(df, palette = palette)
+    df_index = df.index.to_frame().reset_index(drop = True)
+    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis = 1) 
+    df.index = df_index   
     # Size of figure
     sns.set(rc={'figure.figsize': (1.5*len(Proteins),5)})
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(style="ticks", rc=custom_params)
     # Plot
     if len(Proteins) == 1:
-        sns.boxplot(x='Condition', y='value',
-                    data=df,
-                    palette=palette, linewidth=1)
+        sns.boxplot(x=df.index, y='value',
+                    data=df, 
+                    palette=color,
+                    edgecolor='black', linewidth=1, dodge=False)
     else:
-        sns.boxplot(x='gene_name', y='value', hue='Condition',
-                    data=df,
-                    palette=palette, linewidth=1)
-        plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
+        sns.boxplot(x='gene_name', y='value', hue=list(df.index),
+                        data=df,
+                        palette= color,
+                        linewidth=1)
+    plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
     sns.despine()
     plt.title('Abundance - ' + ' and '.join(Proteins))
     plt.xlabel('')
     plt.ylabel('log2(Abundance)')
     if save != '':
         if vector == True:
-            plt.savefig(save + 'boxplot_' + '_'.join(Proteins) + '.svg')
+            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
         else:
-            plt.savefig(save + 'boxplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
+            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
     plt.show()
-    plt.show(block = True)
-
 
 def MAplot(OmicScope,
            pvalue=0.05, non_regulated='#606060', up_regulated='#E4001B',
@@ -905,3 +967,72 @@ def MAplot(OmicScope,
         else:
             plt.savefig(save + 'MAPlot.png', dpi=dpi)
     plt.show(block=True)
+
+def find_k(df):
+    """Find the optimum k clusters"""
+    
+    df_norm = df
+    sse = {}
+    
+    for k in range(1, 21):
+        kmeans = KMeans(n_clusters=k, random_state=1)
+        kmeans.fit(df_norm)
+        sse[k] = kmeans.inertia_
+    
+    kn = KneeLocator(x=list(sse.keys()), 
+                 y=list(sse.values()), 
+                 curve='convex', 
+                 direction='decreasing')
+    k = kn.knee
+    print(k)
+    return k
+
+def startrend(OmicScope, pvalue = 0.05, k_cluster = None):
+     """Perform a K-mean algorithm to identify co-expressed
+     proteins/genes and
+     Args:
+         OmicScope (_type_): _description_
+     """
+     omics = OmicScope
+     pdata = omics.pdata
+     try: 
+         pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis =1 )
+     except KeyError:
+         pdata['sample'] = pdata[['Condition', 'Biological']].astype(str).apply(lambda x: '-'.join(x), axis =1 )
+     data = omics.quant_data
+     protein_dictionary = dict(zip(data['Accession'], data['gene_name']))
+     data = data[data[omics.pvalue] < pvalue]
+     data = data.set_index('Accession')
+     data = data.iloc[:, data.columns.str.contains('.', regex = False)]
+     data = data.replace(0, 0.01)
+     data = np.log2(data)
+     # Scale protein abundance according to their mean (z-score)
+     zscored_data = zscore(data, axis = 1)
+     if k_cluster == None:
+        n_clusters = find_k(zscored_data)
+     else: 
+        n_clusters = k_cluster
+     kmeans = KMeans(n_clusters=n_clusters, init="k-means++",
+           max_iter=500)
+     protein_cluster_assig = kmeans.fit(zscored_data)    
+     k_data = zscored_data
+     k_data.columns = pdata['sample']
+     k_data['cluster'] = protein_cluster_assig.labels_
+     k_data_protein = k_data.reset_index().melt(id_vars= ['Accession', 'cluster'],
+         var_name = 'sample')
+     dictionary = dict(zip(pdata['sample'], pdata['Condition']))
+     k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
+     k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
+     g = sns.relplot(data = k_data_protein,
+        palette = 'dark',
+        col = 'cluster',
+        hue = 'Condition',
+        col_wrap = 2,
+        x = 'sample',
+        y = 'value',
+        kind = 'line',
+        facet_kws=dict(sharex=False))
+     g.set_ylabels('z-score', clear_inner=True)
+     g.set_xlabels('', clear_inner=True)
+     plt.show()
+     return k_data_protein

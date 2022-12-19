@@ -73,6 +73,7 @@ class Omicscope(Input):
             from .Stats.Performed_Stat import imported_stat
             print(self.ControlGroup)
             self.quant_data = imported_stat(self, statistics)
+            self.pdata['Sample'] = self.pdata['Sample']+'.'+self.pdata['Condition']
             print('User already performed statistical analysis')
         
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics

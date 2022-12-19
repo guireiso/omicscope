@@ -43,7 +43,7 @@ def imported_stat(self,statistics):
                 quant_data['fc'] = quant_data['mean ' + exp[0]] / quant_data['mean ' + self.ctrl]
                 quant_data['log2(fc)'] = np.log2(quant_data['fc'])
             quant_data = quant_data.rename(columns={i: 'pvalue'})
-            quant_data['-log10(p)'] = -np.log10(quant_data['pvalue'])
+            quant_data['-log10(pvalue)'] = -np.log10(quant_data['pvalue'])
             if self.ExcludeKeratins is True:
                 quant_data = quant_data[~quant_data['Description'].str.contains('Krt|KRT|krt')]
             break
