@@ -12,9 +12,13 @@ import itertools
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import random
 import seaborn as sns
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from scipy.stats import zscore
+from kneed import KneeLocator
 
 
 def bar_ident(OmicScope, logscale=True):
@@ -228,7 +232,6 @@ def volcano(OmicScope,
         df = volcano_Multicond(OmicScope=OmicScope,
                           pvalue=pvalue, palette=palette, )
     import altair as alt
-    from vega_datasets import data
     import numpy as np
 
     pval = alt.binding_range(min=0, max=df.pval.max(), step=1, name='Pvalue:')
@@ -278,6 +281,21 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     OmicScope = copy.copy(OmicScope)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     df = OmicScope.quant_data
+    pdata = OmicScope.pdata
+    sample_condition = dict(zip(pdata.Sample, pdata.Condition))
+    sort_columns = list(pdata.sort_values(['Condition'])['Sample'])
+    if 'TimeCourse' in pdata.columns:
+        sort_columns = list(pdata.sort_values(['Condition', 'TimeCourse'])['Sample'])
+        times = pdata.TimeCourse.drop_duplicates()
+        ntimes = len(times)
+        pal = sns.color_palette(palette='BuPu', as_cmap=False, n_colors=ntimes)
+        dic = {}
+        for C, c in zip(times, pal):
+            dic.update({C: c})
+        replacer = dic.get
+        time_colors = [replacer(n, n) for n in list(pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
+    else:
+        time_colors = []
     Conditions = OmicScope.Conditions
     # Creating Heatmap Matrix
     heatmap = df[df.loc[:, OmicScope.pvalue] <= pvalue]
@@ -288,16 +306,12 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     if len(Proteins) > 0:
         heatmap = heatmap[heatmap['gene_name'].isin(Proteins)]
     heatmap = heatmap.set_index('gene_name')
-    heatmap = heatmap.loc[:, heatmap.columns.str.contains('\.')]
+    heatmap = heatmap.loc[:, heatmap.columns.str.contains('.', regex = False)]
     # Log2 transform
     heatmap = np.log2(heatmap).replace([-np.inf], int(0))
-    colnames = heatmap.columns.str.split('.')
-    Col = []
-    for lists in colnames:
-        for i, c in enumerate(lists):
-            if i == 1:
-                Col.append(c)
-    heatmap.columns = Col
+    heatmap = heatmap[sort_columns]
+    heatmap = heatmap.rename(columns = sample_condition)
+    Col = list(heatmap.columns)
     # Creating matrix for group colors
     ngroup = len(Conditions)
     pal = sns.color_palette(palette=color_groups, as_cmap=False, n_colors=ngroup)
@@ -306,11 +320,15 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
         dic.update({C: c})
     replacer = dic.get
     colcolors = [replacer(n, n) for n in Col]
+    colors = [colcolors] + [time_colors]
+    if colors[-1] == []:
+        colors = colcolors
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     sns.clustermap(heatmap,
-              cmap=palette, z_score=0, linewidths=line, linecolor='black', col_colors=colcolors,
+              cmap=palette, z_score=0, linewidths=line, linecolor='black',
+              col_colors=colors,
               col_cluster=c_cluster,
               figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
     # Save
@@ -345,6 +363,21 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     OmicScope = copy.copy(OmicScope)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     df = OmicScope.quant_data
+    pdata = OmicScope.pdata
+    sample_condition = dict(zip(pdata.Sample, pdata.Condition))
+    sort_columns = list(pdata.sort_values(['Condition'])['Sample'])
+    if 'TimeCourse' in pdata.columns:
+        sort_columns = list(pdata.sort_values(['Condition', 'TimeCourse'])['Sample'])
+        times = pdata.TimeCourse.drop_duplicates()
+        ntimes = len(times)
+        pal = sns.color_palette(palette='BuPu', as_cmap=False, n_colors=ntimes)
+        dic = {}
+        for C, c in zip(times, pal):
+            dic.update({C: c})
+        replacer = dic.get
+        time_colors = [replacer(n, n) for n in list(pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
+    else:
+        time_colors = []
     Conditions = OmicScope.Conditions
     # Selecting Matrix for correlation
     pearson = df[df.loc[:, OmicScope.pvalue] <= pvalue]
@@ -355,19 +388,17 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     if len(Proteins) > 0:
         pearson = pearson[pearson['gene_name'].isin(Proteins)]
     pearson = pearson.set_index('gene_name')
-    pearson = pearson.loc[:, pearson.columns.str.contains('\.')]
+    pearson = pearson.loc[:, pearson.columns.str.contains('.', regex = False)]
     # log2 transform
     pearson = np.log2(pearson).replace([-np.inf], int(0))
     # Performing Pearson's Correlation
     corr_matrix = pearson.corr(method=Method)
     # Creating matrix for group colors
-    colnames = corr_matrix.columns.str.split('.')
-    Col = []
-    for lists in colnames:
-        for i, c in enumerate(lists):
-            if i == 1:
-                Col.append(c)
-    corr_matrix.columns = Col
+    
+    corr_matrix = corr_matrix[sort_columns]
+    corr_matrix = corr_matrix.rename(columns = sample_condition)
+    Col = list(corr_matrix.columns)
+    # Creating matrix for group colors
     ngroup = len(Conditions)
     pal = sns.color_palette(palette=color_groups, as_cmap=False, n_colors=ngroup)
     dic = {}
@@ -375,12 +406,15 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
         dic.update({C: c})
     replacer = dic.get
     colcolors = [replacer(n, n) for n in Col]
+    colors = [colcolors] + [time_colors]
+    if colors[-1] == []:
+        colors = colcolors
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     sns.clustermap(corr_matrix,
-                    xticklabels=corr_matrix.columns, row_colors=colcolors,
-                    yticklabels=corr_matrix.columns, col_colors=colcolors,
+                    xticklabels=corr_matrix.columns, row_colors=colors,
+                    yticklabels=corr_matrix.columns, col_colors=colors,
                     cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
     if save != '':
         if vector == True:
@@ -468,7 +502,7 @@ def pca(OmicScope, pvalue=1.00,
     df = df[df[OmicScope.pvalue] < pvalue]
     if len(OmicScope.Conditions) == 2:
         df = df.loc[(df['log2(fc)'] <= -FoldChange_cutoff) | (df['log2(fc)'] >= FoldChange_cutoff)]
-    df = df.loc[:, df.columns.str.contains('\.')]
+    df = df.loc[:, df.columns.str.contains('.', regex = False)]
     samples = df.columns
     # Getting Conditions
     Conditions = OmicScope.Conditions
@@ -486,35 +520,78 @@ def pca(OmicScope, pvalue=1.00,
     # Scree plot
     per_var = np.round(pca.explained_variance_ratio_ * 100, decimals=1)
     labels = ['PC' + str(x) for x in range(1, len(per_var) + 1)]
-    pca_df = pd.DataFrame(pca_data, index=samples, columns=labels)
-    pca_df = pca_df.reset_index()
     Screeplot = pd.DataFrame(per_var, columns = ['Percentage'])
     Screeplot.index = Screeplot.index + 1
     Screeplot = Screeplot.reset_index()
     Screeplot.columns = ['PC', 'Variance(%)']
     # Plot
-    pca_df['groups']= pca_df['index'].str.split('.').str[-1]
-
+    pca_df = pd.DataFrame(pca_data, index=samples, columns=labels)
+    
+    pdata = OmicScope.pdata 
+    conditions = pdata.set_index('Sample')[['Condition']]
+    if 'TimeCourse' in pdata.columns:
+        conditions = pdata.set_index('Sample')[['Condition', 'TimeCourse']]
+        pca_df = pca_df.merge(conditions, right_index= True, left_index=True)
+        pca_df = pca_df.set_index(['Condition', 'TimeCourse'])
+    else:
+        pca_df = pca_df.merge(conditions, right_index= True, left_index=True)
+        pca_df = pca_df.set_index(['Condition'])
+    sample = pca_df.index.to_frame().astype(str).reset_index(drop = True)
+    sample = sample.apply(lambda x: '-'.join(x), axis = 1)
+    pca_df.index = sample
+    pca_df = pca_df.reset_index()
     scree = alt.Chart(Screeplot).mark_bar().encode(
                 y = 'Variance(%):Q',
                 x = 'PC'
                 ).properties(
             width=350,
             height=350)
-    pca_teste = alt.Chart(pca_df).mark_point(filled = True, size = 200).encode(
+    pca = alt.Chart(pca_df).mark_point(filled = True, size = 200).encode(
         x = 'PC1:Q',
         y = 'PC2:Q',
         tooltip = 'index',
-        color = 'groups'
+        color = 'index'
     ).properties(
             width=350,
             height=350)
 
-    scree | pca_teste.interactive()
+    scree | pca.interactive()
 
-    return scree | pca_teste.interactive()
+    return scree | pca.interactive()
+def color_scheme(df, palette):
+    """Generate colors to barplot and 
 
-def bar_protein(OmicScope, *Proteins, logscale=True):
+    Args:
+        df (DataFrame): dataframe
+        palette (str): palette
+
+    Returns:
+        color (dict): dictionary assign each condition with respective color. 
+    """
+    color = df.index.to_frame().reset_index(drop = True)
+    color['variable']= color.astype(str).apply(lambda x: '_'.join(x), axis = 1)
+    color = color.drop_duplicates().sort_values('variable')
+    colors_scheme = ['red', 'blue', 'orange', 'green', 'darkcyan', 'magenta']
+    if 'TimeCourse' in color.columns:
+        timecourse = len(color.TimeCourse.drop_duplicates())
+    else:
+        timecourse = 1 
+    random.seed(10)
+    colors_random = random.sample(colors_scheme, color.Condition.nunique())
+    palettes = []
+    if timecourse > 1:
+        for i in colors_random:
+            palette = sns.light_palette(i,n_colors = timecourse).as_hex()
+            palettes.append(palette)
+    else:
+            ncolors = color.Condition.nunique()
+            palettes = sns.color_palette(palette=palette, n_colors = ncolors).as_hex()
+    color['colors'] = list(pd.Series(palettes).explode())
+    color = dict(zip(color.variable, color.colors))
+    return color
+
+
+def bar_protein(OmicScope, *Proteins, logscale=True,palette='Spectral' ):
     """Bar plot to show protein abundance in each condition
 
     Args:
@@ -535,23 +612,36 @@ def bar_protein(OmicScope, *Proteins, logscale=True):
     conditions.remove(ctrl[0])
     # Get protein abundance for each condition 
     df = df.set_index('gene_name')
-    df = df.iloc[:,df.columns.str.contains('\.')]
-    df = df.melt(ignore_index=False)
+    df = df.iloc[:,df.columns.str.contains('.', regex = False)]
+    df = df.melt(var_name = 'variable', ignore_index=False)
     df = df.reset_index()
-    df[['Sample', 'Condition']] = df['variable'].str.split('.', expand=True)
-    df = df[['Sample', 'Condition', 'gene_name', 'value']]
+    pdata = copy.copy(OmicScope.pdata)
+    pdata = pdata.set_index('Sample')
+    df = df.set_index('variable')
+    df = pdata.merge(df, left_index = True, right_index = True)
+    if 'TimeCourse' in df.columns:
+        df = df[[ 'Condition',  'TimeCourse','gene_name', 'value']]
+        df = df.set_index(['Condition', 'TimeCourse'])
+    else:
+        df = df[['Condition', 'gene_name', 'value']]
+        df = df.set_index('Condition')
     # Apply log transformation
     if logscale == True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
+    color = color_scheme(df, palette = palette)
+    df_index = df.index.to_frame().reset_index(drop = True)
+    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis = 1) 
+    df.index = df_index
+    df = df.reset_index()
     bars = alt.Chart().mark_bar().encode(
-        x='Condition:O',
+        x='index:O',
         y=alt.Y('mean(value):Q', title='log2(fc)'),
-        color='Condition:N',
+        color='index:N',
     )
 
     error_bars = alt.Chart().mark_errorbar(extent='ci').encode(
-        x='Condition:O',
+        x='index:O',
         y='value:Q'
     )
 
@@ -560,15 +650,18 @@ def bar_protein(OmicScope, *Proteins, logscale=True):
     )
     return A
 
-def boxplot_protein(OmicScope, *Proteins, logscale=True):
+def boxplot_protein(OmicScope, *Proteins, logscale=True,palette='Spectral' ):
     """Bar plot to show protein abundance in each condition
 
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
         logscale (bool, optional): Apply abundance log-transformed.
         Defaults to True.
+
     """
     import copy
+    import numpy as np
+    import altair as alt
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
@@ -578,21 +671,99 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True):
     conditions.remove(ctrl[0])
     # Get protein abundance for each condition 
     df = df.set_index('gene_name')
-    df = df.iloc[:,df.columns.str.contains('\.')]
-    df = df.melt(ignore_index=False)
+    df = df.iloc[:,df.columns.str.contains('.', regex = False)]
+    df = df.melt(var_name = 'variable', ignore_index=False)
     df = df.reset_index()
-    df[['Sample', 'Condition']] = df['variable'].str.split('.', expand=True)
-    df = df[['Sample', 'Condition', 'gene_name', 'value']]
+    pdata = copy.copy(OmicScope.pdata)
+    pdata = pdata.set_index('Sample')
+    df = df.set_index('variable')
+    df = pdata.merge(df, left_index = True, right_index = True)
+    if 'TimeCourse' in df.columns:
+        df = df[[ 'Condition',  'TimeCourse','gene_name', 'value']]
+        df = df.set_index(['Condition', 'TimeCourse'])
+    else:
+        df = df[['Condition', 'gene_name', 'value']]
+        df = df.set_index('Condition')
     # Apply log transformation
     if logscale == True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
-
+    color = color_scheme(df, palette = palette)
+    df_index = df.index.to_frame().reset_index(drop = True)
+    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis = 1) 
+    df.index = df_index
+    df = df.reset_index()
     A = alt.Chart(df).mark_boxplot(extent='min-max').encode(
-        x='Condition:O',
+        x='index:O',
         y=alt.Y('value:Q', title='log2(fc)',
                 scale = alt.Scale(zero=False)),
-        color='Condition:N',
+        color='index:N',
         facet = 'gene_name'
     )
     return A
+
+def find_k(df):
+    """Find the optimum k clusters"""
+    
+    df_norm = df
+    sse = {}
+    
+    for k in range(1, 21):
+        kmeans = KMeans(n_clusters=k, random_state=1)
+        kmeans.fit(df_norm)
+        sse[k] = kmeans.inertia_
+    
+    kn = KneeLocator(x=list(sse.keys()), 
+                 y=list(sse.values()), 
+                 curve='convex', 
+                 direction='decreasing')
+    k = kn.knee
+    print(k)
+    return k
+
+def startrend(OmicScope, pvalue = 0.05, k_cluster = None):
+     """Perform a K-mean algorithm to identify co-expressed
+     proteins/genes and
+     Args:
+         OmicScope (_type_): _description_
+     """
+     omics = OmicScope
+     pdata = omics.pdata
+     try: 
+         pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis =1 )
+     except KeyError:
+         pdata['sample'] = pdata[['Condition', 'Biological']].astype(str).apply(lambda x: '-'.join(x), axis =1 )
+     data = omics.quant_data
+     protein_dictionary = dict(zip(data['Accession'], data['gene_name']))
+     data = data[data[omics.pvalue] < pvalue]
+     data = data.set_index('Accession')
+     data = data.iloc[:, data.columns.str.contains('.', regex = False)]
+     data = data.replace(0, 0.01)
+     data = np.log2(data)
+     # Scale protein abundance according to their mean (z-score)
+     zscored_data = zscore(data, axis = 1)
+     if k_cluster == None:
+        n_clusters = find_k(zscored_data)
+     else: 
+        n_clusters = k_cluster
+     kmeans = KMeans(n_clusters=n_clusters, init="k-means++",
+           max_iter=500)
+     protein_cluster_assig = kmeans.fit(zscored_data)    
+     k_data = zscored_data
+     k_data.columns = pdata['sample']
+     k_data['cluster'] = protein_cluster_assig.labels_
+     k_data_protein = k_data.reset_index().melt(id_vars= ['Accession', 'cluster'],
+         var_name = 'sample')
+     dictionary = dict(zip(pdata['sample'], pdata['Condition']))
+     k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
+     k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
+     import altair as alt
+     line = alt.Chart(k_data_protein).mark_line().encode(
+             x='sample',
+            y='mean(value)',
+            column = 'cluster',
+            color = 'Condition'
+        )
+     line
+     return line
+    

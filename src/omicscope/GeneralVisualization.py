@@ -472,6 +472,8 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     replacer = dic.get
     colcolors = [replacer(n, n) for n in Col]
     colors = [colcolors] + [time_colors]
+    if colors[-1] == []:
+        colors = colcolors
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
@@ -679,7 +681,7 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     df = df[df[OmicScope.pvalue] < pvalue]
     if len(OmicScope.Conditions) == 2:
         df = df.loc[(df['log2(fc)'] <= -FoldChange_cutoff) | (df['log2(fc)'] >= FoldChange_cutoff)]
-    df = df.loc[:, df.columns.str.contains('\.')]
+    df = df.loc[:, df.columns.str.contains('.', regex = False)]
     samples = df.columns
     # Getting Conditions
     Conditions = OmicScope.Conditions
