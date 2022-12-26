@@ -64,9 +64,11 @@ class Enrichment:
         genes = list(omics[omics[self.OmicScope.pvalue] < pvalue_cutoff]['gene_name'].dropna())
         # Enrichment
         enr = enrichr(gene_list=genes, #proteins diferrentially regulated
-                         gene_sets=gene_set, #dbs
+                         gene_sets=gene_set,
+                         outdir=None, #dbs
                          organism=organism,
-                         cutoff=1, outdir=None, no_plot=True)
+                         cutoff=1, no_plot=True,
+                         verbose = False)
         # Extracting just results file from analysis
         df = enr.results
         # Filtering results Adjusted P-value 

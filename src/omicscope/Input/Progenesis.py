@@ -71,7 +71,8 @@ class Input:
         if len(kwargs) > 0:
             df = df[df['Unique peptides'] >= self.uniquepeptides]
         df = df.reset_index(drop=True)
-        df = df.rename(columns={'Anova (p)': 'pvalue'})
+        df = df.rename(columns={'Anova (p)': 'pvalue',
+                                'q Value': 'pAdjusted'})
         # Defining assay
         assay = df.iloc[:, df.columns.str.contains(f".", regex = False)]
         # Defining rdata

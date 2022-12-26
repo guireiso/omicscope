@@ -88,7 +88,7 @@ class Omicscope(Input):
             self.degrees_of_freedom = degrees_of_freedom
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')
-
+        
         self.deps = self.deps()
 
     def define_conditions(self):
@@ -147,10 +147,11 @@ class Omicscope(Input):
     def deps(self):
         """Get a dataframe just with differentially regulated entities.
         """
+        from copy import copy
         FoldChange_cutoff = self.FoldChange_cutoff
         PValue_cutoff = self.PValue_cutoff
-        deps = self.quant_data
-        deps = deps[deps['pvalue'] < PValue_cutoff]
+        deps = copy(self.quant_data)
+        deps = deps[deps[self.pvalue] < PValue_cutoff]
         deps = deps.loc[(deps['log2(fc)'] <= -FoldChange_cutoff) |
                         (deps['log2(fc)'] >= FoldChange_cutoff)]
         deps = deps[['gene_name', 'Accession', self.pvalue,
