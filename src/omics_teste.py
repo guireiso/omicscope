@@ -5,13 +5,15 @@ import omicscope as omics
 
 longitudinal = omics.Omicscope(Table = 'C:/Users/Guilherme/Desktop/ALL.csv',
                                  Method = 'Progenesis',
-                                 ControlGroup= None,
-                                 pdata = 'C:/Users/Guilherme/Desktop/pdata.xls',
-                                 ExperimentalDesign= 'longitudinal', 
-                                 pvalue = 'pvalue')
+                                  ControlGroup= None,
+                                  pdata = 'C:/Users/Guilherme/Desktop/pdata.xls',
+                                  ExperimentalDesign= 'longitudinal', 
+                                  pvalue = 'pvalue')
 
 static = omics.Omicscope(Table = 'C:/Users/Guilherme/Desktop/progenesis.csv',
-                                Method = 'Progenesis',
-                                ControlGroup= None,
-                                ExperimentalDesign= 'static', 
-                                pvalue = 'pvalue')
+                                 Method = 'Progenesis',
+                                 ControlGroup= None,
+                                 ExperimentalDesign= 'static', 
+                                 pvalue = 'pvalue')
+
+teste = omics.EnrichmentScope(static, Analysis = 'ORA')
