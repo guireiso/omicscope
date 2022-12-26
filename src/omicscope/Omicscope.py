@@ -71,7 +71,6 @@ class Omicscope(Input):
                     'padj', 'p-adjusted', 'p-adj']
         if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat
-            print(self.ControlGroup)
             self.quant_data = imported_stat(self, statistics)
             self.pdata['Sample'] = self.pdata['Sample']+'.'+self.pdata['Condition']
             print('User already performed statistical analysis')
