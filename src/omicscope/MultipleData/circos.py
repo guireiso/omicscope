@@ -16,7 +16,7 @@ import pandas as pd
 
 class circos():
     def __init__(self, multiples_output):
-        self.cell_data = multiples_output.cell_data
+        self.group_data = multiples_output.group_data
         self.enrichment = multiples_output.enrichment
         self.groups = multiples_output.groups
         self.labels = multiples_output.labels
@@ -47,7 +47,7 @@ class circos():
 
     def karyotype(self):
         labels = copy(self.labels)
-        cell_data = copy(self.cell_data)
+        group_data = copy(self.group_data)
         colors = ['set3-12-qual-'+str(x) for x in range(1,13)]
         colors = colors[:len(labels)]
         karyotype = pd.DataFrame({'type': repeat('chr', len(labels)),
@@ -55,7 +55,7 @@ class circos():
                                 'name': labels,
                                 'label': labels,
                                 'START': repeat(0, len(labels)),
-                                'END': [len(cell_data[i]) for i in range(0, len(labels))],
+                                'END': [len(group_data[i]) for i in range(0, len(labels))],
                                 'COLOR': colors})
         karyotype.to_csv(self.newFolder + 'karyotype.txt', sep='\t', header=False,
                           index=False)
@@ -64,9 +64,9 @@ class circos():
         from copy import copy
 
         import pandas as pd
-        cell_data = copy(self.cell_data)
+        group_data = copy(self.group_data)
         labels = copy(self.labels)
-        whole = pd.concat(cell_data)
+        whole = pd.concat(group_data)
         whole['dup'] = whole['gene_name'].duplicated(keep=False)
         whole = whole.sort_values(by=['group', 'dup'], ascending=False)
         self.whole = whole

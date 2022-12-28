@@ -52,7 +52,7 @@ class EnrichmentScope():
         data = copy(self)
         string = '-'.join(data.OmicScope.Conditions)
         with open(save + '/' + string + '.omics', 'w') as f:
-            expression = data.OmicScope.quant_data[['gene_name', 'Accession', data.OmicScope.pvalue, 'log2(fc)']].to_csv(sep='\t', index=False)
+            expression = data.OmicScope.quant_data[['gene_name', 'Accession', data.OmicScope.pvalue, 'log2(fc)', 'TotalMean']].to_csv(sep='\t', index=False)
             if self.Analysis == 'ORA':
                 enrichment = data.results[['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False)
             elif self.Analysis == 'GSEA':

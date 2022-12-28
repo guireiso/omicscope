@@ -53,7 +53,7 @@ class multiples:
                 else:
                     original.append(pd.read_csv(i, header = positions[0]+1, sep = '\t',
                                                  nrows = int((positions[1]/2)-5)))
-                    enrichment.append(pd.read_csv(i, header = int(positions[1]/2)+4,
+                    enrichment.append(pd.read_csv(i, header = int((positions[1]+1)/2)+4,
                                                         sep = '\t'))
                 archive.close()
             self.groups = groups
@@ -68,7 +68,8 @@ class multiples:
         return(df)
     
     from .MultipleVisualization import (barplot, protein_overlap,
-                                        enrichment_overlap, group_pearson,
-                                        Differentially_Regulated, network)
+                                        enrichment_overlap, overlap_pearson,
+                                        Differentially_Regulated, network,
+                                        overlap_stat, group_network)
     from .circos import circos_plot
 

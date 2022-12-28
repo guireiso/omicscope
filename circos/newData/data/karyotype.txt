@@ -1,0 +1,4 @@
+chr	-	COVID	COVID	0	151	set3-12-qual-1
+chr	-	Covid_HB	Covid_HB	0	721	set3-12-qual-2
+chr	-	NEURONS	NEURONS	0	25	set3-12-qual-3
+chr	-	SH_DIF	SH_DIF	0	131	set3-12-qual-4
