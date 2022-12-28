@@ -172,5 +172,6 @@ class Omicscope(Input):
                   "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python package designed for Shotgun Proteomics" +
                   '\nControlGroup:' + '\t' + data.ctrl + '\n' +
                   'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +
+                  'Statistics:' +'\t'+ self.pvalue + '\n' +
                   'Expression:\n' + '-------\n' +
                   dfAsString)

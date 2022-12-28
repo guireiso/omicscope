@@ -18,9 +18,9 @@ class multiples:
     def __init__(self, folder):
         self.original_path = os.getcwd()
         self.read_omics(folder)
-        self.cell_data = []
+        self.group_data = []
         for o,g,l in zip(self.original, self.groups, self.labels):
-                self.cell_data.append(self.importing(o, g, l))
+                self.group_data.append(self.importing(o, g, l))
         
         print(f'''You imported your data successfully!
         Data description:
@@ -45,12 +45,14 @@ class multiples:
                     if line.startswith('Experimental'):
                         groups.append(line.split('\t')[-1].split('\n')[0])
                         labels.append(line.split('\t')[-1].split('\n')[0])
+                    if line.startswith('Statistics'):
+                        self.pvalue = line.split('\t')[-1].split('\n')[0]
                 if len(positions) == 1:
                     original.append(pd.read_csv(i, header = positions[0]+1, sep = '\t'))
                     enrichment.append(None)
                 else:
                     original.append(pd.read_csv(i, header = positions[0]+1, sep = '\t',
-                                                 nrows = (positions[1]/2)-5))
+                                                 nrows = int((positions[1]/2)-5)))
                     enrichment.append(pd.read_csv(i, header = int(positions[1]/2)+4,
                                                         sep = '\t'))
                 archive.close()
@@ -60,7 +62,7 @@ class multiples:
             self.enrichment = enrichment
     def importing(self, original, group, label):
         df = original
-        df = df[df['pvalue']<0.05][['gene_name', 'log2(fc)']].sort_values('log2(fc)', ignore_index = True)
+        df = df[df[self.pvalue]<0.05][['gene_name', 'log2(fc)']].sort_values('log2(fc)', ignore_index = True)
         df['group'] = label
         df['color'] = df['log2(fc)'].round()
         return(df)

@@ -13,19 +13,19 @@ import warnings
 def barplot(self, palette = 'Spectral', save = '', vector = True):
     data = copy(self)
     conditions = copy(data.groups)
-    cell_data = data.original
-    difreg = data.cell_data
+    group_data = data.original
+    difreg = data.group_data
 
     #-Figura das desregulações
     whole_proteome = []
     deps = []
-    for i, a in zip(cell_data, difreg):
+    for i, a in zip(group_data, difreg):
         whole_proteome.append(len(i))
         deps.append(len(a))
     conditions.extend(['Total'])
     
     proteinsIdentified = []
-    for i in cell_data:
+    for i in group_data:
         proteinsIdentified.append(i['gene_name'])
     proteinsIdentified = pd.concat(proteinsIdentified).drop_duplicates()
     
@@ -82,7 +82,7 @@ def protein_overlap(self, dpi = 600, min_subset = 10, face_color = 'darkcyan', s
     
     data = copy(self)
     genes = []
-    for i in data.cell_data:
+    for i in data.group_data:
         genes.append(i['gene_name'].drop_duplicates())
     dictionary = dict(zip(data.groups, genes))
     upset = from_contents(dictionary)
@@ -161,7 +161,7 @@ def Differentially_Regulated(multiples_output,
                              save = '', vector = True, dpi = 600):
     data = copy(multiples_output)
     groups =  data.groups
-    difreg = data.cell_data
+    difreg = data.group_data
     up = []
     down = []
     

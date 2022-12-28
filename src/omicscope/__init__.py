@@ -4,8 +4,7 @@ from .Omicscope import Omicscope
 from .EnrichmentAnalysis import *
 from .GeneralVisualization import *
 from .PeptideLens import *
-from .MultipleData.circos import circos
-from .MultipleData.multiples import multiples
+from .MultipleData import *
 
 
 

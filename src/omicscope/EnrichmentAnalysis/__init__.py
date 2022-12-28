@@ -4,8 +4,7 @@ import pandas as pd
 
 class EnrichmentScope():
     def __init__(self, OmicScope, Analysis, dbs = ['KEGG_2021_Human'], 
-                 padjust_cutoff = 0.05, organism = 'Human',
-                 save = ''):
+                 padjust_cutoff = 0.05, organism = 'Human'):
         """_summary_
 
         Args:
@@ -34,8 +33,6 @@ class EnrichmentScope():
         enrichment = Enrichment(OmicScope = OmicScope, dbs = dbs,
                      padjust_cutoff = padjust_cutoff, organism = organism)
         self.results = enrichment.results
-        if save != '':
-            self.output(save=save)
     
     from .EnrichmentVisualization import (dotplot,
                     heatmap,number_deps,
@@ -49,13 +46,13 @@ class EnrichmentScope():
         libraries = get_library_name()
         return(libraries)
 
-    def output(self, save):
+    def savefile(self, Path: str):
         from copy import copy
-        save = save
+        save = Path
         data = copy(self)
         string = '-'.join(data.OmicScope.Conditions)
         with open(save + '/' + string + '.omics', 'w') as f:
-            expression = data.OmicScope.quant_data[['gene_name', 'Accession', 'pvalue', 'log2(fc)']].to_csv(sep='\t', index=False)
+            expression = data.OmicScope.quant_data[['gene_name', 'Accession', data.OmicScope.pvalue, 'log2(fc)']].to_csv(sep='\t', index=False)
             if self.Analysis == 'ORA':
                 enrichment = data.results[['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False)
             elif self.Analysis == 'GSEA':
@@ -67,6 +64,7 @@ class EnrichmentScope():
                     "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python library for Systems Biology Visualization" +
                     '\nControlGroup:' + '\t' + data.OmicScope.ctrl + '\n' +
                     'Experimental:' + '\t' + '\t'.join(data.OmicScope.experimental) + '\n' +
+                    'Statistics:' +'\t'+ data.OmicScope.pvalue + '\n' +
                     'Expression:\n' + '-------\n' +
                     expression + '\n' +
                     'Enrichment Analysis:\n' + '-------\n' +
