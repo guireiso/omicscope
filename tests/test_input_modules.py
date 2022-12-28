@@ -1,4 +1,4 @@
-from src.omicscope.cli import main
+from omicscope.cli import main
 
 
 def test_main():
@@ -6,7 +6,7 @@ def test_main():
 
 class TestInput(object):
     def test_Progenesis(self):
-        from src.omicscope.Input import Input
+        from omicscope.Input import Input
         ctrlWT = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis')
         ctrlNone = Input('tests//data//proteins//progenesis.csv', Method = 'Progenesis')
         assert len(ctrlWT.Conditions) == len(ctrlNone.Conditions)
@@ -14,13 +14,13 @@ class TestInput(object):
         assert 'Condition' in ctrlWT.pdata.columns
     
     def test_General(self):
-        from src.omicscope.Input import Input
+        from omicscope.Input import Input
         ctrlWT = Input('tests//data//proteins//general.xls', Method = 'General')
         assert 'Sample' in ctrlWT.pdata.columns
         assert 'Condition' in ctrlWT.pdata.columns
     
     def test_MaxQuant(self):
-        from src.omicscope.Input import Input
+        from omicscope.Input import Input
         pdata = 'tests//data//proteins//MQ_pdata.xlsx'
         maxquantNone = Input('tests//data//proteins//MQ.txt',
          Method = 'MaxQuant', pdata = pdata, filtering_method = 70)
@@ -33,7 +33,7 @@ class TestInput(object):
         
 
     def test_PatternLab(self):
-        from src.omicscope.Input import Input
+        from omicscope.Input import Input
         patternLabNone = Input('tests//data//proteins//patternlab.xlsx',
          Method = 'PatternLab', filtering_method = 70)
         assert 'Sample' in patternLabNone.pdata.columns

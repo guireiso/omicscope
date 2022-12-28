@@ -1,4 +1,4 @@
-from src.omicscope import Omicscope
+from omicscope import Omicscope
 
 class TestOmicScope(object):
     def test_user_input_stat(self):

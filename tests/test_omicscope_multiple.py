@@ -1,4 +1,4 @@
-from src.omicscope import *
+from omicscope import *
 
 class Test(object):
     def test_input_multiple(self):
