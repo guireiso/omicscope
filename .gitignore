@@ -75,4 +75,7 @@ docs/_build
 
 # Own Test outside test folder
 src/longitudinal.py
+
 src/omics_teste.py
+
+src/omicscope/PeptideLens/
