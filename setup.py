@@ -85,7 +85,7 @@ setup(
     "fonttools==4.38.0",
     "gseapy==1.0.3",
     "idna==3.4",
-    "iniconfig==1.1.1",
+    #"iniconfig==1.1.1",
     # "ipykernel==6.17.1",
     "ipykernel",
     "ipython==8.6.0",
