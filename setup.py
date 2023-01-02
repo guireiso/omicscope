@@ -54,7 +54,10 @@ setup(
         'Issue Tracker': 'https://github.com/guireiso/omicscope/issues',
     },
     keywords=[
-        # eg: 'keyword1', 'keyword2', 'keyword3',
+        'Proteomics',
+        'Omics',
+        'Differential Expression',
+        'Systems Biology'
     ],
     python_requires='>=3.7',
     install_requires=[
