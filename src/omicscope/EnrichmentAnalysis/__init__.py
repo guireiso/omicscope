@@ -1,5 +1,4 @@
 import copy
-import pandas as pd
 
 
 class EnrichmentScope():
@@ -23,6 +22,10 @@ class EnrichmentScope():
                                                   enrichment_map)
         elif Analysis == 'GSEA':
             from .GSEA import Enrichment
+            from .EnrichmentVisualization import (dotplot,
+                                                  heatmap, number_deps,
+                                                  enrichment_network,
+                                                  enrichment_map, gsea_heatmap)
         else:
             raise ValueError('You must choose between ORA or GSEA workflow')
         self.OmicScope = copy.copy(OmicScope)
@@ -33,11 +36,6 @@ class EnrichmentScope():
         enrichment = Enrichment(OmicScope=OmicScope, dbs=dbs,
                                 padjust_cutoff=padjust_cutoff, organism=organism)
         self.results = enrichment.results
-
-    from .EnrichmentVisualization import (dotplot,
-                                          heatmap, number_deps,
-                                          enrichment_network,
-                                          enrichment_map, gsea_heatmap)
 
     def libraries(self):
         """Get Libraries from Enrichr
@@ -62,7 +60,8 @@ class EnrichmentScope():
             f.write("OmicScope v1.0.0" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
                     " for group comparisons having the controling group used as used according to OmicScope." +
-                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python library for Systems Biology Visualization" +
+                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python " +
+                    "library for Systems Biology Visualization" +
                     '\nControlGroup:' + '\t' + data.OmicScope.ctrl + '\n' +
                     'Experimental:' + '\t' + '\t'.join(data.OmicScope.experimental) + '\n' +
                     'Statistics:' + '\t' + data.OmicScope.pvalue + '\n' +

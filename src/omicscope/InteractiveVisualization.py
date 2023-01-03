@@ -8,14 +8,11 @@ Hierarchical clustering analysis (heatmap, pearson correlation plot)
 """
 
 import copy
-import itertools
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import random
 import seaborn as sns
-from sklearn import preprocessing
-from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from scipy.stats import zscore
 from kneed import KneeLocator
@@ -100,7 +97,6 @@ def volcano_Multicond(OmicScope, pvalue=0.05, palette='viridis',
     import pandas as pd
     import seaborn as sns
     OmicScope = copy.copy(OmicScope)
-    FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Definitions for the axes
     df_initial = OmicScope.quant_data
     fc = df_initial['log2(fc)']
@@ -161,7 +157,6 @@ def volcano_2cond(OmicScope, pvalue=0.05,
     import copy
     import numpy as np
     import pandas as pd
-    import seaborn as sns
 
     OmicScope = copy.copy(OmicScope)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
@@ -222,7 +217,6 @@ def volcano(OmicScope,
     """
     import copy
     import numpy as np
-    import pandas as pd
     OmicScope = copy.copy(OmicScope)
     if len(OmicScope.Conditions) == 2:
         df = volcano_2cond(OmicScope, pvalue=pvalue,
@@ -232,16 +226,12 @@ def volcano(OmicScope,
         df = volcano_Multicond(OmicScope=OmicScope,
                                pvalue=pvalue, palette=palette, )
     import altair as alt
-    import numpy as np
 
     pval = alt.binding_range(min=0, max=df.pval.max(), step=1, name='Pvalue:')
-    fold_change = alt.binding_range(min=df.fc.min(), max=df.fc.max(), step=1, name='FoldChange:')
 
     selector_pval = alt.selection_single(name="SelectorName", fields=['cutoff'],
                                          bind=pval, init={'cutoff': -np.log10(0.05)})
 
-    selector_fc = alt.selection_single(name="SelectorNameII", fields=['cutoff'],
-                                       bind=fold_change, init={'cutoff': 0})
     A = alt.Chart(df).mark_point(filled=True).encode(
         x='fc:Q',
         y='pval:Q',
@@ -333,7 +323,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
                    figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
     # Save
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'heatmap.svg')
         else:
             plt.savefig(save + 'heatmap.png', dpi=dpi)
@@ -417,7 +407,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
                    yticklabels=corr_matrix.columns, col_colors=colors,
                    cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'pearson.svg')
         else:
             plt.savefig(save + 'pearson.png', dpi=dpi)
@@ -436,13 +426,12 @@ def Dispersion(OmicScope):
     import numpy as np
     OmicScope = copy.copy(OmicScope)
     df = OmicScope.quant_data
-    df_initial = df
     # Dictionary for Accessions
     accession = dict(zip(df.Accession, df.gene_name))
     foldchange = dict(zip(df.Accession, df['log2(fc)']))
     pval = dict(zip(df.Accession, df[OmicScope.pvalue]))
     df = df.set_index('Accession')
-    df = df.loc[:, df.columns.str.contains('\.')]
+    df = df.loc[:, df.columns.str.contains('.', regex=False)]
     df = np.log10(df).transpose()
     # Getting Mean, Max and Min values for each protein
     df = df.describe().transpose()
@@ -561,14 +550,14 @@ def pca(OmicScope, pvalue=1.00,
 
 
 def color_scheme(df, palette):
-    """Generate colors to barplot and 
+    """Generate colors to barplot and
 
     Args:
         df (DataFrame): dataframe
         palette (str): palette
 
     Returns:
-        color (dict): dictionary assign each condition with respective color. 
+        color (dict): dictionary assign each condition with respective color.
     """
     color = df.index.to_frame().reset_index(drop=True)
     color['variable'] = color.astype(str).apply(lambda x: '_'.join(x), axis=1)
@@ -628,10 +617,9 @@ def bar_protein(OmicScope, *Proteins, logscale=True, palette='Spectral'):
         df = df[['Condition', 'gene_name', 'value']]
         df = df.set_index('Condition')
     # Apply log transformation
-    if logscale == True:
+    if logscale is True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
-    color = color_scheme(df, palette=palette)
     df_index = df.index.to_frame().reset_index(drop=True)
     df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis=1)
     df.index = df_index
@@ -688,10 +676,9 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True, palette='Spectral'):
         df = df[['Condition', 'gene_name', 'value']]
         df = df.set_index('Condition')
     # Apply log transformation
-    if logscale == True:
+    if logscale is True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
-    color = color_scheme(df, palette=palette)
     df_index = df.index.to_frame().reset_index(drop=True)
     df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis=1)
     df.index = df_index
@@ -747,7 +734,7 @@ def startrend(OmicScope, pvalue=0.05, k_cluster=None):
     data = np.log2(data)
     # Scale protein abundance according to their mean (z-score)
     zscored_data = zscore(data, axis=1)
-    if k_cluster == None:
+    if k_cluster is None:
         n_clusters = find_k(zscored_data)
     else:
         n_clusters = k_cluster

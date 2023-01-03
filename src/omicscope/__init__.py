@@ -7,7 +7,6 @@ from .PeptideLens import *
 from .MultipleData import *
 
 
-
 if __name__ != "__main__":
     print("OmicScope v " + __version__ + " For help: Insert\n" +
           "If you use  in published research, please cite: 'lallalala'\n" +

@@ -82,7 +82,7 @@ class Input:
 
         # Defining rdata
         rdata = PLV_output[['Locus', 'Description']]
-        Accession = rdata.Locus.str.split(f'|').str[1]
+        Accession = rdata.Locus.str.split('|', regex=False).str[1]
         gene_name = rdata['Description'].str.split('GN=').str[-1]
         gene_name = gene_name.str.split(' ').str[0]
         rdata = rdata.assign(Accession=Accession,

@@ -1,6 +1,6 @@
 """  PeptideLens Module
 OmicScope allows user to import data and perform statistical analysis
-for differential gene/protein expression. This is the key module of 
+for differential gene/protein expression. This is the key module of
 all OmicScope workflow, being the input for all other modules.
 
 """
@@ -41,7 +41,8 @@ class PeptideLens(OmicScope_Peptide):
         accessions = list(df.Accession.drop_duplicates())
         WEBSITE_API = "https://rest.uniprot.org/"
         joined = ",".join(accessions)
-        r = self.get_url(url=f"{WEBSITE_API}/uniprotkb/accessions?accessions={joined}&fields=id,gene_primary,ft_mod_res,ft_carbohyd,sequence")
+        r = self.get_url(url=(f"{WEBSITE_API}/uniprotkb/accessions?accessions={joined}&fields=id,"
+                              "gene_primary,ft_mod_res,ft_carbohyd,sequence"))
         results = json.loads(r.text)['results']
         fasta = []
         accession = []
@@ -165,7 +166,8 @@ class PeptideLens(OmicScope_Peptide):
                 f.write("OmicScope v1.0.0" + "\n" +
                         "This file is the output performed by OmicScope pipeline and can be used as input" +
                         " for group comparisons having the controling group used as used according to Hubble." +
-                        "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python library for Systems Biology Visualization" +
+                        "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python " +
+                        "library for Systems Biology Visualization" +
                         '\nControlGroup:' + '\t' + PepLens.ctrl + '\n' +
                         'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +
                         'Expression:\n' + '-------\n' +

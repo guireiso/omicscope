@@ -12,7 +12,7 @@ import numpy as np
 
 def imported_stat(self, statistics):
     """  If user have already imported statistics from other
-    softwares, this function 
+    softwares, this function
     1) joins pdata, rdata and assay;
     2) calculates mean of each protein per condition;
     3) calculates the fold-change in relation to ControlGroup;

@@ -1,7 +1,7 @@
 """  OmicScope Module
 
 OmicScope allows user to import data and perform statistical analysis
-for differential gene/protein expression. This is the key module of 
+for differential gene/protein expression. This is the key module of
 all OmicScope workflow, being the input for all other modules.
 
 """
@@ -39,13 +39,12 @@ class Omicscope(Input):
             Defaults to 0.
             PValue_cutoff (float, optional): P-value threshold for differential
             expression analysis . Defaults to 0.05.
-            logTransformed (bool, optional): Was entity abundance previously 
+            logTransformed (bool, optional): Was entity abundance previously
             log-normalized?. Defaults False.
             ExcludeKeratins (bool, optional): Drop keratins from dataset.
             Defaults to True.
         """
         import pandas as pd
-        from copy import copy
         super().__init__(Table, Method=Method, **kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
@@ -95,7 +94,7 @@ class Omicscope(Input):
         """Determine conditions for statistical analysis
         """
         from copy import copy
-        if self.ControlGroup == None:
+        if self.ControlGroup is None:
             Control = list(self.pdata.Condition.drop_duplicates())
             Control = sorted(Control)
             self.ControlGroup = Control[0]
@@ -111,7 +110,6 @@ class Omicscope(Input):
         """Joins the technical replicates and organizes biological
         conditions.
         """
-        from copy import copy
         pdata = []
         for i in self.pdata.columns:
             pdata.append(self.pdata[i])
@@ -169,7 +167,8 @@ class Omicscope(Input):
             f.write("Omics v1.0.0" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
                     " for group comparisons having the controling group used as used according to OmicScope." +
-                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python package designed for Shotgun Proteomics" +
+                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python" +
+                    "package designed for Shotgun Proteomics" +
                     '\nControlGroup:' + '\t' + data.ctrl + '\n' +
                     'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +
                     'Statistics:' + '\t' + self.pvalue + '\n' +

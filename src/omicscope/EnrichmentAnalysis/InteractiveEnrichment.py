@@ -71,7 +71,7 @@ def heatmap(self, foldchange=False):
                 such as a heatmap. Defaults to [-0.5, 0.5].
             save (str, optional): Path to save figure. Defaults to ''.
             dpi (int, optional): Resolution to save figure. Defaults to 300.
-            vector (bool, optional): Save figure in as vector (.svg). 
+            vector (bool, optional): Save figure in as vector (.svg).
                 Defaults to True.
          """
     import altair as alt
@@ -377,9 +377,9 @@ def enrichment_map(self, *Terms, top=1000, modularity=True, labels=False,
         nx.set_node_attributes(G, dict(zip(carac.index, carac.Module)), name="module")
         carac = carac.reindex(G.nodes())
         # Assign position of each mode
-    pos = nx.spring_layout(G, seed=9, k=1/len(G.nodes)**0.3)
     carac = carac.reindex(G.nodes())
     # Draw network
+    from pyvis.network import Network
     nt = Network(height='700px', width='900px')
     nt.from_nx(G)
     nt.set_options(

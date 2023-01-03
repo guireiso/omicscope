@@ -82,7 +82,7 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
     plt.title(label=OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental), loc='left')
     plt.grid(b=False)
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'barplot.svg')
         else:
             plt.savefig(save + 'barplot.png', dpi=dpi)
@@ -365,7 +365,7 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     ax_histy.set_ylim(ax_scatter.get_ylim())
     # save figure and how to save
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'volcano.svg')
         else:
             plt.savefig(save + 'volcano.png', dpi=dpi)
@@ -484,7 +484,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
                    figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
     # Save
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'heatmap.svg')
         else:
             plt.savefig(save + 'heatmap.png', dpi=dpi)
@@ -566,7 +566,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
                    yticklabels=corr_matrix.columns, col_colors=colors,
                    cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'pearson.svg')
         else:
             plt.savefig(save + 'pearson.png', dpi=dpi)
@@ -600,11 +600,10 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
     plt.rcParams["figure.dpi"] = dpi
     OmicScope = copy.copy(OmicScope)
     df = OmicScope.quant_data
-    df_initial = df
     # Dictionary for Accessions
     accession = dict(zip(df.Accession, df.gene_name))
     df = df.set_index('Accession')
-    df = df.loc[:, df.columns.str.contains('\.')]
+    df = df.loc[:, df.columns.str.contains('.', regex=False)]
     df = np.log10(df).transpose()
     # Getting Mean, Max and Min values for each protein
     df = df.describe().transpose()
@@ -616,7 +615,7 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
     df['rank'] = df['mean'].rank(method='first')
     # Return variation for each protein
     ax_scatter = plt.axes()
-    if max_min == True:
+    if max_min is True:
         plt.scatter(y=df['rank'], x=df['min'],
                     alpha=0.7, s=2, c=min_color)
         plt.scatter(y=df['rank'], x=df['max'],
@@ -646,7 +645,7 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
     plt.ylabel('Rank')
     plt.title('Dynamic Range')
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'DynamicRange.svg')
         else:
             plt.savefig(save + 'DynamicRange.png', dpi=dpi)
@@ -727,11 +726,11 @@ def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
     plt.grid(b=False)
     sns.despine()
     # Annotate samples in PCA plot
-    if marks == True:
+    if marks is True:
         for sample in pca_df.index:
             plt.annotate(sample, (pca_df.PC1.loc[sample], pca_df.PC2.loc[sample]))
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'pca.svg')
         else:
             plt.savefig(save + 'pca.png', dpi=dpi)
@@ -739,14 +738,14 @@ def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
 
 
 def color_scheme(df, palette):
-    """Generate colors to barplot and 
+    """Generate colors to barplot and
 
     Args:
         df (DataFrame): dataframe
         palette (str): palette
 
     Returns:
-        color (dict): dictionary assign each condition with respective color. 
+        color (dict): dictionary assign each condition with respective color.
     """
     color = df.index.to_frame().reset_index(drop=True)
     color['variable'] = color.astype(str).apply(lambda x: '_'.join(x), axis=1)
@@ -809,7 +808,7 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
         df = df[['Condition', 'gene_name', 'value']]
         df = df.set_index('Condition')
     # Apply log transformation
-    if logscale == True:
+    if logscale is True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
 
@@ -839,7 +838,7 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
     plt.xlabel('')
     plt.ylabel('log2(Abundance)')
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
         else:
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
@@ -884,7 +883,7 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
         df = df[['Condition', 'gene_name', 'value']]
         df = df.set_index('Condition')
     # Apply log transformation
-    if logscale == True:
+    if logscale is True:
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
 
@@ -913,7 +912,7 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
     plt.xlabel('')
     plt.ylabel('log2(Abundance)')
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
         else:
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
@@ -966,7 +965,7 @@ def MAplot(OmicScope,
     plt.xlabel('log2(Mean)')
     plt.title('MA plot')
     if save != '':
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'MAPlot.svg')
         else:
             plt.savefig(save + 'MAPlot.png', dpi=dpi)
@@ -1014,7 +1013,7 @@ def startrend(OmicScope, pvalue=0.05, k_cluster=None):
     data = np.log2(data)
     # Scale protein abundance according to their mean (z-score)
     zscored_data = zscore(data, axis=1)
-    if k_cluster == None:
+    if k_cluster is None:
         n_clusters = find_k(zscored_data)
     else:
         n_clusters = k_cluster

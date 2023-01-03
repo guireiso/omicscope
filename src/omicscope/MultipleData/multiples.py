@@ -7,10 +7,6 @@ Created on Tue Mar  1 15:21:23 2022
 import os
 import pandas as pd
 import glob
-import __main__
-import pandas as pd
-from itertools import repeat
-from copy import copy
 
 
 class multiples:
@@ -23,8 +19,8 @@ class multiples:
 
         print(f'''You imported your data successfully!
         Data description:
-        1. N groups imported: {len(self.groups)} 
-        2. Groups: {','.join(self.groups)} 
+        1. N groups imported: {len(self.groups)}
+        2. Groups: {','.join(self.groups)}
         3. N groups with enchment data: {sum(x is not None for x in self.enrichment)}
         ''')
 

@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
-from scipy.stats import f
 from statsmodels.stats.multitest import multipletests
 from copy import copy
 from patsy import dmatrix
@@ -33,7 +31,8 @@ def Spline_Model_Full(pdata, df):
         variables = '+'.join(variables)
         dictVAR = dict(zip(variables.split('+'), [pdata[x] for x in variables.split('+')]))
         dictionary = dictTC | dictVAR
-        sentence = f"~ {variables} + cr((TimeCourse), df ={df}, constraints='center') + ({variables}):cr((TimeCourse), df ={df}, constraints='center')"
+        sentence = (f"~ {variables} + cr((TimeCourse), df ={df}, constraints='center') + ({variables}):cr((TimeCourse), df ={df}, "
+                    "constraints='center')")
     elif len(adjust_variables) > 0:
         adjust_variables = '+'.join(adjust_variables)
         dictionary = dict(zip(adjust_variables.split('+'), [pdata[x] for x in adjust_variables.split('+')]))
@@ -82,7 +81,7 @@ def Spline_Model_Null(pdata, df):
     elif len(adjust_variables) == 0:
         variables = 1
         dictionary = dictTC
-        sentence = f"~ 1"
+        sentence = "~ 1"
     try:
         transformed_x = dmatrix(sentence,
                                 dictionary, return_type='dataframe')
@@ -108,7 +107,7 @@ def projMatrix(matrix):
 def Individuals(expression, pdata):
     expression = np.asmatrix(expression)
     ind = pd.Series(pdata.ind, dtype="category")
-    ind_matrix = dmatrix(f'~ -1 + individuals',
+    ind_matrix = dmatrix('~ -1 + individuals',
                          {'individuals': ind})
     Hi = projMatrix(ind_matrix)
     fitInd = Hi @ expression.transpose()
@@ -145,9 +144,7 @@ def longitudinal(expression, pdata, full_model, null_model):
 
 
 def Spline_Normalization(expression, full_model, null_model):
-    import numpy as np
     import statsmodels.api as sm
-    import matplotlib.pyplot as plt
     expression = expression.reset_index(drop=True)
     # Full Model
     full = sm.GLM(expression, full_model).fit()

@@ -1,7 +1,7 @@
 """  OmicScope Module
 
 OmicScope allows user to import data and perform statistical analysis
-for differential gene/protein expression. This is the key module of 
+for differential gene/protein expression. This is the key module of
 all OmicScope workflow, being the input for all other modules.
 
 """
@@ -38,7 +38,7 @@ class OmicScope_Peptide(Input):
             Defaults to 0.
             PValue_cutoff (float, optional): P-value threshold for differential
             expression analysis . Defaults to 0.05.
-            logTransformed (bool, optional): Was entity abundance previously 
+            logTransformed (bool, optional): Was entity abundance previously
             log-normalized?. Defaults False.
             ExcludeKeratins (bool, optional): Drop keratins from dataset.
             Defaults to True.

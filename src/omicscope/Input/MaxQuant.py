@@ -1,7 +1,6 @@
 
 import pandas as pd
 from copy import copy
-import numpy as np
 
 
 class Input:
@@ -18,8 +17,8 @@ class Input:
             file that contains all the features associated to the samples
             quant_strategy (str, optional): Quantification strategy that will be performed
             to the proteomic data. Defaults to 'LFQ intensity'. Also allowed
-            'Intensity', and 'iBAQ' strategies. 
-            filtering_method (int or str, optional): Method to filter identified proteins. 
+            'Intensity', and 'iBAQ' strategies.
+            filtering_method (int or str, optional): Method to filter identified proteins.
             User can choose percentage of valid values or filtering based on the minimum valid values
             among the groups.
             Defaults to 70.

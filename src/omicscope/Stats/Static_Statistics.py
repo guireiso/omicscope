@@ -67,7 +67,7 @@ def tukey_correction(df):
     Statmodels
 
     Args:
-        df (DataFrame): Dataframe 
+        df (DataFrame): Dataframe
         i (Index): [description]
 
     Returns:
@@ -101,7 +101,7 @@ def Tukey_hsd(quant_data):
        padj [list]: Adjusted p-value for each differentially regulated entity
        in each comparison. Entities that were not differentially regulated
        returned 2
-       comparison [list]: Comparison for which p-value was evaluated. Entities 
+       comparison [list]: Comparison for which p-value was evaluated. Entities
        that were not differentially regulated returned 2
     """
     df = copy(quant_data)

@@ -14,11 +14,7 @@ also can produces ready-to-publish figures.
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
 
-import copy
-import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
-import pandas as pd
 
 
 class Enrichment:
@@ -48,7 +44,6 @@ class Enrichment:
         """GSEA workflow according to gseapy
         """
         from gseapy import gsea
-        organism = self.organism
         pvalue_cutoff = self.OmicScope.PValue_cutoff
         foldchange_cutoff = self.OmicScope.FoldChange_cutoff
         omics = self.OmicScope.quant_data
@@ -58,10 +53,10 @@ class Enrichment:
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
 
         gsea_input = omics.set_index('gene_name')
-        gsea_input = gsea_input.iloc[:, gsea_input.columns.str.contains('\.')]
+        gsea_input = gsea_input.iloc[:, gsea_input.columns.str.contains('.', regex=False)]
         gsea_input = np.log2(gsea_input)
         gsea_input = gsea_input.replace(-np.inf, 0)
-        groups = gsea_input.columns.str.split('\.').str[1]
+        groups = gsea_input.columns.str.split('.', regex=False).str[1]
         gsea_input = gsea_input.reset_index()
         gsea_input['gene_name'] = gsea_input['gene_name'].str.upper()
 

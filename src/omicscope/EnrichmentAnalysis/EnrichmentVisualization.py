@@ -44,7 +44,7 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
         plt.style.use('default')
         plt.figure(figsize=(x_size, y_size))
         from textwrap import wrap
-        labels = ['\n'.join(wrap(l, label_wrap)) for l in yaxis]
+        labels = ['\n'.join(wrap(label, label_wrap)) for label in yaxis]
         plt.scatter(x=xaxis, y=labels, s=size*s, c=color, edgecolors='black',
                     linewidths=0.7, cmap=palette, alpha=alpha)
         plt.gca().invert_yaxis()
@@ -57,7 +57,7 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
         plt.xlabel('-log(p-Adjusted)')
         plt.margins(x=.1, y=0.1)
         if save != '':
-            if vector == True:
+            if vector is True:
                 plt.savefig(save + 'dotplot.svg')
             else:
                 plt.savefig(save + 'dotplot.png', dpi=dpi)
@@ -79,7 +79,7 @@ def heatmap(self, *Terms, top=5, foldchange=False,
                 such as a heatmap. Defaults to [-0.5, 0.5].
             save (str, optional): Path to save figure. Defaults to ''.
             dpi (int, optional): Resolution to save figure. Defaults to 300.
-            vector (bool, optional): Save figure in as vector (.svg). 
+            vector (bool, optional): Save figure in as vector (.svg).
                 Defaults to True.
          """
     plt.rcParams["figure.dpi"] = dpi
@@ -120,7 +120,7 @@ def heatmap(self, *Terms, top=5, foldchange=False,
             plt.xlabel('')
             plt.xticks(rotation=45, ha='right')
             if save != '':
-                if vector == True:
+                if vector is True:
                     plt.savefig(save + 'heatmap.svg')
                 else:
                     plt.savefig(save + 'heatmap.png', dpi=dpi)
@@ -176,7 +176,7 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
         plt.margins(x=1,)
         sns.despine()
         if save != '':
-            if vector == True:
+            if vector is True:
                 plt.savefig(save + 'number_deps.svg')
             else:
                 plt.savefig(save + 'number_deps.png', dpi=dpi)
@@ -267,7 +267,7 @@ def enrichment_network(self, *Terms, top=5, labels=False,
         nx.draw_networkx_labels(G, pos, font_size=6)
     if save != '':
         nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'PPNetwork.svg')
         else:
             plt.savefig(save + 'PPNetwork.dpi', dpi=300)
@@ -413,7 +413,7 @@ def enrichment_map(self, *Terms, top=1000, modularity=True, labels=False,
         nx.draw_networkx_labels(G, pos, carac.Label, font_size=6)
     if save != '':
         nx.write_graphml(G, save + 'PathMap.graphml', named_key_ids=True)
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'PathMap.svg')
         else:
             plt.savefig(save + 'PathMap.dpi', dpi=300)

@@ -8,9 +8,6 @@ quantitative data as .csv.
 
 import numpy as np
 import pandas as pd
-from copy import copy
-import numpy as np
-import pandas as pd
 
 
 class Input:
@@ -32,7 +29,7 @@ class Input:
         self.rdata['gene_name'] = self.rdata['Description'].str.split(
             'GN=').str[1].str.split(' ').str[0]
         self.pdata = self.pdata()
-        self.assay.columns = self.assay.columns.str.split(f'.').str[0]
+        self.assay.columns = self.assay.columns.str.split('.', regex=False).str[0]
         self.assay.index = self.rdata['Accession']
 
     def progenesis(self, **kwargs):
@@ -73,7 +70,7 @@ class Input:
         df = df.rename(columns={'Anova (p)': 'pvalue',
                                 'q Value': 'pAdjusted'})
         # Defining assay
-        assay = df.iloc[:, df.columns.str.contains(f".", regex=False)]
+        assay = df.iloc[:, df.columns.str.contains(".", regex=False)]
         # Defining rdata
         rdata = df.iloc[:, ~df.columns.str.contains(".", regex=False)]
         return (assay, rdata)

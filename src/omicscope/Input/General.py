@@ -26,7 +26,6 @@ replicates ('TechRep') that was designed for experiment.
 
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
-from copy import copy
 
 
 class Input:

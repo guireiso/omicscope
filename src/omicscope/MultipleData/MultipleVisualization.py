@@ -3,8 +3,6 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 from copy import copy
-from matplotlib.collections import PatchCollection
-import warnings
 
 
 def barplot(self, palette='Spectral', save=None, vector=True):
@@ -69,8 +67,8 @@ def barplot(self, palette='Spectral', save=None, vector=True):
                      weight='bold')
     ax.annotate(deps[-1], [r[-1], whole_proteome[-1]*1.001], ha='center',
                 color=colors[-1], weight='bold')
-    if save != None:
-        if vector == True:
+    if save is not None:
+        if vector is True:
             plt.savefig(save + 'bar_deps.svg')
         else:
             plt.savefig(save + 'bar_deps.png', dpi=600)
@@ -112,8 +110,8 @@ def protein_overlap(self, dpi=600, min_subset=10, face_color='darkcyan', shad_co
                    min_subset_size=min_subset, show_counts=True,
                    with_lines=True)
     figure.plot()
-    if save != None:
-        if vector == True:
+    if save is not None:
+        if vector is True:
             plt.savefig(save + 'upset_proteins.svg')
         else:
             plt.savefig(save + 'upset_proteins.png', dpi=600)
@@ -163,8 +161,8 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
     for i in data.groups:
         figure.style_subsets(present=i, edgecolor=edge_color, linewidth=linewidth)
     figure.plot()
-    if save != None:
-        if vector == True:
+    if save is not None:
+        if vector is True:
             plt.savefig(save + 'upset_pathways.svg')
         else:
             plt.savefig(save + 'upset_pathways.png', dpi=dpi)
@@ -172,8 +170,8 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
 
 def overlap_pearson(self, pvalue=1, palette='Spectral',
                     save=None, vector=True, dpi=600):
-    """Pair-wise Pearson correlation heatmap for similarities 
-    among groups 
+    """Pair-wise Pearson correlation heatmap for similarities
+    among groups
 
     Args:
         pvalue (int, optional): P-value threshold to proteins that
@@ -200,8 +198,8 @@ def overlap_pearson(self, pvalue=1, palette='Spectral',
     sns.clustermap(corr, cmap='RdYlBu', center=0.9,
                    col_colors=colors, row_colors=colors)
 
-    if save != None:
-        if vector == True:
+    if save is not None:
+        if vector is True:
             plt.savefig(save + 'clustermap.svg')
         else:
             plt.savefig(save + 'clustermap.png', dpi=dpi)
@@ -252,8 +250,8 @@ def Differentially_Regulated(self,
               edgecolor='white')
     plt.margins(x=1, y=0.1)
 
-    if save != None:
-        if vector == True:
+    if save is not None:
+        if vector is True:
             plt.savefig(save + 'clustermap.svg')
         else:
             plt.savefig(save + 'clustermap.png', dpi=dpi)
@@ -325,9 +323,9 @@ def network(self, labels=False, save=None, vector=True):
             edge_color='gray')
     if labels is True:
         nx.draw_networkx_labels(G, pos, font_size=6)
-    if save != None:
+    if save is not None:
         nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'PPNetwork.svg')
         else:
             plt.savefig(save + 'PPNetwork.dpi', dpi=300)
@@ -337,7 +335,7 @@ def network(self, labels=False, save=None, vector=True):
 
 def overlap_fisher(group1, group2, union):
     """Perform a pair-wise comparison based on hypergeometric
-    distribution. 
+    distribution.
 
     Args:
         group1 (Series, pandas): Column condition 1
@@ -364,7 +362,7 @@ def overlap_fisher(group1, group2, union):
 
 def overlap_stat(self, palette='Spectral', pvalue=0.05,
                  save=None, vector=True):
-    """Perform a pair-wise comparison of all conditions 
+    """Perform a pair-wise comparison of all conditions
     based on hypergeometric distribution and plot a heatmap
     with hierarchical clustering
 
@@ -397,8 +395,8 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
     sns.clustermap(matrix, cmap=palette, annot=annot,
                    mask=annot.isnull(),
                    col_colors=colors, row_colors=colors)
-    if save != None:
-        if vector == True:
+    if save is not None:
+        if vector is True:
             plt.savefig(save + 'clustermap.svg')
         else:
             plt.savefig(save + 'clustermap.png', dpi=300)
@@ -418,9 +416,6 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
     Returns:
         Graph (Networkx.G): Networkx object
     """
-    import matplotlib as mpl
-    import matplotlib.cm as cm
-    import matplotlib.colors as mcolors
     import networkx as nx
     import pandas as pd
     import seaborn as sns
@@ -465,9 +460,9 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
     nx.draw_networkx_labels(G, pos, font_size=6)
     labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=dict(zip(list(labels.keys()), weights)))
-    if save != None:
+    if save is not None:
         nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
-        if vector == True:
+        if vector is True:
             plt.savefig(save + 'PPNetwork.svg')
         else:
             plt.savefig(save + 'PPNetwork.dpi', dpi=300)
