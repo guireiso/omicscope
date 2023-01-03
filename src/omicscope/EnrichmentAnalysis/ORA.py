@@ -20,11 +20,13 @@ import numpy as np
 import seaborn as sns
 import pandas as pd
 
+
 class Enrichment:
     """Over-Representation Analysis Results
     """
+
     def __init__(self, OmicScope, dbs=['KEGG_2021_Human'],
-                 padjust_cutoff = 0.05,
+                 padjust_cutoff=0.05,
                  organism='Human', save=''):
         """Over-Representation Analysis (also known as Enrichment Analysis)
 
@@ -49,7 +51,6 @@ class Enrichment:
         if save != '':
             self.output(save=save)
 
-
     def enrichr(self):
         """Enrichr workflow according to gseapy
         """
@@ -60,18 +61,18 @@ class Enrichment:
         gene_set = self.dbs
         omics = self.OmicScope.quant_data
         # Filtering data based on Fold Change and P-value
-        omics = omics.loc[(omics['log2(fc)']<=-foldchange_cutoff) | (omics['log2(fc)']>=foldchange_cutoff)]
+        omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
         genes = list(omics[omics[self.OmicScope.pvalue] < pvalue_cutoff]['gene_name'].dropna())
         # Enrichment
-        enr = enrichr(gene_list=genes, #proteins diferrentially regulated
-                         gene_sets=gene_set,
-                         outdir=None, #dbs
-                         organism=organism,
-                         cutoff=1, no_plot=True,
-                         verbose = False)
+        enr = enrichr(gene_list=genes,  # proteins diferrentially regulated
+                      gene_sets=gene_set,
+                      outdir=None,  # dbs
+                      organism=organism,
+                      cutoff=1, no_plot=True,
+                      verbose=False)
         # Extracting just results file from analysis
         df = enr.results
-        # Filtering results Adjusted P-value 
+        # Filtering results Adjusted P-value
         df = df[df['Adjusted P-value'] < self.padjust_cutoff]
         df['N_Proteins'] = df['Overlap'].str.split('/').str[0].astype(int)
         df['-log10(pAdj)'] = -np.log10(df['Adjusted P-value'])

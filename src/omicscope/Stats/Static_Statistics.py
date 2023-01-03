@@ -4,6 +4,7 @@ import numpy as np
 from statsmodels.stats.multitest import multipletests
 import pandas as pd
 
+
 def ttest(params):
     """Perform a T-test on the data
 
@@ -37,7 +38,7 @@ def ttest(params):
 
     #  Correcting multilple hypothesis test according to fdr_bh
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=0.1,
-                                          method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+                                            method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
 
     #  Mean abundance for each protein among conditions
     quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
@@ -58,7 +59,7 @@ def ttest(params):
     #  -log10(pvalue)
     quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.reset_index()
-    return(quant_data)
+    return (quant_data)
 
 
 def tukey_correction(df):
@@ -80,8 +81,8 @@ def tukey_correction(df):
     df.columns = ['Comparison', 'abundance']
     df['Comparison'] = df.Comparison.str.split('.').str[-1]
     df = pairwise_tukeyhsd(endog=df['abundance'],
-                            groups=df['Comparison'],
-                            alpha=0.05)
+                           groups=df['Comparison'],
+                           alpha=0.05)
     df = pd.DataFrame(data=df._results_table.data[1:], columns=df._results_table.data[0])
     df['Comparison'] = df.group1 + '-' + df.group2
     padj = list(df['p-adj'])
@@ -104,13 +105,13 @@ def Tukey_hsd(quant_data):
        that were not differentially regulated returned 2
     """
     df = copy(quant_data)
-    df = df[df['pAdjusted'] < 0.05] #TODO: Trocar para pAdjust
-    df = df.iloc[:, df.columns.str.contains('.', regex = False)]
+    df = df[df['pAdjusted'] < 0.05]  # TODO: Trocar para pAdjust
+    df = df.iloc[:, df.columns.str.contains('.', regex=False)]
     # Perform Tukey's post-hoc correction for each of differentially
     # regulated entity according ANOVA's test
-    df = df.apply(lambda x: tukey_correction(x), axis = 1)
+    df = df.apply(lambda x: tukey_correction(x), axis=1)
     df = pd.DataFrame(df.to_list(), columns=['pTukey',
-                                              'Comparison'], index = df.index)
+                                             'Comparison'], index=df.index)
     return df
 
 
@@ -137,8 +138,8 @@ def anova(params):
     quant_data = quant_data.sort_values('pvalue')
     # BH-correction
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=0.1,
-                                          method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
-    
+                                            method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+
     Tukey = Tukey_hsd(quant_data)
     quant_data = quant_data.join(Tukey)
     quant_data = quant_data.explode(['pTukey', 'Comparison'])
@@ -152,30 +153,30 @@ def anova(params):
                                     quant_data['pTukey'])
     # Replace '2' with right comparisons performed
     quant_data['Comparison'] = quant_data['Comparison'].replace(np.nan,
-                                                '-'.join(Conditions))
+                                                                '-'.join(Conditions))
     comp = copy(quant_data)
     comp['Comparison'] = comp.Comparison.str.split('-')
 
-    quant_data['Condition1'] = comp.apply(lambda x: x[x.index.str.endswith('.'+ x.Comparison[0])].mean(),
-                             axis = 1)
-    quant_data['Condition2'] = comp.apply(lambda x: x[x.index.str.endswith('.'+ x.Comparison[-1])].mean(),
-                             axis = 1)
-    quant_data['Condition_All'] = comp.apply(lambda x: x[x.index.str.contains('.', regex = False)].mean(),
-                             axis = 1)
+    quant_data['Condition1'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[0])].mean(),
+                                          axis=1)
+    quant_data['Condition2'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[-1])].mean(),
+                                          axis=1)
+    quant_data['Condition_All'] = comp.apply(lambda x: x[x.index.str.contains('.', regex=False)].mean(),
+                                             axis=1)
     quant_data['Condition2'] = np.where(
         quant_data['pvalue'] > 0.05, quant_data['Condition_All'], quant_data['Condition2'])
     quant_data = quant_data.sort_values(['pTukey', 'pAdjusted', 'pvalue'])
     print('Anova test was performed!')
 
     # #  Mean abundance for each protein among conditions
-    quant_data.iloc[:, quant_data.columns.str.contains('.', regex = False)] = np.exp2(
-        quant_data.iloc[:, quant_data.columns.str.contains('.', regex = False)])
+    quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
+        quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex = False)].mean(axis=1)
+    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
     #  Log2(FC)
     quant_data['log2(fc)'] = quant_data['Condition2'] - quant_data['Condition1']
     #  -log10(pvalue)
     quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.iloc[:, ~quant_data.columns.isin(['Condition_All'])]
     quant_data = quant_data.reset_index()
-    return(quant_data)
+    return (quant_data)

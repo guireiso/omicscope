@@ -4,13 +4,10 @@ Created on Tue Mar  1 15:21:23 2022
 
 @author: gui_d
 """
-import glob
 import os
-import random
 import shutil
 from copy import copy
 from itertools import repeat
-
 import pandas as pd
 
 
@@ -48,17 +45,17 @@ class circos():
     def karyotype(self):
         labels = copy(self.labels)
         group_data = copy(self.group_data)
-        colors = ['set3-12-qual-'+str(x) for x in range(1,13)]
+        colors = ['set3-12-qual-'+str(x) for x in range(1, 13)]
         colors = colors[:len(labels)]
         karyotype = pd.DataFrame({'type': repeat('chr', len(labels)),
-                                'chr': repeat('-', len(labels)),
-                                'name': labels,
-                                'label': labels,
-                                'START': repeat(0, len(labels)),
-                                'END': [len(group_data[i]) for i in range(0, len(labels))],
-                                'COLOR': colors})
+                                  'chr': repeat('-', len(labels)),
+                                  'name': labels,
+                                  'label': labels,
+                                  'START': repeat(0, len(labels)),
+                                  'END': [len(group_data[i]) for i in range(0, len(labels))],
+                                  'COLOR': colors})
         karyotype.to_csv(self.newFolder + 'karyotype.txt', sep='\t', header=False,
-                          index=False)
+                         index=False)
 
     def heatmap(self):
         from copy import copy
@@ -81,7 +78,7 @@ class circos():
             df['END'] = range(1, len(df) + 1)
             df['COLOR'] = df['log2(fc)']
             df = df[['type', 'chr', 'name', 'label', 'START', 'END', 'COLOR']]
-            return(df)
+            return (df)
 
         transformed = []
         for i in labels:
@@ -89,7 +86,7 @@ class circos():
         self.transformed = transformed
         heatmap = pd.concat(transformed)[['chr', 'START', 'END', 'COLOR']]
         heatmap.to_csv(self.newFolder + 'heatmap.txt', sep="\t",
-                            index=False)
+                       index=False)
 
     def linkProteins(self):
         from copy import copy
@@ -116,7 +113,7 @@ class circos():
         joined[['START.x', 'END.x', 'START.y', 'END.y']] = joined[[
             'START.x', 'END.x', 'START.y', 'END.y']].astype(int)
         joined.to_csv(self.newFolder + 'links.txt', sep="\t",
-                          index=False)
+                      index=False)
 
     def linkEnrichment(self):
         import pandas as pd
@@ -141,7 +138,7 @@ class circos():
                 df.columns = ['pathway', 'color', 'group']
             except:
                 df = pd.DataFrame(columns=['pathway', 'color', 'group'])
-            return(df)
+            return (df)
         whole_enr = []
         for i, g in zip(enrichment, groups):
             whole_enr.append(enrichment_links(i, g))
@@ -164,7 +161,7 @@ class circos():
             df['END'] = df['START'] + 1
             df['COLOR'] = df['color']
             df = df[['type', 'chr', 'name', 'label', 'START', 'END', 'COLOR']]
-            return(df)
+            return (df)
         links = []
         for g in groups:
             links.append(transforming_enr(whole_enr, self.whole, g))
@@ -184,7 +181,7 @@ class circos():
 
         joined_enr = pd.concat(modified_enr)
         joined_enr = joined_enr[['chr_x', 'START_x',
-            'END_x', 'chr_y', 'START_y', 'END_y', 'COLOR_y']]
+                                 'END_x', 'chr_y', 'START_y', 'END_y', 'COLOR_y']]
         joined_enr.columns = ['chr.x', 'START.x', 'END.x', 'chr.y', 'START.y', 'END.y', 'COLOR']
         joined_enr[['START.x', 'END.x', 'START.y', 'END.y']] = joined_enr[[
             'START.x', 'END.x', 'START.y', 'END.y']].astype(int)
@@ -230,6 +227,7 @@ class circos():
         plt.imshow(img)
         plt.axis('off')
         plt.show()
+
 
 def circos_plot(self):
     circos(self)

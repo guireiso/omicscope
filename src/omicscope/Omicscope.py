@@ -10,10 +10,10 @@ from .Input import *
 
 
 class Omicscope(Input):
-    def __init__(self, Table, ControlGroup, Method, ExperimentalDesign = 'static', 
-                pvalue = 'pAdjusted', pdata = None, PValue_cutoff=0.05, 
-                FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
-                degrees_of_freedom = 2, **kwargs):
+    def __init__(self, Table, ControlGroup, Method, ExperimentalDesign='static',
+                 pvalue='pAdjusted', pdata=None, PValue_cutoff=0.05,
+                 FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
+                 degrees_of_freedom=2, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -46,7 +46,7 @@ class Omicscope(Input):
         """
         import pandas as pd
         from copy import copy
-        super().__init__(Table, Method = Method,**kwargs)
+        super().__init__(Table, Method=Method, **kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
         self.logTransformed = logTransformed
@@ -55,7 +55,7 @@ class Omicscope(Input):
         self.ControlGroup = ControlGroup
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
-            raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues) 
+            raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues)
         if pdata is not None:
             # If pdata was assigned by user, OmicScope read
             # excel or csv frames.
@@ -68,13 +68,13 @@ class Omicscope(Input):
         self.ctrl = self.ControlGroup
         #  Has user already performed statistical analyses?
         statistics = [f'Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
-                    'padj', 'p-adjusted', 'p-adj']
+                      'padj', 'p-adjusted', 'p-adj']
         if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat
             self.quant_data = imported_stat(self, statistics)
             self.pdata['Sample'] = self.pdata['Sample']+'.'+self.pdata['Condition']
             print('User already performed statistical analysis')
-        
+
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics
             from .Stats.Statistic_Module import perform_static_stat
             # Construct pivot-table considering technical and biological replicates
@@ -88,7 +88,7 @@ class Omicscope(Input):
             self.degrees_of_freedom = degrees_of_freedom
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')
-        
+
         self.deps = self.deps()
 
     def define_conditions(self):
@@ -96,17 +96,17 @@ class Omicscope(Input):
         """
         from copy import copy
         if self.ControlGroup == None:
-             Control = list(self.pdata.Condition.drop_duplicates())
-             Control = sorted(Control)
-             self.ControlGroup = Control[0]
-             Control.remove(self.ControlGroup)
-             self.experimental = Control
+            Control = list(self.pdata.Condition.drop_duplicates())
+            Control = sorted(Control)
+            self.ControlGroup = Control[0]
+            Control.remove(self.ControlGroup)
+            self.experimental = Control
         else:
-             Conditions = list(self.pdata.Condition.drop_duplicates())
-             Conditions.remove(self.ControlGroup)
-             self.experimental = Conditions
+            Conditions = list(self.pdata.Condition.drop_duplicates())
+            Conditions.remove(self.ControlGroup)
+            self.experimental = Conditions
         self.Conditions = copy([self.ControlGroup]) + copy(self.experimental)
-    
+
     def expression(self):
         """Joins the technical replicates and organizes biological
         conditions.
@@ -124,23 +124,23 @@ class Omicscope(Input):
         expression = expression.set_index(rdata).T
         pdata_columns = list(self.pdata.columns)
         pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples']))
-        expression = expression.groupby(pdata_columns).mean(numeric_only= True)
-        pdata = expression.index.to_frame().reset_index(drop = True)
+        expression = expression.groupby(pdata_columns).mean(numeric_only=True)
+        pdata = expression.index.to_frame().reset_index(drop=True)
         Variables = pdata.loc[:, pdata.columns != 'Biological']
-        Variables = Variables.apply(lambda x: '-'.join(x.astype(str)), axis =1)
-        Sample_name =  'BioRep_' + \
+        Variables = Variables.apply(lambda x: '-'.join(x.astype(str)), axis=1)
+        Sample_name = 'BioRep_' + \
             pdata['Biological'].astype(str) + \
             '.' + Variables
         expression = expression.T
         expression.columns = Sample_name
-        rdata = expression.index.to_frame().reset_index(drop = True)
+        rdata = expression.index.to_frame().reset_index(drop=True)
         expression = expression.set_index(rdata.Accession)
 
         # New pdata
         pdata['Sample'] = Sample_name
         self.pdata = pdata
-        
-        # New rdata 
+
+        # New rdata
         self.rdata = rdata
         return expression
 
@@ -156,7 +156,7 @@ class Omicscope(Input):
                         (deps['log2(fc)'] >= FoldChange_cutoff)]
         deps = deps[['gene_name', 'Accession', self.pvalue,
                      f'-log10({self.pvalue})', 'log2(fc)']]
-        return(deps)
+        return (deps)
 
     def savefile(self, Path: str):
         from copy import copy
@@ -167,11 +167,11 @@ class Omicscope(Input):
             dfAsString = data.quant_data[['gene_name', 'Accession', self.pvalue, 'log2(fc)', 'TotalMean']].to_csv(
                 sep='\t', index=False)
             f.write("Omics v1.0.0" + "\n" +
-                  "This file is the output performed by OmicScope pipeline and can be used as input" +
-                  " for group comparisons having the controling group used as used according to OmicScope." +
-                  "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python package designed for Shotgun Proteomics" +
-                  '\nControlGroup:' + '\t' + data.ctrl + '\n' +
-                  'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +
-                  'Statistics:' +'\t'+ self.pvalue + '\n' +
-                  'Expression:\n' + '-------\n' +
-                  dfAsString)
+                    "This file is the output performed by OmicScope pipeline and can be used as input" +
+                    " for group comparisons having the controling group used as used according to OmicScope." +
+                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python package designed for Shotgun Proteomics" +
+                    '\nControlGroup:' + '\t' + data.ctrl + '\n' +
+                    'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +
+                    'Statistics:' + '\t' + self.pvalue + '\n' +
+                    'Expression:\n' + '-------\n' +
+                    dfAsString)

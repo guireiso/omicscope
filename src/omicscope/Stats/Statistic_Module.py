@@ -6,6 +6,7 @@ by OmicScope for differential expression analysis.
         analysis performed
 """
 
+
 def perform_static_stat(self):
     """log2 transformation for expression
     """
@@ -23,14 +24,14 @@ def perform_static_stat(self):
         # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest
-        self.ind_variables = True # TODO
+        self.ind_variables = True  # TODO
         params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata,
-        pvalue]
+                  pvalue]
         data = ttest(params=params)
         data = params[4].merge(data, on='Accession')
 
     # Apply ANOVA if len(conditions) > 2
-    elif len(self.Conditions) > 2:     
+    elif len(self.Conditions) > 2:
         from .Static_Statistics import anova
         params = [expression, rdata, self.Conditions, pvalue]
         data = anova(params=params)
@@ -42,7 +43,8 @@ def perform_static_stat(self):
     # Filter Keratin proteins
     data = data[~data['Description'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
-    return(data)
+    return (data)
+
 
 def perform_longitudinal_stat(self):
     """log2 transformation for e
@@ -50,7 +52,7 @@ def perform_longitudinal_stat(self):
     """
     from copy import copy
     import numpy as np
-    degrees_of_freedom= copy(self.degrees_of_freedom)
+    degrees_of_freedom = copy(self.degrees_of_freedom)
     expression = copy(self.expression)
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
@@ -62,14 +64,14 @@ def perform_longitudinal_stat(self):
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
     from .Longitudinal_Stat import Longitudinal_Stats
-    data = Longitudinal_Stats(assay = expression, pdata = pdata,
-     degrees_of_freedom = degrees_of_freedom, pvalue = pvalue, ctrl = ctrl)
+    data = Longitudinal_Stats(assay=expression, pdata=pdata,
+                              degrees_of_freedom=degrees_of_freedom, pvalue=pvalue, ctrl=ctrl)
     data = rdata.merge(data, on='Accession')
-    ### longitudinal modules
+    # longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # # Filtering Keratin
     data['Description'] = data['Description'].astype(str)
     data = data[~data['Description'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
-    return(data)
+    return (data)

@@ -35,7 +35,6 @@ class Input:
         self.assay.columns = self.assay.columns.str.split(f'.').str[0]
         self.assay.index = self.rdata['Accession']
 
-
     def progenesis(self, **kwargs):
         """ Extract rdata and assay from Progenesis output
         """
@@ -46,7 +45,7 @@ class Input:
             df = pd.read_csv(Table, header=0)
         else:
             df = pd.read_excel(Table, header=0)
-        df = df.replace("Best identification", np.nan)    
+        df = df.replace("Best identification", np.nan)
         df.iloc[1] = df.iloc[1].astype(str)
 
         # Extracting conditions
@@ -74,10 +73,10 @@ class Input:
         df = df.rename(columns={'Anova (p)': 'pvalue',
                                 'q Value': 'pAdjusted'})
         # Defining assay
-        assay = df.iloc[:, df.columns.str.contains(f".", regex = False)]
+        assay = df.iloc[:, df.columns.str.contains(f".", regex=False)]
         # Defining rdata
-        rdata = df.iloc[:, ~df.columns.str.contains(".", regex = False)]
-        return(assay, rdata)
+        rdata = df.iloc[:, ~df.columns.str.contains(".", regex=False)]
+        return (assay, rdata)
 
     def pdata(self):
         """Defining pdata
@@ -95,4 +94,4 @@ class Input:
             for j in range(1, len(df) + 1):
                 Biological.append(j)
         pdata['Biological'] = Biological
-        return(pdata)
+        return (pdata)

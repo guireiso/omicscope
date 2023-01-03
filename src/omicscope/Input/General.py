@@ -60,4 +60,4 @@ class Input:
         excel = self.Table
         df = pd.read_excel(excel,
                            sheet_name=sheetno)
-        return(df)
+        return (df)

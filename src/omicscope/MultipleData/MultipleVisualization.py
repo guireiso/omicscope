@@ -6,7 +6,8 @@ from copy import copy
 from matplotlib.collections import PatchCollection
 import warnings
 
-def barplot(self, palette = 'Spectral', save = None, vector = True):
+
+def barplot(self, palette='Spectral', save=None, vector=True):
     """Bar plot for proteins/genes identified and differentially regulated
     according to each group
 
@@ -21,61 +22,62 @@ def barplot(self, palette = 'Spectral', save = None, vector = True):
     group_data = data.original
     difreg = data.group_data
 
-    #-Desregulation figures
+    # -Desregulation figures
     whole_proteome = []
     deps = []
     for i, a in zip(group_data, difreg):
         whole_proteome.append(len(i))
         deps.append(len(a))
     conditions.extend(['Total'])
-    
+
     proteinsIdentified = []
     for i in group_data:
         proteinsIdentified.append(i['gene_name'])
     proteinsIdentified = pd.concat(proteinsIdentified).drop_duplicates()
-    
+
     proteinsdes = []
     for i in difreg:
         proteinsdes.append(i['gene_name'])
     proteinsdes = pd.concat(proteinsdes).drop_duplicates()
-    
+
     whole_proteome.extend([len(proteinsIdentified)])
     deps.extend([len(proteinsdes)])
     r = [i for i in range(0, len(conditions))]
-    
+
     f, (ax, ax2) = plt.subplots(2, 1, sharex=True)
     ax.bar(r, whole_proteome, color='lightgray', edgecolor='black', width=0.5,
-            linewidth = 1)
-    colors = sns.color_palette(palette, as_cmap=False, n_colors= len(conditions))
-    ax.bar(r, deps, edgecolor = 'black', width = 0.5, linewidth = 1)
+           linewidth=1)
+    colors = sns.color_palette(palette, as_cmap=False, n_colors=len(conditions))
+    ax.bar(r, deps, edgecolor='black', width=0.5, linewidth=1)
     plt.xticks(r,
-                fontweight= None, rotation = 45, ha = 'right')
-    
+               fontweight=None, rotation=45, ha='right')
+
     ax2.bar(r, whole_proteome, color='lightgray', edgecolor='black', width=0.5,
-            linewidth = 1)
-    ax2.bar(r, deps,color = colors,  edgecolor = 'black', width = 0.5, linewidth = 1)
+            linewidth=1)
+    ax2.bar(r, deps, color=colors,  edgecolor='black', width=0.5, linewidth=1)
     ax.set_ylim(max(whole_proteome[:-1])*1.1, max(whole_proteome)*1.01)  # outliers only
     ax2.set_ylim(0, max(whole_proteome[:-1])*1.005)  # most of the data
     sns.despine()
     ax.spines['bottom'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    ax.tick_params(bottom = False)
+    ax.tick_params(bottom=False)
     plt.xticks(r, conditions,
-            fontweight= None, rotation = 45, ha = 'right')
-    for i,j,k, c in zip (deps[:-1], r[:-1], whole_proteome[:-1],
-                      colors[:-1]):
-        ax2.annotate(i, xy = [j,k*1.005], ha = 'center',color = c,
+               fontweight=None, rotation=45, ha='right')
+    for i, j, k, c in zip(deps[:-1], r[:-1], whole_proteome[:-1],
+                          colors[:-1]):
+        ax2.annotate(i, xy=[j, k*1.005], ha='center', color=c,
                      weight='bold')
     ax.annotate(deps[-1], [r[-1], whole_proteome[-1]*1.001], ha='center',
-                color = colors[-1], weight='bold')
+                color=colors[-1], weight='bold')
     if save != None:
         if vector == True:
             plt.savefig(save + 'bar_deps.svg')
         else:
-            plt.savefig(save + 'bar_deps.png', dpi = 600)
+            plt.savefig(save + 'bar_deps.png', dpi=600)
 
-def protein_overlap(self, dpi = 600, min_subset = 10, face_color = 'darkcyan', shad_color="#f0f0f0",
-                      edge_color = 'black', linewidth = 1, save = None, vector = True,):
+
+def protein_overlap(self, dpi=600, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
+                    edge_color='black', linewidth=1, save=None, vector=True,):
     """Upset plot to evaluate protein overlap among groups
 
     Args:
@@ -93,12 +95,12 @@ def protein_overlap(self, dpi = 600, min_subset = 10, face_color = 'darkcyan', s
     import matplotlib.pyplot as plt
     from upsetplot import UpSet, from_contents
     plt.style.context('classic')
-    plt.rcParams['grid.alpha']= 0
-    plt.rcParams['figure.dpi']=dpi
+    plt.rcParams['grid.alpha'] = 0
+    plt.rcParams['figure.dpi'] = dpi
     plt.rcParams['patch.linewidth'] = linewidth
     plt.rcParams['patch.edgecolor'] = 'black'
     plt.rcParams['patch.force_edgecolor'] = True
-    
+
     data = copy(self)
     genes = []
     for i in data.group_data:
@@ -106,18 +108,19 @@ def protein_overlap(self, dpi = 600, min_subset = 10, face_color = 'darkcyan', s
     dictionary = dict(zip(data.groups, genes))
     upset = from_contents(dictionary)
 
-    figure = UpSet(upset,  facecolor= face_color, shading_color= shad_color,
-            min_subset_size= min_subset, show_counts=True,
-            with_lines=True)
+    figure = UpSet(upset,  facecolor=face_color, shading_color=shad_color,
+                   min_subset_size=min_subset, show_counts=True,
+                   with_lines=True)
     figure.plot()
     if save != None:
         if vector == True:
             plt.savefig(save + 'upset_proteins.svg')
         else:
-            plt.savefig(save + 'upset_proteins.png', dpi = 600)
+            plt.savefig(save + 'upset_proteins.png', dpi=600)
 
-def enrichment_overlap(self, dpi = 600, min_subset = 1, face_color = 'darkcyan', shad_color="#f0f0f0",
-                      edge_color = 'black', linewidth = 1,save = None, vector = True):
+
+def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_color="#f0f0f0",
+                       edge_color='black', linewidth=1, save=None, vector=True):
     """_summary_
 
     Args:
@@ -136,12 +139,12 @@ def enrichment_overlap(self, dpi = 600, min_subset = 1, face_color = 'darkcyan',
     """
     from upsetplot import UpSet, from_contents
     plt.style.context('classic')
-    plt.rcParams['grid.alpha']= 0
-    plt.rcParams['figure.dpi']=dpi
+    plt.rcParams['grid.alpha'] = 0
+    plt.rcParams['figure.dpi'] = dpi
     plt.rcParams['patch.linewidth'] = linewidth
     plt.rcParams['patch.edgecolor'] = 'black'
     plt.rcParams['patch.force_edgecolor'] = True
-    
+
     data = copy(self)
     genes = []
     if all(enr is None for enr in self.enrichment):
@@ -150,24 +153,25 @@ def enrichment_overlap(self, dpi = 600, min_subset = 1, face_color = 'darkcyan',
         try:
             genes.append(i['Term'].drop_duplicates())
         except:
-            df = pd.DataFrame(columns = ['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes'])
+            df = pd.DataFrame(columns=['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes'])
             genes.append(df['Term'].drop_duplicates())
     dictionary = dict(zip(data.groups, genes))
     upset = from_contents(dictionary)
 
-    figure = UpSet(upset,  facecolor= face_color, shading_color= shad_color, min_subset_size= min_subset, show_counts=True,
-        with_lines=True)
+    figure = UpSet(upset,  facecolor=face_color, shading_color=shad_color, min_subset_size=min_subset, show_counts=True,
+                   with_lines=True)
     for i in data.groups:
-        figure.style_subsets(present = i, edgecolor=edge_color, linewidth=linewidth)
+        figure.style_subsets(present=i, edgecolor=edge_color, linewidth=linewidth)
     figure.plot()
     if save != None:
         if vector == True:
             plt.savefig(save + 'upset_pathways.svg')
         else:
-            plt.savefig(save + 'upset_pathways.png', dpi = dpi)
-    
-def overlap_pearson(self, pvalue = 1, palette = 'Spectral', 
-                  save = None, vector = True, dpi = 600):
+            plt.savefig(save + 'upset_pathways.png', dpi=dpi)
+
+
+def overlap_pearson(self, pvalue=1, palette='Spectral',
+                    save=None, vector=True, dpi=600):
     """Pair-wise Pearson correlation heatmap for similarities 
     among groups 
 
@@ -184,27 +188,28 @@ def overlap_pearson(self, pvalue = 1, palette = 'Spectral',
     conditions = data.groups
     data1 = data.original
     totalMean = []
-    colors = sns.color_palette(palette, as_cmap=False, n_colors= len(conditions))
+    colors = sns.color_palette(palette, as_cmap=False, n_colors=len(conditions))
     for i in data1:
         df = i.set_index('Accession')
         df = df[df[self.pvalue] < pvalue]
         df = df[['TotalMean']]
         totalMean.append(df)
-    wholedata = pd.concat(totalMean, axis = 1, join = 'outer')
+    wholedata = pd.concat(totalMean, axis=1, join='outer')
     corr = wholedata.corr()
     corr.columns = data.groups
-    sns.clustermap(corr, cmap = 'RdYlBu', center = 0.9,
-                   col_colors=colors, row_colors = colors)
-    
+    sns.clustermap(corr, cmap='RdYlBu', center=0.9,
+                   col_colors=colors, row_colors=colors)
+
     if save != None:
         if vector == True:
             plt.savefig(save + 'clustermap.svg')
         else:
-            plt.savefig(save + 'clustermap.png', dpi = dpi)
+            plt.savefig(save + 'clustermap.png', dpi=dpi)
     plt.plot()
 
+
 def Differentially_Regulated(self,
-                             save = None, vector = True, dpi = 600):
+                             save=None, vector=True, dpi=600):
     """Dotplot for number of proteins up- and down-regulated
 
     Args:
@@ -214,47 +219,48 @@ def Differentially_Regulated(self,
         dpi (int, optional): Image resolution. Defaults to 600.
     """
     data = copy(self)
-    groups =  data.groups
+    groups = data.groups
     difreg = data.group_data
     up = []
     down = []
-    
+
     for i in difreg:
-        up.append(len(i[i['log2(fc)']>0]))
-        down.append(-len(i[i['log2(fc)']<0]))
-    dysregulations = pd.DataFrame(columns = groups,
-                                  data=[up, down], index = ['Up-regulated', 'Down-regulated']).transpose()
-    
+        up.append(len(i[i['log2(fc)'] > 0]))
+        down.append(-len(i[i['log2(fc)'] < 0]))
+    dysregulations = pd.DataFrame(columns=groups,
+                                  data=[up, down], index=['Up-regulated', 'Down-regulated']).transpose()
+
     df = dysregulations
 
     df = df.reset_index()
     df = df.melt('index')
-    df['color'] = np.where(df['value']>0, '#e3432d', '#167a9c')
+    df['color'] = np.where(df['value'] > 0, '#e3432d', '#167a9c')
     df['value'] = abs(df['value'])
     M = 2
     N = len(groups)
-    fig, ax = plt.subplots(figsize=(1.15,5/9*len(df)/2))
-    scatter = ax.scatter(x = df['variable'], y = df['index'], s = df['value'],
-               c = df['color'], ec = 'black', lw = 0.5)
+    fig, ax = plt.subplots(figsize=(1.15, 5/9*len(df)/2))
+    scatter = ax.scatter(x=df['variable'], y=df['index'], s=df['value'],
+                         c=df['color'], ec='black', lw=0.5)
     ax.set_xticks(np.arange(M+1)-0.5, minor=True)
     ax.set_yticks(np.arange(N+1)-0.5, minor=True)
     sns.despine()
-    plt.xticks(rotation = 45, ha = 'right')
-    plt.yticks(rotation = 45)
-    kw = dict(prop="sizes", num=3, color = 'black', alpha = .6)
-    ax.legend(*scatter.legend_elements(**kw), title="# Proteins",handleheight = 2,
-                        bbox_to_anchor=(1, 1),loc="upper left", markerscale = 1,
-                        edgecolor = 'white')
-    plt.margins(x =1, y = 0.1)
-    
+    plt.xticks(rotation=45, ha='right')
+    plt.yticks(rotation=45)
+    kw = dict(prop="sizes", num=3, color='black', alpha=.6)
+    ax.legend(*scatter.legend_elements(**kw), title="# Proteins", handleheight=2,
+              bbox_to_anchor=(1, 1), loc="upper left", markerscale=1,
+              edgecolor='white')
+    plt.margins(x=1, y=0.1)
+
     if save != None:
         if vector == True:
             plt.savefig(save + 'clustermap.svg')
         else:
-            plt.savefig(save + 'clustermap.png', dpi = dpi)
+            plt.savefig(save + 'clustermap.png', dpi=dpi)
     plt.show()
 
-def network(self, labels = False, save = None, vector = True):
+
+def network(self, labels=False, save=None, vector=True):
     """Network of entities differentially regulated for each
     group analysed.
 
@@ -274,59 +280,60 @@ def network(self, labels = False, save = None, vector = True):
     network_frame = []
     for group, df, color in zip(data.groups, data.original, palette):
         df['Experiment'] = group
-        df = df[df[self.pvalue]<0.05]
+        df = df[df[self.pvalue] < 0.05]
         df['Size'] = len(df)
         df['color'] = color
         network_frame.append(df)
     network_frame = pd.concat(network_frame)
     source = pd.DataFrame({'ID': network_frame['Experiment'],
-                       'Size': network_frame['Size'],
-                       'type': 'Experiment',
-                       'color': network_frame['color']})
+                           'Size': network_frame['Size'],
+                           'type': 'Experiment',
+                           'color': network_frame['color']})
     source = source.drop_duplicates()
     norm = mpl.colors.TwoSlopeNorm(vmin=min(network_frame['log2(fc)']),
-                            vmax=max(network_frame['log2(fc)']),
-                            vcenter = 0)
+                                   vmax=max(network_frame['log2(fc)']),
+                                   vcenter=0)
     cmap = cm.RdYlBu_r
     m = cm.ScalarMappable(norm=norm, cmap=cmap)
-    color_hex =  [mcolors.to_hex(m.to_rgba(x)) for x in network_frame['log2(fc)']]
-   
+    color_hex = [mcolors.to_hex(m.to_rgba(x)) for x in network_frame['log2(fc)']]
+
     target = pd.DataFrame({'ID': network_frame['gene_name'],
-                       'Size':  int(min(network_frame['Size'])*0.5),
-                       'type': 'Protein',
-                       'color': color_hex})
+                           'Size':  int(min(network_frame['Size'])*0.5),
+                           'type': 'Protein',
+                           'color': color_hex})
     target = target.drop_duplicates()
     edgelist = network_frame[['Experiment', 'gene_name']]
     G = nx.from_pandas_edgelist(edgelist,
-                               source='Experiment',
-                               target='gene_name',
-                               create_using=nx.Graph)
-    carac = pd.concat([source, target]).reset_index(drop = True)
+                                source='Experiment',
+                                target='gene_name',
+                                create_using=nx.Graph)
+    carac = pd.concat([source, target]).reset_index(drop=True)
     carac = carac.drop_duplicates('ID')
     carac = carac.set_index('ID')
     nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
     nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
-    pos= nx.kamada_kawai_layout(G)
-    carac=carac.reindex(G.nodes())
+    pos = nx.kamada_kawai_layout(G)
+    carac = carac.reindex(G.nodes())
     nx.draw(G,
-           pos = pos,
-           node_color=carac['color'],
-           node_size= carac['Size']/20,
-           edgecolors='black',
-           linewidths=0.4,
-           alpha=0.9,
-           width=0.2,
-           edge_color='gray')  
+            pos=pos,
+            node_color=carac['color'],
+            node_size=carac['Size']/20,
+            edgecolors='black',
+            linewidths=0.4,
+            alpha=0.9,
+            width=0.2,
+            edge_color='gray')
     if labels is True:
-        nx.draw_networkx_labels(G,pos,font_size = 6)
+        nx.draw_networkx_labels(G, pos, font_size=6)
     if save != None:
-        nx.write_graphml(G, save+ 'PPNetwork.graphml', named_key_ids = True)
+        nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
         if vector == True:
             plt.savefig(save + 'PPNetwork.svg')
         else:
             plt.savefig(save + 'PPNetwork.dpi', dpi=300)
     plt.show()
-    return(G)
+    return (G)
+
 
 def overlap_fisher(group1, group2, union):
     """Perform a pair-wise comparison based on hypergeometric
@@ -354,8 +361,9 @@ def overlap_fisher(group1, group2, union):
     pval = sum(rv.pmf(x))
     return pval
 
-def overlap_stat(self, palette = 'Spectral', pvalue = 0.05,
-    save = None, vector = True):
+
+def overlap_stat(self, palette='Spectral', pvalue=0.05,
+                 save=None, vector=True):
     """Perform a pair-wise comparison of all conditions 
     based on hypergeometric distribution and plot a heatmap
     with hierarchical clustering
@@ -381,23 +389,23 @@ def overlap_stat(self, palette = 'Spectral', pvalue = 0.05,
     union = set(pd.concat(self.original).gene_name)
     sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
     sets = pd.DataFrame(sets)
-    matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union = union))
+    matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
     matrix = squareform(matrix)
-    matrix = pd.DataFrame(matrix, columns = conditions, index = conditions)
+    matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
     annot = -np.log10(matrix)
     annot[annot == np.inf] = np.nan
-    sns.clustermap(matrix, cmap = palette, annot = annot,
-                mask=annot.isnull(),
-                col_colors= colors, row_colors= colors)
+    sns.clustermap(matrix, cmap=palette, annot=annot,
+                   mask=annot.isnull(),
+                   col_colors=colors, row_colors=colors)
     if save != None:
         if vector == True:
             plt.savefig(save + 'clustermap.svg')
         else:
-            plt.savefig(save + 'clustermap.png', dpi = 300)
+            plt.savefig(save + 'clustermap.png', dpi=300)
     return matrix
 
 
-def group_network(self, pvalue = 0.05, save = None, vector = True):
+def group_network(self, pvalue=0.05, save=None, vector=True):
     """Network of all groups analysed. Links were annotated based on
     overlap found in statistical hypergeometric distribution.
 
@@ -425,41 +433,40 @@ def group_network(self, pvalue = 0.05, save = None, vector = True):
     union = set(pd.concat(self.original).gene_name)
     sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
     sets = pd.DataFrame(sets)
-    matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union = union))
+    matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
     matrix = squareform(matrix)
-    matrix = pd.DataFrame(matrix, columns = conditions, index = conditions)
+    matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
     matrix[matrix > pvalue] = 0
     G = nx.from_pandas_adjacency(matrix)
-    G.edges(data = True)
+    G.edges(data=True)
     size = [len(set(x[x[pval] < pvalue].gene_name)) for x in self.original]
-    carac = pd.DataFrame(zip(conditions,palette, size),
-             columns = ['ID', 'color', 'Size'])
+    carac = pd.DataFrame(zip(conditions, palette, size),
+                         columns=['ID', 'color', 'Size'])
     carac = carac.set_index('ID')
     nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
     nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
-    pos= nx.kamada_kawai_layout(G, )
-    carac=carac.reindex(G.nodes())
-    pos= nx.kamada_kawai_layout(G, weight= None)
+    pos = nx.kamada_kawai_layout(G, )
+    carac = carac.reindex(G.nodes())
+    pos = nx.kamada_kawai_layout(G, weight=None)
     edges = G.edges
-    weights = [G[u][v]['weight'] for u,v in edges]
+    weights = [G[u][v]['weight'] for u, v in edges]
     weights = -np.log10(weights)
-    weights = [round(x,2) for x in weights]
+    weights = [round(x, 2) for x in weights]
     norm = [float(i)*5/np.mean(weights) for i in weights]
     nx.draw(G,
-            pos = pos,
+            pos=pos,
             node_color=carac['color'],
-            node_size= carac['Size'],
+            node_size=carac['Size'],
             edgecolors='black',
-            linewidths= 0.6,
+            linewidths=0.6,
             alpha=0.9,
             width=norm,
-           edge_color='gray')
-    nx.draw_networkx_labels(G,pos,font_size = 6)
-    labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_edge_labels(G,pos,edge_labels=
-    dict(zip(list(labels.keys()), weights)))
+            edge_color='gray')
+    nx.draw_networkx_labels(G, pos, font_size=6)
+    labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=dict(zip(list(labels.keys()), weights)))
     if save != None:
-        nx.write_graphml(G, save+ 'PPNetwork.graphml', named_key_ids = True)
+        nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
         if vector == True:
             plt.savefig(save + 'PPNetwork.svg')
         else:

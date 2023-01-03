@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 from copy import copy
 
+
 class Input:
     def __init__(self, Table, filtering_method):
         """  PatternLab V output for OmicScope input
@@ -30,7 +31,7 @@ class Input:
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
         self.filtering_method = filtering_method
         self.filtering_data()
-       
+
     def PatternLab(self):
         """ Extract all PatternLab V information
         """
@@ -84,22 +85,22 @@ class Input:
         Accession = rdata.Locus.str.split(f'|').str[1]
         gene_name = rdata['Description'].str.split('GN=').str[-1]
         gene_name = gene_name.str.split(' ').str[0]
-        rdata = rdata.assign(Accession = Accession,
-                             gene_name = gene_name)
-        return(assay, pdata, rdata)
+        rdata = rdata.assign(Accession=Accession,
+                             gene_name=gene_name)
+        return (assay, pdata, rdata)
 
     def filtering_data(self):
         assay = copy(self.assay)
         rdata = copy(self.rdata)
         assay.index = rdata.Locus
         rdata.index = rdata.Locus
-        not_null_matrix = assay[assay>0]
+        not_null_matrix = assay[assay > 0]
         # If user use percentage of null values, filter according to percentage
         if isinstance(self.filtering_method, int):
             ncol = len(not_null_matrix.columns)
             nan_count = not_null_matrix.apply(lambda x: (1 -
-                                                   x.isna().sum()/ncol)*100,
-                                                        axis = 1)
+                                                         x.isna().sum()/ncol)*100,
+                                              axis=1)
             nan_count = nan_count[nan_count > self.filtering_method]
             self.assay = assay[assay.index.isin(nan_count.index)]
             self.rdata = rdata[rdata['Locus'].isin(nan_count.index)]
@@ -108,11 +109,11 @@ class Input:
         elif self.filtering_method == 'minimum':
             pdata = copy(self.pdata)
             conditions = dict(zip(pdata.Sample, pdata.Condition))
-            valid_values = assay.rename(columns = conditions)
-            valid_values = not_null_matrix.rename(columns = conditions)
+            valid_values = assay.rename(columns=conditions)
+            valid_values = not_null_matrix.rename(columns=conditions)
             valid_values[valid_values.notna()] = 1
             valid_values = valid_values.groupby(by=valid_values.columns,
-                                                    axis=1).sum()
-            valid_values = valid_values[valid_values>1].dropna()
+                                                axis=1).sum()
+            valid_values = valid_values[valid_values > 1].dropna()
             self.assay = assay[assay.index.isin(valid_values.index)]
             self.rdata = rdata[rdata['Locus'].isin(valid_values.index)]

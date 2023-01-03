@@ -8,10 +8,11 @@ all OmicScope workflow, being the input for all other modules.
 
 from ..Input import *
 
+
 class OmicScope_Peptide(Input):
     def __init__(self, Table, ControlGroup, Method, FoldChange_cutoff=0,
-                 PValue_cutoff=0.05, logTransformed=False,ExcludeKeratins = True,
-                  **kwargs):
+                 PValue_cutoff=0.05, logTransformed=False, ExcludeKeratins=True,
+                 **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -57,13 +58,12 @@ class OmicScope_Peptide(Input):
         quant_data['Modifications'] = quant_data['Modifications'].astype(str)
         quant_data['Accession'] = quant_data['Accession'].str.split('.').str[-1]
         quant_data = quant_data.groupby(columns)['Modifications'].apply('|'.join).reset_index()
-        quant_data['gene_name'] =  quant_data.Description.str.split('GN=').str[-1]
+        quant_data['gene_name'] = quant_data.Description.str.split('GN=').str[-1]
         quant_data['gene_name'] = quant_data['gene_name'].str.split(' ').str[0]
         import numpy as np
-        quant_data['gene_name'] = quant_data['gene_name'].replace(np.nan,'')
+        quant_data['gene_name'] = quant_data['gene_name'].replace(np.nan, '')
         quant_data['gene_name'] = quant_data['gene_name']+'-'+quant_data['Sequence']
         self.quant_data = quant_data
-        
 
     def expression(self):
         """Joins the technical replicates and organizes biological
@@ -93,7 +93,7 @@ class OmicScope_Peptide(Input):
             '.' + expression['Condition']
 
         #  data with just biological replicates abundance
-        expression['Accession'] = expression['Sequence'] + '.'+ expression['Accession']
+        expression['Accession'] = expression['Sequence'] + '.' + expression['Accession']
         expression = expression[['Sample', 'Accession', 'abundance']]
         # Sum peptides intensities
         expression = expression.groupby(['Sample', 'Accession']).sum().reset_index()
@@ -101,7 +101,6 @@ class OmicScope_Peptide(Input):
 
         # Adjusting rdata Accessions
         rdata = self.rdata
-        rdata['Accession'] = rdata['Sequence'] + '.'+ rdata['Accession']
+        rdata['Accession'] = rdata['Sequence'] + '.' + rdata['Accession']
         self.rdata = rdata[['Sequence', 'Modifications', 'Accession', 'Description']]
-        return(expression)
-
+        return (expression)

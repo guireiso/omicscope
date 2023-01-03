@@ -21,9 +21,8 @@ import random
 from kneed import KneeLocator
 
 
-
 def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
-             vector=True):
+              vector=True):
     """Show the amount of entities identified and differentially regulated
     in the study.
 
@@ -62,7 +61,7 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
     # Log scaling y-axis
     if logscale is True:
         ax = df.plot(kind='bar', color=col, rot=0, edgecolor="black", log=True,
-                      figsize=(2.4, 3.5))
+                     figsize=(2.4, 3.5))
     else:
         ax = df.plot(kind='bar', color=col, rot=0, edgecolor="black",
                      figsize=(2.4, 3.5))
@@ -133,7 +132,7 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     comparisons = comparisons.str[-1] + '-' + comparisons.str[0]
     number_of_comparison = len(comparisons.drop_duplicates())
     color_per_comparison = sns.color_palette(palette=palette,
-                                            n_colors=number_of_comparison).as_hex()
+                                             n_colors=number_of_comparison).as_hex()
     color_comp_dict = dict(zip(comparisons, color_per_comparison))
     col = []
     comparison = []
@@ -174,9 +173,9 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     plt.figure(figsize=(8, 8))
     # Scatter plot
     ax_scatter = plt.axes(rect_scatter)
-    sns.scatterplot(x = df.fc, y = df[OmicScope.pvalue], alpha=0.7,
-                     hue=df.comparison,
-                     palette=list(df.col.drop_duplicates()))
+    sns.scatterplot(x=df.fc, y=df[OmicScope.pvalue], alpha=0.7,
+                    hue=df.comparison,
+                    palette=list(df.col.drop_duplicates()))
     sns.despine(left=False)
     plt.xlabel("log2( FC)")
     plt.ylabel(f'-log10({OmicScope.pvalue})')
@@ -206,7 +205,7 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
         from adjustText import adjust_text
         texts = []
         for a, b, c in zip(ls_final['log2(fc)'], ls_final[f'-log10({OmicScope.pvalue})'],
-                            ls_final['gene_name']):
+                           ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
             adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
                         expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
@@ -234,8 +233,8 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
 
 
 def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
-            non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
-            save='', dpi=300, vector=True):
+                  non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
+                  save='', dpi=300, vector=True):
     """Creates a volcano plot for two conditions .
 
     Args:
@@ -308,7 +307,7 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     plt.figure(figsize=(8, 8))
     ax_scatter = plt.axes(rect_scatter)
     # Scatter plot
-    sns.scatterplot(x = df.fc, y= df.pval, alpha=0.5, linewidth=0.5,
+    sns.scatterplot(x=df.fc, y=df.pval, alpha=0.5, linewidth=0.5,
                     hue=df.Regulation,
                     palette=list(df.col.drop_duplicates().dropna()))
     plt.xlabel("log2( FC)")
@@ -376,8 +375,8 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
 
 def volcano(OmicScope, *Proteins,
             pvalue=0.05, bcol='#962558', palette='viridis',
-                        non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
-                        save='', dpi=300, vector=True):
+            non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
+            save='', dpi=300, vector=True):
     """Creates volcano plot.
 
     Args:
@@ -400,13 +399,14 @@ def volcano(OmicScope, *Proteins,
     OmicScope = copy.copy(OmicScope)
     if len(OmicScope.Conditions) == 2:
         volcano_2cond(OmicScope, *Proteins, pvalue=pvalue, bcol=bcol,
-                    non_regulated=non_regulated, up_regulated=up_regulated,
-                    down_regulated=down_regulated,
-                    save=save, dpi=dpi, vector=vector)
+                      non_regulated=non_regulated, up_regulated=up_regulated,
+                      down_regulated=down_regulated,
+                      save=save, dpi=dpi, vector=vector)
     if len(OmicScope.Conditions) > 2:
         volcano_Multicond(OmicScope=OmicScope, *Proteins,
                           pvalue=pvalue, palette=palette, bcol=bcol,
                           save='', dpi=dpi, vector=vector)
+
 
 def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
             palette='RdYlBu_r', line=0.01, color_groups='tab20',
@@ -451,17 +451,17 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     # Creating Heatmap Matrix
     heatmap = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     heatmap = heatmap.loc[(heatmap['log2(fc)'] <= -FoldChange_cutoff)
-                           | (heatmap['log2(fc)'] >= FoldChange_cutoff)]
+                          | (heatmap['log2(fc)'] >= FoldChange_cutoff)]
     heatmap = heatmap.dropna()
     # Filtering for specific proteins
     if len(Proteins) > 0:
         heatmap = heatmap[heatmap['gene_name'].isin(Proteins)]
     heatmap = heatmap.set_index('gene_name')
-    heatmap = heatmap.loc[:, heatmap.columns.str.contains('.', regex = False)]
+    heatmap = heatmap.loc[:, heatmap.columns.str.contains('.', regex=False)]
     # Log2 transform
     heatmap = np.log2(heatmap).replace([-np.inf], int(0))
     heatmap = heatmap[sort_columns]
-    heatmap = heatmap.rename(columns = sample_condition)
+    heatmap = heatmap.rename(columns=sample_condition)
     Col = list(heatmap.columns)
     # Creating matrix for group colors
     ngroup = len(Conditions)
@@ -478,10 +478,10 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     sns.clustermap(heatmap,
-              cmap=palette, z_score=0, linewidths=line, linecolor='black',
-              col_colors=colors,
-              col_cluster=c_cluster,
-              figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
+                   cmap=palette, z_score=0, linewidths=line, linecolor='black',
+                   col_colors=colors,
+                   col_cluster=c_cluster,
+                   figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
     # Save
     if save != '':
         if vector == True:
@@ -492,9 +492,9 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
 
 
 def correlation(OmicScope, *Proteins, pvalue=1.0,
-            Method='pearson', palette='RdYlBu_r', line=0.005,
-            color_groups='tab20',
-            save='', dpi=300, vector=True):
+                Method='pearson', palette='RdYlBu_r', line=0.005,
+                color_groups='tab20',
+                save='', dpi=300, vector=True):
     """Pairwise correlation plot for samples.
 
     Args:
@@ -533,21 +533,21 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     # Selecting Matrix for correlation
     pearson = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     pearson = pearson.loc[(pearson['log2(fc)'] <= -FoldChange_cutoff)
-                           | (pearson['log2(fc)'] >= FoldChange_cutoff)]
+                          | (pearson['log2(fc)'] >= FoldChange_cutoff)]
     pearson = pearson.dropna()
     # Filtering for specific proteins
     if len(Proteins) > 0:
         pearson = pearson[pearson['gene_name'].isin(Proteins)]
     pearson = pearson.set_index('gene_name')
-    pearson = pearson.loc[:, pearson.columns.str.contains('.', regex = False)]
+    pearson = pearson.loc[:, pearson.columns.str.contains('.', regex=False)]
     # log2 transform
     pearson = np.log2(pearson).replace([-np.inf], int(0))
     # Performing Pearson's Correlation
     corr_matrix = pearson.corr(method=Method)
     # Creating matrix for group colors
-    
+
     corr_matrix = corr_matrix[sort_columns]
-    corr_matrix = corr_matrix.rename(columns = sample_condition)
+    corr_matrix = corr_matrix.rename(columns=sample_condition)
     Col = list(corr_matrix.columns)
     # Creating matrix for group colors
     ngroup = len(Conditions)
@@ -562,9 +562,9 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     sns.clustermap(corr_matrix,
-                    xticklabels=corr_matrix.columns, row_colors=colors,
-                    yticklabels=corr_matrix.columns, col_colors=colors,
-                    cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
+                   xticklabels=corr_matrix.columns, row_colors=colors,
+                   yticklabels=corr_matrix.columns, col_colors=colors,
+                   cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
     if save != '':
         if vector == True:
             plt.savefig(save + 'pearson.svg')
@@ -575,10 +575,9 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
 
 
 def DynamicRange(OmicScope, *Proteins, color='#565059',
-                protein_color='orange', max_min=False,
-                 min_color='#18ab75', max_color='#ab4e18', dpi=300, save = '',
+                 protein_color='orange', max_min=False,
+                 min_color='#18ab75', max_color='#ab4e18', dpi=300, save='',
                  vector=True):
-
     """Dynamic range plot
 
     Args:
@@ -624,14 +623,14 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
                     alpha=0.7, s=2, c=max_color)
     # Plot mean
     plt.scatter(y=df['rank'], x=df['mean'],
-                c=color, s=10, alpha = 0.5,
+                c=color, s=10, alpha=0.5,
                 linewidths=0.5)
     # Highlight specific proteins
     if len(Proteins) > 0:
         df = df[df.gene_name.isin(Proteins)]
         plt.scatter(y=df['rank'], x=df['mean'],
-            c=protein_color, s=10, alpha = 1, edgecolors='black', 
-            linewidths=0.5)
+                    c=protein_color, s=10, alpha=1, edgecolors='black',
+                    linewidths=0.5)
         ls_final = df
         ls_final = ls_final[['gene_name', 'rank', 'mean']]
         from adjustText import adjust_text
@@ -655,7 +654,7 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
     plt.show()
 
 
-def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
+def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
         marks=False, palette='tab20', FoldChange_cutoff=0,
         save='', dpi=300, vector=True):
     """ Perform Principal Component Analysis.
@@ -681,7 +680,7 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     df = df[df[OmicScope.pvalue] < pvalue]
     if len(OmicScope.Conditions) == 2:
         df = df.loc[(df['log2(fc)'] <= -FoldChange_cutoff) | (df['log2(fc)'] >= FoldChange_cutoff)]
-    df = df.loc[:, df.columns.str.contains('.', regex = False)]
+    df = df.loc[:, df.columns.str.contains('.', regex=False)]
     samples = df.columns
     # Getting Conditions
     Conditions = OmicScope.Conditions
@@ -693,9 +692,9 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     # Center and Scale data
     scaled_data = preprocessing.scale(df.T)
     pca = PCA()  # PCA object
-    pca.fit(scaled_data)  
-     # get PCA coordinates for scaled_data
-    pca_data = pca.transform(scaled_data) 
+    pca.fit(scaled_data)
+    # get PCA coordinates for scaled_data
+    pca_data = pca.transform(scaled_data)
     # Scree plot
     per_var = np.round(pca.explained_variance_ratio_ * 100, decimals=1)
     labels = ['PC' + str(x) for x in range(1, len(per_var) + 1)]
@@ -711,14 +710,14 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     ax1.grid(b=False)
     # PC1 vs PC2 plot
     pca_df = pd.DataFrame(pca_data, index=samples, columns=labels)
-    pdata = OmicScope.pdata 
+    pdata = OmicScope.pdata
     conditions = pdata.set_index('Sample')[['Condition']]
     if 'TimeCourse' in pdata.columns:
         conditions = pdata.set_index('Sample')[['Condition', 'TimeCourse']]
-        pca_df = pca_df.merge(conditions, right_index= True, left_index=True)
+        pca_df = pca_df.merge(conditions, right_index=True, left_index=True)
         pca_df = pca_df.set_index(['Condition', 'TimeCourse'])
     else:
-        pca_df = pca_df.merge(conditions, right_index= True, left_index=True)
+        pca_df = pca_df.merge(conditions, right_index=True, left_index=True)
         pca_df = pca_df.set_index(['Condition'])
     sns.scatterplot(x="PC1", y="PC2", data=pca_df, hue=list(pca_df.index), palette=palette,
                     edgecolor='black', linewidth=1, s=100, alpha=0.7)
@@ -727,7 +726,7 @@ def pca(OmicScope, pvalue=1.00, scree_color = '#900C3F',
     plt.ylabel('PC2 - {0}%'.format(per_var[1]))
     plt.grid(b=False)
     sns.despine()
-    #Annotate samples in PCA plot
+    # Annotate samples in PCA plot
     if marks == True:
         for sample in pca_df.index:
             plt.annotate(sample, (pca_df.PC1.loc[sample], pca_df.PC2.loc[sample]))
@@ -749,31 +748,32 @@ def color_scheme(df, palette):
     Returns:
         color (dict): dictionary assign each condition with respective color. 
     """
-    color = df.index.to_frame().reset_index(drop = True)
-    color['variable']= color.astype(str).apply(lambda x: '_'.join(x), axis = 1)
+    color = df.index.to_frame().reset_index(drop=True)
+    color['variable'] = color.astype(str).apply(lambda x: '_'.join(x), axis=1)
     color = color.drop_duplicates().sort_values('variable')
     colors_scheme = ['red', 'blue', 'orange', 'green', 'darkcyan', 'magenta']
     if 'TimeCourse' in color.columns:
         timecourse = len(color.TimeCourse.drop_duplicates())
     else:
-        timecourse = 1 
+        timecourse = 1
     random.seed(10)
     colors_random = random.sample(colors_scheme, color.Condition.nunique())
     palettes = []
     if timecourse > 1:
         for i in colors_random:
-            palette = sns.light_palette(i,n_colors = timecourse).as_hex()
+            palette = sns.light_palette(i, n_colors=timecourse).as_hex()
             palettes.append(palette)
     else:
-            ncolors = color.Condition.nunique()
-            palettes = sns.color_palette(palette=palette, n_colors = ncolors).as_hex()
+        ncolors = color.Condition.nunique()
+        palettes = sns.color_palette(palette=palette, n_colors=ncolors).as_hex()
     color['colors'] = list(pd.Series(palettes).explode())
     color = dict(zip(color.variable, color.colors))
     return color
 
+
 def bar_protein(OmicScope, *Proteins, logscale=True,
-                  palette='Spectral', save='', dpi=300,
-                  vector=True):
+                palette='Spectral', save='', dpi=300,
+                vector=True):
     """Bar plot to show protein abundance in each condition
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
@@ -785,7 +785,7 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
     """
-    plt.rcParams['figure.dpi']=dpi
+    plt.rcParams['figure.dpi'] = dpi
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
@@ -793,17 +793,17 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
     ctrl = [copy.copy(OmicScope.ctrl)]
     conditions = copy.copy(OmicScope.Conditions)
     conditions.remove(ctrl[0])
-    # Get protein abundance for each condition 
+    # Get protein abundance for each condition
     df = df.set_index('gene_name')
-    df = df.iloc[:,df.columns.str.contains('.', regex = False)]
-    df = df.melt(var_name = 'variable', ignore_index=False)
+    df = df.iloc[:, df.columns.str.contains('.', regex=False)]
+    df = df.melt(var_name='variable', ignore_index=False)
     df = df.reset_index()
     pdata = copy.copy(OmicScope.pdata)
     pdata = pdata.set_index('Sample')
     df = df.set_index('variable')
-    df = pdata.merge(df, left_index = True, right_index = True)
+    df = pdata.merge(df, left_index=True, right_index=True)
     if 'TimeCourse' in df.columns:
-        df = df[[ 'Condition',  'TimeCourse','gene_name', 'value']]
+        df = df[['Condition',  'TimeCourse', 'gene_name', 'value']]
         df = df.set_index(['Condition', 'TimeCourse'])
     else:
         df = df[['Condition', 'gene_name', 'value']]
@@ -813,12 +813,12 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
 
-    color = color_scheme(df, palette = palette)
-    df_index = df.index.to_frame().reset_index(drop = True)
-    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis = 1) 
-    df.index = df_index   
+    color = color_scheme(df, palette=palette)
+    df_index = df.index.to_frame().reset_index(drop=True)
+    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis=1)
+    df.index = df_index
     # Size of figure
-    sns.set(rc={'figure.figsize': (1.5*len(Proteins),5)})
+    sns.set(rc={'figure.figsize': (1.5*len(Proteins), 5)})
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(style="ticks", rc=custom_params)
     # Plot
@@ -829,10 +829,10 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
                     edgecolor='black', linewidth=1, dodge=False)
     else:
         sns.barplot(x='gene_name', y='value', hue=list(df.index),
-                        data=df, errwidth=1,
-                        capsize=0.07,edgecolor='black',
-                        palette= color,
-                        linewidth=1)
+                    data=df, errwidth=1,
+                    capsize=0.07, edgecolor='black',
+                    palette=color,
+                    linewidth=1)
     plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
     sns.despine()
     plt.title('Abundance - ' + ' and '.join(Proteins))
@@ -845,9 +845,10 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
     plt.show()
 
+
 def boxplot_protein(OmicScope, *Proteins, logscale=True,
-                  palette='Spectral', save='', dpi=300,
-                  vector=True):
+                    palette='Spectral', save='', dpi=300,
+                    vector=True):
     """Boxplot to show protein abundance in each condition
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
@@ -859,7 +860,7 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
     """
-    plt.rcParams['figure.dpi']=dpi
+    plt.rcParams['figure.dpi'] = dpi
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
@@ -867,17 +868,17 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
     ctrl = [copy.copy(OmicScope.ctrl)]
     conditions = copy.copy(OmicScope.Conditions)
     conditions.remove(ctrl[0])
-    # Get protein abundance for each condition 
+    # Get protein abundance for each condition
     df = df.set_index('gene_name')
-    df = df.iloc[:,df.columns.str.contains('.', regex = False)]
-    df = df.melt(var_name = 'variable', ignore_index=False)
+    df = df.iloc[:, df.columns.str.contains('.', regex=False)]
+    df = df.melt(var_name='variable', ignore_index=False)
     df = df.reset_index()
     pdata = copy.copy(OmicScope.pdata)
     pdata = pdata.set_index('Sample')
     df = df.set_index('variable')
-    df = pdata.merge(df, left_index = True, right_index = True)
+    df = pdata.merge(df, left_index=True, right_index=True)
     if 'TimeCourse' in df.columns:
-        df = df[[ 'Condition',  'TimeCourse','gene_name', 'value']]
+        df = df[['Condition',  'TimeCourse', 'gene_name', 'value']]
         df = df.set_index(['Condition', 'TimeCourse'])
     else:
         df = df[['Condition', 'gene_name', 'value']]
@@ -887,25 +888,25 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
         df['value'] = np.log2(df['value'])
         df['value'] = df['value'].replace(-np.inf, np.nan)
 
-    color = color_scheme(df, palette = palette)
-    df_index = df.index.to_frame().reset_index(drop = True)
-    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis = 1) 
-    df.index = df_index   
+    color = color_scheme(df, palette=palette)
+    df_index = df.index.to_frame().reset_index(drop=True)
+    df_index = df_index.astype(str).apply(lambda x: '_'.join(x), axis=1)
+    df.index = df_index
     # Size of figure
-    sns.set(rc={'figure.figsize': (1.5*len(Proteins),5)})
+    sns.set(rc={'figure.figsize': (1.5*len(Proteins), 5)})
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(style="ticks", rc=custom_params)
     # Plot
     if len(Proteins) == 1:
         sns.boxplot(x=df.index, y='value',
-                    data=df, 
+                    data=df,
                     palette=color,
                     edgecolor='black', linewidth=1, dodge=False)
     else:
         sns.boxplot(x='gene_name', y='value', hue=list(df.index),
-                        data=df,
-                        palette= color,
-                        linewidth=1)
+                    data=df,
+                    palette=color,
+                    linewidth=1)
     plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
     sns.despine()
     plt.title('Abundance - ' + ' and '.join(Proteins))
@@ -918,10 +919,11 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
     plt.show()
 
+
 def MAplot(OmicScope,
            pvalue=0.05, non_regulated='#606060', up_regulated='#E4001B',
-           down_regulated='#6194BC', FoldChange_cutoff = 0,
-                       save='', dpi=300, vector=True):
+           down_regulated='#6194BC', FoldChange_cutoff=0,
+           save='', dpi=300, vector=True):
     """MA plot
 
     Args:
@@ -947,14 +949,14 @@ def MAplot(OmicScope,
     x = df['log2(fc)']
     # Defining colors
     col = np.where(y > -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,
-                    np.where(x < FoldChange_cutoff, non_regulated, up_regulated),
-                    down_regulated), non_regulated)
+                                                   np.where(x < FoldChange_cutoff, non_regulated, up_regulated),
+                                                   down_regulated), non_regulated)
     regulation = np.where(y > -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,
-                         np.where(x < FoldChange_cutoff, 'non-regulated',
-                         'up-regulated'), 'down-regulated'), 'non-regulated')
+                                                          np.where(x < FoldChange_cutoff, 'non-regulated',
+                                                                   'up-regulated'), 'down-regulated'), 'non-regulated')
     df['col'] = col
     df['Regulation'] = regulation
-    #Plot
+    # Plot
     sns.set_style("whitegrid")
     sns.scatterplot(x='TotalMean', y='log2(fc)', data=df, hue='Regulation',
                     palette=list(df.col.drop_duplicates()))
@@ -970,71 +972,73 @@ def MAplot(OmicScope,
             plt.savefig(save + 'MAPlot.png', dpi=dpi)
     plt.show(block=True)
 
+
 def find_k(df):
     """Find the optimum k clusters"""
-    
+
     df_norm = df
     sse = {}
-    
+
     for k in range(1, 21):
         kmeans = KMeans(n_clusters=k, random_state=1)
         kmeans.fit(df_norm)
         sse[k] = kmeans.inertia_
-    
-    kn = KneeLocator(x=list(sse.keys()), 
-                 y=list(sse.values()), 
-                 curve='convex', 
-                 direction='decreasing')
+
+    kn = KneeLocator(x=list(sse.keys()),
+                     y=list(sse.values()),
+                     curve='convex',
+                     direction='decreasing')
     k = kn.knee
     print(k)
     return k
 
-def startrend(OmicScope, pvalue = 0.05, k_cluster = None):
-     """Perform a K-mean algorithm to identify co-expressed
-     proteins/genes and
-     Args:
-         OmicScope (_type_): _description_
-     """
-     omics = OmicScope
-     pdata = omics.pdata
-     try: 
-         pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis =1 )
-     except KeyError:
-         pdata['sample'] = pdata[['Condition', 'Biological']].astype(str).apply(lambda x: '-'.join(x), axis =1 )
-     data = omics.quant_data
-     protein_dictionary = dict(zip(data['Accession'], data['gene_name']))
-     data = data[data[omics.pvalue] < pvalue]
-     data = data.set_index('Accession')
-     data = data.iloc[:, data.columns.str.contains('.', regex = False)]
-     data = data.replace(0, 0.01)
-     data = np.log2(data)
-     # Scale protein abundance according to their mean (z-score)
-     zscored_data = zscore(data, axis = 1)
-     if k_cluster == None:
+
+def startrend(OmicScope, pvalue=0.05, k_cluster=None):
+    """Perform a K-mean algorithm to identify co-expressed
+    proteins/genes and
+    Args:
+        OmicScope (_type_): _description_
+    """
+    omics = OmicScope
+    pdata = omics.pdata
+    try:
+        pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis=1)
+    except KeyError:
+        pdata['sample'] = pdata[['Condition', 'Biological']].astype(str).apply(lambda x: '-'.join(x), axis=1)
+    data = omics.quant_data
+    protein_dictionary = dict(zip(data['Accession'], data['gene_name']))
+    data = data[data[omics.pvalue] < pvalue]
+    data = data.set_index('Accession')
+    data = data.iloc[:, data.columns.str.contains('.', regex=False)]
+    data = data.replace(0, 0.01)
+    data = np.log2(data)
+    # Scale protein abundance according to their mean (z-score)
+    zscored_data = zscore(data, axis=1)
+    if k_cluster == None:
         n_clusters = find_k(zscored_data)
-     else: 
+    else:
         n_clusters = k_cluster
-     kmeans = KMeans(n_clusters=n_clusters, init="k-means++",
-           max_iter=500)
-     protein_cluster_assig = kmeans.fit(zscored_data)    
-     k_data = zscored_data
-     k_data.columns = pdata['sample']
-     k_data['cluster'] = protein_cluster_assig.labels_
-     k_data_protein = k_data.reset_index().melt(id_vars= ['Accession', 'cluster'],
-         var_name = 'sample')
-     dictionary = dict(zip(pdata['sample'], pdata['Condition']))
-     k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
-     k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
-     g = sns.relplot(data = k_data_protein,
-        palette = 'dark',
-        col = 'cluster',
-        hue = 'Condition',
-        col_wrap = 2,
-        x = 'sample',
-        y = 'value',
-        kind = 'line',
-        facet_kws=dict(sharex=False))
-     g.set_ylabels('z-score', clear_inner=True)
-     g.set_xlabels('', clear_inner=True)
-     plt.show()
-     return k_data_protein
+    kmeans = KMeans(n_clusters=n_clusters, init="k-means++",
+                    max_iter=500)
+    protein_cluster_assig = kmeans.fit(zscored_data)
+    k_data = zscored_data
+    k_data.columns = pdata['sample']
+    k_data['cluster'] = protein_cluster_assig.labels_
+    k_data_protein = k_data.reset_index().melt(id_vars=['Accession', 'cluster'],
+                                               var_name='sample')
+    dictionary = dict(zip(pdata['sample'], pdata['Condition']))
+    k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
+    k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
+    g = sns.relplot(data=k_data_protein,
+                    palette='dark',
+                    col='cluster',
+                    hue='Condition',
+                    col_wrap=2,
+                    x='sample',
+                    y='value',
+                    kind='line',
+                    facet_kws=dict(sharex=False))
+    g.set_ylabels('z-score', clear_inner=True)
+    g.set_xlabels('', clear_inner=True)
+    plt.show()
+    return k_data_protein
