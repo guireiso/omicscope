@@ -45,5 +45,5 @@ html_short_title = '%s-%s' % (project, version)
 napoleon_use_ivar = True
 napoleon_use_rtype = False
 napoleon_use_param = False
-autodoc_mock_imports = ["pywin32"]
+autodoc_mock_imports = ["pywin32", 'pytz==2022.6', 'PyYAML==6.0', 'pyzmq==24.0.1']
 
