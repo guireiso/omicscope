@@ -66,7 +66,7 @@ class Omicscope(Input):
 
         self.ctrl = self.ControlGroup
         #  Has user already performed statistical analyses?
-        statistics = [f'Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
+        statistics = ['Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue',
                       'padj', 'p-adjusted', 'p-adj']
         if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat

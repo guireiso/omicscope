@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 from copy import copy
-from patsy import dmatrix
+from patsy import dmatrix, PatsyError
 
 
 def Spline_Model_Full(pdata, df):
@@ -85,7 +85,7 @@ def Spline_Model_Null(pdata, df):
     try:
         transformed_x = dmatrix(sentence,
                                 dictionary, return_type='dataframe')
-    except:
+    except PatsyError:
         transformed_x = pd.DataFrame([1] * len(pdata), columns=['Intercept'])
     transformed_x = transformed_x.reset_index(drop=True)
     return transformed_x

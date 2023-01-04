@@ -15,7 +15,6 @@ def perform_static_stat(self):
     expression = copy(self.expression)
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
-    pdata = copy(self.pdata)
     pvalue = copy(self.pvalue)
     # Log-normalize data if it was not
     if log is False:

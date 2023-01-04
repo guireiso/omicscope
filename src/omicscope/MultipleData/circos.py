@@ -136,7 +136,7 @@ class circos():
                 df['group'] = group
                 df = df.replace({"Gene_set": di}).reset_index(drop=True)
                 df.columns = ['pathway', 'color', 'group']
-            except:
+            except KeyError:
                 df = pd.DataFrame(columns=['pathway', 'color', 'group'])
             return (df)
         whole_enr = []

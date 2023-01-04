@@ -150,7 +150,7 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
     for i in data.enrichment:
         try:
             genes.append(i['Term'].drop_duplicates())
-        except:
+        except KeyError:
             df = pd.DataFrame(columns=['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes'])
             genes.append(df['Term'].drop_duplicates())
     dictionary = dict(zip(data.groups, genes))
