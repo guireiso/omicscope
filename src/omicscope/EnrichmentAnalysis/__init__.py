@@ -5,19 +5,28 @@ import pandas as pd
 import seaborn as sns
 
 
-class EnrichmentScope():
+class Enrichmentscope():
     def __init__(self, OmicScope, Analysis, dbs=['KEGG_2021_Human'],
                  padjust_cutoff=0.05, organism='Human'):
-        """_summary_
+        """EnrichmentScope is the module designed to perform over-representation
+            and Gene-Set Enrichment Analyises of proteins and genes.
+            Args:
+                OmicScope (Omicscope): Omicscope object
+                Analysis (str): Over-representation Analysis (ORA) or Gene-Set Enrichment Analysis (GSEA).
+                Defaults to 'ORA'.
+                dbs (List[str]): List of enrichment databases to perform the enrichment analysis.
+                Defaults to ['KEGG_2021_Human'].
+                padjust_cutoff (float, optional): statistical cutoff. Defaults to 0.05.
+                organism (str, optional): Organism from which entities belong. Defaults to 'human'.
 
-        Args:
-            OmicScope (_type_): _description_
-            Analysis (_type_): _description_
-            dbs (list, optional): _description_. Defaults to ['KEGG_2021_Human'].
-            padjust_cutoff (float, optional): _description_. Defaults to 0.05.
-            organism (str, optional): _description_. Defaults to 'Human'.
-            save (str, optional): _description_. Defaults to ''.
+                Raises:
+                    ValueError: Users choose an invalid analysis.
+                    Exception: Some functions just can be run in GSEA.
+            Returns:
+                Enrichmentscope: Return a EnrichmentScope obj. The results is stored to obj.results.
+
         """
+
         if Analysis == 'ORA':
             from .ORA import Enrichment
         elif Analysis == 'GSEA':

@@ -9,7 +9,7 @@ import pandas as pd
 import glob
 
 
-class multiples:
+class Nebula:
     def __init__(self, folder):
         self.original_path = os.getcwd()
         self.read_omics(folder)

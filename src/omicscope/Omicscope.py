@@ -10,7 +10,7 @@ from .Input import *
 
 
 class Omicscope(Input):
-    def __init__(self, Table, ControlGroup, Method, ExperimentalDesign='static',
+    def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', pdata=None, PValue_cutoff=0.05,
                  FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
                  degrees_of_freedom=2, **kwargs):

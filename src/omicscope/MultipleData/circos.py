@@ -12,13 +12,13 @@ import pandas as pd
 
 
 class circos():
-    def __init__(self, multiples_output):
-        self.group_data = multiples_output.group_data
-        self.enrichment = multiples_output.enrichment
-        self.groups = multiples_output.groups
-        self.labels = multiples_output.labels
-        self.original = multiples_output.original
-        self.original_path = multiples_output.original_path
+    def __init__(self, nebula_output):
+        self.group_data = nebula_output.group_data
+        self.enrichment = nebula_output.enrichment
+        self.groups = nebula_output.groups
+        self.labels = nebula_output.labels
+        self.original = nebula_output.original
+        self.original_path = nebula_output.original_path
         self.foldering()
         self.karyotype()
         self.heatmap()
