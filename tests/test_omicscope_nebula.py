@@ -1,4 +1,4 @@
-from omicscope import *
+from omicscope import Nebula
 
 
 class Test(object):

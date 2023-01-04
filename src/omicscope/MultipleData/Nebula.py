@@ -1,15 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar  1 15:21:23 2022
-
-@author: gui_d
-"""
 import os
 import pandas as pd
 import glob
 
 
-class Nebula:
+class nebula:
     def __init__(self, folder):
         self.original_path = os.getcwd()
         self.read_omics(folder)

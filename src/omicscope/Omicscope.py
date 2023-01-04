@@ -6,7 +6,7 @@ all OmicScope workflow, being the input for all other modules.
 
 """
 
-from .Input import *
+from .Input import Input
 
 
 class Omicscope(Input):
