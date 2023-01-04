@@ -85,5 +85,3 @@ urllib3==1.26.12
 virtualenv==20.16.6
 wcwidth==0.2.5
 xlrd==2.0.1
-pywin32
-pypiwin32
