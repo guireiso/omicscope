@@ -1,6 +1,7 @@
 
-import pandas as pd
 from copy import copy
+
+import pandas as pd
 
 
 class Input:

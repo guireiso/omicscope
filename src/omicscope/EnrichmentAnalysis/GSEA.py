@@ -13,8 +13,10 @@ also can produces ready-to-publish figures.
 
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
+import copy
 
 import numpy as np
+import pandas as pd
 
 
 class Enrichment:
@@ -23,8 +25,7 @@ class Enrichment:
                                        'GO_Cellular_Component_2018',
                                        'GO_Biological_Process_2018'],
                  organism='Human', padjust_cutoff=0.05):
-        import copy
-        import pandas as pd
+
         self.Analysis = 'GSEA'
         self.dbs = copy.copy(dbs)
         self.OmicScope = copy.copy(OmicScope)

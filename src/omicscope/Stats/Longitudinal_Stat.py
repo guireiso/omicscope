@@ -1,8 +1,10 @@
+from copy import copy
+
 import numpy as np
 import pandas as pd
+from patsy import PatsyError
+from patsy import dmatrix
 from statsmodels.stats.multitest import multipletests
-from copy import copy
-from patsy import dmatrix, PatsyError
 
 
 def Spline_Model_Full(pdata, df):

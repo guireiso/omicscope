@@ -1,6 +1,7 @@
-import os
-import pandas as pd
 import glob
+import os
+
+import pandas as pd
 
 
 class nebula:
@@ -58,8 +59,12 @@ class nebula:
         df['color'] = df['log2(fc)'].round()
         return (df)
 
-    from .MultipleVisualization import (barplot, protein_overlap,
-                                        enrichment_overlap, overlap_pearson,
-                                        Differentially_Regulated, network,
-                                        overlap_stat, group_network)
     from .circos import circos_plot
+    from .MultipleVisualization import Differentially_Regulated
+    from .MultipleVisualization import barplot
+    from .MultipleVisualization import enrichment_overlap
+    from .MultipleVisualization import group_network
+    from .MultipleVisualization import network
+    from .MultipleVisualization import overlap_pearson
+    from .MultipleVisualization import overlap_stat
+    from .MultipleVisualization import protein_overlap

@@ -8,8 +8,9 @@ and protein abundance normalized by XIC.
 
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
-import pandas as pd
 from copy import copy
+
+import pandas as pd
 
 
 class Input:

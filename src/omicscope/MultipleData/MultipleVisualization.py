@@ -1,8 +1,9 @@
+from copy import copy
+
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
-import numpy as np
-import matplotlib.pyplot as plt
-from copy import copy
 
 
 def barplot(self, palette='Spectral', save=None, vector=True):
@@ -90,8 +91,8 @@ def protein_overlap(self, dpi=600, min_subset=10, face_color='darkcyan', shad_co
         save (str, optional): Path to save image. Defaults to ''.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
     """
-    import matplotlib.pyplot as plt
-    from upsetplot import UpSet, from_contents
+    from upsetplot import UpSet
+    from upsetplot import from_contents
     plt.style.context('classic')
     plt.rcParams['grid.alpha'] = 0
     plt.rcParams['figure.dpi'] = dpi
@@ -135,7 +136,8 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
     Raises:
         IndexError: If there is no Enrichment data on .omics file.
     """
-    from upsetplot import UpSet, from_contents
+    from upsetplot import UpSet
+    from upsetplot import from_contents
     plt.style.context('classic')
     plt.rcParams['grid.alpha'] = 0
     plt.rcParams['figure.dpi'] = dpi
@@ -346,8 +348,9 @@ def overlap_fisher(group1, group2, union):
     Returns:
         Pvalue (float): P-value
     """
-    from scipy.stats import hypergeom
     import numpy as np
+    from scipy.stats import hypergeom
+
     deps1 = set(group1)
     deps2 = set(group2)
     union = len(union)
@@ -377,9 +380,10 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
     Returns:
         DataFrame: Dataframe of pvalues between each condition.
     """
-    import pandas as pd
     import numpy as np
-    from scipy.spatial.distance import pdist, squareform
+    import pandas as pd
+    from scipy.spatial.distance import pdist
+    from scipy.spatial.distance import squareform
     conditions = self.groups
     colors = sns.color_palette("Set3", 12).as_hex()
     colors = colors[:len(conditions)]
@@ -417,10 +421,8 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
         Graph (Networkx.G): Networkx object
     """
     import networkx as nx
-    import pandas as pd
-    import seaborn as sns
-    import numpy as np
-    from scipy.spatial.distance import pdist, squareform
+    from scipy.spatial.distance import pdist
+    from scipy.spatial.distance import squareform
     palette = sns.color_palette("Set3", 12).as_hex()
     conditions = self.groups
     palette = palette[:len(conditions)]

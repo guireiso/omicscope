@@ -8,14 +8,19 @@ Hierarchical clustering analysis (heatmap, pearson correlation plot)
 """
 
 import copy
+import itertools
+import random
+
+import altair as alt
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import random
 import seaborn as sns
-from sklearn.cluster import KMeans
-from scipy.stats import zscore
 from kneed import KneeLocator
+from scipy.stats import zscore
+from sklearn import preprocessing
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 
 
 def bar_ident(OmicScope, logscale=True):
@@ -35,9 +40,6 @@ def bar_ident(OmicScope, logscale=True):
         ax [matplotlib object]: Barplot
     """
     # Define plt parameters
-    import copy
-    import pandas as pd
-    import numpy as np
     OmicScope = copy.copy(OmicScope)
     df = OmicScope.quant_data
     # Get number of identified proteins
@@ -92,10 +94,6 @@ def volcano_Multicond(OmicScope, pvalue=0.05, palette='viridis',
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
     """
-    import copy
-    import numpy as np
-    import pandas as pd
-    import seaborn as sns
     OmicScope = copy.copy(OmicScope)
     # Definitions for the axes
     df_initial = OmicScope.quant_data
@@ -154,10 +152,6 @@ def volcano_2cond(OmicScope, pvalue=0.05,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
     """
-    import copy
-    import numpy as np
-    import pandas as pd
-
     OmicScope = copy.copy(OmicScope)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Definitions for the axes
@@ -215,8 +209,6 @@ def volcano(OmicScope,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
     """
-    import copy
-    import numpy as np
     OmicScope = copy.copy(OmicScope)
     if len(OmicScope.Conditions) == 2:
         df = volcano_2cond(OmicScope, pvalue=pvalue,
@@ -422,8 +414,6 @@ def Dispersion(OmicScope):
         OmicScope (OmicScope object): OmicScope Experiment
 
     """
-    import copy
-    import numpy as np
     OmicScope = copy.copy(OmicScope)
     df = OmicScope.quant_data
     # Dictionary for Accessions
@@ -477,13 +467,6 @@ def pca(OmicScope, pvalue=1.00,
         pvalue (float, optional): p-value threshold. Defaults to 1.00.
         FoldChange_cutoff (int, optional): Fold change threshold. Defaults to 0.
     """
-    import copy
-    import itertools
-    from sklearn import preprocessing
-    from sklearn.decomposition import PCA
-    import pandas as pd
-    import altair as alt
-    import numpy as np
     OmicScope = copy.copy(OmicScope)
     df = OmicScope.quant_data
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
@@ -591,9 +574,6 @@ def bar_protein(OmicScope, *Proteins, logscale=True, palette='Spectral'):
         Defaults to True.
 
     """
-    import copy
-    import numpy as np
-    import altair as alt
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
@@ -650,9 +630,6 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True, palette='Spectral'):
         Defaults to True.
 
     """
-    import copy
-    import numpy as np
-    import altair as alt
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]

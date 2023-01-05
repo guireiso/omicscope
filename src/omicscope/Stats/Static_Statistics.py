@@ -1,8 +1,9 @@
 
 from copy import copy
+
 import numpy as np
-from statsmodels.stats.multitest import multipletests
 import pandas as pd
+from statsmodels.stats.multitest import multipletests
 
 
 def ttest(params):

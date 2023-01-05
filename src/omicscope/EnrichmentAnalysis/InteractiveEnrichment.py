@@ -1,9 +1,10 @@
 import copy
+
+import altair as alt
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
-import altair as alt
 import pandas as pd
+import seaborn as sns
 
 
 def dotplot(self):

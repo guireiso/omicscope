@@ -76,6 +76,7 @@ class Omicscope(Input):
 
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics
             from .Stats.Statistic_Module import perform_static_stat
+
             # Construct pivot-table considering technical and biological replicates
             self.expression = self.expression()
             # perform stat

@@ -9,16 +9,17 @@ Hierarchical clustering analysis (heatmap, pearson correlation plot)
 
 import copy
 import itertools
+import random
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from sklearn import preprocessing
-from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
-from scipy.stats import zscore
-import random
 from kneed import KneeLocator
+from scipy.stats import zscore
+from sklearn import preprocessing
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 
 
 def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,

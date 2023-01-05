@@ -11,6 +11,7 @@ def perform_static_stat(self):
     """log2 transformation for expression
     """
     from copy import copy
+
     import numpy as np
     expression = copy(self.expression)
     log = copy(self.logTransformed)
@@ -50,6 +51,7 @@ def perform_longitudinal_stat(self):
     xpression
     """
     from copy import copy
+
     import numpy as np
     degrees_of_freedom = copy(self.degrees_of_freedom)
     expression = copy(self.expression)

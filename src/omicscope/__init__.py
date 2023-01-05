@@ -1,8 +1,10 @@
 __version__ = '1.0.0'
-from typing import Optional, List
-from .Omicscope import Omicscope
+from typing import List
+from typing import Optional
+
 from .EnrichmentAnalysis import Enrichmentscope
 from .MultipleData.Nebula import nebula
+from .Omicscope import Omicscope
 
 if __name__ != "__main__":
     print("OmicScope v " + __version__ + " For help: Insert\n" +
