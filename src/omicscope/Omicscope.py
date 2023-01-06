@@ -10,6 +10,21 @@ from .Input import Input
 
 
 class Omicscope(Input):
+    from .GeneralVisualization import DynamicRange
+    from .GeneralVisualization import MAplot
+    from .GeneralVisualization import bar_ident
+    from .GeneralVisualization import bar_protein
+    from .GeneralVisualization import bigtrend
+    from .GeneralVisualization import boxplot_protein
+    from .GeneralVisualization import color_scheme
+    from .GeneralVisualization import correlation
+    from .GeneralVisualization import find_k
+    from .GeneralVisualization import heatmap
+    from .GeneralVisualization import pca
+    from .GeneralVisualization import volcano
+    from .GeneralVisualization import volcano_2cond
+    from .GeneralVisualization import volcano_Multicond
+
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', pdata=None, PValue_cutoff=0.05,
                  FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
@@ -175,3 +190,19 @@ class Omicscope(Input):
                     'Statistics:' + '\t' + self.pvalue + '\n' +
                     'Expression:\n' + '-------\n' +
                     dfAsString)
+    __all__ = [
+        'bar_ident',
+        'heatmap',
+        'correlation',
+        'DynamicRange',
+        'pca',
+        'color_scheme',
+        'bar_protein',
+        'boxplot_protein',
+        'MAplot',
+        'find_k',
+        'bigtrend',
+        'volcano',
+        'volcano_2cond',
+        'volcano_Multicond'
+    ]

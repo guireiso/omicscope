@@ -993,7 +993,7 @@ def find_k(df):
     return k
 
 
-def startrend(OmicScope, pvalue=0.05, k_cluster=None):
+def bigtrend(OmicScope, pvalue=0.05, k_cluster=None):
     """Perform a K-mean algorithm to identify co-expressed
     proteins/genes and
     Args:
