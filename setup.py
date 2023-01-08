@@ -59,8 +59,10 @@ setup(
         'Differential Expression',
         'Systems Biology'
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.7',
     install_requires=[
+        "setuptools>=30.3.0",
+        "wheel",
         "adjustText==0.7.3",
         "altair==4.2.0",
         "arrow==1.2.3",
