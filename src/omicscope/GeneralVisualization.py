@@ -559,6 +559,8 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     replacer = dic.get
     colcolors = [replacer(n, n) for n in Col]
     colors = [colcolors] + [time_colors]
+    if colors[-1] == []:
+        colors = colcolors
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
