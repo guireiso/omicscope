@@ -127,7 +127,7 @@ setup(
         "python-dateutil==2.8.2",
         "python-slugify==6.1.2",
         "pytz==2022.6",
-        "pywin32==305",
+        # "pywin32==305",
         "pyvis",
         "PyYAML==6.0",
         "pyzmq==24.0.1",
