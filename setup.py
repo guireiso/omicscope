@@ -167,7 +167,6 @@ setup(
         "webencodings==0.5.1",
         "xlrd==2.0.1",
         "zipp==3.11.0",
-        "renku-sphinx-theme"
     ],
     extras_require={
         # eg:
