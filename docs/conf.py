@@ -2,8 +2,6 @@
 from __future__ import unicode_literals
 
 import os
-import sphinx_pdj_theme
-html_theme_path = [sphinx_pdj_theme.get_html_theme_path()]
 
 extensions = [
     'sphinx.ext.autodoc',
