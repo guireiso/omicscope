@@ -32,7 +32,7 @@ extlinks = {
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 if not on_rtd:  # only set the theme if we're building docs locally
-    html_theme = 'sphinx_rtd_theme'
+    html_theme = 'renku'
 
 html_use_smartypants = True
 html_last_updated_fmt = '%b %d, %Y'
@@ -41,6 +41,12 @@ html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
 html_short_title = '%s-%s' % (project, version)
+html_logo = "logo.png"
+html_theme_options = {
+    'logo_only': True,
+    'display_version': False,
+}
+
 
 napoleon_use_ivar = True
 napoleon_use_rtype = False
