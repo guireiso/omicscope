@@ -3,6 +3,7 @@ Overview
 ========
 
 
+
 .. image:: https://readthedocs.org/projects/omicscope/badge/?style=flat
     :target: https://omicscope.readthedocs.io/
     :alt: Documentation Status
@@ -39,6 +40,7 @@ Overview
     :alt: Commits since latest release
     :target: https://github.com/guireiso/omicscope/compare/v1.0.0...main
 
+
 OmicScope: from DIA proteomics to Systems Biology visualisation
 ---------------------------------------------------------------
 
@@ -54,7 +56,7 @@ Finally, for each experiment performed by *OmicScope*, it is possible to downloa
 
 
 Installation
-============
+------------
 
 ::
 
@@ -66,7 +68,7 @@ You can also install the in-development version with::
 
 
 Documentation
-=============
+-------------
 
 
 https://omicscope.readthedocs.io/
