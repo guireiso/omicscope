@@ -40,11 +40,12 @@ html_split_index = False
 html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
-# html_short_title = '%s-%s' % (project, version)
-html_logo = "logo.png"
+html_static_path = ['_static']
+html_logo = 'logo.png'
+html_short_title = '%s-%s' % (project, version)
 html_theme_options = {
     'logo_only': True,
-    'display_version': False,
+    'display_version': True,
 }
 
 
