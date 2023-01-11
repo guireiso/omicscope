@@ -40,13 +40,15 @@ html_split_index = False
 html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
-html_static_path = ['_static']
-html_logo = 'logo.png'
-html_short_title = '%s-%s' % (project, version)
+html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'logo_only': True,
+    
     'display_version': True,
 }
+html_theme_path = ["."]
+html_logo = "logo.svg"
+html_short_title = '%s-%s' % (project, version)
 
 
 napoleon_use_ivar = True
