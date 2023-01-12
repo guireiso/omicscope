@@ -46,6 +46,9 @@ class Input:
                    'Razor + unique peptides', 'Unique peptides', 'Mol. weight [kDa]',
                    'Sequence length', 'Score']
         df = df[columns]
+        df = df.rename(columns={'Majority protein IDs': "Accession",
+                                'Fasta headers': 'Description',
+                                'Gene names': 'gene_name'})
         return df
 
     def assay(self):
@@ -54,8 +57,9 @@ class Input:
         assay = []
         if quant_strategy in QUANTIFICATION_STRATEGIES:
             assay = pd.read_csv(self.Table, sep='\t')
-            assay = assay[assay['Majority protein IDs'].isin(self.rdata['Majority protein IDs'])]
-            assay = assay.set_index('Majority protein IDs')
+            assay = assay.rename(columns={'Majority protein IDs': "Accession"})
+            assay = assay[assay['Accession'].isin(self.rdata['Accession'])]
+            assay = assay.set_index('Accession')
             assay = assay.iloc[:, assay.columns.str.startswith(quant_strategy)]
             assay.columns = assay.columns.str.removeprefix(quant_strategy + ' ')
         else:
@@ -77,7 +81,7 @@ class Input:
                                               axis=1)
             nan_count = nan_count[nan_count > self.filtering_method]
             self.assay = assay[assay.index.isin(nan_count.index)]
-            self.rdata = rdata[rdata['Majority protein IDs'].isin(nan_count.index)]
+            self.rdata = rdata[rdata['Accession'].isin(nan_count.index)]
 
         elif self.filtering_method == 'minimum':
             pdata = copy(self.pdata)
@@ -89,4 +93,4 @@ class Input:
                                                 axis=1).sum()
             valid_values = valid_values[valid_values > 1].dropna()
             self.assay = assay[assay.index.isin(valid_values.index)]
-            self.rdata = rdata[rdata['Majority protein IDs'].isin(valid_values.index)]
+            self.rdata = rdata[rdata['Accession'].isin(valid_values.index)]

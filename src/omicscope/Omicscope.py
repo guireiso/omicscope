@@ -26,7 +26,7 @@ class Omicscope(Input):
     from .GeneralVisualization import volcano_Multicond
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
-                 pvalue='pAdjusted', pdata=None, PValue_cutoff=0.05,
+                 pvalue='pAdjusted', PValue_cutoff=0.05,
                  FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
                  degrees_of_freedom=2, **kwargs):
         """  OmicScope was specially designed taking into account the
@@ -71,13 +71,13 @@ class Omicscope(Input):
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
             raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues)
-        if pdata is not None:
+        if 'pdata' in kwargs:
             # If pdata was assigned by user, OmicScope read
             # excel or csv frames.
             try:
-                self.pdata = pd.read_excel(pdata)
+                self.pdata = pd.read_excel(kwargs['pdata'])
             except ValueError:
-                self.pdata = pd.read_csv(pdata)
+                self.pdata = pd.read_csv(kwargs['pdata'])
         self.define_conditions()
 
         self.ctrl = self.ControlGroup

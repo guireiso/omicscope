@@ -17,7 +17,6 @@ def OmicScope(Table: str,
               ControlGroup: Optional[str] = None,
               ExperimentalDesign: str = 'static',
               pvalue: str = 'pAdjusted',
-              pdata: Optional[str] = None,
               PValue_cutoff: float = 0.05,
               FoldChange_cutoff: float = 0.0,
               logTransformed: bool = False,
@@ -50,7 +49,6 @@ def OmicScope(Table: str,
         OmicScope must take account for statistical analysis. Defaults to 'static'.
         pvalue (str, optional): Statistical parameter to take into account
         to consider entities differentially regulated. Defaults to 'pAdjusted'.
-        pdata (Optional[str], optional): Path to phenotype data of each sample. Defaults to None.
         PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
         FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
         logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
@@ -66,7 +64,6 @@ def OmicScope(Table: str,
         ControlGroup,
         ExperimentalDesign,
         pvalue,
-        pdata,
         PValue_cutoff,
         FoldChange_cutoff,
         logTransformed,
