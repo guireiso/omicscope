@@ -62,7 +62,6 @@ class Input:
         df['Description'] = df.Description.astype(str)
 
         # Filtering unique peptides
-        print(len(kwargs))
         if len(kwargs) > 0:
              df = df[df['Unique peptides'] >= kwargs['UniquePeptides']]
         df = df.reset_index(drop=True)
