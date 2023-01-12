@@ -21,9 +21,7 @@ class Input:
             the sample conditions.
         """
         self.Table = Table
-        if len(kwargs) > 0:
-            self.uniquepeptides = kwargs['UniquePeptides']
-        data = self.progenesis()
+        data = self.progenesis(**kwargs)
         self.assay = data[0]
         self.rdata = data[1]
         self.rdata['gene_name'] = self.rdata['Description'].str.split(
@@ -64,8 +62,9 @@ class Input:
         df['Description'] = df.Description.astype(str)
 
         # Filtering unique peptides
+        print(len(kwargs))
         if len(kwargs) > 0:
-            df = df[df['Unique peptides'] >= self.uniquepeptides]
+             df = df[df['Unique peptides'] >= kwargs['UniquePeptides']]
         df = df.reset_index(drop=True)
         df = df.rename(columns={'Anova (p)': 'pvalue',
                                 'q Value': 'pAdjusted'})

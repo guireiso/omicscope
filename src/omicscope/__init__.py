@@ -50,8 +50,8 @@ def OmicScope(Table: str,
         OmicScope must take account for statistical analysis. Defaults to 'static'.
         pvalue (str, optional): Statistical parameter to take into account
         to consider entities differentially regulated. Defaults to 'pAdjusted'.
-        pdata (Optional[str], optional): Path to phenotipe data of each sample. Defaults to None.
-        PValue_cutoff (float, optional): Statistical cuttoff. Defaults to 0.05.
+        pdata (Optional[str], optional): Path to phenotype data of each sample. Defaults to None.
+        PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
         FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
         logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
         ExcludeKeratins (bool, optional): Keratins proteins is excluded. Defaults to True.
@@ -85,7 +85,7 @@ def EnrichmentScope(OmicScope: Omicscope,
     """EnrichmentScope - Enrichment Analysis
 
         EnrichmentScope is the module designed to perform over-representation
-        and Gene-Set Enrichment Analyises of proteins and genes.
+        and Gene-Set Enrichment Analyses of proteins and genes.
 
     Args:
         OmicScope (Omicscope): Omicscope object

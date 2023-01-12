@@ -47,17 +47,18 @@ class Omicscope(Input):
 
         Args:
             Table (str): Path to quantitative data.
-            ControlGroup (str): Control group.
-            Method (str): Algorithm/software used to perform quantitative
-            FoldChange_cutoff (float, optional): log2(Fold-Change) threshold
-            for differentially regulated entities against ControlGroup.
-            Defaults to 0.
-            PValue_cutoff (float, optional): P-value threshold for differential
-            expression analysis . Defaults to 0.05.
-            logTransformed (bool, optional): Was entity abundance previously
-            log-normalized?. Defaults False.
-            ExcludeKeratins (bool, optional): Drop keratins from dataset.
-            Defaults to True.
+            Method (str): Algorithm/software used to perform quantitative.
+            ControlGroup (Optional[str], optional): Control group. Defaults to None.
+            ExperimentalDesign (str, optional): Study experimental design in which
+            OmicScope must take account for statistical analysis. Defaults to 'static'.
+            pvalue (str, optional): Statistical parameter to take into account
+            to consider entities differentially regulated. Defaults to 'pAdjusted'.
+            pdata (Optional[str], optional): Path to phenotype data of each sample. Defaults to None.
+            PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
+            FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
+            logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
+            ExcludeKeratins (bool, optional): Keratins proteins is excluded. Defaults to True.
+            degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
         """
         import pandas as pd
         super().__init__(Table, Method=Method, **kwargs)
