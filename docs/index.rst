@@ -7,7 +7,7 @@ Contents
 
    readme
    installation
-   usage
+   Input
    reference/index
    contributing
    authors
