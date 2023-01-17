@@ -12,14 +12,6 @@ Overview
     :alt: GitHub Actions Build Status
     :target: https://github.com/guireiso/omicscope/actions
 
-.. image:: https://requires.io/github/guireiso/omicscope/requirements.svg?branch=main
-    :alt: Requirements Status
-    :target: https://requires.io/github/guireiso/omicscope/requirements/?branch=main
-
-.. image:: https://codecov.io/gh/guireiso/omicscope/branch/main/graphs/badge.svg?branch=main
-    :alt: Coverage Status
-    :target: https://codecov.io/github/guireiso/omicscope
-
 .. image:: https://img.shields.io/pypi/v/omicscope.svg
     :alt: PyPI Package latest release
     :target: https://pypi.org/project/omicscope

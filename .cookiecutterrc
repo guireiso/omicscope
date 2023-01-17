@@ -56,7 +56,6 @@ default_context:
     repo_main_branch:          'main'
     repo_name:                 'omicscope'
     repo_username:             'guireiso'
-    requiresio:                'yes'
     scrutinizer:               'no'
     setup_py_uses_pytest_runner: 'no'
     setup_py_uses_setuptools_scm: 'no'
