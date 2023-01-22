@@ -1,4 +1,4 @@
-""" Module for Single Omics Experiment Visualization
+""" Module for OmicScope Experiment Visualization
 This module allows the user to extract information from Omics data using visualization tools.
 Here, it is possible to evaluate data normalization (MA-Plot, Volcano Plot, Dynamic range plot,),
 individual protein abundance (barplot, boxplots), and perform Principal Component Analysis (PCA) and
@@ -190,14 +190,14 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     ax_histx.tick_params(direction='in', labelbottom=False)
     ax_histx.set_facecolor('white')
     ax_histx.grid(b=None)
-    sns.kdeplot(fc, shade=True, color=bcol, edgecolor='black')
+    sns.kdeplot(fc, fill=True, color=bcol, edgecolor='black')
     sns.despine(bottom=True, top=True)
     # Density plot on y-axis (right)
     ax_histy = plt.axes(rect_histy)
     ax_histy.tick_params(direction='in', labelleft=False)
     ax_histy.set_facecolor('white')
     ax_histy.grid(b=None)
-    sns.kdeplot(pval, shade=True, color=bcol, vertical=True, edgecolor='black')
+    sns.kdeplot(y=pval, fill=True, color=bcol, edgecolor='black')
     sns.despine(top=True, left=True)
     plt.xlabel("Density")
     ax_scatter.set_facecolor('white')
@@ -323,14 +323,14 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     ax_histx.tick_params(direction='in', labelbottom=False)
     ax_histx.set_facecolor('white')
     ax_histx.grid(b=None)
-    sns.kdeplot(fc, shade=True, color=bcol, alpha=0.8, edgecolor='black')
+    sns.kdeplot(fc, fill=True, color=bcol, alpha=0.8, edgecolor='black')
     sns.despine(bottom=True, top=True)
     # Density plot in y axis (right)
     ax_histy = plt.axes(rect_histy)
     ax_histy.tick_params(direction='in', labelleft=False)
     ax_histy.set_facecolor('white')
     ax_histy.grid(b=None)
-    sns.kdeplot(pval, shade=True, color=bcol, vertical=True, alpha=0.8, edgecolor='black')
+    sns.kdeplot(y=pval, fill=True, color=bcol, alpha=0.8, edgecolor='black')
     sns.despine(top=True, left=True)
     plt.xlabel("Density")
     ax_scatter.set_facecolor('white')
@@ -481,8 +481,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     sns.clustermap(heatmap,
                    cmap=palette, z_score=0, linewidths=line, linecolor='black',
                    col_colors=colors,
-                   col_cluster=c_cluster,
-                   figsize=(14, 14), center=0).fig.suptitle(title, y=1.02, size=30)
+                   col_cluster=c_cluster, center=0).fig.suptitle(title, y=1.02)
     # Save
     if save != '':
         if vector is True:
@@ -567,7 +566,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     sns.clustermap(corr_matrix,
                    xticklabels=corr_matrix.columns, row_colors=colors,
                    yticklabels=corr_matrix.columns, col_colors=colors,
-                   cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02, size=30)
+                   cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
     if save != '':
         if vector is True:
             plt.savefig(save + 'pearson.svg')
@@ -922,7 +921,7 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
     plt.show()
 
 
-def MAplot(OmicScope,
+def MAplot(OmicScope, *Proteins,
            pvalue=0.05, non_regulated='#606060', up_regulated='#E4001B',
            down_regulated='#6194BC', FoldChange_cutoff=0,
            save='', dpi=300, vector=True):
@@ -960,8 +959,20 @@ def MAplot(OmicScope,
     df['Regulation'] = regulation
     # Plot
     sns.set_style("whitegrid")
-    sns.scatterplot(x='TotalMean', y='log2(fc)', data=df, hue='Regulation',
-                    palette=list(df.col.drop_duplicates()))
+    ax_scatter = sns.scatterplot(x='TotalMean', y='log2(fc)', data=df, hue='Regulation',
+                                 palette=list(df.col.drop_duplicates()))
+    if len(Proteins) > 0:
+        df = df[df.gene_name.isin(Proteins)]
+        ls_final = df
+        ls_final = ls_final[['gene_name', 'log2(fc)', 'TotalMean']]
+        from adjustText import adjust_text
+        texts = []
+        for a, b, c in zip(ls_final['TotalMean'], ls_final['log2(fc)'],
+                           ls_final['gene_name']):
+            texts.append(ax_scatter.text(a, b, c, size=8))
+            adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
+                        expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
+                        arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
     sns.despine()
     plt.axhline(y=0, color='gray', linestyle=':')
     plt.grid(b=False)
@@ -995,7 +1006,8 @@ def find_k(df):
     return k
 
 
-def bigtrend(OmicScope, pvalue=0.05, k_cluster=None):
+def bigtrend(OmicScope, pvalue=0.05, k_cluster=None,
+             save='', dpi=300, vector=True):
     """Perform a K-mean algorithm to identify co-expressed
     proteins/genes and
     Args:
@@ -1041,6 +1053,12 @@ def bigtrend(OmicScope, pvalue=0.05, k_cluster=None):
                     kind='line',
                     facet_kws=dict(sharex=False))
     g.set_ylabels('z-score', clear_inner=True)
-    g.set_xlabels('', clear_inner=True)
+    g.set_xlabels('Conditions', clear_inner=True)
+    g.set(xticklabels=[])
+    if save != '':
+        if vector is True:
+            plt.savefig(save + 'MAPlot.svg')
+        else:
+            plt.savefig(save + 'MAPlot.png', dpi=dpi)
     plt.show()
     return k_data_protein

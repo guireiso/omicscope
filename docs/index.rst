@@ -8,6 +8,7 @@ Contents
    readme
    installation
    Input
+   OmicScope
    reference/index
    contributing
    authors
