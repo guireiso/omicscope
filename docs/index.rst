@@ -7,8 +7,8 @@ Contents
 
    readme
    installation
-   input
-   omicscope
+   Input
+   OmicScope
    reference/index
    contributing
    authors
