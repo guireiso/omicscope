@@ -1,4 +1,6 @@
 import copy
+import warnings
+warnings.filterwarnings("ignore")
 
 
 class Enrichmentscope():
@@ -12,7 +14,7 @@ class Enrichmentscope():
     def __init__(self, OmicScope, Analysis, dbs=['KEGG_2021_Human'],
                  padjust_cutoff=0.05, organism='Human'):
         """EnrichmentScope is the module designed to perform over-representation
-            and Gene-Set Enrichment Analyises of proteins and genes.
+            and Gene-Set Enrichment Analyses of proteins and genes.
             Args:
                 OmicScope (Omicscope): Omicscope object
                 Analysis (str): Over-representation Analysis (ORA) or Gene-Set Enrichment Analysis (GSEA).
@@ -67,7 +69,7 @@ class Enrichmentscope():
 
             f.write("OmicScope v1.0.0" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
-                    " for group comparisons having the controling group used as used according to OmicScope." +
+                    " for group comparisons having the controlling group used as used according to OmicScope." +
                     "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python " +
                     "library for Systems Biology Visualization" +
                     '\nControlGroup:' + '\t' + data.OmicScope.ctrl + '\n' +
