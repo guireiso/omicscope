@@ -482,6 +482,8 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
                    cmap=palette, z_score=0, linewidths=line, linecolor='black',
                    col_colors=colors,
                    col_cluster=c_cluster, center=0).fig.suptitle(title, y=1.02)
+    plt.xlabel('')
+    plt.ylabel('')
     # Save
     if save != '':
         if vector is True:
@@ -572,6 +574,8 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
             plt.savefig(save + 'pearson.svg')
         else:
             plt.savefig(save + 'pearson.png', dpi=dpi)
+    plt.xlabel('')
+    plt.ylabel('')
     plt.show()
     plt.show(block=True)
 
