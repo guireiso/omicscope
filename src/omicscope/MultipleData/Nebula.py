@@ -2,12 +2,13 @@ import glob
 import os
 
 import pandas as pd
+import seaborn as sns
 
 
 class nebula:
-    def __init__(self, folder):
+    def __init__(self, folder, palette='Dark2'):
         self.original_path = os.getcwd()
-        self.read_omics(folder)
+        self.read_omics(folder, palette=palette)
         self.group_data = []
         for o, g, l in zip(self.original, self.groups, self.labels):
             self.group_data.append(self.importing(o, g, l))
@@ -19,7 +20,7 @@ class nebula:
         3. N groups with enchment data: {sum(x is not None for x in self.enrichment)}
         ''')
 
-    def read_omics(self, folder):
+    def read_omics(self, folder, palette):
         path = folder  # use your path
         all_files = glob.glob(path + "/*.omics")
         groups = []
@@ -48,6 +49,7 @@ class nebula:
                                                   sep='\t'))
                 archive.close()
             self.groups = groups
+            self.colors = sns.color_palette(palette, as_cmap=False, n_colors=len(groups)).as_hex()
             self.labels = labels
             self.original = original
             self.enrichment = enrichment
@@ -60,8 +62,9 @@ class nebula:
         return (df)
 
     from .circos import circos_plot
-    from .MultipleVisualization import Differentially_Regulated
     from .MultipleVisualization import barplot
+    from .MultipleVisualization import circular_path
+    from .MultipleVisualization import diff_reg
     from .MultipleVisualization import enrichment_overlap
     from .MultipleVisualization import group_network
     from .MultipleVisualization import network

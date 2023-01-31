@@ -6,7 +6,7 @@ import pandas as pd
 import seaborn as sns
 
 
-def barplot(self, palette='Spectral', save=None, vector=True):
+def barplot(self, save=None, vector=True):
     """Bar plot for proteins/genes identified and differentially regulated
     according to each group
 
@@ -46,7 +46,7 @@ def barplot(self, palette='Spectral', save=None, vector=True):
     f, (ax, ax2) = plt.subplots(2, 1, sharex=True)
     ax.bar(r, whole_proteome, color='lightgray', edgecolor='black', width=0.5,
            linewidth=1)
-    colors = sns.color_palette(palette, as_cmap=False, n_colors=len(conditions))
+    colors = data.colors
     ax.bar(r, deps, edgecolor='black', width=0.5, linewidth=1)
     plt.xticks(r,
                fontweight=None, rotation=45, ha='right')
@@ -170,7 +170,7 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
             plt.savefig(save + 'upset_pathways.png', dpi=dpi)
 
 
-def overlap_pearson(self, pvalue=1, palette='Spectral',
+def overlap_pearson(self, pvalue=1,
                     save=None, vector=True, dpi=600):
     """Pair-wise Pearson correlation heatmap for similarities
     among groups
@@ -185,10 +185,9 @@ def overlap_pearson(self, pvalue=1, palette='Spectral',
         dpi (int, optional): Image resolution. Defaults to 600.
     """
     data = copy(self)
-    conditions = data.groups
     data1 = data.original
     totalMean = []
-    colors = sns.color_palette(palette, as_cmap=False, n_colors=len(conditions))
+    colors = data.colors
     for i in data1:
         df = i.set_index('Accession')
         df = df[df[self.pvalue] < pvalue]
@@ -208,8 +207,8 @@ def overlap_pearson(self, pvalue=1, palette='Spectral',
     plt.plot()
 
 
-def Differentially_Regulated(self,
-                             save=None, vector=True, dpi=600):
+def diff_reg(self,
+             save=None, vector=True, dpi=600):
     """Dotplot for number of proteins up- and down-regulated
 
     Args:
@@ -274,11 +273,9 @@ def network(self, labels=False, save=None, vector=True):
     import matplotlib.colors as mcolors
     import networkx as nx
 
-    palette = sns.color_palette("Set3", 12).as_hex()
     data = copy(self)
-    palette = palette[:len(data.groups)]
     network_frame = []
-    for group, df, color in zip(data.groups, data.original, palette):
+    for group, df, color in zip(data.groups, data.original, data.colors):
         df['Experiment'] = group
         df = df[df[self.pvalue] < 0.05]
         df['Size'] = len(df)
@@ -385,8 +382,7 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
     from scipy.spatial.distance import pdist
     from scipy.spatial.distance import squareform
     conditions = self.groups
-    colors = sns.color_palette("Set3", 12).as_hex()
-    colors = colors[:len(conditions)]
+    colors = self.colors
     pval = self.pvalue
     union = set(pd.concat(self.original).gene_name)
     sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
@@ -423,9 +419,8 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
     import networkx as nx
     from scipy.spatial.distance import pdist
     from scipy.spatial.distance import squareform
-    palette = sns.color_palette("Set3", 12).as_hex()
+    palette = self.colors
     conditions = self.groups
-    palette = palette[:len(conditions)]
     pval = self.pvalue
     union = set(pd.concat(self.original).gene_name)
     sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
@@ -469,3 +464,32 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
         else:
             plt.savefig(save + 'PPNetwork.dpi', dpi=300)
     return G
+
+
+def circular_path(self, Term):
+    """Network of all groups analysed. Links were annotated based on
+   overlap found in statistical hypergeometric distribution.
+    Args:
+       Term (str): Terms that must be shown. Defaults to 0.05.
+       save (str, optional): Path to save image. Defaults to None.
+       vector (bool, optional): If image should be export as .svg.
+       Defaults to True.
+
+   Returns:
+       Graph (Networkx.G): Networkx object
+   """
+    from .circlize import deps
+    from .circlize import enrichment_filtering
+    from .circlize import deps_matrix
+    from .circlize import color_matrix
+    from .circlize import circlize
+    data = self
+    colors = self.colors
+    df = deps(data, 0.05)
+    terms = enrichment_filtering(data, Term)
+    deps = df[df['gene_name'].isin(terms)]
+    deps = deps.set_index('gene_name')
+    matrix = deps_matrix(deps)
+    colmat = color_matrix(deps, colors)
+    labels = data.groups
+    circlize(matrix, colmat, colors, labels)
