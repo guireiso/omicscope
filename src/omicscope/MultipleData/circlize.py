@@ -1,4 +1,5 @@
 from copy import copy
+
 import pandas as pd
 
 
@@ -44,11 +45,12 @@ def color_matrix(df, colors):
 
 
 def circlize(matrix, colmat, colors, labels, width=3000, height=3000):
-    from rpy2.robjects.lib import grdevices
-    from IPython.display import Image, display
     import rpy2.robjects as robjects
+    from IPython.display import Image
+    from IPython.display import display
     from rpy2.robjects import pandas2ri
     from rpy2.robjects.conversion import localconverter
+    from rpy2.robjects.lib import grdevices
     with localconverter(robjects.default_converter + pandas2ri.converter):
         matrix_2 = robjects.conversion.py2rpy(matrix)
     with localconverter(robjects.default_converter + pandas2ri.converter):

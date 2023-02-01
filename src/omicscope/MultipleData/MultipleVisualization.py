@@ -6,7 +6,7 @@ import pandas as pd
 import seaborn as sns
 
 
-def barplot(self, save=None, vector=True):
+def barplot(self, save=None, vector=True, dpi=300):
     """Bar plot for proteins/genes identified and differentially regulated
     according to each group
 
@@ -15,7 +15,9 @@ def barplot(self, save=None, vector=True):
          Defaults to 'Spectral'.
         save (str, optional): Path to save image. Defaults to ''.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
     """
+    plt.rcParams['figure.dpi'] = dpi
     data = copy(self)
     conditions = copy(data.groups)
     group_data = data.original
@@ -70,13 +72,14 @@ def barplot(self, save=None, vector=True):
                 color=colors[-1], weight='bold')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'bar_deps.svg')
+            plt.savefig(save + 'barplot.svg')
         else:
-            plt.savefig(save + 'bar_deps.png', dpi=600)
+            plt.savefig(save + 'barplot.png', dpi=dpi)
+    plt.show()
 
 
-def protein_overlap(self, dpi=600, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
-                    edge_color='black', linewidth=1, save=None, vector=True,):
+def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
+                    edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
     """Upset plot to evaluate protein overlap among groups
 
     Args:
@@ -90,7 +93,9 @@ def protein_overlap(self, dpi=600, min_subset=10, face_color='darkcyan', shad_co
         linewidth (int, optional): Bar line widths. Defaults to 1.
         save (str, optional): Path to save image. Defaults to ''.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
     """
+    plt.rcParams['figure.dpi'] = dpi
     from upsetplot import UpSet
     from upsetplot import from_contents
     plt.style.context('classic')
@@ -110,16 +115,18 @@ def protein_overlap(self, dpi=600, min_subset=10, face_color='darkcyan', shad_co
     figure = UpSet(upset,  facecolor=face_color, shading_color=shad_color,
                    min_subset_size=min_subset, show_counts=True,
                    with_lines=True)
+    for i in data.groups:
+        figure.style_subsets(present=i, edgecolor=edge_color, linewidth=linewidth)
     figure.plot()
     if save is not None:
         if vector is True:
             plt.savefig(save + 'upset_proteins.svg')
         else:
-            plt.savefig(save + 'upset_proteins.png', dpi=600)
+            plt.savefig(save + 'upset_proteins.png', dpi=dpi)
 
 
-def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_color="#f0f0f0",
-                       edge_color='black', linewidth=1, save=None, vector=True):
+def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#f0f0f0",
+                       edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
     """_summary_
 
     Args:
@@ -133,6 +140,7 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
         linewidth (int, optional): Bar line widths. Defaults to 1.
         save (str, optional): Path to save image. Defaults to ''.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
     Raises:
         IndexError: If there is no Enrichment data on .omics file.
     """
@@ -171,7 +179,7 @@ def enrichment_overlap(self, dpi=600, min_subset=1, face_color='darkcyan', shad_
 
 
 def overlap_pearson(self, pvalue=1,
-                    save=None, vector=True, dpi=600):
+                    save=None, vector=True, dpi=300):
     """Pair-wise Pearson correlation heatmap for similarities
     among groups
 
@@ -182,8 +190,9 @@ def overlap_pearson(self, pvalue=1,
          Defaults to 'Spectral'.
         save (str, optional): Path to save image. Defaults to ''.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
-        dpi (int, optional): Image resolution. Defaults to 600.
+        dpi (int, optional): Image resolution. Defaults to 300.
     """
+    plt.rcParams['figure.dpi'] = dpi
     data = copy(self)
     data1 = data.original
     totalMean = []
@@ -201,22 +210,23 @@ def overlap_pearson(self, pvalue=1,
 
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'clustermap.svg')
+            plt.savefig(save + 'overlap_pearson.svg')
         else:
-            plt.savefig(save + 'clustermap.png', dpi=dpi)
+            plt.savefig(save + 'overlap_pearson.png', dpi=dpi)
     plt.plot()
 
 
 def diff_reg(self,
-             save=None, vector=True, dpi=600):
+             save=None, vector=True, dpi=300):
     """Dotplot for number of proteins up- and down-regulated
 
     Args:
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
-        dpi (int, optional): Image resolution. Defaults to 600.
+        dpi (int, optional): Image resolution. Defaults to 300.
     """
+    plt.rcParams['figure.dpi'] = dpi
     data = copy(self)
     groups = data.groups
     difreg = data.group_data
@@ -253,13 +263,13 @@ def diff_reg(self,
 
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'clustermap.svg')
+            plt.savefig(save + 'diff_reg.svg')
         else:
-            plt.savefig(save + 'clustermap.png', dpi=dpi)
+            plt.savefig(save + 'diff_reg.png', dpi=dpi)
     plt.show()
 
 
-def network(self, labels=False, save=None, vector=True):
+def network(self, labels=False, save=None, vector=True, dpi=300):
     """Network of entities differentially regulated for each
     group analysed.
 
@@ -267,12 +277,13 @@ def network(self, labels=False, save=None, vector=True):
         labels (bool, optional): Show graph labels. Defaults to False.
         save (str, optional): Path to save image. Defaults to ''.
          Defaults to None.
+         dpi (int, optional): Image resolution. Defaults to 300.
     """
     import matplotlib as mpl
     import matplotlib.cm as cm
     import matplotlib.colors as mcolors
     import networkx as nx
-
+    plt.rcParams['figure.dpi'] = dpi
     data = copy(self)
     network_frame = []
     for group, df, color in zip(data.groups, data.original, data.colors):
@@ -327,7 +338,7 @@ def network(self, labels=False, save=None, vector=True):
         if vector is True:
             plt.savefig(save + 'PPNetwork.svg')
         else:
-            plt.savefig(save + 'PPNetwork.dpi', dpi=300)
+            plt.savefig(save + 'PPNetwork.dpi', dpi=dpi)
     plt.show()
     return (G)
 
@@ -361,7 +372,7 @@ def overlap_fisher(group1, group2, union):
 
 
 def overlap_stat(self, palette='Spectral', pvalue=0.05,
-                 save=None, vector=True):
+                 save=None, vector=True, dpi=300):
     """Perform a pair-wise comparison of all conditions
     based on hypergeometric distribution and plot a heatmap
     with hierarchical clustering
@@ -373,6 +384,7 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
 
     Returns:
         DataFrame: Dataframe of pvalues between each condition.
@@ -381,6 +393,7 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
     import pandas as pd
     from scipy.spatial.distance import pdist
     from scipy.spatial.distance import squareform
+    plt.rcParams['figure.dpi'] = dpi
     conditions = self.groups
     colors = self.colors
     pval = self.pvalue
@@ -397,13 +410,13 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
                    col_colors=colors, row_colors=colors)
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'clustermap.svg')
+            plt.savefig(save + 'overlap_stat.svg')
         else:
-            plt.savefig(save + 'clustermap.png', dpi=300)
+            plt.savefig(save + 'overlap_stat.png', dpi=dpi)
     return matrix
 
 
-def group_network(self, pvalue=0.05, save=None, vector=True):
+def group_network(self, pvalue=0.05, save=None, vector=True, dpi=300):
     """Network of all groups analysed. Links were annotated based on
     overlap found in statistical hypergeometric distribution.
 
@@ -412,6 +425,7 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
 
     Returns:
         Graph (Networkx.G): Networkx object
@@ -419,6 +433,7 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
     import networkx as nx
     from scipy.spatial.distance import pdist
     from scipy.spatial.distance import squareform
+    plt.rcParams['figure.dpi'] = dpi
     palette = self.colors
     conditions = self.groups
     pval = self.pvalue
@@ -460,29 +475,31 @@ def group_network(self, pvalue=0.05, save=None, vector=True):
     if save is not None:
         nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
         if vector is True:
-            plt.savefig(save + 'PPNetwork.svg')
+            plt.savefig(save + 'groupNetwork.svg')
         else:
-            plt.savefig(save + 'PPNetwork.dpi', dpi=300)
+            plt.savefig(save + 'groupNetwork.dpi', dpi=dpi)
     return G
 
 
-def circular_path(self, Term):
-    """Network of all groups analysed. Links were annotated based on
-   overlap found in statistical hypergeometric distribution.
+def circular_path(self, Term, save=None, vector=True):
+    """Circular Path
+    For a determined Term, Circular path links all groups that
+    enriched for that term to respective differentially regulated protein
+
     Args:
        Term (str): Terms that must be shown. Defaults to 0.05.
        save (str, optional): Path to save image. Defaults to None.
        vector (bool, optional): If image should be export as .svg.
        Defaults to True.
 
-   Returns:
-       Graph (Networkx.G): Networkx object
    """
-    from .circlize import deps
-    from .circlize import enrichment_filtering
-    from .circlize import deps_matrix
-    from .circlize import color_matrix
     from .circlize import circlize
+    from .circlize import color_matrix
+    from .circlize import deps
+    from .circlize import deps_matrix
+    from .circlize import enrichment_filtering
+    if all(enr is None for enr in self.enrichment):
+        raise IndexError('There is not Enrichment result in data!')
     data = self
     colors = self.colors
     df = deps(data, 0.05)
@@ -493,3 +510,53 @@ def circular_path(self, Term):
     colmat = color_matrix(deps, colors)
     labels = data.groups
     circlize(matrix, colmat, colors, labels)
+
+
+def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=True,
+                       dpi=300):
+    """Dotplot Enrichment
+    Dotplot to visualize together the enrichment data for each group
+
+
+    Args:
+        top (int, optional): _description_. Defaults to 5.
+        palette (str, optional): _description_. Defaults to 'PuBu'.
+        save (str, optional): Path to save image. Defaults to None.
+        vector (bool, optional): If image should be export as .svg.
+        Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
+    """
+    plt.rcParams['figure.dpi'] = dpi
+    if all(enr is None for enr in self.enrichment):
+        raise IndexError('There is not Enrichment result in data!')
+    genesets = [list(x.Gene_set.drop_duplicates()) for x in self.enrichment]
+    genesets = pd.Series(sum(genesets, [])).drop_duplicates()
+    for i in genesets:
+        data = self.enrichment
+        data = [x[x['Gene_set'] == i] for x in data]
+        terms = [x.iloc[:top, :] for x in data]
+        terms = [list(x['Term']) for x in terms]
+        terms = pd.Series(sum(terms, [])).drop_duplicates()
+        if len(Terms) > 0:
+            terms = Terms
+        data = [x[x['Term'].isin(terms)] for x in data]
+        data = [x.assign(Group=y) for x, y in zip(data, self.groups)]
+        data = pd.concat(data)
+        data = data[['Term', 'Overlap', 'Adjusted P-value', 'Group']]
+        data['Overlap'] = data.Overlap.str.split('/', regex=False).str[0]
+        data['Overlap'] = data.Overlap.astype(int)
+        data['-log10(p)'] = -np.log10(data['Adjusted P-value'])
+        sns.set_style('white')
+        sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
+                        hue='-log10(p)', palette=palette, sizes=(40, 280),
+                        linewidth=0.5, edgecolor='black'
+                        )
+        sns.despine()
+        plt.ylabel('')
+        if save is not None:
+            if vector is True:
+                plt.savefig(save + 'dotplot_enrichment.svg')
+            else:
+                plt.savefig(save + 'dotplot_enrichmnet.dpi', dpi=dpi)
+        plt.show()
+    return

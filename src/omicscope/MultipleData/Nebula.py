@@ -6,6 +6,18 @@ import seaborn as sns
 
 
 class nebula:
+    from .circos import circos_plot
+    from .MultipleVisualization import barplot
+    from .MultipleVisualization import circular_path
+    from .MultipleVisualization import diff_reg
+    from .MultipleVisualization import dotplot_enrichment
+    from .MultipleVisualization import enrichment_overlap
+    from .MultipleVisualization import group_network
+    from .MultipleVisualization import network
+    from .MultipleVisualization import overlap_pearson
+    from .MultipleVisualization import overlap_stat
+    from .MultipleVisualization import protein_overlap
+
     def __init__(self, folder, palette='Dark2'):
         self.original_path = os.getcwd()
         self.read_omics(folder, palette=palette)
@@ -61,13 +73,15 @@ class nebula:
         df['color'] = df['log2(fc)'].round()
         return (df)
 
-    from .circos import circos_plot
-    from .MultipleVisualization import barplot
-    from .MultipleVisualization import circular_path
-    from .MultipleVisualization import diff_reg
-    from .MultipleVisualization import enrichment_overlap
-    from .MultipleVisualization import group_network
-    from .MultipleVisualization import network
-    from .MultipleVisualization import overlap_pearson
-    from .MultipleVisualization import overlap_stat
-    from .MultipleVisualization import protein_overlap
+    __all__ = [
+        'barplot',
+        'circular_path',
+        'diff_reg',
+        'dotplot_enrichment',
+        'enrichment_overlap',
+        'group_network',
+        'network',
+        'overlap_pearson',
+        'overlap_stat',
+        'protein_overlap'
+    ]
