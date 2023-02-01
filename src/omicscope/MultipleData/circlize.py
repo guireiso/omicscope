@@ -44,7 +44,8 @@ def color_matrix(df, colors):
     return colmat
 
 
-def circlize(matrix, colmat, colors, labels, width=3000, height=3000):
+def circlize(matrix, colmat, colors, labels, width=3000, height=3000,
+             save=None, vector=True):
     import rpy2.robjects as robjects
     from IPython.display import Image
     from IPython.display import display
@@ -61,6 +62,13 @@ def circlize(matrix, colmat, colors, labels, width=3000, height=3000):
     robjects.globalenv["name.grid"] = robjects.StrVector(labels)
     robjects.globalenv["wid"] = width
     robjects.globalenv["hei"] = height
+    if save is not None:
+        if vector is True:
+            string = f'svg("{save}my_plot.svg", width = 10, height = 10)'
+        else:
+            string = f'png("{save}my_plot.png", width = wid, height = hei, res = 300)'
+    else:
+        string = '\n'
     with grdevices.render_to_bytesio(grdevices.jpeg, width=3000, height=3000, res=300) as img:
         robjects.r(
             '''
@@ -72,6 +80,10 @@ def circlize(matrix, colmat, colors, labels, width=3000, height=3000):
     colmat = as.matrix(colmat)
     mat1 = mat1
     mat1[mat1==0.5] <- 1
+      ''' +
+            string
+            +
+            '''
     circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
   cdm_res = chordDiagram(t(mat1),
                          annotationTrack = c('grid'), grid.col = grid.col,
@@ -96,6 +108,7 @@ def circlize(matrix, colmat, colors, labels, width=3000, height=3000):
                   col = col_fun(t(mat)[cdm_res$rn[i], cdm_res$cn[i]]),
                   border = col_fun(t(mat)[cdm_res$rn[i], cdm_res$cn[i]]),
                   sector.index = cdm_res$cn[i], track.index = 1, )}}
+    dev.off()
   }
 
   circos.plot(matrix, colmat, grid.col, y0 = -0.2, y= -2)

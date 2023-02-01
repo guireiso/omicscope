@@ -509,7 +509,7 @@ def circular_path(self, Term, save=None, vector=True):
     matrix = deps_matrix(deps)
     colmat = color_matrix(deps, colors)
     labels = data.groups
-    circlize(matrix, colmat, colors, labels)
+    circlize(matrix, colmat, colors, labels, save=save, vector=vector)
 
 
 def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=True,
