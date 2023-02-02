@@ -8,8 +8,8 @@ from .Omicscope import Omicscope
 
 if __name__ != "__main__":
     print("OmicScope v " + __version__ + " For help: Insert\n" +
-          "If you use  in published research, please cite: 'lallalala'\n" +
-          "Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python library for Systems Biology Visualization.\n")
+          "If you use  in published research, please cite: 'XXXXX'\n" +
+          "Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.\n")
 
 
 def OmicScope(Table: str,
