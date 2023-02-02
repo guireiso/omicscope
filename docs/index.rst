@@ -9,6 +9,8 @@ Contents
    installation
    input
    omicscope
+   enrichmentscope
+   nebula
    reference/index
    contributing
    authors

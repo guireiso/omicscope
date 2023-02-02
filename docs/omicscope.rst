@@ -1,4 +1,9 @@
-================
+
+.. code-block:: python
+
+   import sys
+   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
+
 OmicScope Object
 ================
 
@@ -394,7 +399,9 @@ Plots and Figures
 
 Plots and figures are a pivotal axis in the OmicScope workflow, allowing the users to generate ready-to-publish figures and provide insights into proteomics datasets.
 
-SIMILARITIES BETWEEN FUNCTIONS (SAVE, VECTOR, DPI)
+All the functions below can be saved (save=PATH_TO_SAVE_FIGURE) as a vector (.svg extension - vector=True) or static  (.png extension - vector=False). By default, the resolution is set to 300 dpi (dpi=300).
+
+Still, major functions allow the users to highlight or select proteins of interest to be plotted. For that, just write the protein gene_name at the beginning of the function. Finally, OmicScope also provides options for color palettes following suggestions of `Matplotlib package <https://matplotlib.org/stable/tutorials/colors/colormaps.htmlhttps://matplotlib.org/stable/tutorials/colors/colormaps.html>`_.
 
 General Figures
 ^^^^^^^^^^^^^^^
@@ -409,8 +416,8 @@ In this plot, the users can visualize the number of proteins that were quantifie
    df.bar_ident(logscale=True, dpi = 90)
 
 
-.. image:: OmicScope_files/OmicScope_15_0.png
-   :target: OmicScope_files/OmicScope_15_0.png
+.. image:: omicscope_files/omicscope_15_0.png
+   :target: omicscope_files/omicscope_15_0.png
    :alt: png
 
 
@@ -424,7 +431,7 @@ In this plot, the users can visualize the number of proteins that were quantifie
 Dynamic range plot - *object.DynamicRange()*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Dynamic range plot is a classical plot in proteomics studies. This plot ranks proteins according to their abundance and highlights the proteome coverage in the study. Depending on the quantitative proteomics methods applied, the Dynamic Range plot also suggests a ratio between proteins quantified in the study. In the function above, it is possible to annotate proteins of interest in the plot by adding their **gene_name** as *args*.
+Dynamic range plot is a classical plot in proteomics studies. This plot ranks proteins according to their abundance and highlights the proteome coverage in the study. Depending on the quantitative proteomics methods applied, the Dynamic Range plot also suggests a ratio between proteins quantified in the study. In the function below, it is possible to annotate proteins of interest in the plot by adding their **gene_name** as *args*.
 
 .. code-block:: python
 
@@ -442,8 +449,8 @@ Dynamic range plot is a classical plot in proteomics studies. This plot ranks pr
 
 
 
-.. image:: OmicScope_files/OmicScope_17_1.png
-   :target: OmicScope_files/OmicScope_17_1.png
+.. image:: omicscope_files/omicscope_17_1.png
+   :target: omicscope_files/omicscope_17_1.png
    :alt: png
 
 
@@ -457,31 +464,31 @@ Volcano plot visualizes the distribution of proteins according to their p-values
    df.volcano('Pdcd4', 'Sfxn3',dpi = 90)
 
 
-.. image:: OmicScope_files/OmicScope_19_0.png
-   :target: OmicScope_files/OmicScope_19_0.png
+.. image:: omicscope_files/omicscope_19_0.png
+   :target: omicscope_files/omicscope_19_0.png
    :alt: png
 
 
 MA plot - *object.MAplot()*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MA-plot is another plot that evaluates data normalization, compares individual proteins in relation to the abundance mean agains its foldchange. 
-A standard assumption is that few protein should exhibit a change in expression, meaning that elevated deviations from zero on y-axis suggest that the data should be further normalized.
+The MA-plot is another plot that evaluates data normalization, comparing the abundance levels of individual proteins in relation to their fold-changes.
+A standard assumption is that few proteins should exhibit a change in expression, meaning that elevated deviations from zero on the y-axis suggest that the data should be further normalized.
 
 .. code-block:: python
 
    df.MAplot('Pdcd4', 'Sfxn3', dpi = 90)
 
 
-.. image:: OmicScope_files/OmicScope_21_0.png
-   :target: OmicScope_files/OmicScope_21_0.png
+.. image:: omicscope_files/omicscope_21_0.png
+   :target: omicscope_files/omicscope_21_0.png
    :alt: png
 
 
 Evaluate abundance of subset of proteins:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-OmicScope has two options to visualize proteins individually: barplot and boxplot. Basically, both functions works similar, users call the function writing all target proteins and, then, an unique figure for all proteins (with their respective condition) is plotted. As default, protein abundance is log-transformed.
+OmicScope has two options to visualize proteins individually: barplot and boxplot. Basically, both functions work similarly, users call the function by writing all target proteins and then a unique figure for all proteins (with their respective conditions) is plotted. By default, protein abundance is log-transformed.
 
 Bar plot of proteins - *object.bar_protein(args)*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -491,8 +498,8 @@ Bar plot of proteins - *object.bar_protein(args)*
    df.bar_protein('Pdcd4', 'Sfxn3', logscale=True, palette = 'viridis', dpi = 90)
 
 
-.. image:: OmicScope_files/OmicScope_23_0.png
-   :target: OmicScope_files/OmicScope_23_0.png
+.. image:: omicscope_files/omicscope_23_0.png
+   :target: omicscope_files/omicscope_23_0.png
    :alt: png
 
 
@@ -504,15 +511,15 @@ Boxplot plot of proteins - *object.bar_protein(args)*
    df.boxplot_protein('Pdcd4', 'Sfxn3', palette = 'viridis', dpi = 90)
 
 
-.. image:: OmicScope_files/OmicScope_25_0.png
-   :target: OmicScope_files/OmicScope_25_0.png
+.. image:: omicscope_files/omicscope_25_0.png
+   :target: omicscope_files/omicscope_25_0.png
    :alt: png
 
 
 Clustering Analysis
 ^^^^^^^^^^^^^^^^^^^
 
-OmicScope also performs clustering analysis using 3 algorithms: hierarchical clustering, principal component analysis (PCA), and k-means. 
+OmicScope also performs clustering analysis using three algorithms: hierarchical clustering, principal component analysis (PCA), and k-means. 
 
 Heatmap - *object.heatmap()*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -524,15 +531,15 @@ Heatmap function performs **hierarchical clustering** for both samples and prote
    df.heatmap(dpi = 90, line=0)
 
 
-.. image:: OmicScope_files/OmicScope_28_0.png
-   :target: OmicScope_files/OmicScope_28_0.png
+.. image:: omicscope_files/omicscope_28_0.png
+   :target: omicscope_files/omicscope_28_0.png
    :alt: png
 
 
 Pearson's Correlation - *object.correlation()*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Correlation function performs pair-wise Pearson's correlation among samples, following by a hierarchical clustering for that matrix. This plot can be used to check outliers, technical variations, normalization issues, and even the size effect of differentially regulated proteins on whole proteome. By default, p-value threshold is defined by 1.0 to evaluate whole proteome.
+Correlation function performs pair-wise Pearson's correlation between samples, followed by hierarchical clustering for that matrix. This plot can be used to check outliers, technical variations, normalization issues, and even the size effect of differentially regulated proteins on the whole proteome. By default, the p-value threshold is defined as 1.0 when evaluating the entire proteome.
 
 .. code-block:: python
 
@@ -548,30 +555,30 @@ Correlation function performs pair-wise Pearson's correlation among samples, fol
 
 
 
-.. image:: OmicScope_files/OmicScope_30_1.png
-   :target: OmicScope_files/OmicScope_30_1.png
+.. image:: omicscope_files/omicscope_30_1.png
+   :target: omicscope_files/omicscope_30_1.png
    :alt: png
 
 
 Principal Component Analysis - *object.pca()*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Principal Component Analysis (PCA) is performed by OmicScope as an alternative method to perform sample clustering. By default, OmicScope selects all proteins quantified (pvalue=1.0) to perform sample clustering, however lower values can be choosen to other purposes.
+Principal Component Analysis (PCA) is performed via OmicScope as an alternative method to perform sample clustering. By default, OmicScope selects all proteins quantified (pvalue=1.0) to perform sample clustering, however lower values can be chosen for other purposes.
 
 .. code-block:: python
 
    df.pca(pvalue = 0.05, dpi = 90)
 
 
-.. image:: OmicScope_files/OmicScope_32_0.png
-   :target: OmicScope_files/OmicScope_32_0.png
+.. image:: omicscope_files/omicscope_32_0.png
+   :target: omicscope_files/omicscope_32_0.png
    :alt: png
 
 
 K-Means - *object.bigtrend()*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigtrend function groups samples based on protein abundance using k-means algorithm, identifying co-expressed proteins. By default, OmicScope suggests a k-number of clusters that can explain the data, however the users can choice for the number of clusters (e.g. k_cluster=2, for just up- and down-regulations) that better explain the data. Following the plot, the function returns a table (DataFrame) containing the respective cluster (or **trend**\ ) for each protein.
+Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigtrend function groups samples based on protein abundance using the k-means algorithm, identifying co-expressed proteins. By default, OmicScope suggests a k-number of clusters that can explain the data, however, the users can choose the number of clusters (e.g. k_cluster=2, for up- and down-regulations) that better explain the data. Following the plot, the function returns a table (DataFrame) containing the respective cluster (or **trend**\ ) for each protein.
 
 .. code-block:: python
 
@@ -586,8 +593,8 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
 
 
 
-.. image:: OmicScope_files/OmicScope_34_1.png
-   :target: OmicScope_files/OmicScope_34_1.png
+.. image:: omicscope_files/omicscope_34_1.png
+   :target: omicscope_files/omicscope_34_1.png
    :alt: png
 
 
