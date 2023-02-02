@@ -149,7 +149,7 @@ setup(
         "requests-toolbelt==0.10.1",
         "rfc3986==2.0.0",
         "rich==13.0.0",
-        "rpy2==3.5.7",
+        # "rpy2==3.5.7",
         "scikit-learn==1.1.3",
         "scipy==1.9.3",
         "seaborn==0.12.1",
