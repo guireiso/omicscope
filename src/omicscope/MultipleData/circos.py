@@ -100,7 +100,6 @@ class circos():
         links['dup'] = links['name'].duplicated(keep=False)
         links = links[links['dup'] == True]
         links = links.iloc[:, :-1]
-        print(links)
         unique_names = pd.DataFrame(links['name'].unique())
         unique_names.columns = ['name']
 
