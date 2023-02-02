@@ -12,7 +12,9 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx_autodoc_typehints',
+    'jupyter_sphinx.execute'
 ]
 source_suffix = '.rst'
 master_doc = 'index'
