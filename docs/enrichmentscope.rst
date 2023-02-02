@@ -1,9 +1,5 @@
 
-.. code-block:: python
-
-   import sys
-   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
-
+======================
 EnrichmentScope Object
 ======================
 
@@ -13,7 +9,7 @@ EnrichmentScope is the OmicScope module designed to perform *in silico* enrichme
 
    import omicscope as omics
 
-   df = omics.OmicScope('../tests/data/proteins/progenesis.csv', Method = 'Progenesis', ControlGroup = 'WT')
+   df = omics.OmicScope(PATH_TO_FILE, Method = 'Progenesis', ControlGroup = 'WT')
 
    ora = omics.EnrichmentScope(df, Analysis='ORA', dbs = ['Reactome_2022','KEGG_2021_Human'])
 

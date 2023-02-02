@@ -5,8 +5,11 @@ for differential gene/protein expression. This is the key module of
 all OmicScope workflow, being the input for all other modules.
 
 """
+import warnings
 
 from .Input import Input
+
+warnings.filterwarnings("ignore")
 
 
 class Omicscope(Input):

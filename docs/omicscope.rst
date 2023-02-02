@@ -1,9 +1,5 @@
 
-.. code-block:: python
-
-   import sys
-   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
-
+================
 OmicScope Object
 ================
 
@@ -13,7 +9,7 @@ After importing the data into OmicScope, the user can access the input parameter
 
    import omicscope as omics
 
-   df = omics.OmicScope('../tests/data/proteins/progenesis.csv', Method = 'Progenesis', ControlGroup = 'WT')
+   df = omics.OmicScope(PATH_TO_FILE, Method = 'Progenesis', ControlGroup = 'WT')
 
 .. code-block::
 
@@ -437,20 +433,9 @@ Dynamic range plot is a classical plot in proteomics studies. This plot ranks pr
 
    df.DynamicRange('Pdcd4', 'Sfxn3',dpi = 90)
 
-.. code-block::
 
-   c:\Users\Guilherme\omicscope\venv\Lib\site-packages\pandas\core\internals\blocks.py:351: RuntimeWarning: divide by zero encountered in log10
-     result = func(self.values, **kwargs)
-   c:\Users\Guilherme\omicscope\venv\Lib\site-packages\numpy\lib\function_base.py:4527: RuntimeWarning: invalid value encountered in subtract
-     diff_b_a = subtract(b, a)
-
-
-
-
-
-
-.. image:: omicscope_files/omicscope_17_1.png
-   :target: omicscope_files/omicscope_17_1.png
+.. image:: omicscope_files/omicscope_17_0.png
+   :target: omicscope_files/omicscope_17_0.png
    :alt: png
 
 
@@ -545,18 +530,9 @@ Correlation function performs pair-wise Pearson's correlation between samples, f
 
    df.correlation()
 
-.. code-block::
 
-   c:\Users\Guilherme\omicscope\venv\Lib\site-packages\pandas\core\internals\blocks.py:351: RuntimeWarning: divide by zero encountered in log2
-     result = func(self.values, **kwargs)
-
-
-
-
-
-
-.. image:: omicscope_files/omicscope_30_1.png
-   :target: omicscope_files/omicscope_30_1.png
+.. image:: omicscope_files/omicscope_30_0.png
+   :target: omicscope_files/omicscope_30_0.png
    :alt: png
 
 
@@ -640,7 +616,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>1</th>
          <td>Q91V61</td>
-         <td>3</td>
+         <td>2</td>
          <td>KO-1</td>
          <td>-1.343446</td>
          <td>KO</td>
@@ -649,7 +625,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>2</th>
          <td>Q3TMQ6</td>
-         <td>1</td>
+         <td>3</td>
          <td>KO-1</td>
          <td>-0.692659</td>
          <td>KO</td>
@@ -658,7 +634,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>3</th>
          <td>Q8JZQ2</td>
-         <td>1</td>
+         <td>3</td>
          <td>KO-1</td>
          <td>-0.440837</td>
          <td>KO</td>
@@ -685,7 +661,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>7835</th>
          <td>Q9D6R2</td>
-         <td>1</td>
+         <td>3</td>
          <td>WT-16</td>
          <td>-0.204624</td>
          <td>WT</td>
@@ -694,7 +670,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>7836</th>
          <td>Q8BML9</td>
-         <td>1</td>
+         <td>3</td>
          <td>WT-16</td>
          <td>-0.145000</td>
          <td>WT</td>
@@ -703,7 +679,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>7837</th>
          <td>Q9CR64</td>
-         <td>2</td>
+         <td>1</td>
          <td>WT-16</td>
          <td>-0.581567</td>
          <td>WT</td>
@@ -712,7 +688,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>7838</th>
          <td>P70296;Q8VIN1</td>
-         <td>1</td>
+         <td>3</td>
          <td>WT-16</td>
          <td>0.407851</td>
          <td>WT</td>
@@ -721,7 +697,7 @@ Mainly designed for longitudinal analysis (such as TimeCourse experiments), bigt
        <tr>
          <th>7839</th>
          <td>P20108</td>
-         <td>1</td>
+         <td>3</td>
          <td>WT-16</td>
          <td>-0.219085</td>
          <td>WT</td>

@@ -1,9 +1,4 @@
-
-.. code-block:: python
-
-   import sys
-   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
-
+======
 Nebula
 ======
 
@@ -21,7 +16,7 @@ OmicScope and EnrichmentScope have the **savefile function** to export *quantita
    # OmicScope Example
    import omicscope as omics
 
-   df = omics.OmicScope('../tests/data/proteins/progenesis.csv', Method='Progenesis', ControlGroup='WT')
+   df = omics.OmicScope(PATH_TO_FILE, Method='Progenesis', ControlGroup='WT')
    df.savefile(PATH_TO_SAVE)
 
    # EnrichmentScope Example

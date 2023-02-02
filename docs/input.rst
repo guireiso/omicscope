@@ -1,9 +1,4 @@
-
-.. code-block:: python
-
-   import sys
-   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
-
+=====
 Input
 =====
 
@@ -51,7 +46,7 @@ Progenesis exports a .csv extension file, which contains information regarding s
 
 .. code-block:: python
 
-   progenesis = omics.OmicScope('../tests/data/proteins/progenesis.csv', Method = 'Progenesis')
+   progenesis = omics.OmicScope(PATH_TO_FILES, Method = 'Progenesis')
 
 .. code-block::
 
@@ -63,8 +58,8 @@ Since Progenesis does not export any information regarding samples, OmicScope al
 
 .. code-block:: python
 
-   progenesis = omics.OmicScope('../tests/data/proteins/progenesis.csv', Method = 'Progenesis',
-    pdata = '../tests/data/proteins/progenesis_pdata.xls', UniquePeptides = 1)
+   progenesis = omics.OmicScope(PATH_TO_FILES, Method = 'Progenesis',
+    pdata = PATH_TO_PDATA, UniquePeptides = 1)
 
 .. code-block::
 
@@ -79,7 +74,7 @@ PatternLab exports an Excel file (.xlsx extension), containing in general the sa
 
 .. code-block:: python
 
-   plv = omics.OmicScope('../tests/data/proteins/patternlab.xlsx', Method = 'PatternLab', filtering_method = 70)
+   plv = omics.OmicScope(PATH_TO_FILES, Method = 'PatternLab', filtering_method = 70)
 
 .. code-block::
 
@@ -99,8 +94,8 @@ MaxQuant exports a **proteinGroups** file (.txt extension), containing a compreh
 
 .. code-block:: python
 
-   maxquant = omics.OmicScope('../tests/data/proteins/MQ.txt', Method='MaxQuant',
-               pdata='../tests/data/proteins/MQ_pdata.xlsx', filtering_method=70)
+   maxquant = omics.OmicScope(PATH_TO_FILES, Method='MaxQuant',
+               pdata=PATH_TO_PDATA, filtering_method=70)
 
 .. code-block::
 
@@ -120,7 +115,7 @@ The following sections show examples of how each sheet should be described.
 
 .. code-block:: python
 
-   general = omics.OmicScope('../tests/data/proteins/general.xls', Method='General')
+   general = omics.OmicScope(PATH_TO_FILE, Method='General')
 
 .. code-block::
 
@@ -136,7 +131,7 @@ Assay
 
    import pandas as pd
 
-   assay = pd.read_excel('../tests/data/proteins/general.xls', sheet_name=0)
+   assay = pd.read_excel(PATH_TO_FILE, sheet_name=0)
    assay
 
 
@@ -465,7 +460,7 @@ The rdata needs to have at least two columns: 'Accession' and 'Description'.
 
 .. code-block:: python
 
-   rdata = pd.read_excel('../tests/data/proteins/general.xls', sheet_name=1)
+   rdata = pd.read_excel(PATH_TO_FILE, sheet_name=1)
    rdata
 
 
@@ -653,7 +648,7 @@ While performing longitudinal analysis, users must input a 'TimeCourse' column s
 
 .. code-block:: python
 
-   pdata = pd.read_excel('../tests/data/proteins/general.xls', sheet_name=2)
+   pdata = pd.read_excel(PATH_TO_FILE, sheet_name=2)
    pdata
 
 
