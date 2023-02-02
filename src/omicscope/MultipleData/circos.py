@@ -13,23 +13,26 @@ import pandas as pd
 
 
 class circos():
-    def __init__(self, nebula_output):
-        self.group_data = nebula_output.group_data
-        self.enrichment = nebula_output.enrichment
-        self.groups = nebula_output.groups
-        self.labels = nebula_output.labels
-        self.original = nebula_output.original
-        self.original_path = nebula_output.original_path
+    def __init__(self, nebula_output, enrichment_cutoff=0.05, save=None):
+        group_data = copy(nebula_output.group_data)
+        self.enrichment = copy(nebula_output.enrichment)
+        self.groups = copy(nebula_output.groups)
+        self.original = copy(nebula_output.original)
+        self.original_path = copy(nebula_output.original_path)
+        self.labels = copy(nebula_output.groups)
+        group_data = [group_data[x].assign(group=y) for x,
+                           y in enumerate(self.groups)]
+        self.group_data = group_data
         self.foldering()
         self.karyotype()
         self.heatmap()
         self.linkProteins()
-        if any(enr is not None for enr in self.enrichment):
-            self.linkEnrichment()
+        if any(enr is not None for enr in copy(self.enrichment)):
+            self.linkEnrichment(enrichment_cutoff=enrichment_cutoff)
         self.changing_folders()
         self.perl()
         self.copycircos()
-        self.plot()
+        self.plot(save=save)
 
     def foldering(self):
         string = os.path.dirname(os.path.abspath(__file__))
@@ -59,9 +62,6 @@ class circos():
                          index=False)
 
     def heatmap(self):
-        from copy import copy
-
-        import pandas as pd
         group_data = copy(self.group_data)
         labels = copy(self.labels)
         whole = pd.concat(group_data)
@@ -117,10 +117,9 @@ class circos():
         joined.to_csv(self.newFolder + 'links.txt', sep="\t",
                       index=False)
 
-    def linkEnrichment(self):
-        import pandas as pd
-        enrichment = self.enrichment
-        groups = self.groups
+    def linkEnrichment(self, enrichment_cutoff):
+        enrichment = copy(self.enrichment)
+        groups = copy(self.groups)
 
         def enrichment_links(original, group):
             try:
@@ -134,7 +133,7 @@ class circos():
                     string = '-'.join([pal, str(n), t, str(m)])
                     strings.append(string)
                 di = dict(zip(databases, strings))
-                df = df[df['Adjusted P-value'] < 0.05][['Term', 'Gene_set']]
+                df = df[df['Adjusted P-value'] < enrichment_cutoff][['Term', 'Gene_set']]
                 df['group'] = group
                 df = df.replace({"Gene_set": di}).reset_index(drop=True)
                 df.columns = ['pathway', 'color', 'group']
@@ -212,16 +211,13 @@ class circos():
         os.chdir(self.original_path)
 
     def copycircos(self):
-        import os
-        import shutil
-        from copy import copy
         pathfrom = copy(self.path)
         shutil.copyfile(pathfrom + 'circos.svg', self.original_path + '\\circos.svg')
         shutil.copyfile(pathfrom + 'circos.png', self.original_path + '\\circos.png')
         os.chdir(self.original_path)
         shutil.rmtree(pathfrom)
 
-    def plot(self):
+    def plot(self, save=None):
         import matplotlib.image as mpimg
         import matplotlib.pyplot as plt
         plt.rcParams['figure.dpi'] = 300
@@ -229,7 +225,15 @@ class circos():
         plt.imshow(img)
         plt.axis('off')
         plt.show()
+        if save is None:
+            os.remove(self.original_path+'\\circos.svg')
+            os.remove(self.original_path+'\\circos.png')
+        elif type(save) == str:
+            shutil.copyfile(self.original_path+'\\circos.svg', save + 'circos.svg')
+            shutil.copyfile(self.original_path+'\\circos.png', save + 'circos.png')
+            os.remove(self.original_path+'\\circos.svg')
+            os.remove(self.original_path+'\\circos.png')
 
 
-def circos_plot(self):
-    circos(self)
+def circos_plot(self, enrichment_cutoff=0.05, save=None):
+    circos(self, enrichment_cutoff=enrichment_cutoff, save=save)

@@ -18,12 +18,12 @@ class nebula:
     from .MultipleVisualization import network
     from .MultipleVisualization import protein_overlap
 
-    def __init__(self, folder, palette='Dark2'):
+    def __init__(self, folder, palette='Dark2', pvalue_cutoff=0.05):
         self.original_path = os.getcwd()
         self.read_omics(folder, palette=palette)
         self.group_data = []
         for o, g, l in zip(self.original, self.groups, self.labels):
-            self.group_data.append(self.importing(o, g, l))
+            self.group_data.append(self.importing(o, g, l, pvalue_cutoff=pvalue_cutoff))
 
         print(f'''You imported your data successfully!
         Data description:
@@ -66,9 +66,9 @@ class nebula:
             self.original = original
             self.enrichment = enrichment
 
-    def importing(self, original, group, label):
+    def importing(self, original, group, label, pvalue_cutoff):
         df = original
-        df = df[df[self.pvalue] < 0.05][['gene_name', 'log2(fc)']].sort_values('log2(fc)', ignore_index=True)
+        df = df[df[self.pvalue] < pvalue_cutoff][['gene_name', 'log2(fc)']].sort_values('log2(fc)', ignore_index=True)
         df['group'] = label
         df['color'] = df['log2(fc)'].round()
         return (df)

@@ -122,6 +122,7 @@ def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f
             plt.savefig(save + 'upset_proteins.svg')
         else:
             plt.savefig(save + 'upset_proteins.png', dpi=dpi)
+    plt.show()
 
 
 def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#f0f0f0",
@@ -175,6 +176,7 @@ def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#
             plt.savefig(save + 'upset_pathways.svg')
         else:
             plt.savefig(save + 'upset_pathways.png', dpi=dpi)
+    plt.show()
 
 
 def correlation(self, pvalue=1, annotation=True,
@@ -217,7 +219,7 @@ def correlation(self, pvalue=1, annotation=True,
             plt.savefig(save + 'overlap_pearson.svg')
         else:
             plt.savefig(save + 'overlap_pearson.png', dpi=dpi)
-    plt.plot()
+    plt.show()
 
 
 def diff_reg(self,
@@ -420,6 +422,7 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
             plt.savefig(save + 'overlap_stat.svg')
         else:
             plt.savefig(save + 'overlap_stat.png', dpi=dpi)
+    plt.show()
     return matrix
 
 
@@ -486,6 +489,7 @@ def group_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector
             plt.savefig(save + 'groupNetwork.svg')
         else:
             plt.savefig(save + 'groupNetwork.dpi', dpi=dpi)
+    plt.show()
     return G
 
 
