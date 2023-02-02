@@ -9,13 +9,13 @@ class nebula:
     from .circos import circos_plot
     from .MultipleVisualization import barplot
     from .MultipleVisualization import circular_path
+    from .MultipleVisualization import correlation
     from .MultipleVisualization import diff_reg
     from .MultipleVisualization import dotplot_enrichment
     from .MultipleVisualization import enrichment_overlap
+    from .MultipleVisualization import fisher_heatmap
     from .MultipleVisualization import group_network
     from .MultipleVisualization import network
-    from .MultipleVisualization import overlap_pearson
-    from .MultipleVisualization import overlap_stat
     from .MultipleVisualization import protein_overlap
 
     def __init__(self, folder, palette='Dark2'):
@@ -76,12 +76,13 @@ class nebula:
     __all__ = [
         'barplot',
         'circular_path',
+        'circos_plot',
         'diff_reg',
         'dotplot_enrichment',
         'enrichment_overlap',
         'group_network',
         'network',
-        'overlap_pearson',
+        'correlation',
         'overlap_stat',
         'protein_overlap'
     ]

@@ -98,7 +98,9 @@ class circos():
 
         links = pd.concat(transformed)[['name', 'chr', 'START', 'END']]
         links['dup'] = links['name'].duplicated(keep=False)
-        links = links[links['dup'] is True].iloc[:, :-1]
+        links = links[links['dup'] == True]
+        links = links.iloc[:, :-1]
+        print(links)
         unique_names = pd.DataFrame(links['name'].unique())
         unique_names.columns = ['name']
 
@@ -169,7 +171,7 @@ class circos():
 
         links_enr = pd.concat(links)[['name', 'chr', 'START', 'END', 'COLOR']]
         links_enr['dup'] = links_enr['name'].duplicated(keep=False)
-        links_enr = links_enr[links_enr['dup'] is True].iloc[:, :-1]
+        links_enr = links_enr[links_enr['dup'] == True].iloc[:, :-1]
         unique_names_enr = pd.DataFrame(links_enr['name'].unique())
         unique_names_enr.columns = ['name']
 

@@ -11,8 +11,6 @@ def barplot(self, save=None, vector=True, dpi=300):
     according to each group
 
     Args:
-        palette (str, optional): Palettes according to Seaborn configuration.
-         Defaults to 'Spectral'.
         save (str, optional): Path to save image. Defaults to ''.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
@@ -48,7 +46,8 @@ def barplot(self, save=None, vector=True, dpi=300):
     f, (ax, ax2) = plt.subplots(2, 1, sharex=True)
     ax.bar(r, whole_proteome, color='lightgray', edgecolor='black', width=0.5,
            linewidth=1)
-    colors = data.colors
+    colors = copy(self.colors)
+    colors.extend(['gray'])
     ax.bar(r, deps, edgecolor='black', width=0.5, linewidth=1)
     plt.xticks(r,
                fontweight=None, rotation=45, ha='right')
@@ -178,8 +177,8 @@ def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#
             plt.savefig(save + 'upset_pathways.png', dpi=dpi)
 
 
-def overlap_pearson(self, pvalue=1,
-                    save=None, vector=True, dpi=300):
+def correlation(self, pvalue=1, annotation=True,
+                save=None, vector=True, dpi=300):
     """Pair-wise Pearson correlation heatmap for similarities
     among groups
 
@@ -205,7 +204,12 @@ def overlap_pearson(self, pvalue=1,
     wholedata = pd.concat(totalMean, axis=1, join='outer')
     corr = wholedata.corr()
     corr.columns = data.groups
-    sns.clustermap(corr, cmap='RdYlBu', center=0.9,
+    annot = copy(corr)
+    if annotation is False:
+        annot[annot != -2] = np.nan
+    annot[annot == 1] = np.nan
+    sns.clustermap(corr, cmap='RdYlBu', center=0.9, annot=annot,
+                   mask=annot.isnull(),
                    col_colors=colors, row_colors=colors)
 
     if save is not None:
@@ -371,8 +375,9 @@ def overlap_fisher(group1, group2, union):
     return pval
 
 
-def overlap_stat(self, palette='Spectral', pvalue=0.05,
-                 save=None, vector=True, dpi=300):
+def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
+                   annotation=True,
+                   save=None, vector=True, dpi=300):
     """Perform a pair-wise comparison of all conditions
     based on hypergeometric distribution and plot a heatmap
     with hierarchical clustering
@@ -404,6 +409,8 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
     matrix = squareform(matrix)
     matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
     annot = -np.log10(matrix)
+    if annotation is False:
+        annot[annot != np.inf] = np.nan
     annot[annot == np.inf] = np.nan
     sns.clustermap(matrix, cmap=palette, annot=annot,
                    mask=annot.isnull(),
@@ -416,12 +423,13 @@ def overlap_stat(self, palette='Spectral', pvalue=0.05,
     return matrix
 
 
-def group_network(self, pvalue=0.05, save=None, vector=True, dpi=300):
+def group_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector=True, dpi=300):
     """Network of all groups analysed. Links were annotated based on
     overlap found in statistical hypergeometric distribution.
 
     Args:
-        pvalue (float, optional): _description_. Defaults to 0.05.
+        protein_pvalue (float, optional): P-value cuttoff for proteins. Defaults to 0.05.
+        graph_pvalue (float, optional): P-value cuttoff for fisher's test. Defaults to 0.1.
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
@@ -438,15 +446,15 @@ def group_network(self, pvalue=0.05, save=None, vector=True, dpi=300):
     conditions = self.groups
     pval = self.pvalue
     union = set(pd.concat(self.original).gene_name)
-    sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
+    sets = [set(x[x[pval] < protein_pvalue].gene_name) for x in self.original]
     sets = pd.DataFrame(sets)
     matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
     matrix = squareform(matrix)
     matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
-    matrix[matrix > pvalue] = 0
+    matrix[matrix > graph_pvalue] = 0
     G = nx.from_pandas_adjacency(matrix)
     G.edges(data=True)
-    size = [len(set(x[x[pval] < pvalue].gene_name)) for x in self.original]
+    size = [len(set(x[x[pval] < protein_pvalue].gene_name)) for x in self.original]
     carac = pd.DataFrame(zip(conditions, palette, size),
                          columns=['ID', 'color', 'Size'])
     carac = carac.set_index('ID')
