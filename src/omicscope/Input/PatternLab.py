@@ -14,7 +14,7 @@ import pandas as pd
 
 
 class Input:
-    def __init__(self, Table, filtering_method):
+    def __init__(self, Table, filtering_method=70):
         """  PatternLab V output for OmicScope input
 
         Args:
