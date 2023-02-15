@@ -696,7 +696,7 @@ def startrend(OmicScope, pvalue=0.05, k_cluster=None):
     Args:
         OmicScope (_type_): _description_
     """
-    omics = OmicScope
+    omics = copy(OmicScope)
     pdata = omics.pdata
     try:
         pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis=1)
@@ -726,12 +726,15 @@ def startrend(OmicScope, pvalue=0.05, k_cluster=None):
     dictionary = dict(zip(pdata['sample'], pdata['Condition']))
     k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
     k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
+    k_data_protein = k_data_protein.groupby(['cluster', 'Condition', 'sample']).sum().reset_index()
     import altair as alt
     line = alt.Chart(k_data_protein).mark_line().encode(
-        x='sample',
-        y='mean(value)',
-        column='cluster',
-        color='Condition'
-    )
+        x='sample:N',
+        y='mean(value):Q',
+        color='Condition:N'
+    ).properties(
+    width=300,).facet(
+    facet='cluster:N',
+    columns=2).configure_axis(grid=False)
     line
     return line
