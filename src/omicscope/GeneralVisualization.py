@@ -1,10 +1,14 @@
-""" Module for OmicScope Experiment Visualization
-This module allows the user to extract information from Omics data using visualization tools.
-Here, it is possible to evaluate data normalization (MA-Plot, Volcano Plot, Dynamic range plot,),
-individual protein abundance (barplot, boxplots), and perform Principal Component Analysis (PCA) and
-Hierarchical clustering analysis (heatmap, pearson correlation plot)
+""" Module for OmicScope Object Visualization
 
-@author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
+This module allows the user to extract and visualize information from OmicScope object.
+Here, it is possible to evaluate data normalization (MA-Plot, Volcano Plot, Dynamic range plot),
+individual protein abundance (barplot, boxplot), and perform Principal Component Analysis (PCA),
+Hierarchical clustering analysis (heatmap, pearson correlation plot) and K-means clustering (bigtrend).
+
+Some functions below allow user to choose protein to be highlighted and/or plotted.
+For that, user must write protein 'gene_name' as examples in OmicScope Object tab.
+Additionally, colors and color palettes follows the matplotlib and seaborn libraries options.
+
 """
 
 import copy
@@ -22,19 +26,18 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 
 
-def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
+def bar_ident(OmicScope, logscale=True, col='darkcyan', save=None, dpi=300,
               vector=True):
     """Show the amount of entities identified and differentially regulated
     in the study.
 
     Args:
-        OmicScope (OmicScope): OmicScope Experiment
+        OmicScope (OmicScope): OmicScope object.
         logscale (bool, optional): Y-axis log-scaled. Defaults to True.
         col (str, optional): Color. Defaults to 'darkcyan'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): Resolution to save figure. Defaults to 300.
-        vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+        vector (bool, optional): Save figure in as vector (.svg). Defaults to True.
 
     Returns:
         ax [matplotlib object]: Barplot
@@ -82,7 +85,7 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
     plt.ylabel('#Proteins')
     plt.title(label=OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental), loc='left')
     plt.grid(b=False)
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'barplot.svg')
         else:
@@ -93,23 +96,22 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save='', dpi=300,
 
 def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
                       bcol='#962558', non_regulated='#606060',
-                      save='', dpi=300, vector=True):
-    """Creates a volcano plot for multiple conditions .
-    In general, volcano plots are designed to plot 2 conditions.
-    Here, we aim to see the distribution of quantified proteins' p-value and
+                      save=None, dpi=300, vector=True):
+    """Creates a volcano plot for multiple conditions.
+
+    In general, volcano plots are designed to compare 2 conditions.
+    Here, we aim to see the distribution of quantified proteins' p-value and 
     fold changes among multiple conditions.
+
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
+        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
-        palette (str, optional): Color palette to differentiate dots.
-        Defaults to 'viridis'.
+        palette (str, optional): Color palette to differentiate dots. Defaults to 'viridis'.
         bcol (str, optional): color for density plot. Defaults to '#962558'.
-        non_regulated (str, optional): Proteins not differentially regulated.
-         Defaults to '#606060'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        non_regulated (str, optional): Proteins not differentially regulated. Defaults to '#606060'.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
-        vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+        vector (bool, optional): Save figure in as vector (.svg). Defaults to True.
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
@@ -224,7 +226,7 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     ax_scatter.set_ylim((0, limp + limp * .1))
     ax_histx.set_xlim(ax_scatter.get_xlim())
     ax_histy.set_ylim(ax_scatter.get_ylim())
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'volcano.svg')
         else:
@@ -235,23 +237,23 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
 
 def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
                   non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
-                  save='', dpi=300, vector=True):
-    """Creates a volcano plot for two conditions .
+                  save=None, dpi=300, vector=True):
+    """Plot a conventional volcano plot
 
     Args:
-        OmicScope (OmicScope object): OmicScope experiment
+        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         bcol (str, optional): color for density plot. Defaults to 'darkcyan'.
         non_regulated (str, optional): Proteins not differentially regulated.
          Defaults to '#606060'.
         up_regulated (str, optional): Proteins up-regulated in relation
-        to Control group. Defaults to '#E4001B'.
+         to Control group. Defaults to '#E4001B'.
         down_regulated (str, optional): Proteins down-regulated in relation
-        to Control group. Defaults to '#6194BC'.
-        save (str, optional): Path to save figure. Defaults to ''.
+         to Control group. Defaults to '#6194BC'.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
@@ -365,7 +367,7 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     ax_histx.set_xlim(ax_scatter.get_xlim())
     ax_histy.set_ylim(ax_scatter.get_ylim())
     # save figure and how to save
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'volcano.svg')
         else:
@@ -377,11 +379,11 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
 def volcano(OmicScope, *Proteins,
             pvalue=0.05, bcol='#962558', palette='viridis',
             non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
-            save='', dpi=300, vector=True):
-    """Creates volcano plot.
+            save=None, dpi=300, vector=True):
+    """Plot volcano plot.
 
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
+        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         bcol (str, optional): Density plot color. Defaults to '#962558'.
         palette (str, optional): Palette for Multiconditions volcano plot.
@@ -389,13 +391,13 @@ def volcano(OmicScope, *Proteins,
         non_regulated (str, optional): Color of non-differentially regulated
          proteins. Defaults to '#606060'.
         up_regulated (str, optional): Color of up-regulated proteins for volcano
-        with 2 conditions. Defaults to '#E4001B'.
+         with 2 conditions. Defaults to '#E4001B'.
         down_regulated (str, optional): Color of down-regulated proteins for volcano
-        with 2 conditions. Defaults to '#6194BC'.
-        save (str, optional): Path to save figure. Defaults to ''.
+         with 2 conditions. Defaults to '#6194BC'.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): . Resolution to save figure. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     OmicScope = copy.copy(OmicScope)
     if len(OmicScope.Conditions) == 2:
@@ -406,27 +408,27 @@ def volcano(OmicScope, *Proteins,
     if len(OmicScope.Conditions) > 2:
         volcano_Multicond(OmicScope=OmicScope, *Proteins,
                           pvalue=pvalue, palette=palette, bcol=bcol,
-                          save='', dpi=dpi, vector=vector)
+                          save=None, dpi=dpi, vector=vector)
 
 
 def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
             palette='RdYlBu_r', line=0.01, color_groups='tab20',
-            save='', dpi=300, vector=True):
-    """ Heatmap
+            save=None, dpi=300, vector=True):
+    """ Heatmap with hierarchical clustering
 
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
-        pvalue (float, optional): P-value threshold. Defaults to 0.05.
+        OmicScope (OmicScope object): OmicScope object.
+        pvalue (float, optional): p-value threshold. Defaults to 0.05.
         c_cluster (bool, optional): Applies Hierarchical clustering for
-        columns. Defaults to True.
+         columns. Defaults to True.
         color_groups (str, optional): Palette for group colors.
-        Defaults to 'tab20'.
+         Defaults to 'tab20'.
         palette (str, optional): Palette for protein abundance. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.01.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
@@ -485,7 +487,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     plt.xlabel('')
     plt.ylabel('')
     # Save
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'heatmap.svg')
         else:
@@ -496,20 +498,21 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
 def correlation(OmicScope, *Proteins, pvalue=1.0,
                 Method='pearson', palette='RdYlBu_r', line=0.005,
                 color_groups='tab20',
-                save='', dpi=300, vector=True):
+                save=None, dpi=300, vector=True):
     """Pairwise correlation plot for samples.
 
     Args:
         OmicScope (OmicScope object): OmicScope Experiment.
         pvalue (float, optional): p-value threshold. Defaults to 1.0.
-        Method (str, optional): Method of correlation. Defaults to 'pearson'.
+        Method (str, optional): Method to compute pair-wise correlation.
+         Options: pearson, kendal, spearman. Defaults to 'pearson'.
         palette (str, optional): Palette for R-distribution. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.005.
         color_groups (str, optional): Color of each group. Defaults to 'tab20'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
@@ -569,7 +572,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
                    xticklabels=corr_matrix.columns, row_colors=colors,
                    yticklabels=corr_matrix.columns, col_colors=colors,
                    cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'pearson.svg')
         else:
@@ -582,24 +585,24 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
 
 def DynamicRange(OmicScope, *Proteins, color='#565059',
                  protein_color='orange', max_min=False,
-                 min_color='#18ab75', max_color='#ab4e18', dpi=300, save='',
+                 min_color='#18ab75', max_color='#ab4e18', dpi=300, save=None,
                  vector=True):
     """Dynamic range plot
 
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
-        mean_color (str, optional): Color for each dot (mean abundance).
-        Defaults to '#565059'.
-        protein_color (str, optional): Color of specific proteins (Args).
-        Defaults to 'orange'.
+        OmicScope (OmicScope object): OmicScope experiment.
+        mean_color (str, optional): default color for dots (mean abundance).
+         Defaults to '#565059'.
+        protein_color (str, optional): Color for specific proteins (Args).
+         Defaults to 'orange'.
         max_min (bool, optional): Plot the maximum and minimum abundance
-        value for each protein. Defaults to False.
+         value for each protein. Defaults to False.
         min_color (str, optional): Color of minimum values. Defaults to '#1daec7'.
         max_color (str, optional): Color of maximum values. Defaults to '#f7463d'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
 
     plt.style.use('default')
@@ -650,7 +653,7 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
     plt.xlabel('log10(Abundance)')
     plt.ylabel('Rank')
     plt.title('Dynamic Range')
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'DynamicRange.svg')
         else:
@@ -661,20 +664,20 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
 
 def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
         marks=False, palette='tab20', FoldChange_cutoff=0,
-        save='', dpi=300, vector=True):
+        save=None, dpi=300, vector=True):
     """ Perform Principal Component Analysis.
 
     Args:
-        OmicScope (OmicScope object): OmicScope experiment
+        OmicScope (OmicScope object): OmicScope experiment.
         pvalue (float, optional): p-value threshold. Defaults to 1.00.
         scree_color (str, optional): Color of Scree plot. Defaults to '#900C3F'.
         marks (bool, optional): Insert group annotation. Defaults to False.
         palette (str, optional): Palette for groups. Defaults to 'tab20'.
-        FoldChange_cutoff (int, optional): Fold change threshold. Defaults to 0.
-        save (str, optional): Path to save figure. Defaults to ''.
+         FoldChange_cutoff (int, optional): Fold change threshold. Defaults to 0.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
@@ -735,7 +738,7 @@ def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
     if marks is True:
         for sample in pca_df.index:
             plt.annotate(sample, (pca_df.PC1.loc[sample], pca_df.PC2.loc[sample]))
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'pca.svg')
         else:
@@ -777,18 +780,19 @@ def color_scheme(df, palette):
 
 
 def bar_protein(OmicScope, *Proteins, logscale=True,
-                palette='Spectral', save='', dpi=300,
+                palette='Spectral', save=None, dpi=300,
                 vector=True):
     """Bar plot to show protein abundance in each condition
+
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
-        logscale (bool, optional): Apply abundance log-transformed.
+        logscale (bool, optional): Apply log-transformed abundance.
         Defaults to True.
         palette (str, optional): Palette for groups. Defaults to 'Spectral'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.rcParams['figure.dpi'] = dpi
     df = copy.copy(OmicScope.quant_data)
@@ -843,7 +847,7 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
     plt.title('Abundance - ' + ' and '.join(Proteins))
     plt.xlabel('')
     plt.ylabel('log2(Abundance)')
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
         else:
@@ -852,15 +856,16 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
 
 
 def boxplot_protein(OmicScope, *Proteins, logscale=True,
-                    palette='Spectral', save='', dpi=300,
+                    palette='Spectral', save=None, dpi=300,
                     vector=True):
     """Boxplot to show protein abundance in each condition
+    
     Args:
         OmicScope (OmicScope object): OmicScope Experiment
         logscale (bool, optional): Apply abundance log-transformed.
         Defaults to True.
         palette (str, optional): Palette for groups. Defaults to 'Spectral'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
         True.
@@ -917,7 +922,7 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
     plt.title('Abundance - ' + ' and '.join(Proteins))
     plt.xlabel('')
     plt.ylabel('log2(Abundance)')
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
         else:
@@ -928,23 +933,23 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
 def MAplot(OmicScope, *Proteins,
            pvalue=0.05, non_regulated='#606060', up_regulated='#E4001B',
            down_regulated='#6194BC', FoldChange_cutoff=0,
-           save='', dpi=300, vector=True):
+           save=None, dpi=300, vector=True):
     """MA plot
 
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
+        OmicScope (OmicScope object): OmicScope experiment.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         non_regulated (str, optional): color for non-regulated proteins.
-        Defaults to '#606060'.
+         Defaults to '#606060'.
         up_regulated (str, optional): color for up-regulated proteins.
-        Defaults to '#E4001B'.
+         Defaults to '#E4001B'.
         down_regulated (str, optional): color for down-regulated proteins.
-        Defaults to '#6194BC'.
+         Defaults to '#6194BC'.
         FoldChange_cutoff (int, optional): Foldchange threshold. Defaults to 0.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     df = copy.copy(OmicScope.quant_data)
     df['TotalMean'] = np.log2(df['TotalMean'])
@@ -982,7 +987,7 @@ def MAplot(OmicScope, *Proteins,
     plt.grid(b=False)
     plt.xlabel('log2(Mean)')
     plt.title('MA plot')
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'MAPlot.svg')
         else:
@@ -1011,11 +1016,29 @@ def find_k(df):
 
 
 def bigtrend(OmicScope, pvalue=0.05, k_cluster=None,
-             save='', dpi=300, vector=True):
-    """Perform a K-mean algorithm to identify co-expressed
-    proteins/genes and
+             save=None, dpi=300, vector=True):
+    """Perform a K-mean algorithm
+    
+    BigTrend apply k-mean algorithm to identify co-expressed
+    proteins/genes. For longitudinal analysis, k-means can help users to
+    visualize the trends of proteins in the evaluated timecourse. 
+
+    Optionally, the user can define the number of clusters that k-means will cluster proteins and samples.
+    By default, OmicScope run KneeLocator algorithm to suggest an optimal number of clusters.
+    
     Args:
-        OmicScope (_type_): _description_
+        OmicScope (_type_): OmicScope object.
+        pvalue (float, optional): _description_. Defaults to 0.05.
+        k_cluster (int, optional): Number of cluster to perform k-means.
+         If None, OmicScope defines k-clusters based on KneeLocator algorithm.
+         Defaults to None.
+        save (str, optional): Path to save figure. Defaults to None.
+        dpi (int, optional): figure resolution. Defaults to 300.
+        vector (bool, optional): Save figure in as vector (.svg). Defaults to
+         True.
+
+    Returns:
+        _type_: _description_
     """
     omics = OmicScope
     pdata = omics.pdata
@@ -1059,7 +1082,7 @@ def bigtrend(OmicScope, pvalue=0.05, k_cluster=None,
     g.set_ylabels('z-score', clear_inner=True)
     g.set_xlabels('Conditions', clear_inner=True)
     g.set(xticklabels=[])
-    if save != '':
+    if save is not None:
         if vector is True:
             plt.savefig(save + 'MAPlot.svg')
         else:

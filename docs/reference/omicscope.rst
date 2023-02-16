@@ -1,5 +1,5 @@
-omicscope
-=========
+Omicscope pipeline
+==================
 
 .. testsetup::
 

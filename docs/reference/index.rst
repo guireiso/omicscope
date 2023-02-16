@@ -5,3 +5,7 @@ Reference
     :glob:
 
     omicscope*
+    generalvisualization*
+    enrichmentvis*
+    nebulavis*
+

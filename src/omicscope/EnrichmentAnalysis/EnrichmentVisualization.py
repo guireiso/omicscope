@@ -1,3 +1,14 @@
+""" Module for EnrichmentScope object visualization
+
+This module allows the user to extract and visualize information from EnrichmentScope object.
+
+Here, it is possible to evaluate enrichment results with 1) dotplots, 2)heatmaps and 3) network analysis.
+Dotplots allows the visualization of statistical significance and size of dataset enriched (*number_deps*), and 
+the number of up- and down-regulated proteins (*number_deps*). Heatmaps can be plotted according statistical
+significance and also protein foldchange; for GSEA analysis, the function GSEA heatmap  
+
+"""
+
 import copy
 
 import matplotlib.pyplot as plt
