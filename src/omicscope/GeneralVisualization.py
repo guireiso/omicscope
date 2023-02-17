@@ -2,8 +2,9 @@
 
 This module allows the user to extract and visualize information from OmicScope object.
 Here, it is possible to evaluate data normalization (MA-Plot, Volcano Plot, Dynamic range plot),
-individual protein abundance (barplot, boxplot), and perform Principal Component Analysis (PCA),
-Hierarchical clustering analysis (heatmap, pearson correlation plot) and K-means clustering (bigtrend).
+individual protein abundance (barplot, boxplot), search for protein-protein interactions,
+and perform Principal Component Analysis (PCA), Hierarchical clustering analysis (heatmap, pearson
+correlation plot) and K-means clustering (bigtrend).
 
 Some functions below allow user to choose protein to be highlighted and/or plotted.
 For that, user must write protein 'gene_name' as examples in OmicScope Object tab.
@@ -14,25 +15,30 @@ Additionally, colors and color palettes follows the matplotlib and seaborn libra
 import copy
 import itertools
 import random
+import requests
 
+
+import matplotlib as mpl
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from kneed import KneeLocator
+import networkx as nx
 from scipy.stats import zscore
 from sklearn import preprocessing
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 
 
-def bar_ident(OmicScope, logscale=True, col='darkcyan', save=None, dpi=300,
+def bar_ident(self, logscale=True, col='darkcyan', save=None, dpi=300,
               vector=True):
     """Show the amount of entities identified and differentially regulated
     in the study.
 
     Args:
-        OmicScope (OmicScope): OmicScope object.
         logscale (bool, optional): Y-axis log-scaled. Defaults to True.
         col (str, optional): Color. Defaults to 'darkcyan'.
         save (str, optional): Path to save figure. Defaults to None.
@@ -47,7 +53,7 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save=None, dpi=300,
     sns.set(rc={'figure.figsize': (11.7, 8.27)})
     sns.set_style("ticks")
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     df = OmicScope.quant_data
     # Get number of identified proteins
     identified = df.Accession.count()
@@ -94,7 +100,7 @@ def bar_ident(OmicScope, logscale=True, col='darkcyan', save=None, dpi=300,
     return ax
 
 
-def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
+def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
                       bcol='#962558', non_regulated='#606060',
                       save=None, dpi=300, vector=True):
     """Creates a volcano plot for multiple conditions.
@@ -104,7 +110,6 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     fold changes among multiple conditions.
 
     Args:
-        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         palette (str, optional): Color palette to differentiate dots. Defaults to 'viridis'.
         bcol (str, optional): color for density plot. Defaults to '#962558'.
@@ -115,7 +120,7 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Definitions for the axes
     df_initial = OmicScope.quant_data
@@ -235,13 +240,12 @@ def volcano_Multicond(OmicScope, *Proteins, pvalue=0.05, palette='viridis',
     plt.show(block=True)
 
 
-def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
+def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
                   non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
                   save=None, dpi=300, vector=True):
     """Plot a conventional volcano plot
 
     Args:
-        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         bcol (str, optional): color for density plot. Defaults to 'darkcyan'.
         non_regulated (str, optional): Proteins not differentially regulated.
@@ -257,7 +261,7 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Definitions for the axes
     df_initial = OmicScope.quant_data
@@ -376,14 +380,13 @@ def volcano_2cond(OmicScope, *Proteins, pvalue=0.05, bcol='darkcyan',
     plt.show(block=True)
 
 
-def volcano(OmicScope, *Proteins,
+def volcano(self, *Proteins,
             pvalue=0.05, bcol='#962558', palette='viridis',
             non_regulated='#606060', up_regulated='#E4001B', down_regulated='#6194BC',
             save=None, dpi=300, vector=True):
     """Plot volcano plot.
 
     Args:
-        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         bcol (str, optional): Density plot color. Defaults to '#962558'.
         palette (str, optional): Palette for Multiconditions volcano plot.
@@ -399,7 +402,7 @@ def volcano(OmicScope, *Proteins,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
          True.
     """
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     if len(OmicScope.Conditions) == 2:
         volcano_2cond(OmicScope, *Proteins, pvalue=pvalue, bcol=bcol,
                       non_regulated=non_regulated, up_regulated=up_regulated,
@@ -411,13 +414,12 @@ def volcano(OmicScope, *Proteins,
                           save=None, dpi=dpi, vector=vector)
 
 
-def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
+def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
             palette='RdYlBu_r', line=0.01, color_groups='tab20',
             save=None, dpi=300, vector=True):
     """ Heatmap with hierarchical clustering
 
     Args:
-        OmicScope (OmicScope object): OmicScope object.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         c_cluster (bool, optional): Applies Hierarchical clustering for
          columns. Defaults to True.
@@ -432,7 +434,7 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     df = OmicScope.quant_data
     pdata = OmicScope.pdata
@@ -495,14 +497,13 @@ def heatmap(OmicScope, *Proteins, pvalue=0.05, c_cluster=True,
     plt.show()
 
 
-def correlation(OmicScope, *Proteins, pvalue=1.0,
+def correlation(self, *Proteins, pvalue=1.0,
                 Method='pearson', palette='RdYlBu_r', line=0.005,
                 color_groups='tab20',
                 save=None, dpi=300, vector=True):
     """Pairwise correlation plot for samples.
 
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment.
         pvalue (float, optional): p-value threshold. Defaults to 1.0.
         Method (str, optional): Method to compute pair-wise correlation.
          Options: pearson, kendal, spearman. Defaults to 'pearson'.
@@ -516,7 +517,7 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     df = OmicScope.quant_data
     pdata = OmicScope.pdata
@@ -583,14 +584,13 @@ def correlation(OmicScope, *Proteins, pvalue=1.0,
     plt.show(block=True)
 
 
-def DynamicRange(OmicScope, *Proteins, color='#565059',
+def DynamicRange(self, *Proteins, color='#565059',
                  protein_color='orange', max_min=False,
                  min_color='#18ab75', max_color='#ab4e18', dpi=300, save=None,
                  vector=True):
     """Dynamic range plot
 
     Args:
-        OmicScope (OmicScope object): OmicScope experiment.
         mean_color (str, optional): default color for dots (mean abundance).
          Defaults to '#565059'.
         protein_color (str, optional): Color for specific proteins (Args).
@@ -607,7 +607,7 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
 
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     df = OmicScope.quant_data
     # Dictionary for Accessions
     accession = dict(zip(df.Accession, df.gene_name))
@@ -662,13 +662,12 @@ def DynamicRange(OmicScope, *Proteins, color='#565059',
     plt.show()
 
 
-def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
+def pca(self, pvalue=1.00, scree_color='#900C3F',
         marks=False, palette='tab20', FoldChange_cutoff=0,
         save=None, dpi=300, vector=True):
     """ Perform Principal Component Analysis.
 
     Args:
-        OmicScope (OmicScope object): OmicScope experiment.
         pvalue (float, optional): p-value threshold. Defaults to 1.00.
         scree_color (str, optional): Color of Scree plot. Defaults to '#900C3F'.
         marks (bool, optional): Insert group annotation. Defaults to False.
@@ -681,7 +680,7 @@ def pca(OmicScope, pvalue=1.00, scree_color='#900C3F',
     """
     plt.style.use('default')
     plt.rcParams["figure.dpi"] = dpi
-    OmicScope = copy.copy(OmicScope)
+    OmicScope = copy.copy(self)
     df = OmicScope.quant_data
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Filtering P-value and Fold Change
@@ -779,13 +778,12 @@ def color_scheme(df, palette):
     return color
 
 
-def bar_protein(OmicScope, *Proteins, logscale=True,
+def bar_protein(self, *Proteins, logscale=True,
                 palette='Spectral', save=None, dpi=300,
                 vector=True):
     """Bar plot to show protein abundance in each condition
 
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
         logscale (bool, optional): Apply log-transformed abundance.
         Defaults to True.
         palette (str, optional): Palette for groups. Defaults to 'Spectral'.
@@ -795,6 +793,7 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
          True.
     """
     plt.rcParams['figure.dpi'] = dpi
+    OmicScope = copy.copy(self)
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
@@ -855,13 +854,12 @@ def bar_protein(OmicScope, *Proteins, logscale=True,
     plt.show()
 
 
-def boxplot_protein(OmicScope, *Proteins, logscale=True,
+def boxplot_protein(self, *Proteins, logscale=True,
                     palette='Spectral', save=None, dpi=300,
                     vector=True):
     """Boxplot to show protein abundance in each condition
-    
+
     Args:
-        OmicScope (OmicScope object): OmicScope Experiment
         logscale (bool, optional): Apply abundance log-transformed.
         Defaults to True.
         palette (str, optional): Palette for groups. Defaults to 'Spectral'.
@@ -871,6 +869,7 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
         True.
     """
     plt.rcParams['figure.dpi'] = dpi
+    OmicScope = copy.copy(self)
     df = copy.copy(OmicScope.quant_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
@@ -930,14 +929,13 @@ def boxplot_protein(OmicScope, *Proteins, logscale=True,
     plt.show()
 
 
-def MAplot(OmicScope, *Proteins,
+def MAplot(self, *Proteins,
            pvalue=0.05, non_regulated='#606060', up_regulated='#E4001B',
            down_regulated='#6194BC', FoldChange_cutoff=0,
            save=None, dpi=300, vector=True):
     """MA plot
 
     Args:
-        OmicScope (OmicScope object): OmicScope experiment.
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         non_regulated (str, optional): color for non-regulated proteins.
          Defaults to '#606060'.
@@ -951,6 +949,7 @@ def MAplot(OmicScope, *Proteins,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
          True.
     """
+    OmicScope = copy.copy(self)
     df = copy.copy(OmicScope.quant_data)
     df['TotalMean'] = np.log2(df['TotalMean'])
     df['TotalMean'] = df['TotalMean'].replace(-np.inf, 0.01)
@@ -1015,17 +1014,17 @@ def find_k(df):
     return k
 
 
-def bigtrend(OmicScope, pvalue=0.05, k_cluster=None,
+def bigtrend(self, pvalue=0.05, k_cluster=None,
              save=None, dpi=300, vector=True):
     """Perform a K-mean algorithm
-    
+
     BigTrend apply k-mean algorithm to identify co-expressed
     proteins/genes. For longitudinal analysis, k-means can help users to
     visualize the trends of proteins in the evaluated timecourse. 
 
     Optionally, the user can define the number of clusters that k-means will cluster proteins and samples.
     By default, OmicScope run KneeLocator algorithm to suggest an optimal number of clusters.
-    
+
     Args:
         OmicScope (_type_): OmicScope object.
         pvalue (float, optional): _description_. Defaults to 0.05.
@@ -1040,7 +1039,7 @@ def bigtrend(OmicScope, pvalue=0.05, k_cluster=None,
     Returns:
         _type_: _description_
     """
-    omics = OmicScope
+    omics = copy.copy(self)
     pdata = omics.pdata
     try:
         pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis=1)
@@ -1089,3 +1088,135 @@ def bigtrend(OmicScope, pvalue=0.05, k_cluster=None,
             plt.savefig(save + 'MAPlot.png', dpi=dpi)
     plt.show()
     return k_data_protein
+
+
+def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
+                   module_palette='Paired', species=9606,
+                   pvalue=0.05, network_type='funtional', save=None, dpi=300, vector=True):
+    """Protein-Protein interaction
+
+    Using String API, OmicScope search or protein-protein interactions among
+    the proteins from users's dataset. 
+
+    Args:
+        score_threshold (float, optional): String-score threshold. Defaults to 0.6.
+        labels (bool, optional): Show protein names. Defaults to False.
+        modules (bool, optional): Perform Louvain Method to find communities/modules.
+         Defaults to False.
+        module_palette (str, optional): Color palette to assign modules. Defaults to 'Paired'.
+        species (int, optional): String requires the definition of organism to search
+         for proteins name, according to NCBI identifier. Defaults to 9606 (Human).
+         Mus musculus = 10090; Rattus norvegicus = 10116.
+        pvalue (float, optional): p-value threshold to proteins to be accepted. 
+         Defaults to 0.05 (differentially regulated).
+        network_type (str, optional): Interactions can be defined as 'funtional' or
+         'physical'. Defaults to 'funtional'.
+        save (str, optional): Path to save figure. Defaults to None.
+        dpi (int, optional): figure resolution. Defaults to 300.
+        vector (bool, optional): Save figure in as vector (.svg). Defaults to
+         True.
+
+    Returns:
+        Networkx object
+    """
+    # Set parameters to import data
+    plt.rcParams['figure.dpi'] = dpi
+    string_api_url = "https://version-11-5.string-db.org/api"
+    output_format = "json"
+    method = "network"
+    data = copy.copy(self)
+    data = data.quant_data
+    data = data[data[self.pvalue] < pvalue]
+    foldchange_range = data['log2(fc)']
+    genes = list(data['gene_name'])
+
+    request_url = "/".join([string_api_url, output_format, method])
+
+    params = {
+
+        "identifiers": "%0d".join(genes),
+        "species": species,  # species NCBI identifier
+        "caller_identity": "Omicscope",
+        'show_query_node_labels': 1,
+        'network_type': network_type
+
+    }
+    response = requests.post(request_url, data=params)
+
+    string = pd.read_json(response.text)
+    # Filter string results based on score
+    string = string[string['score'] > score_threshold]
+
+    norm = mpl.colors.TwoSlopeNorm(vmin=min(foldchange_range),
+                                   vmax=max(foldchange_range),
+                                   vcenter=0)
+    cmap = cm.RdBu_r
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+    color_hex = [mcolors.to_hex(m.to_rgba(x)) for x in data['log2(fc)']]
+    source = pd.DataFrame({'ID': data['gene_name'],
+                           'Size': 10,
+                           'type': 'protein',
+                           'color': color_hex,
+                           'regulation': data['log2(fc)']})
+    source = source.drop_duplicates()
+    string = string.rename(columns={'score': 'weight'})
+    G = nx.from_pandas_edgelist(string,
+                                source='preferredName_A',
+                                target='preferredName_B',
+                                edge_attr='weight',
+                                create_using=nx.Graph)
+
+    carac = source.set_index('ID')
+    carac['color_edge'] = 'black'
+    linewidths = 0.8
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
+    # widths = nx.get_edge_attributes(G, 'score')
+    G.edges(data=True)
+    # Find Communities
+    if modules is True:
+        import networkx.algorithms.community as nx_comm
+        # Find communities based on label propagation
+        communities = nx_comm.louvain_communities(G, seed=7)
+        module = []
+        terms = []
+        color = []
+        # Linking Terms, module, colors
+        cmap = sns.color_palette(module_palette, len(communities), desat=.9)
+        for i, g in enumerate(communities):
+            module.extend([i]*len(g))
+            terms.extend(list(g))
+            if len(g) > len(source)*0.05:
+                color.extend([mcolors.to_hex(cmap[i])]*len(g))
+            else:
+                color.extend(['#666666']*len(g))
+            # DataFrame
+        modularity = pd.DataFrame(zip(module, terms, color), columns=['Module', 'ID', 'color_edge'])
+        # Merging carac with modularity data
+        carac = carac.merge(modularity, on='ID', suffixes=('_x', ''))
+        carac = carac.set_index('ID')
+        nx.set_node_attributes(G, dict(zip(carac.index, carac.Module)), name="Module")
+        carac = carac.reindex(G.nodes())
+        linewidths = 2
+    pos = nx.kamada_kawai_layout(G)
+    carac = carac.reindex(G.nodes())
+    weights = nx.get_edge_attributes(G, 'weight')
+    nx.draw(G,
+            pos=pos,
+            node_color=carac['color'],
+            node_size=carac['Size']*10,
+            edgecolors=carac['color_edge'],
+            linewidths=linewidths,
+            alpha=0.9,
+            width=[i**4 for i in list(weights.values())],
+            edge_color='#666666')
+    if labels is True:
+        nx.draw_networkx_labels(G, pos, font_size=6)
+    if save is not None:
+        nx.write_graphml(G, save + 'PPinteraction.graphml', named_key_ids=True)
+        if vector is True:
+            plt.savefig(save + 'PPinteractions.svg')
+        else:
+            plt.savefig(save + 'PPinteractions.dpi', dpi=dpi)
+        plt.show(block=True)
+    return G

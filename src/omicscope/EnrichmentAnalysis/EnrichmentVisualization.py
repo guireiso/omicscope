@@ -5,7 +5,11 @@ This module allows the user to extract and visualize information from Enrichment
 Here, it is possible to evaluate enrichment results with 1) dotplots, 2)heatmaps and 3) network analysis.
 Dotplots allows the visualization of statistical significance and size of dataset enriched (*number_deps*), and 
 the number of up- and down-regulated proteins (*number_deps*). Heatmaps can be plotted according statistical
-significance and also protein foldchange; for GSEA analysis, the function GSEA heatmap  
+significance and also protein foldchange; for GSEA analysis, the function gsea_heatmap plots the normalization
+enrichment score (NES) as color pattern. Finally, the network plots can be used to visualize shared proteins
+between pathways (*enrichment_network()*), or perform an enrichment map (*enrichment_map()*).
+
+Additionally, some functions optionally show a specific pathway while add the name as Args.
 
 """
 
@@ -16,28 +20,26 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-
 def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
             x_size=5, y_size=6, label_wrap=50,
-            save='', dpi=300, vector=True):
+            save=None, dpi=300, vector=True):
     """Dotplot for enriched terms.
 
     Args:
-        OmicScope (_type_): _description_
         top (int, optional): top-N enriched terms to be visualized.
-        Defaults to 10.
+         Defaults to 10.
         palette (str, optional): color map to visualization,
-        for more information https://matplotlib.org/stable/tutorials/colors/colormaps.html.
-        Defaults to 'Spectral'.
-        alpha (int, optional): transparency of dots Defaults to 1.
+         for more information https://matplotlib.org/stable/tutorials/colors/colormaps.html.
+         Defaults to 'Spectral'.
+        alpha (int, optional): dots transparency. Defaults to 1.
         s (int, optional): dotsize. Defaults to 10.
         x_size (int, optional): Size of horizontal axis. Defaults to 5.
         y_size (int, optional): Size of vertical axis. Defaults to 6.
         label_wrap (int, optional): Label wrap. Defaults to 50.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): Resolution to save figure. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.rcParams["figure.dpi"] = dpi
     dbs = self.dbs
@@ -67,7 +69,7 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
             plt.colorbar().set_label('# Proteins')
         plt.xlabel('-log(p-Adjusted)')
         plt.margins(x=.1, y=0.1)
-        if save != '':
+        if save is not None:
             if vector is True:
                 plt.savefig(save + 'dotplot_'+i+'.svg')
             else:
@@ -77,22 +79,22 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
 
 def heatmap(self, *Terms, top=5, foldchange=False,
             x_size=5, linewidths=0.01,
-            foldchange_range=[-0.5, 0.5], save='', dpi=300,
+            foldchange_range=[-0.5, 0.5], save=None, dpi=300,
             vector=True):
     """Heatmap for enriched terms and proteins
 
         Args:
             top (int, optional): top N enriched terms to be visualized.
-                Defaults to 5.
+             Defaults to 5.
             foldchange (bool, optional): show the protein fold change.
-                Defaults to False.
-            foldchange_range (list, optional): Foldchange range to plot protein colors,
-                such as a heatmap. Defaults to [-0.5, 0.5].
-            save (str, optional): Path to save figure. Defaults to ''.
+             Defaults to False.
+            foldchange_range (list, optional): Fold change range to plot protein colors,
+             such as a heatmap. Defaults to [-0.5, 0.5].
+            save (str, optional): Path to save figure. Defaults to None.
             dpi (int, optional): Resolution to save figure. Defaults to 300.
             vector (bool, optional): Save figure in as vector (.svg).
-                Defaults to True.
-         """
+             Defaults to True.
+    """
     plt.rcParams["figure.dpi"] = dpi
     omics = copy.copy(self.results)
     foldchange_range = foldchange_range
@@ -132,7 +134,7 @@ def heatmap(self, *Terms, top=5, foldchange=False,
                         linecolor='black', linewidths=linewidths)
         plt.xlabel('')
         plt.xticks(rotation=45, ha='right')
-        if save != '':
+        if save is not None:
             if vector is True:
                 plt.savefig(save + 'heatmap_'+i+'.svg')
             else:
@@ -141,8 +143,9 @@ def heatmap(self, *Terms, top=5, foldchange=False,
 
 
 def number_deps(self, *Terms, top=20, palette='RdBu',
-                save='', dpi=300, vector=True):
+                save=None, dpi=300, vector=True):
     """Number of DEPs
+
     Return number of down- and up-regulated proteins
     in top-N or specified pathways.
 
@@ -189,7 +192,7 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
         plt.xlabel('')
         plt.margins(x=1, y=0.1)
         sns.despine()
-        if save != '':
+        if save is not None:
             if vector is True:
                 plt.savefig(save + 'number_deps_'+i+'.svg')
             else:
@@ -199,18 +202,18 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
 
 def enrichment_network(self, *Terms, top=5, labels=False,
                        term_color='#a1a1a1', foldchange_range=[-0.5, 0.5],
-                       save='', vector=True, dpi=300):
+                       save=None, vector=True, dpi=300):
     """Path-protein network.
 
     Args:
         top (int, optional): top N enriched terms to be visualized.
-                Defaults to 5.
+         Defaults to 5.
         labels (bool, optional): Show node labels. Defaults to False.
         term_color (str, optional): Color to plot pathways. Defaults to '#a1a1a1'.
-        foldchange_range (list, optional): Foldchange range to plot protein colors,
-                such as a heatmap. Defaults to [-0.5, 0.5].
+        foldchange_range (list, optional): Fold change range to plot protein colors,
+         such as a heatmap. Defaults to [-0.5, 0.5].
         save (str, optional): OmicScope saves networks as figure and Graphml files, which
-        can be used in other network software (recommended). Defaults to ''.
+        can be used in other network software (recommended). Defaults to None.
         vector (bool, optional): Save image as vector (.svg) Defaults to True.
         dpi (int, optional): Figure resolution. Defaults to 300.
 
@@ -282,7 +285,7 @@ def enrichment_network(self, *Terms, top=5, labels=False,
                 edge_color='#a1a1a1')
         if labels is True:
             nx.draw_networkx_labels(G, pos, font_size=6)
-        if save != '':
+        if save is not None:
             nx.write_graphml(G, save + 'PPNetwork_'+i+'.graphml', named_key_ids=True)
             if vector is True:
                 plt.savefig(save + 'PPNetwork_'+i+'.svg')
@@ -294,7 +297,7 @@ def enrichment_network(self, *Terms, top=5, labels=False,
 
 
 def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
-                   pearson_cutoff=0.5, save='', vector=True, dpi=300):
+                   pearson_cutoff=0.5, save=None, vector=True, dpi=300):
     """Enrichment map.
 
     Args:
@@ -434,7 +437,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                 edge_color='gray')
         if labels is True:
             nx.draw_networkx_labels(G, pos, carac.Label, font_size=6)
-        if save != '':
+        if save is not None:
             nx.write_graphml(G, save + 'PathMap.graphml', named_key_ids=True)
             if vector is True:
                 plt.savefig(save + 'PathMap.svg')
@@ -445,7 +448,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
     return G_objects
 
 
-def gsea_heatmap(self, save=''):
+def gsea_heatmap(self, save=None):
     import copy
 
     import matplotlib.pyplot as plt
@@ -458,6 +461,6 @@ def gsea_heatmap(self, save=''):
                 linewidths=0.8, linecolor='black')
     plt.ylabel('')
     plt.xticks(rotation=45, ha='right')
-    if save != '':
+    if save is not None:
         plt.savefig(save + '_gsea_heatmap.png', dpi=300)
     plt.show()

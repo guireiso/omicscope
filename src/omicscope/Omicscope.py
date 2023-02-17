@@ -24,6 +24,7 @@ class Omicscope(Input):
     from .GeneralVisualization import find_k
     from .GeneralVisualization import heatmap
     from .GeneralVisualization import pca
+    from .GeneralVisualization import PPInteractions
     from .GeneralVisualization import volcano
     from .GeneralVisualization import volcano_2cond
     from .GeneralVisualization import volcano_Multicond
@@ -200,6 +201,7 @@ class Omicscope(Input):
         'correlation',
         'DynamicRange',
         'pca',
+        'PPInteractions',
         'color_scheme',
         'bar_protein',
         'boxplot_protein',
