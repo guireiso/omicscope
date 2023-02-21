@@ -154,10 +154,10 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
         Defaults to 10.
         palette (str, optional): color map for up- and down-regulated
         representations. Defaults to 'RdBu'.
-        save (str, optional): Path to save figure. Defaults to ''.
+        save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): Resolution to save figure. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
-        True.
+         True.
     """
     plt.rcParams["figure.dpi"] = dpi
     df = copy.copy(self.results)
@@ -203,7 +203,9 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
 def enrichment_network(self, *Terms, top=5, labels=False,
                        term_color='#a1a1a1', foldchange_range=[-0.5, 0.5],
                        save=None, vector=True, dpi=300):
-    """Path-protein network.
+    """EnrichmentTerm-protein network.
+
+    Network visualization to find proteins that are shared by different enriched Terms.
 
     Args:
         top (int, optional): top N enriched terms to be visualized.
@@ -213,7 +215,7 @@ def enrichment_network(self, *Terms, top=5, labels=False,
         foldchange_range (list, optional): Fold change range to plot protein colors,
          such as a heatmap. Defaults to [-0.5, 0.5].
         save (str, optional): OmicScope saves networks as figure and Graphml files, which
-        can be used in other network software (recommended). Defaults to None.
+         can be used in other network software (recommended). Defaults to None.
         vector (bool, optional): Save image as vector (.svg) Defaults to True.
         dpi (int, optional): Figure resolution. Defaults to 300.
 
@@ -300,13 +302,17 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                    pearson_cutoff=0.5, save=None, vector=True, dpi=300):
     """Enrichment map.
 
+    Since several proteins are presented in more than one pathway, enrichment map
+    shows pathway as nodes and the edge thickness is proportional to the amount
+    of proteins shared between two terms (which is determined by pearson's correlation R)
+
     Args:
         top (int, optional): Top terms used to construct network. Defaults to 1000.
         modules (bool, optional): Returns modularity analysis of Terms. Defaults to True.
         labels (bool, optional): Add Term labels to graph. Defaults to False.
         pearson_cutoff (float, optional): Pearson correlation cutoff . Defaults to 0.5.
         save (str, optional): OmicScope saves networks as figure and Graphml files, which
-        can be used in other network software (recommended). Defaults to ''.
+         can be used in other network software (recommended). Defaults to None.
         vector (bool, optional): Save image as vector (.svg) Defaults to True.
         dpi (int, optional): Figure resolution. Defaults to 300.
 
@@ -448,11 +454,18 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
     return G_objects
 
 
-def gsea_heatmap(self, save=None):
-    import copy
+def gsea_heatmap(self, save=None, dpi=300, vector=True):
+    """GSEA Heatmap
+    Plot a heatmap with colors based on Normalized Enrichment Score (NES)
+    reported by GSEA Analysis.
 
-    import matplotlib.pyplot as plt
-    import seaborn as sns
+    Args:
+        save (str, optional): Path to save figure. Defaults to None.
+        dpi (int, optional): Resolution to save figure. Defaults to 300.
+        vector (bool, optional): Save figure in as vector (.svg). Defaults to
+         True.
+    """
+    plt.rcParams['figure.dpi'] = dpi
     df = copy.copy(self.results)
     df = df[df['Adjusted P-value'] <= 1]
     df = df.set_index('Term')
@@ -462,5 +475,8 @@ def gsea_heatmap(self, save=None):
     plt.ylabel('')
     plt.xticks(rotation=45, ha='right')
     if save is not None:
-        plt.savefig(save + '_gsea_heatmap.png', dpi=300)
-    plt.show()
+        if vector is True:
+            plt.savefig(save + 'gsea_heatmap'+i+'.svg')
+        else:
+            plt.savefig(save + 'gsea_heatmap'+i+'.png', dpi=dpi)
+    plt.show(block=True)

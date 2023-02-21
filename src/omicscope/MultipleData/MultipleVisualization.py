@@ -7,11 +7,12 @@ import seaborn as sns
 
 
 def barplot(self, save=None, vector=True, dpi=300):
-    """Bar plot for proteins/genes identified and differentially regulated
+    """ Barplot
+    Bar plot for proteins/genes identified and differentially regulated
     according to each group
 
     Args:
-        save (str, optional): Path to save image. Defaults to ''.
+        save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
     """
@@ -79,18 +80,18 @@ def barplot(self, save=None, vector=True, dpi=300):
 
 def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
                     edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
-    """Upset plot to evaluate protein overlap among groups
+    """Upset plot 
+    Upset plot to evaluate protein overlap among groups.
 
     Args:
-        dpi (int, optional): Image resolution. Defaults to 600.
-        min_subset (int, optional): Cuttoff of overlap size to show
-        consider for upset plot . Defaults to 10.
+        min_subset (int, optional): Minimum overlap size to consider for upset plot.
+         Defaults to 10.
         face_color (str, optional): Bar and dot colors. Defaults to 'darkcyan'.
         shad_color (str, optional): Shad color in the dot part of the graph.
          Defaults to "#f0f0f0".
-        edge_color (str, optional): Bars edge colors. Defaults to 'black'.
-        linewidth (int, optional): Bar line widths. Defaults to 1.
-        save (str, optional): Path to save image. Defaults to ''.
+        edge_color (str, optional): edge colors. Defaults to 'black'.
+        linewidth (int, optional): line widths. Defaults to 1.
+        save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
     """
@@ -127,18 +128,18 @@ def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f
 
 def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#f0f0f0",
                        edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
-    """_summary_
+    """Upset plot 
+    Upset plot to evaluate enrichment terms overlap among groups.
 
     Args:
-        dpi (int, optional): Image resolution. Defaults to 600.
-        min_subset (int, optional): Cuttoff of overlap size to show
-        consider for upset plot . Defaults to 10.
+        min_subset (int, optional): minimum number of overlap size to consider
+         for upset plot . Defaults to 10.
         face_color (str, optional): Bar and dot colors. Defaults to 'darkcyan'.
         shad_color (str, optional): Shad color in the dot part of the graph.
          Defaults to "#f0f0f0".
-        edge_color (str, optional): Bars edge colors. Defaults to 'black'.
-        linewidth (int, optional): Bar line widths. Defaults to 1.
-        save (str, optional): Path to save image. Defaults to ''.
+        edge_color (str, optional): edge colors. Defaults to 'black'.
+        linewidth (int, optional): line widths. Defaults to 1.
+        save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
     Raises:
@@ -181,15 +182,17 @@ def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#
 
 def correlation(self, pvalue=1, annotation=True,
                 save=None, vector=True, dpi=300):
-    """Pair-wise Pearson correlation heatmap for similarities
+    """Pearson Correlation plot
+
+    Pair-wise Pearson correlation heatmap for similarities
     among groups
 
     Args:
         pvalue (int, optional): P-value threshold to proteins that
-        OmicScope must consider for analysis. Defaults to 1.
-        palette (str, optional): Palettes according to Seaborn configuration.
+         OmicScope must consider for analysis. Defaults to 1.
+        palette (str, optional): color palette to plot heatmap.
          Defaults to 'Spectral'.
-        save (str, optional): Path to save image. Defaults to ''.
+        save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
     """
@@ -224,7 +227,9 @@ def correlation(self, pvalue=1, annotation=True,
 
 def diff_reg(self,
              save=None, vector=True, dpi=300):
-    """Dotplot for number of proteins up- and down-regulated
+    """Dotplot
+    
+    Dotplot for number of proteins up- and down-regulated in each group.
 
     Args:
         save (str, optional): Path to save image. Defaults to None.
@@ -277,11 +282,11 @@ def diff_reg(self,
 
 def network(self, labels=False, save=None, vector=True, dpi=300):
     """Network of entities differentially regulated for each
-    group analysed.
+    group analyzed.
 
     Args:
         labels (bool, optional): Show graph labels. Defaults to False.
-        save (str, optional): Path to save image. Defaults to ''.
+        save (str, optional): Path to save image. Defaults to None.
          Defaults to None.
          dpi (int, optional): Image resolution. Defaults to 300.
     """
@@ -380,14 +385,16 @@ def overlap_fisher(group1, group2, union):
 def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
                    annotation=True,
                    save=None, vector=True, dpi=300):
-    """Perform a pair-wise comparison of all conditions
+    """ Heatmap according to statistical significance
+
+    Perform a pair-wise comparison of all conditions
     based on hypergeometric distribution and plot a heatmap
-    with hierarchical clustering
+    with hierarchical clustering. In the plot, it the p-value is 
+    labeled in a log10-transformation.
 
     Args:
-        palette (str, optional): Palette from seaborn
-        to use for groups. Defaults to 'Spectral'.
-        pvalue (float, optional): _description_. Defaults to 0.05.
+        palette (str, optional): color palette. Defaults to 'Spectral'.
+        pvalue (float, optional): P-value. Defaults to 0.05.
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
@@ -427,12 +434,15 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
 
 
 def group_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector=True, dpi=300):
-    """Network of all groups analysed. Links were annotated based on
-    overlap found in statistical hypergeometric distribution.
+    """ Network for pair-wise comparison.
+
+    Network of all groups analysed, linking groups based on
+    statistical results from hypergeometric distribution.
 
     Args:
-        protein_pvalue (float, optional): P-value cuttoff for proteins. Defaults to 0.05.
-        graph_pvalue (float, optional): P-value cuttoff for fisher's test. Defaults to 0.1.
+        protein_pvalue (float, optional): P-value cuttoff for proteins (e.g. differentially regulated).
+         Defaults to 0.05.
+        graph_pvalue (float, optional): P-value cuttoff for fisher's test and networks. Defaults to 0.1.
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
@@ -495,8 +505,10 @@ def group_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector
 
 def circular_path(self, Term, save=None, vector=True):
     """Circular Path
+
     For a determined Term, Circular path links all groups that
-    enriched for that term to respective differentially regulated protein
+    enriched for that term to respective differentially regulated protein.
+    To run this code, R and circlize package must be installed in the system.
 
     Args:
        Term (str): Terms that must be shown. Defaults to 0.05.
@@ -527,12 +539,12 @@ def circular_path(self, Term, save=None, vector=True):
 def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=True,
                        dpi=300):
     """Dotplot Enrichment
+
     Dotplot to visualize together the enrichment data for each group
 
-
     Args:
-        top (int, optional): _description_. Defaults to 5.
-        palette (str, optional): _description_. Defaults to 'PuBu'.
+        top (int, optional): Top N pathway to considered in each group. Defaults to 5.
+        palette (str, optional): color palette. Defaults to 'PuBu'.
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
