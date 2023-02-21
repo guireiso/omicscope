@@ -12,6 +12,10 @@ Overview
     :alt: GitHub Actions Build Status
     :target: https://github.com/guireiso/omicscope/actions
 
+.. image:: https://img.shields.io/pypi/v/omicscope.svg
+    :alt: PyPI Package latest release
+    :target: https://pypi.org/project/omicscope
+
 .. image:: https://img.shields.io/pypi/wheel/omicscope.svg
     :alt: PyPI Wheel
     :target: https://pypi.org/project/omicscope
@@ -26,7 +30,7 @@ Overview
 
 .. image:: https://img.shields.io/github/commits-since/guireiso/omicscope/v1.0.2.svg
     :alt: Commits since latest release
-    :target: https://github.com/guireiso/omicscope/
+    :target: https://github.com/guireiso/omicscope/compare/v1.0.2...main
 
 
 OmicScope: from DIA proteomics to Systems Biology visualization
