@@ -1128,7 +1128,8 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
     data = data.quant_data
     data = data[data[self.pvalue] < pvalue]
     foldchange_range = data['log2(fc)']
-    genes = list(data['gene_name'])
+    genes = data['gene_name'].dropna().drop_duplicates()
+    genes = list(genes.astype(str))
 
     request_url = "/".join([string_api_url, output_format, method])
 
