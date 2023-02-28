@@ -22,7 +22,7 @@ setup(
     name='omicscope',
     version='1.0.3',
     license='MIT',
-    description='OmicScope: from DIA proteomics to Systems Biology visualisation',
+    description='OmicScope: from quantitative proteomics to systems biology.',
     long_description='{}\n{}'.format(
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst')),

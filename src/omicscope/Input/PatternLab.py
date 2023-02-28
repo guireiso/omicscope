@@ -10,21 +10,25 @@ and protein abundance normalized by XIC.
 """
 from copy import copy
 
+import numpy as np
 import pandas as pd
 
 
 class Input:
-    def __init__(self, Table, filtering_method=70):
+    def __init__(self, Table, filtering_method='minimum'):
         """  PatternLab V output for OmicScope input
 
         Args:
             Table (str): Path to PatternLab V output (.xlsx)
         """
-
         self.Table = Table
         patternlab = self.PatternLab()
-        self.assay = patternlab[0]  # Expression data
-        self.assay.columns = patternlab[1].Sample
+        assay = patternlab[0]  # Expression data
+        assay.columns = patternlab[1].Sample
+        norm_factor = patternlab[3]
+        assay = assay.divide(norm_factor, axis='columns')
+        assay = assay.replace(0, np.nan)
+        self.assay = assay
         self.pdata = patternlab[1]  # Phenotype data
         self.rdata = patternlab[2]  # row/gene data
         # Extract analyzed conditions
@@ -40,6 +44,7 @@ class Input:
         PLV_output = pd.read_excel(df)
         # filtering contaminants
         PLV_output = PLV_output[~PLV_output.Locus.str.startswith('contaminant')]
+        PLV_output = PLV_output[~PLV_output.Locus.str.startswith('Reverse')]
         PLV_output = PLV_output.reset_index(drop=True)
 
         # Getting the Conditions used for PLV experiment
@@ -60,25 +65,18 @@ class Input:
         pdata['Condition'] = pdata.Condition.replace(labels, regex=True)
         pdata['Biological'] = pdata.Data.str[1].str.split(': ').str[1]
         pdata = pdata.iloc[:, 1:]
-        # Defining Biological Replicates
-        Biological = []
-        for i in labels.values():
-            df = pdata[pdata.Condition == i]
-            for j, k in enumerate(df.Biological.unique()):
-                df2 = df[df.Biological == k]
-                Biological.append([j + 1] * len(df2))
-        Biological = pd.Series(Biological)
-        Biological = Biological.explode().reset_index(drop=True)
-        pdata['Biological'] = Biological
 
         # Defining rdata
         rdata = PLV_output[['Locus', 'Description']]
-        Accession = rdata.Locus.str.split('|', regex=False).str[1]
+        Accession = rdata.Locus
         gene_name = rdata['Description'].str.split('GN=').str[-1]
         gene_name = gene_name.str.split(' ').str[0]
         rdata = rdata.assign(Accession=Accession,
                              gene_name=gene_name)
-        return (assay, pdata, rdata)
+        # Normalization factors
+        norm_factor = pd.read_excel(df, sheet_name='Normalization Factors')
+        norm_factor = dict(zip(norm_factor['File Name'], norm_factor['Normalization Factor']))            
+        return (assay, pdata, rdata, norm_factor)
 
     def filtering_data(self):
         assay = copy(self.assay)

@@ -45,18 +45,18 @@ class Enrichment:
         """GSEA workflow according to gseapy
         """
         from gseapy import gsea
-        pvalue_cutoff = self.OmicScope.PValue_cutoff
-        foldchange_cutoff = self.OmicScope.FoldChange_cutoff
-        omics = self.OmicScope.quant_data
+        pvalue_cutoff = copy.copy(self.OmicScope.PValue_cutoff)
+        foldchange_cutoff = copy.copy(self.OmicScope.FoldChange_cutoff)
+        omics = copy.copy(self.OmicScope.quant_data)
         # Filtering data based on Fold Change and P-value
         omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
         omics = omics[omics[self.OmicScope.pvalue] < pvalue_cutoff]
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
-
         gsea_input = omics.set_index('gene_name')
         gsea_input = gsea_input.iloc[:, gsea_input.columns.str.contains('.', regex=False)]
         gsea_input = np.log2(gsea_input)
         gsea_input = gsea_input.replace(-np.inf, 0)
+        gsea_input = gsea_input.replace(np.nan, 0)
         groups = gsea_input.columns.str.split('.', regex=False).str[1]
         gsea_input = gsea_input.reset_index()
         gsea_input['gene_name'] = gsea_input['gene_name'].str.upper()
@@ -72,15 +72,16 @@ class Enrichment:
                                           'NOM p-val': 'P-value',
                                           'Tag %': 'Overlap'},
                                          axis='columns')
-        gsea_result.Genes = gsea_result.Genes.str.split(';')
-        gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange[i] for i in x])
+        
+        gsea_result['Genes'] = gsea_result['Genes'].str.split(';')
+        gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange[i] for i in x if x != ['']])
         gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i < 0]))
         gsea_result['up-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i > 0]))
         gsea_result['N_Proteins'] = gsea_result['down-regulated'] + gsea_result['up-regulated']
-        try:
-            gsea_result['-log10(pAdj)'] = -np.log10(gsea_result['Adjusted P-value'])
-        except TypeError:
-            gsea_result['-log10(pAdj)'] = 1
+        # try:
+        gsea_result['-log10(pAdj)'] = gsea_result['Adjusted P-value'].apply(lambda x: -np.log10(x) if type(x) == float else 0)
+        # except TypeError:
+        #     gsea_result['-log10(pAdj)'] = 1
         gsea_result = gsea_result[['Gene_set', 'Term', 'Overlap', 'P-value', 'Adjusted P-value',
                                    'NES', 'ES', 'Genes', 'N_Proteins', '-log10(pAdj)', 'regulation',
                                    'down-regulated', 'up-regulated']]

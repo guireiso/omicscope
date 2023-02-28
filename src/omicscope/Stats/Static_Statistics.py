@@ -24,22 +24,26 @@ def ttest(params):
 
         #  Perform an independent t-test
         result = ttest_ind(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)],
-                           quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1)
+                           quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1,
+                           nan_policy='omit')
         quant_data['pvalue'] = result[1]
+        quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
         quant_data = quant_data.sort_values('pvalue')
         print('Independent T-test was carried out!')
         #  Perform a sample-related t-test
     else:
         from scipy.stats import ttest_rel
         result = ttest_rel(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)],
-                           quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1)
+                           quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1,
+                           nan_policy='omit')
         quant_data['pvalue'] = result[1]
+        quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
         quant_data = quant_data.sort_values('pvalue')
         print('T-test of related variables was carried out!')
 
     #  Correcting multilple hypothesis test according to fdr_bh
-    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=0.1,
-                                            method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
+                                            method='fdr_bh', is_sorted=False, returnsorted=False)[1]
 
     #  Mean abundance for each protein among conditions
     quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
@@ -106,7 +110,7 @@ def Tukey_hsd(quant_data):
        that were not differentially regulated returned 2
     """
     df = copy(quant_data)
-    df = df[df['pAdjusted'] < 0.05]  # TODO: Trocar para pAdjust
+    df = df[df['pAdjusted'] < 0.05] 
     df = df.iloc[:, df.columns.str.contains('.', regex=False)]
     # Perform Tukey's post-hoc correction for each of differentially
     # regulated entity according ANOVA's test
@@ -136,10 +140,11 @@ def anova(params):
 
     # Perform Tukey's Post-hoc correction
     quant_data['pvalue'] = result[1]
+    quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
     quant_data = quant_data.sort_values('pvalue')
     # BH-correction
-    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=0.1,
-                                            method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
+                                            method='fdr_bh', is_sorted=False, returnsorted=False)[1]
 
     Tukey = Tukey_hsd(quant_data)
     quant_data = quant_data.join(Tukey)
