@@ -15,7 +15,7 @@ import pandas as pd
 
 
 class Input:
-    def __init__(self, Table, filtering_method='minimum'):
+    def __init__(self, Table):
         """  PatternLab V output for OmicScope input
 
         Args:
@@ -33,8 +33,6 @@ class Input:
         self.rdata = patternlab[2]  # row/gene data
         # Extract analyzed conditions
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
-        self.filtering_method = filtering_method
-        self.filtering_data()
 
     def PatternLab(self):
         """ Extract all PatternLab V information

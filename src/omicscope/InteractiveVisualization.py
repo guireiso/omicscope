@@ -696,7 +696,7 @@ def startrend(OmicScope, pvalue=0.05, k_cluster=None):
     Args:
         OmicScope (_type_): _description_
     """
-    omics = copy(OmicScope)
+    omics = copy.copy(OmicScope)
     pdata = omics.pdata
     try:
         pdata['sample'] = pdata[['Condition', 'TimeCourse']].astype(str).apply(lambda x: '-'.join(x), axis=1)

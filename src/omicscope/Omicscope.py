@@ -131,6 +131,8 @@ class Omicscope(Input):
         """Joins the technical replicates and organizes biological
         conditions.
         """
+        import numpy as np
+
         pdata = []
         for i in self.pdata.columns:
             pdata.append(self.pdata[i])
@@ -155,12 +157,20 @@ class Omicscope(Input):
         rdata = expression.index.to_frame().reset_index(drop=True)
         expression = expression.set_index(rdata.Accession)
 
+        # Filtering data
+        nanvalues = expression.notna()
+        nanvalues.columns = pdata.Condition
+        nanvalues = nanvalues.groupby(nanvalues.columns, axis=1).sum()
+        nanvalues[nanvalues <= 0] = np.nan
+        nanvalues = nanvalues.dropna()
+        expression = expression[expression.index.isin(nanvalues.index)]
+        rdata = rdata[rdata['Accession'].isin(nanvalues.index)]
         # New pdata
         pdata['Sample'] = Sample_name
         self.pdata = pdata
 
         # New rdata
-        self.rdata = rdata
+        self.rdata = rdata.reset_index(drop=True)
         return expression
 
     def deps(self):

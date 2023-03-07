@@ -7,7 +7,7 @@ import pandas as pd
 class Input:
 
     def __init__(self, Table, pdata,
-                 quant_strategy='LFQ intensity', filtering_method=70):
+                 quant_strategy='LFQ intensity'):
         """ MaxQuant output
         MaxQuant output is composed by a ProteinGroup.txt file and it contains
         several parameters that can be used to filter the data.
@@ -19,9 +19,6 @@ class Input:
             quant_strategy (str, optional): Quantification strategy that will be performed
             to the proteomic data. Defaults to 'LFQ intensity'. Also allowed
             'Intensity', and 'iBAQ' strategies.
-            filtering_method (int or str, optional): Method to filter identified proteins.
-            User can choose percentage of valid values or filtering based on the minimum valid values
-            among the groups.
             Defaults to 70.
         """
         self.Table = Table
@@ -31,7 +28,7 @@ class Input:
         self.assay = self.assay()
         self.filtering_method = filtering_method
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
-        self.filtering_data()
+        # self.filtering_data()
 
     def rdata(self):
         df = pd.read_csv(self.Table, sep='\t')
