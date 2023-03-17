@@ -12,7 +12,7 @@ class Enrichmentscope():
     from .EnrichmentVisualization import heatmap
     from .EnrichmentVisualization import number_deps
 
-    def __init__(self, OmicScope, Analysis, dbs=['KEGG_2021_Human'],
+    def __init__(self, OmicScope, Analysis, dbs,
                  padjust_cutoff=0.05, organism='Human'):
         """EnrichmentScope is the module designed to perform over-representation
             and Gene-Set Enrichment Analyses of proteins and genes.

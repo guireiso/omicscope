@@ -105,7 +105,7 @@ setup(
         "jinja2-time==0.2.0",
         "joblib==1.2.0",
         "jsonpickle==3.0.1",
-        "jsonschema==4.17.0",
+        "jsonschema==4.16.0",
         "jupyter_client==7.4.4",
         "jupyter_core==5.0.0",
         "keyring==23.13.1",

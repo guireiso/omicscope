@@ -23,7 +23,7 @@ class Enrichment:
     """Over-Representation Analysis Results
     """
 
-    def __init__(self, OmicScope, dbs=['KEGG_2021_Human'],
+    def __init__(self, OmicScope, dbs,
                  padjust_cutoff=0.05,
                  organism='Human', save=''):
         """Over-Representation Analysis (also known as Enrichment Analysis)

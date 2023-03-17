@@ -20,10 +20,7 @@ import pandas as pd
 
 
 class Enrichment:
-    def __init__(self, OmicScope, dbs=['KEGG_2021_Human', 'Reactome_2016',
-                                       'GO_Molecular_Function_2018',
-                                       'GO_Cellular_Component_2018',
-                                       'GO_Biological_Process_2018'],
+    def __init__(self, OmicScope, dbs,
                  organism='Human', padjust_cutoff=0.05):
 
         self.Analysis = 'GSEA'
@@ -72,7 +69,7 @@ class Enrichment:
                                           'NOM p-val': 'P-value',
                                           'Tag %': 'Overlap'},
                                          axis='columns')
-        
+
         gsea_result['Genes'] = gsea_result['Genes'].str.split(';')
         gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange[i] for i in x if x != ['']])
         gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i < 0]))
