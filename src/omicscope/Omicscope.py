@@ -32,7 +32,7 @@ class Omicscope(Input):
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', PValue_cutoff=0.05,
                  FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
-                 degrees_of_freedom=2, **kwargs):
+                 degrees_of_freedom=2, independent_ttest=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -63,6 +63,8 @@ class Omicscope(Input):
             logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
             ExcludeKeratins (bool, optional): Keratins proteins is excluded. Defaults to True.
             degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
+            independent_ttest (bool, optional): If running a t-test, the user can specify if samples
+                are independent (default) or paired (independent_ttest=False). Defaults to True.
         """
         import pandas as pd
         super().__init__(Table, Method=Method, **kwargs)
@@ -72,6 +74,7 @@ class Omicscope(Input):
         self.ExcludeKeratins = ExcludeKeratins
         self.pvalue = pvalue
         self.ControlGroup = ControlGroup
+        self.ind_variables = independent_ttest
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
             raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues)

@@ -26,7 +26,6 @@ class Input:
         self.rdata = self.rdata()
         self.pdata = pd.read_excel(pdata)
         self.assay = self.assay()
-        self.filtering_method = filtering_method
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
         # self.filtering_data()
 

@@ -22,7 +22,8 @@ def OmicScope(Table: str,
               logTransformed: bool = False,
               ExcludeKeratins: bool = True,
               degrees_of_freedom: int = 2,
-              **kwargs) -> Omicscope:
+              independent_ttest=True,
+              ** kwargs) -> Omicscope:
     """OmicScope - Quantitative data
 
         OmicScope was specially designed taking into account the proteomic workflow, in which proteins are identified, quantified and normalized with several softwares, such as Progenesis Qi for Proteomics, PatternLab V and MaxQuant.
@@ -42,6 +43,8 @@ def OmicScope(Table: str,
         logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
         ExcludeKeratins (bool, optional): Keratins proteins is excluded. Defaults to True.
         degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
+        independent_ttest (bool, optional): If running a t-test, the user can specify if samples
+            are independent (default) or paired (independent_ttest=False). Defaults to True.
 
     Returns:
         OmicScope: Return a OmicScope obj. The quantitation data is stored to obj.quant_data.
@@ -57,6 +60,7 @@ def OmicScope(Table: str,
         logTransformed,
         ExcludeKeratins,
         degrees_of_freedom,
+        independent_ttest,
         **kwargs)
 
     return omics

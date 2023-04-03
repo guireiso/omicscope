@@ -24,7 +24,6 @@ def perform_static_stat(self):
         # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest
-        self.ind_variables = True  # TODO
         params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata,
                   pvalue]
         data = ttest(params=params)

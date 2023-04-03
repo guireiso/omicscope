@@ -31,7 +31,7 @@ def ttest(params):
         quant_data = quant_data.sort_values('pvalue')
         print('Independent T-test was carried out!')
         #  Perform a sample-related t-test
-    else:
+    elif ind_variables is False:
         from scipy.stats import ttest_rel
         result = ttest_rel(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)],
                            quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1,
@@ -110,7 +110,7 @@ def Tukey_hsd(quant_data):
        that were not differentially regulated returned 2
     """
     df = copy(quant_data)
-    df = df[df['pAdjusted'] < 0.05] 
+    df = df[df['pAdjusted'] < 0.05]
     df = df.iloc[:, df.columns.str.contains('.', regex=False)]
     # Perform Tukey's post-hoc correction for each of differentially
     # regulated entity according ANOVA's test
@@ -135,12 +135,14 @@ def anova(params):
     expression = []
     for i in Conditions:
         df = quant_data.iloc[:, quant_data.columns.str.endswith(i)]
+        df = df.to_numpy()
+        df = [x[~np.isnan(x)] for x in df]
         expression.append(df)
-    result = f_oneway(*expression, axis=1)
-
+    stat = pd.DataFrame(expression).T
+    stat = stat.apply(lambda x: f_oneway(*x)[1], axis=1)
     # Perform Tukey's Post-hoc correction
-    quant_data['pvalue'] = result[1]
-    quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
+    quant_data['pvalue'] = stat
+    quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     quant_data = quant_data.sort_values('pvalue')
     # BH-correction
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
