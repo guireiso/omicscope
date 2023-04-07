@@ -9,7 +9,7 @@ significance and also protein foldchange; for GSEA analysis, the function gsea_h
 enrichment score (NES) as color pattern. Finally, the network plots can be used to visualize shared proteins
 between pathways (*enrichment_network()*), or perform an enrichment map (*enrichment_map()*).
 
-Additionally, some functions optionally show a specific pathway while add the name as Args.
+Additionally, some functions optionally show a specific Term while add the name as Args.
 
 """
 
@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+
 
 def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
             x_size=5, y_size=6, label_wrap=50,

@@ -482,12 +482,12 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
+    heatmap.columns.name = 'Samples'
+    heatmap.index.name = 'Gene name'
     sns.clustermap(heatmap,
                    cmap=palette, z_score=0, linewidths=line, linecolor='black',
                    col_colors=colors,
                    col_cluster=c_cluster, center=0).fig.suptitle(title, y=1.02)
-    plt.xlabel('')
-    plt.ylabel('')
     # Save
     if save is not None:
         if vector is True:
@@ -569,6 +569,8 @@ def correlation(self, *Proteins, pvalue=1.0,
     # Title
     title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
+    corr_matrix.columns.name = 'Samples'
+    corr_matrix.index.name = 'Samples'
     sns.clustermap(corr_matrix,
                    xticklabels=corr_matrix.columns, row_colors=colors,
                    yticklabels=corr_matrix.columns, col_colors=colors,
@@ -949,6 +951,7 @@ def MAplot(self, *Proteins,
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
          True.
     """
+    plt.rcParams['figure.dpi'] = dpi
     OmicScope = copy.copy(self)
     df = copy.copy(OmicScope.quant_data)
     df['TotalMean'] = np.log2(df['TotalMean'])
@@ -1010,7 +1013,7 @@ def find_k(df):
                      curve='convex',
                      direction='decreasing')
     k = kn.knee
-    print(k)
+    print('KneeLocator identifies: ' + str(k) + ' clusters')
     return k
 
 
@@ -1039,6 +1042,7 @@ def bigtrend(self, pvalue=0.05, k_cluster=None,
     Returns:
         _type_: _description_
     """
+    plt.rcParams['figure.dpi'] = dpi
     omics = copy.copy(self)
     pdata = omics.pdata
     try:
@@ -1160,6 +1164,7 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
                            'color': color_hex,
                            'regulation': data['log2(fc)']})
     source = source.drop_duplicates()
+    source = source.dropna()
     string = string.rename(columns={'score': 'weight'})
     G = nx.from_pandas_edgelist(string,
                                 source='preferredName_A',

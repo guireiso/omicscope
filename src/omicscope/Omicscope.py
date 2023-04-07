@@ -85,6 +85,7 @@ class Omicscope(Input):
                 self.pdata = pd.read_excel(kwargs['pdata'])
             except ValueError:
                 self.pdata = pd.read_csv(kwargs['pdata'])
+
         self.define_conditions()
 
         self.ctrl = self.ControlGroup
@@ -126,8 +127,11 @@ class Omicscope(Input):
             self.experimental = Control
         else:
             Conditions = list(self.pdata.Condition.drop_duplicates())
-            Conditions.remove(self.ControlGroup)
-            self.experimental = Conditions
+            try:
+                Conditions.remove(self.ControlGroup)
+                self.experimental = Conditions
+            except ValueError:
+                raise ValueError('The user-defined ControlGroup is not present in pdata.')
         self.Conditions = copy([self.ControlGroup]) + copy(self.experimental)
 
     def expression(self):

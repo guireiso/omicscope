@@ -46,8 +46,7 @@ def perform_static_stat(self):
 
 
 def perform_longitudinal_stat(self):
-    """log2 transformation for e
-    xpression
+    """log2 transformation for expression
     """
     from copy import copy
 
