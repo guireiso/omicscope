@@ -29,6 +29,18 @@ def imported_stat(self, statistics):
             pdata = copy(self.pdata)
             rdata = copy(self.rdata)
             assay = copy(self.assay)
+            statistical_dictionary = {
+                'Anova (p)': 'pvalue',
+                'pvalue': 'pvalue',
+                'p-value': 'pvalue',
+                'q-value': 'pAdjusted',
+                'q Value': 'pAdjusted',
+                'qvalue': 'pAdjusted',
+                'padj': 'pAdjusted',
+                'p-adjusted': 'pAdjusted',
+                'p-adj': 'pAdjusted',
+                'pAdjusted': 'pAdjusted'
+            }
 
             sample_annotation = pdata.Sample + '.' + pdata.Condition
             sample_dictionary = dict(zip(pdata.Sample, sample_annotation))
@@ -44,7 +56,7 @@ def imported_stat(self, statistics):
                 exp = self.experimental
                 quant_data['fc'] = quant_data['mean ' + exp[0]] / quant_data['mean ' + self.ctrl]
                 quant_data['log2(fc)'] = np.log2(quant_data['fc'])
-            quant_data = quant_data.rename(columns={i: 'pvalue'})
+            quant_data = quant_data.rename(columns=statistical_dictionary)
             quant_data[f'-log10({self.pvalue})'] = -np.log10(quant_data[self.pvalue])
             if self.ExcludeKeratins is True:
                 quant_data = quant_data[~quant_data['Description'].str.contains('Krt|KRT|krt')]
