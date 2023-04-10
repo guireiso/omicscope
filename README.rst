@@ -34,7 +34,7 @@ Overview
 
 
 OmicScope: OmicScope: from quantitative proteomics to systems biology.
----------------------------------------------------------------
+----------------------------------------------------------------------
 
 *OmicScope* is a comprehensive workflow designed to analyse and provide insights regarding quantitative proteomics data. Todate, *OmicScope* works with data generated from `Progenesis QI for Proteomics <https://www.nonlinear.com/progenesis/qi-for-proteomics/>`__, `MaxQuant <https://www.maxquant.org/>`__, and `PatternLab V <http://www.patternlabforproteomics.org/>`__. Additionally, a fourth generical input can be used for further analysis, allowing users to run software coming from different plataforms (including transcriptomics and metabolomics).
 
