@@ -48,6 +48,7 @@ Finally, for each experiment performed by *OmicScope*, it is possible to export 
 
 .. image:: docs/figure/Workflow.png
    :width: 600
+   :align: center
 
 Installation
 ------------
