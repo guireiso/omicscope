@@ -46,7 +46,7 @@ html_theme_options = {
     'display_version': True,
 }
 html_theme_path = ["."]
-html_logo = "logo.svg"
+html_logo = "logo.png"
 
 html_short_title = '%s-%s' % (project, version)
 
