@@ -112,8 +112,17 @@ class Omicscope(Input):
             self.degrees_of_freedom = degrees_of_freedom
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')
+        else:
+            raise ValueError("Invalid statistical specification. " +
+                             "User did not add statistical column into rdata, " +
+                             "neither specify 'static' or 'longitudinal' experimental design. "
+                             )
 
         self.deps = self.deps()
+        if len(self.deps) == 0:
+            print('ATTENTION: There is no differential regulation in your dataset')
+        else:
+            print('OmicScope identifies: ' + str(len(self.deps)) + ' deregulations')
 
     def define_conditions(self):
         """Determine conditions for statistical analysis

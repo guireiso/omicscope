@@ -43,6 +43,7 @@ def Spline_Model_Full(pdata, df):
         variables = 1
         dictionary = dictTC
         sentence = f"~ cr((TimeCourse), df ={df}, constraints='center')"
+    print('Full Model: ' + sentence)
     transformed_x = dmatrix(sentence,
                             dictionary, return_type='dataframe')
     transformed_x = transformed_x.reset_index(drop=True)
@@ -89,6 +90,7 @@ def Spline_Model_Null(pdata, df):
                                 dictionary, return_type='dataframe')
     except PatsyError:
         transformed_x = pd.DataFrame([1] * len(pdata), columns=['Intercept'])
+    print('Null Model: ' + sentence)
     transformed_x = transformed_x.reset_index(drop=True)
     return transformed_x
 

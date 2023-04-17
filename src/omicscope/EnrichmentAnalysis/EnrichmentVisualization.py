@@ -300,7 +300,8 @@ def enrichment_network(self, *Terms, top=5, labels=False,
 
 
 def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
-                   pearson_cutoff=0.5, save=None, vector=True, dpi=300):
+                   similarity_cutoff=0.25, metric='jaccard',
+                   save=None, vector=True, dpi=300):
     """Enrichment map.
 
     Since several proteins are presented in more than one pathway, enrichment map
@@ -311,7 +312,10 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         top (int, optional): Top terms used to construct network. Defaults to 1000.
         modules (bool, optional): Returns modularity analysis of Terms. Defaults to True.
         labels (bool, optional): Add Term labels to graph. Defaults to False.
-        pearson_cutoff (float, optional): Pearson correlation cutoff . Defaults to 0.5.
+        similarity_cutoff (float, optional): similarity cutoff based on statistical analysis performed.
+         Defaults to 0.25.
+        metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'jaccard'.
+         Optionally, user can test other algorithm described in scipy.spatial.distance.
         save (str, optional): OmicScope saves networks as figure and Graphml files, which
          can be used in other network software (recommended). Defaults to None.
         vector (bool, optional): Save image as vector (.svg) Defaults to True.
@@ -324,6 +328,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
     import matplotlib.cm as cm
     import matplotlib.colors as mcolors
     import networkx as nx
+    from sklearn.metrics import pairwise_distances
 
     plt.rcParams["figure.dpi"] = dpi
     omics = copy.copy(self.results)
@@ -344,10 +349,12 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         df = df.explode(['Genes', 'regulation'])
         # CrossTab and perform Pearson correlation among Terms
         df = pd.crosstab(df.Genes, df.Term)
-        df = df.corr()
+        colnames = df.columns
+        df = pairwise_distances(df.T.to_numpy(), metric=metric)
+        df = 1 - pd.DataFrame(df, index=colnames, columns=colnames)
         # Filter correlation (R) to define Adjacency Matrix
         # Filter: R < pearson_cutoff
-        df[df < pearson_cutoff] = 0
+        df[df < similarity_cutoff] = 0
         # Construct graph
         G = []
         G = nx.from_pandas_adjacency(df)
@@ -431,7 +438,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
             nx.set_node_attributes(G, dict(zip(carac.index, carac.Module)), name="Module")
             carac = carac.reindex(G.nodes())
             # Assign position of each mode
-        pos = nx.spring_layout(G, seed=9, k=1/len(G.nodes)**0.3)
+        pos = nx.spring_layout(G, k=1/len(G.nodes)**0.3)
         carac = carac.reindex(G.nodes())
         # Draw network
         nx.draw(G, pos=pos,
