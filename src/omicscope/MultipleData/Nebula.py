@@ -9,13 +9,14 @@ class nebula:
     from .circos import circos_plot
     from .MultipleVisualization import barplot
     from .MultipleVisualization import circular_path
-    from .MultipleVisualization import correlation
+    from .MultipleVisualization import similarity_heatmap
+    from .MultipleVisualization import similarity_network
     from .MultipleVisualization import diff_reg
     from .MultipleVisualization import dotplot_enrichment
     from .MultipleVisualization import enrichment_overlap
     from .MultipleVisualization import fisher_heatmap
-    from .MultipleVisualization import group_network
-    from .MultipleVisualization import network
+    from .MultipleVisualization import fisher_network
+    from .MultipleVisualization import whole_network
     from .MultipleVisualization import protein_overlap
 
     def __init__(self, folder, palette='Dark2', pvalue_cutoff=0.05):
@@ -35,6 +36,9 @@ class nebula:
     def read_omics(self, folder, palette):
         path = folder  # use your path
         all_files = glob.glob(path + "/*.omics")
+        if len(all_files) == 0:
+            raise ValueError('Nebula cannot import .omics file.' +
+                             ' Check if the selected folder contains respective files.')
         groups = []
         labels = []
         original = []
@@ -74,15 +78,16 @@ class nebula:
         return (df)
 
     __all__ = [
+        'circos_plot',
         'barplot',
         'circular_path',
-        'circos_plot',
+        'similarity_heatmap',
+        'similarity_network',
         'diff_reg',
         'dotplot_enrichment',
         'enrichment_overlap',
-        'group_network',
-        'network',
-        'correlation',
-        'overlap_stat',
-        'protein_overlap'
+        'fisher_heatmap',
+        'fisher_network',
+        'whole_network',
+        'protein_overlap',
     ]

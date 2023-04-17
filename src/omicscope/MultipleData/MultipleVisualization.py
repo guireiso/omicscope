@@ -78,6 +78,185 @@ def barplot(self, save=None, vector=True, dpi=300):
     plt.show()
 
 
+def diff_reg(self,
+             save=None, vector=True, dpi=300):
+    """Dotplot
+
+    Dotplot for number of proteins up- and down-regulated in each group.
+
+    Args:
+        save (str, optional): Path to save image. Defaults to None.
+        vector (bool, optional): If image should be export as .svg.
+        Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
+    """
+    plt.rcParams['figure.dpi'] = dpi
+    data = copy(self)
+    groups = data.groups
+    difreg = data.group_data
+    up = []
+    down = []
+
+    for i in difreg:
+        up.append(len(i[i['log2(fc)'] > 0]))
+        down.append(-len(i[i['log2(fc)'] < 0]))
+    dysregulations = pd.DataFrame(columns=groups,
+                                  data=[up, down], index=['Up-regulated', 'Down-regulated']).transpose()
+
+    df = dysregulations
+
+    df = df.reset_index()
+    df = df.melt('index')
+    df['color'] = np.where(df['value'] > 0, '#e3432d', '#167a9c')
+    df['value'] = abs(df['value'])
+    M = 2
+    N = len(groups)
+    fig, ax = plt.subplots(figsize=(1.15, 5/9*len(df)/2))
+    scatter = ax.scatter(x=df['variable'], y=df['index'], s=df['value'],
+                         c=df['color'], ec='black', lw=0.5)
+    ax.set_xticks(np.arange(M+1)-0.5, minor=True)
+    ax.set_yticks(np.arange(N+1)-0.5, minor=True)
+    sns.despine()
+    plt.xticks(rotation=45, ha='right')
+    plt.yticks(rotation=45)
+    kw = dict(prop="sizes", num=3, color='black', alpha=.6)
+    ax.legend(*scatter.legend_elements(**kw), title="# Proteins", handleheight=2,
+              bbox_to_anchor=(1, 1), loc="upper left", markerscale=1,
+              edgecolor='white')
+    plt.margins(x=1, y=0.1)
+
+    if save is not None:
+        if vector is True:
+            plt.savefig(save + 'diff_reg.svg')
+        else:
+            plt.savefig(save + 'diff_reg.png', dpi=dpi)
+    plt.show()
+
+
+def whole_network(self, labels=False, save=None, vector=True, dpi=300):
+    """Network of entities differentially regulated for each
+    group analyzed.
+
+    Args:
+        labels (bool, optional): Show graph labels. Defaults to False.
+        save (str, optional): Path to save image. Defaults to None.
+         Defaults to None.
+         dpi (int, optional): Image resolution. Defaults to 300.
+    """
+    import matplotlib as mpl
+    import matplotlib.cm as cm
+    import matplotlib.colors as mcolors
+    import networkx as nx
+    plt.rcParams['figure.dpi'] = dpi
+    data = copy(self)
+    network_frame = []
+    for group, df, color in zip(data.groups, data.original, data.colors):
+        df['Experiment'] = group
+        df = df[df[self.pvalue] < 0.05]
+        df['Size'] = len(df)
+        df['color'] = color
+        network_frame.append(df)
+    network_frame = pd.concat(network_frame)
+    source = pd.DataFrame({'ID': network_frame['Experiment'],
+                           'Size': network_frame['Size'],
+                           'type': 'Experiment',
+                           'color': network_frame['color']})
+    source = source.drop_duplicates()
+    norm = mpl.colors.TwoSlopeNorm(vmin=min(network_frame['log2(fc)']),
+                                   vmax=max(network_frame['log2(fc)']),
+                                   vcenter=0)
+    cmap = cm.RdYlBu_r
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+    color_hex = [mcolors.to_hex(m.to_rgba(x)) for x in network_frame['log2(fc)']]
+
+    target = pd.DataFrame({'ID': network_frame['gene_name'],
+                           'Size':  int(min(network_frame['Size'])*0.5),
+                           'type': 'Protein',
+                           'color': color_hex})
+    target = target.drop_duplicates()
+    edgelist = network_frame[['Experiment', 'gene_name']]
+    G = nx.from_pandas_edgelist(edgelist,
+                                source='Experiment',
+                                target='gene_name',
+                                create_using=nx.Graph)
+    carac = pd.concat([source, target]).reset_index(drop=True)
+    carac = carac.drop_duplicates('ID')
+    carac = carac.set_index('ID')
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
+    pos = nx.kamada_kawai_layout(G)
+    carac = carac.reindex(G.nodes())
+    nx.draw(G,
+            pos=pos,
+            node_color=carac['color'],
+            node_size=carac['Size']/20,
+            edgecolors='black',
+            linewidths=0.4,
+            alpha=0.9,
+            width=0.2,
+            edge_color='gray')
+    if labels is True:
+        nx.draw_networkx_labels(G, pos, font_size=6)
+    if save is not None:
+        nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
+        if vector is True:
+            plt.savefig(save + 'PPNetwork.svg')
+        else:
+            plt.savefig(save + 'PPNetwork.dpi', dpi=dpi)
+    plt.show()
+    return (G)
+
+
+def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=True,
+                       dpi=300):
+    """Dotplot Enrichment
+
+    Dotplot to visualize together the enrichment data for each group
+
+    Args:
+        top (int, optional): Top N pathway to considered in each group. Defaults to 5.
+        palette (str, optional): color palette. Defaults to 'PuBu'.
+        save (str, optional): Path to save image. Defaults to None.
+        vector (bool, optional): If image should be export as .svg.
+        Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
+    """
+    plt.rcParams['figure.dpi'] = dpi
+    if all(enr is None for enr in self.enrichment):
+        raise IndexError('There is not Enrichment result in data!')
+    genesets = [list(x.Gene_set.drop_duplicates()) for x in self.enrichment]
+    genesets = pd.Series(sum(genesets, [])).drop_duplicates()
+    for i in genesets:
+        data = self.enrichment
+        data = [x[x['Gene_set'] == i] for x in data]
+        terms = [x.iloc[:top, :] for x in data]
+        terms = [list(x['Term']) for x in terms]
+        terms = pd.Series(sum(terms, [])).drop_duplicates()
+        if len(Terms) > 0:
+            terms = Terms
+        data = [x[x['Term'].isin(terms)] for x in data]
+        data = [x.assign(Group=y) for x, y in zip(data, self.groups)]
+        data = pd.concat(data)
+        data = data[['Term', 'Overlap', 'Adjusted P-value', 'Group']]
+        data['Overlap'] = data.Overlap.str.split('/', regex=False).str[0]
+        data['Overlap'] = data.Overlap.astype(int)
+        data['-log10(p)'] = -np.log10(data['Adjusted P-value'])
+        sns.set_style('white')
+        sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
+                        hue='-log10(p)', palette=palette, sizes=(40, 280),
+                        linewidth=0.5, edgecolor='black'
+                        )
+        sns.despine()
+        plt.ylabel('')
+        if save is not None:
+            if vector is True:
+                plt.savefig(save + 'dotplot_enrichment.svg')
+            else:
+                plt.savefig(save + 'dotplot_enrichmnet.dpi', dpi=dpi)
+        plt.show()
+    return
+
+
 def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
                     edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
     """Upset plot 
@@ -180,18 +359,114 @@ def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#
     plt.show()
 
 
-def correlation(self, pvalue=1, annotation=True,
-                save=None, vector=True, dpi=300):
-    """Pearson Correlation plot
+def similarity_network(self, pvalue=1, parameter='TotalMean',
+                       metric='jaccard',
+                       similarity_cutoff=0.2,
+                       save=None, vector=True,
+                       dpi=300):
+    """Similarity heatmap plot
 
-    Pair-wise Pearson correlation heatmap for similarities
-    among groups
+    Pair-wise similarity comparison heatmap.
 
     Args:
         pvalue (int, optional): P-value threshold to proteins that
          OmicScope must consider for analysis. Defaults to 1.
+        parameter (str, optional): Parameter to take into account in pairwise comparison.
+         Defaults to 'TotalMean'. Optionally 'log2(fc)'.
+        similarity_cutoff (float, optional): Cuttoff to consider edges between groups.
+         Defaults to 0.5.
+        metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'correlation'.
+         Optionally, user can test other algorithm described in scipy.spatial.distance.
+        center(float, optional): number to center the heatmap color gradient.
         palette (str, optional): color palette to plot heatmap.
-         Defaults to 'Spectral'.
+         Defaults to 'RdYlBu'.
+        save (str, optional): Path to save image. Defaults to None.
+        vector (bool, optional): If image should be export as .svg. Defaults to True.
+        dpi (int, optional): Image resolution. Defaults to 300.
+    """
+    plt.rcParams['figure.dpi'] = dpi
+    palette = self.colors
+    conditions = self.groups
+    pval = self.pvalue
+    data = copy(self)
+    data1 = data.original
+    totalMean = []
+    colors = data.colors
+    for i in data1:
+        df = i.set_index('Accession')
+        df = df[df[self.pvalue] < pvalue]
+        df = df[[parameter]]
+        totalMean.append(df)
+    wholedata = pd.concat(totalMean, axis=1, join='outer')
+    wholedata.columns = data.groups
+    wholedata = wholedata.reset_index()
+    wholedata = wholedata.melt(['Accession']).replace(np.nan, 0)
+    corr = wholedata.pivot(index='Accession', columns='variable')
+    from sklearn.metrics import pairwise_distances
+    # Replace -inf to the lowest non-inf value in data
+    corr = corr.replace(-np.inf,
+                        corr.replace(-np.inf,
+                                     np.nan).dropna().min().min())
+    corr = 1-pd.DataFrame(pairwise_distances(corr.T.to_numpy(),
+                                             metric=metric))
+    corr[corr < similarity_cutoff] = 0
+    corr.columns, corr.index = data.groups, data.groups
+    G = nx.from_pandas_adjacency(corr)
+    G.edges(data=True)
+    size = [len(set(x[x[pval] < pvalue].gene_name)) for x in self.original]
+    carac = pd.DataFrame(zip(conditions, palette, size),
+                         columns=['ID', 'color', 'Size'])
+    carac = carac.set_index('ID')
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
+    pos = nx.kamada_kawai_layout(G, )
+    carac = carac.reindex(G.nodes())
+    pos = nx.kamada_kawai_layout(G, weight=None)
+    edges = G.edges
+    weights = [G[u][v]['weight'] for u, v in edges]
+    weights = [round(x, 2) for x in weights]
+    norm = [float(i)*5/np.mean(weights) for i in weights]
+    G.remove_edges_from(nx.selfloop_edges(G))
+    nx.draw(G,
+            pos=pos,
+            node_color=carac['color'],
+            node_size=carac['Size'],
+            edgecolors='black',
+            linewidths=0.6,
+            alpha=0.9,
+            width=norm,
+            edge_color='gray')
+    nx.draw_networkx_labels(G, pos, font_size=6)
+    labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=dict(zip(list(labels.keys()), weights)))
+    if save is not None:
+        nx.write_graphml(G, save + 'Similarity_network.graphml', named_key_ids=True)
+        if vector is True:
+            plt.savefig(save + 'Similarity_network.svg')
+        else:
+            plt.savefig(save + 'Similarity_network.dpi', dpi=dpi)
+    return data
+
+
+def similarity_heatmap(self, pvalue=1, parameter='TotalMean',
+                       metric='correlation',
+                       center=0, palette='RdYlBu_r',
+                       annotation=True, save=None, vector=True,
+                       dpi=300):
+    """Similarity heatmap plot
+
+    Pair-wise similarity comparison heatmap.
+
+    Args:
+        pvalue (int, optional): P-value threshold to proteins that
+         OmicScope must consider for analysis. Defaults to 1.
+        parameter (str, optional): Parameter to take into account in pairwise comparison.
+        Defaults to 'TotalMean'. Optionally 'log2(fc)'.
+        metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'correlation'.
+         Optionally, user can test other algorithm described in scipy.spatial.distance.
+        center(float, optional): number to center the heatmap color gradient.
+        palette (str, optional): color palette to plot heatmap.
+         Defaults to 'RdYlBu'.
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
@@ -204,154 +479,35 @@ def correlation(self, pvalue=1, annotation=True,
     for i in data1:
         df = i.set_index('Accession')
         df = df[df[self.pvalue] < pvalue]
-        df = df[['TotalMean']]
+        df = df[[parameter]]
         totalMean.append(df)
     wholedata = pd.concat(totalMean, axis=1, join='outer')
-    corr = wholedata.corr()
-    corr.columns = data.groups
+    wholedata.columns = data.groups
+    wholedata = wholedata.reset_index()
+    wholedata = wholedata.melt(['Accession']).replace(np.nan, 0)
+    corr = wholedata.pivot(index='Accession', columns='variable')
+    from sklearn.metrics import pairwise_distances
+    # Replace -inf to the lowest non-inf value in data
+    corr = corr.replace(-np.inf,
+                        corr.replace(-np.inf,
+                                     np.nan).dropna().min().min())
+    # Calculating distance
+    corr = 1-pd.DataFrame(pairwise_distances(corr.T.to_numpy(),
+                                             metric=metric))
+    corr.columns, corr.index = data.groups, data.groups
     annot = copy(corr)
     if annotation is False:
         annot[annot != -2] = np.nan
     annot[annot == 1] = np.nan
-    sns.clustermap(corr, cmap='RdYlBu', center=0.9, annot=annot,
+    sns.clustermap(corr, cmap=palette, center=center, annot=annot,
                    mask=annot.isnull(),
                    col_colors=colors, row_colors=colors)
-
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'overlap_pearson.svg')
+            plt.savefig(save + 'similarity_heatmap.svg')
         else:
-            plt.savefig(save + 'overlap_pearson.png', dpi=dpi)
+            plt.savefig(save + 'similarity_heatmap.png', dpi=dpi)
     plt.show()
-
-
-def diff_reg(self,
-             save=None, vector=True, dpi=300):
-    """Dotplot
-    
-    Dotplot for number of proteins up- and down-regulated in each group.
-
-    Args:
-        save (str, optional): Path to save image. Defaults to None.
-        vector (bool, optional): If image should be export as .svg.
-        Defaults to True.
-        dpi (int, optional): Image resolution. Defaults to 300.
-    """
-    plt.rcParams['figure.dpi'] = dpi
-    data = copy(self)
-    groups = data.groups
-    difreg = data.group_data
-    up = []
-    down = []
-
-    for i in difreg:
-        up.append(len(i[i['log2(fc)'] > 0]))
-        down.append(-len(i[i['log2(fc)'] < 0]))
-    dysregulations = pd.DataFrame(columns=groups,
-                                  data=[up, down], index=['Up-regulated', 'Down-regulated']).transpose()
-
-    df = dysregulations
-
-    df = df.reset_index()
-    df = df.melt('index')
-    df['color'] = np.where(df['value'] > 0, '#e3432d', '#167a9c')
-    df['value'] = abs(df['value'])
-    M = 2
-    N = len(groups)
-    fig, ax = plt.subplots(figsize=(1.15, 5/9*len(df)/2))
-    scatter = ax.scatter(x=df['variable'], y=df['index'], s=df['value'],
-                         c=df['color'], ec='black', lw=0.5)
-    ax.set_xticks(np.arange(M+1)-0.5, minor=True)
-    ax.set_yticks(np.arange(N+1)-0.5, minor=True)
-    sns.despine()
-    plt.xticks(rotation=45, ha='right')
-    plt.yticks(rotation=45)
-    kw = dict(prop="sizes", num=3, color='black', alpha=.6)
-    ax.legend(*scatter.legend_elements(**kw), title="# Proteins", handleheight=2,
-              bbox_to_anchor=(1, 1), loc="upper left", markerscale=1,
-              edgecolor='white')
-    plt.margins(x=1, y=0.1)
-
-    if save is not None:
-        if vector is True:
-            plt.savefig(save + 'diff_reg.svg')
-        else:
-            plt.savefig(save + 'diff_reg.png', dpi=dpi)
-    plt.show()
-
-
-def network(self, labels=False, save=None, vector=True, dpi=300):
-    """Network of entities differentially regulated for each
-    group analyzed.
-
-    Args:
-        labels (bool, optional): Show graph labels. Defaults to False.
-        save (str, optional): Path to save image. Defaults to None.
-         Defaults to None.
-         dpi (int, optional): Image resolution. Defaults to 300.
-    """
-    import matplotlib as mpl
-    import matplotlib.cm as cm
-    import matplotlib.colors as mcolors
-    import networkx as nx
-    plt.rcParams['figure.dpi'] = dpi
-    data = copy(self)
-    network_frame = []
-    for group, df, color in zip(data.groups, data.original, data.colors):
-        df['Experiment'] = group
-        df = df[df[self.pvalue] < 0.05]
-        df['Size'] = len(df)
-        df['color'] = color
-        network_frame.append(df)
-    network_frame = pd.concat(network_frame)
-    source = pd.DataFrame({'ID': network_frame['Experiment'],
-                           'Size': network_frame['Size'],
-                           'type': 'Experiment',
-                           'color': network_frame['color']})
-    source = source.drop_duplicates()
-    norm = mpl.colors.TwoSlopeNorm(vmin=min(network_frame['log2(fc)']),
-                                   vmax=max(network_frame['log2(fc)']),
-                                   vcenter=0)
-    cmap = cm.RdYlBu_r
-    m = cm.ScalarMappable(norm=norm, cmap=cmap)
-    color_hex = [mcolors.to_hex(m.to_rgba(x)) for x in network_frame['log2(fc)']]
-
-    target = pd.DataFrame({'ID': network_frame['gene_name'],
-                           'Size':  int(min(network_frame['Size'])*0.5),
-                           'type': 'Protein',
-                           'color': color_hex})
-    target = target.drop_duplicates()
-    edgelist = network_frame[['Experiment', 'gene_name']]
-    G = nx.from_pandas_edgelist(edgelist,
-                                source='Experiment',
-                                target='gene_name',
-                                create_using=nx.Graph)
-    carac = pd.concat([source, target]).reset_index(drop=True)
-    carac = carac.drop_duplicates('ID')
-    carac = carac.set_index('ID')
-    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
-    nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
-    pos = nx.kamada_kawai_layout(G)
-    carac = carac.reindex(G.nodes())
-    nx.draw(G,
-            pos=pos,
-            node_color=carac['color'],
-            node_size=carac['Size']/20,
-            edgecolors='black',
-            linewidths=0.4,
-            alpha=0.9,
-            width=0.2,
-            edge_color='gray')
-    if labels is True:
-        nx.draw_networkx_labels(G, pos, font_size=6)
-    if save is not None:
-        nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
-        if vector is True:
-            plt.savefig(save + 'PPNetwork.svg')
-        else:
-            plt.savefig(save + 'PPNetwork.dpi', dpi=dpi)
-    plt.show()
-    return (G)
 
 
 def overlap_fisher(group1, group2, union):
@@ -433,7 +589,7 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
     return matrix
 
 
-def group_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector=True, dpi=300):
+def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector=True, dpi=300):
     """ Network for pair-wise comparison.
 
     Network of all groups analysed, linking groups based on
@@ -534,53 +690,3 @@ def circular_path(self, Term, save=None, vector=True):
     colmat = color_matrix(deps, colors)
     labels = data.groups
     circlize(matrix, colmat, colors, labels, save=save, vector=vector)
-
-
-def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=True,
-                       dpi=300):
-    """Dotplot Enrichment
-
-    Dotplot to visualize together the enrichment data for each group
-
-    Args:
-        top (int, optional): Top N pathway to considered in each group. Defaults to 5.
-        palette (str, optional): color palette. Defaults to 'PuBu'.
-        save (str, optional): Path to save image. Defaults to None.
-        vector (bool, optional): If image should be export as .svg.
-        Defaults to True.
-        dpi (int, optional): Image resolution. Defaults to 300.
-    """
-    plt.rcParams['figure.dpi'] = dpi
-    if all(enr is None for enr in self.enrichment):
-        raise IndexError('There is not Enrichment result in data!')
-    genesets = [list(x.Gene_set.drop_duplicates()) for x in self.enrichment]
-    genesets = pd.Series(sum(genesets, [])).drop_duplicates()
-    for i in genesets:
-        data = self.enrichment
-        data = [x[x['Gene_set'] == i] for x in data]
-        terms = [x.iloc[:top, :] for x in data]
-        terms = [list(x['Term']) for x in terms]
-        terms = pd.Series(sum(terms, [])).drop_duplicates()
-        if len(Terms) > 0:
-            terms = Terms
-        data = [x[x['Term'].isin(terms)] for x in data]
-        data = [x.assign(Group=y) for x, y in zip(data, self.groups)]
-        data = pd.concat(data)
-        data = data[['Term', 'Overlap', 'Adjusted P-value', 'Group']]
-        data['Overlap'] = data.Overlap.str.split('/', regex=False).str[0]
-        data['Overlap'] = data.Overlap.astype(int)
-        data['-log10(p)'] = -np.log10(data['Adjusted P-value'])
-        sns.set_style('white')
-        sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
-                        hue='-log10(p)', palette=palette, sizes=(40, 280),
-                        linewidth=0.5, edgecolor='black'
-                        )
-        sns.despine()
-        plt.ylabel('')
-        if save is not None:
-            if vector is True:
-                plt.savefig(save + 'dotplot_enrichment.svg')
-            else:
-                plt.savefig(save + 'dotplot_enrichmnet.dpi', dpi=dpi)
-        plt.show()
-    return

@@ -306,13 +306,13 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
 
     Since several proteins are presented in more than one pathway, enrichment map
     shows pathway as nodes and the edge thickness is proportional to the amount
-    of proteins shared between two terms (which is determined by pearson's correlation R)
+    of proteins shared between two terms (similarity score)
 
     Args:
         top (int, optional): Top terms used to construct network. Defaults to 1000.
         modules (bool, optional): Returns modularity analysis of Terms. Defaults to True.
         labels (bool, optional): Add Term labels to graph. Defaults to False.
-        similarity_cutoff (float, optional): similarity cutoff based on statistical analysis performed.
+        similarity_cutoff (float, optional): similarity score cutoff based on statistical analysis performed.
          Defaults to 0.25.
         metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'jaccard'.
          Optionally, user can test other algorithm described in scipy.spatial.distance.
