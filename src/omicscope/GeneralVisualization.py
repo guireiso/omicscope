@@ -142,6 +142,7 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     color_per_comparison = sns.color_palette(palette=palette,
                                              n_colors=number_of_comparison).as_hex()
     color_comp_dict = dict(zip(comparisons, color_per_comparison))
+    print(color_comp_dict)
     col = []
     comparison = []
     for pv, comp in zip(pval, comparisons):
@@ -159,7 +160,6 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     df[OmicScope.pvalue] = df[OmicScope.pvalue].astype(float)
     df['fc'] = df['fc'].astype(float)
     df['col'] = df.col.replace(color_comp_dict)
-
     # annotation if it is on args
 
     if len(Proteins) > 0:
@@ -182,8 +182,7 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     # Scatter plot
     ax_scatter = plt.axes(rect_scatter)
     sns.scatterplot(x=df.fc, y=df[OmicScope.pvalue], alpha=0.7,
-                    hue=df.comparison,
-                    palette=list(df.col.drop_duplicates()))
+                    hue=df.comparison)
     sns.despine(left=False)
     plt.xlabel("log2( FC)")
     plt.ylabel(f'-log10({OmicScope.pvalue})')
@@ -409,7 +408,7 @@ def volcano(self, *Proteins,
                       down_regulated=down_regulated,
                       save=save, dpi=dpi, vector=vector)
     if len(OmicScope.Conditions) > 2:
-        volcano_Multicond(OmicScope=OmicScope, *Proteins,
+        volcano_Multicond(OmicScope, *Proteins,
                           pvalue=pvalue, palette=palette, bcol=bcol,
                           save=None, dpi=dpi, vector=vector)
 

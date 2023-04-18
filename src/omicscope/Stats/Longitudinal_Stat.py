@@ -110,7 +110,7 @@ def projMatrix(matrix):
 
 def Individuals(expression, pdata):
     expression = np.asmatrix(expression)
-    ind = pd.Series(pdata.ind, dtype="category")
+    ind = pd.Series(pdata.Individual, dtype="category")
     ind_matrix = dmatrix('~ -1 + individuals',
                          {'individuals': ind})
     Hi = projMatrix(ind_matrix)
@@ -176,8 +176,8 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
     expression = copy(assay)
     # Calculating full and null models
     # While data from the same individuals was collected overtime
-    if 'ind' in pdata.columns:
-        pdata2 = pdata.loc[:, pdata.columns != 'ind']
+    if 'Individual' in pdata.columns:
+        pdata2 = pdata.loc[:, pdata.columns != 'Individual']
         pdata2 = pdata2.loc[:, pdata2.columns != 'Biological']
         full_model = Spline_Model_Full(pdata2, df)
         full_model_len = len(full_model.columns)

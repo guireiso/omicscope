@@ -56,6 +56,15 @@ def imported_stat(self, statistics):
                 exp = self.experimental
                 quant_data['fc'] = quant_data['mean ' + exp[0]] / quant_data['mean ' + self.ctrl]
                 quant_data['log2(fc)'] = np.log2(quant_data['fc'])
+            elif len(self.experimental) > 1:
+                means = quant_data.iloc[:, quant_data.columns.str.startswith('mean ')]
+                means = means.replace(0, 0.01)
+                fc = means.apply(lambda x: max(x)/min(x), axis='columns')
+                quant_data['fc'] = fc
+                quant_data['log2(fc)'] = np.log2(quant_data['fc'])
+                Comparison = means.apply(lambda x: [x.sort_values().index[-1].split(' ')[-1],
+                                                    x.sort_values().index[0].split(' ')[-1]], axis=1)
+                quant_data['Comparison'] = Comparison
             quant_data = quant_data.rename(columns=statistical_dictionary)
             quant_data[f'-log10({self.pvalue})'] = -np.log10(quant_data[self.pvalue])
             if self.ExcludeKeratins is True:
