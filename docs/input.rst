@@ -23,7 +23,7 @@ Import OmicScope
 
 .. code-block::
 
-   OmicScope v 1.0.5 For help: Insert
+   OmicScope v 1.0.6 For help: Insert
    If you use  in published research, please cite: 'XXXXX'
    Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
 

@@ -8,6 +8,7 @@ Contents
    readme
    installation
    input
+   pdata
    omicscope
    enrichmentscope
    nebula

@@ -17,7 +17,7 @@ Once data has been imported into OmicScope, users can access the input parameter
 
 .. code-block::
 
-   OmicScope v 1.0.5 For help: Insert
+   OmicScope v 1.0.6 For help: Insert
    If you use  in published research, please cite: 'XXXXX'
    Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
 
@@ -421,12 +421,6 @@ The ``bar_ident()`` function generates a bar plot that displays the number of pr
 .. image:: omicscope_files/omicscope_15_0.png
    :target: omicscope_files/omicscope_15_0.png
    :alt: png
-
-
-.. code-block::
-
-   <AxesSubplot: title={'left': 'CTRL vs COVID'}, ylabel='#Proteins'>
-
 
 
 
