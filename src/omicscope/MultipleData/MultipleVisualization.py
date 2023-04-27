@@ -1,6 +1,7 @@
 from copy import copy
 
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -146,7 +147,6 @@ def whole_network(self, labels=False, save=None, vector=True, dpi=300):
     import matplotlib as mpl
     import matplotlib.cm as cm
     import matplotlib.colors as mcolors
-    import networkx as nx
     plt.rcParams['figure.dpi'] = dpi
     data = copy(self)
     network_frame = []
@@ -607,7 +607,6 @@ def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vecto
     Returns:
         Graph (Networkx.G): Networkx object
     """
-    import networkx as nx
     from scipy.spatial.distance import pdist
     from scipy.spatial.distance import squareform
     plt.rcParams['figure.dpi'] = dpi
