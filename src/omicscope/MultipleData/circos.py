@@ -21,7 +21,7 @@ class circos():
         self.original_path = copy(nebula_output.original_path)
         self.labels = copy(nebula_output.groups)
         group_data = [group_data[x].assign(group=y) for x,
-                           y in enumerate(self.groups)]
+                      y in enumerate(self.groups)]
         self.group_data = group_data
         self.foldering()
         self.karyotype()

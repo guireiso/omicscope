@@ -19,7 +19,7 @@ def perform_static_stat(self):
     pvalue = copy(self.pvalue)
     # Log-normalize data if it was not
     if log is False:
-        expression = expression.replace(0, 0.01)
+        expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
         # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:

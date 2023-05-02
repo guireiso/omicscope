@@ -72,9 +72,9 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
         plt.margins(x=.1, y=0.1)
         if save is not None:
             if vector is True:
-                plt.savefig(save + 'dotplot_'+i+'.svg')
+                plt.savefig(save + 'dotplot_'+i+'.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'dotplot_'+i+'.png', dpi=dpi)
+                plt.savefig(save + 'dotplot_'+i+'.png', dpi=dpi, bbox_inches='tight')
         plt.show(block=True)
 
 
@@ -137,9 +137,9 @@ def heatmap(self, *Terms, top=5, foldchange=False,
         plt.xticks(rotation=45, ha='right')
         if save is not None:
             if vector is True:
-                plt.savefig(save + 'heatmap_'+i+'.svg')
+                plt.savefig(save + 'heatmap_'+i+'.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'heatmap_'+i+'.png', dpi=dpi)
+                plt.savefig(save + 'heatmap_'+i+'.png', dpi=dpi, bbox_inches='tight')
         plt.show(block=True)
 
 
@@ -195,9 +195,9 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
         sns.despine()
         if save is not None:
             if vector is True:
-                plt.savefig(save + 'number_deps_'+i+'.svg')
+                plt.savefig(save + 'number_deps_'+i+'.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'number_deps_'+i+'.png', dpi=dpi)
+                plt.savefig(save + 'number_deps_'+i+'.png', dpi=dpi, bbox_inches='tight')
         plt.show(block=True)
 
 
@@ -291,9 +291,9 @@ def enrichment_network(self, *Terms, top=5, labels=False,
         if save is not None:
             nx.write_graphml(G, save + 'PPNetwork_'+i+'.graphml', named_key_ids=True)
             if vector is True:
-                plt.savefig(save + 'PPNetwork_'+i+'.svg')
+                plt.savefig(save + 'PPNetwork_'+i+'.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'PPNetwork_'+i+'.dpi', dpi=300)
+                plt.savefig(save + 'PPNetwork_'+i+'.dpi', dpi=300, bbox_inches='tight')
         plt.show()
         G_objects.append(G)
     return G_objects
@@ -454,9 +454,9 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         if save is not None:
             nx.write_graphml(G, save + 'PathMap.graphml', named_key_ids=True)
             if vector is True:
-                plt.savefig(save + 'PathMap.svg')
+                plt.savefig(save + 'PathMap.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'PathMap.dpi', dpi=300)
+                plt.savefig(save + 'PathMap.dpi', dpi=300, bbox_inches='tight')
         plt.show(block=True)
         G_objects.append(G)
     return G_objects
@@ -484,7 +484,7 @@ def gsea_heatmap(self, save=None, dpi=300, vector=True):
     plt.xticks(rotation=45, ha='right')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'gsea_heatmap'+i+'.svg')
+            plt.savefig(save + 'gsea_heatmap'+i+'.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'gsea_heatmap'+i+'.png', dpi=dpi)
+            plt.savefig(save + 'gsea_heatmap'+i+'.png', dpi=dpi, bbox_inches='tight')
     plt.show(block=True)

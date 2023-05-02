@@ -93,9 +93,9 @@ def bar_ident(self, logscale=True, col='darkcyan', save=None, dpi=300,
     plt.grid(b=False)
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'barplot.svg')
+            plt.savefig(save + 'barplot.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'barplot.png', dpi=dpi)
+            plt.savefig(save + 'barplot.png', dpi=dpi, bbox_inches='tight')
     plt.show()
     return ax
 
@@ -232,9 +232,9 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     ax_histy.set_ylim(ax_scatter.get_ylim())
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'volcano.svg')
+            plt.savefig(save + 'volcano.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'volcano.png', dpi=dpi)
+            plt.savefig(save + 'volcano.png', dpi=dpi, bbox_inches='tight')
     plt.show()
     plt.show(block=True)
 
@@ -372,9 +372,9 @@ def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
     # save figure and how to save
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'volcano.svg')
+            plt.savefig(save + 'volcano.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'volcano.png', dpi=dpi)
+            plt.savefig(save + 'volcano.png', dpi=dpi, bbox_inches='tight')
     plt.show()
     plt.show(block=True)
 
@@ -490,9 +490,9 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     # Save
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'heatmap.svg')
+            plt.savefig(save + 'heatmap.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'heatmap.png', dpi=dpi)
+            plt.savefig(save + 'heatmap.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -576,9 +576,9 @@ def correlation(self, *Proteins, pvalue=1.0,
                    cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'pearson.svg')
+            plt.savefig(save + 'pearson.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'pearson.png', dpi=dpi)
+            plt.savefig(save + 'pearson.png', dpi=dpi, bbox_inches='tight')
     plt.xlabel('')
     plt.ylabel('')
     plt.show()
@@ -656,9 +656,9 @@ def DynamicRange(self, *Proteins, color='#565059',
     plt.title('Dynamic Range')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'DynamicRange.svg')
+            plt.savefig(save + 'DynamicRange.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'DynamicRange.png', dpi=dpi)
+            plt.savefig(save + 'DynamicRange.png', dpi=dpi, bbox_inches='tight')
     sns.despine()
     plt.show()
 
@@ -740,9 +740,9 @@ def pca(self, pvalue=1.00, scree_color='#900C3F',
             plt.annotate(sample, (pca_df.PC1.loc[sample], pca_df.PC2.loc[sample]))
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'pca.svg')
+            plt.savefig(save + 'pca.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'pca.png', dpi=dpi)
+            plt.savefig(save + 'pca.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -849,9 +849,9 @@ def bar_protein(self, *Proteins, logscale=True,
     plt.ylabel('log2(Abundance)')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
+            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
+            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -924,9 +924,9 @@ def boxplot_protein(self, *Proteins, logscale=True,
     plt.ylabel('log2(Abundance)')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg')
+            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi)
+            plt.savefig(save + 'barplot_' + '_'.join(Proteins) + '.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -990,9 +990,9 @@ def MAplot(self, *Proteins,
     plt.title('MA plot')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'MAPlot.svg')
+            plt.savefig(save + 'MAPlot.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'MAPlot.png', dpi=dpi)
+            plt.savefig(save + 'MAPlot.png', dpi=dpi, bbox_inches='tight')
     plt.show(block=True)
 
 
@@ -1086,9 +1086,9 @@ def bigtrend(self, pvalue=0.05, k_cluster=None,
     g.set(xticklabels=[])
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'MAPlot.svg')
+            plt.savefig(save + 'MAPlot.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'MAPlot.png', dpi=dpi)
+            plt.savefig(save + 'MAPlot.png', dpi=dpi, bbox_inches='tight')
     plt.show()
     return k_data_protein
 
@@ -1220,8 +1220,8 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
     if save is not None:
         nx.write_graphml(G, save + 'PPinteraction.graphml', named_key_ids=True)
         if vector is True:
-            plt.savefig(save + 'PPinteractions.svg')
+            plt.savefig(save + 'PPinteractions.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'PPinteractions.dpi', dpi=dpi)
+            plt.savefig(save + 'PPinteractions.dpi', dpi=dpi, bbox_inches='tight')
         plt.show(block=True)
     return G

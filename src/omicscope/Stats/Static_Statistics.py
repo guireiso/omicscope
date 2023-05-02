@@ -89,7 +89,7 @@ def tukey_correction(df):
                            groups=df['Comparison'],
                            alpha=0.05)
     df = pd.DataFrame(data=df._results_table.data[1:], columns=df._results_table.data[0])
-    df['Comparison'] = df.group1 + '-' + df.group2
+    df['Comparison'] = df.group1 + '-vs-' + df.group2
     padj = list(df['p-adj'])
     comparison = list(df['Comparison'])
     return padj, comparison
@@ -141,6 +141,8 @@ def anova(params):
     stat = pd.DataFrame(expression).T
     stat = stat.apply(lambda x: f_oneway(*x)[1], axis=1)
     # Perform Tukey's Post-hoc correction
+    stat = pd.Series(stat)
+    stat.index = quant_data.index
     quant_data['pvalue'] = stat
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     quant_data = quant_data.sort_values('pvalue')
@@ -161,9 +163,9 @@ def anova(params):
                                     quant_data['pTukey'])
     # Replace '2' with right comparisons performed
     quant_data['Comparison'] = quant_data['Comparison'].replace(np.nan,
-                                                                '-'.join(Conditions))
+                                                                '-vs-'.join(Conditions))
     comp = copy(quant_data)
-    comp['Comparison'] = comp.Comparison.str.split('-')
+    comp['Comparison'] = comp.Comparison.str.split('-vs-')
 
     quant_data['Condition1'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[0])].mean(),
                                           axis=1)

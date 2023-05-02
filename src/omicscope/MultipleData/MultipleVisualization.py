@@ -73,9 +73,9 @@ def barplot(self, save=None, vector=True, dpi=300):
                 color=colors[-1], weight='bold')
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'barplot.svg')
+            plt.savefig(save + 'barplot.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'barplot.png', dpi=dpi)
+            plt.savefig(save + 'barplot.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -128,9 +128,9 @@ def diff_reg(self,
 
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'diff_reg.svg')
+            plt.savefig(save + 'diff_reg.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'diff_reg.png', dpi=dpi)
+            plt.savefig(save + 'diff_reg.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -200,9 +200,9 @@ def whole_network(self, labels=False, save=None, vector=True, dpi=300):
     if save is not None:
         nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
         if vector is True:
-            plt.savefig(save + 'PPNetwork.svg')
+            plt.savefig(save + 'PPNetwork.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'PPNetwork.dpi', dpi=dpi)
+            plt.savefig(save + 'PPNetwork.dpi', dpi=dpi, bbox_inches='tight')
     plt.show()
     return (G)
 
@@ -250,9 +250,9 @@ def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=Tr
         plt.ylabel('')
         if save is not None:
             if vector is True:
-                plt.savefig(save + 'dotplot_enrichment.svg')
+                plt.savefig(save + 'dotplot_enrichment.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'dotplot_enrichmnet.dpi', dpi=dpi)
+                plt.savefig(save + 'dotplot_enrichmnet.dpi', dpi=dpi, bbox_inches='tight')
         plt.show()
     return
 
@@ -299,9 +299,9 @@ def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f
     figure.plot()
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'upset_proteins.svg')
+            plt.savefig(save + 'upset_proteins.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'upset_proteins.png', dpi=dpi)
+            plt.savefig(save + 'upset_proteins.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -353,9 +353,9 @@ def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#
     figure.plot()
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'upset_pathways.svg')
+            plt.savefig(save + 'upset_pathways.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'upset_pathways.png', dpi=dpi)
+            plt.savefig(save + 'upset_pathways.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -442,9 +442,9 @@ def similarity_network(self, pvalue=1, parameter='TotalMean',
     if save is not None:
         nx.write_graphml(G, save + 'Similarity_network.graphml', named_key_ids=True)
         if vector is True:
-            plt.savefig(save + 'Similarity_network.svg')
+            plt.savefig(save + 'Similarity_network.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'Similarity_network.dpi', dpi=dpi)
+            plt.savefig(save + 'Similarity_network.dpi', dpi=dpi, bbox_inches='tight')
     return data
 
 
@@ -504,9 +504,9 @@ def similarity_heatmap(self, pvalue=1, parameter='TotalMean',
                    col_colors=colors, row_colors=colors)
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'similarity_heatmap.svg')
+            plt.savefig(save + 'similarity_heatmap.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'similarity_heatmap.png', dpi=dpi)
+            plt.savefig(save + 'similarity_heatmap.png', dpi=dpi, bbox_inches='tight')
     plt.show()
 
 
@@ -582,9 +582,9 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
                    col_colors=colors, row_colors=colors)
     if save is not None:
         if vector is True:
-            plt.savefig(save + 'overlap_stat.svg')
+            plt.savefig(save + 'overlap_stat.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'overlap_stat.png', dpi=dpi)
+            plt.savefig(save + 'overlap_stat.png', dpi=dpi, bbox_inches='tight')
     plt.show()
     return matrix
 
@@ -651,9 +651,9 @@ def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vecto
     if save is not None:
         nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
         if vector is True:
-            plt.savefig(save + 'groupNetwork.svg')
+            plt.savefig(save + 'groupNetwork.svg', bbox_inches='tight')
         else:
-            plt.savefig(save + 'groupNetwork.dpi', dpi=dpi)
+            plt.savefig(save + 'groupNetwork.dpi', dpi=dpi, bbox_inches='tight')
     plt.show()
     return G
 
