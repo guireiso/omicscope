@@ -42,6 +42,10 @@ To set up `omicscope` for local development:
 2. Clone your fork locally::
 
     git clone git@github.com:YOURGITHUBNAME/omicscope.git
+    2.1 clone for docker::
+        git clone https://github.com/guireiso/omicscope.git
+        cd omicscope
+        docker run -it --name omicscope-dev -w /opt -v %cd%:/opt python:3.11 bash
 
 3. Create a branch for local development::
 
