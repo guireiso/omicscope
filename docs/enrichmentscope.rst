@@ -1,9 +1,3 @@
-
-.. code-block:: python
-
-   import sys
-   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
-
 EnrichmentScope Object
 ======================
 
