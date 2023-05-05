@@ -28,9 +28,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/omicscope
 
-.. image:: https://img.shields.io/github/commits-since/guireiso/omicscope/v1.0.7.svg
+.. image:: https://img.shields.io/github/commits-since/guireiso/omicscope/v1.0.8.svg
     :alt: Commits since latest release
-    :target: https://github.com/guireiso/omicscope/compare/v1.0.7...main
+    :target: https://github.com/guireiso/omicscope/compare/v1.0.8...main
 
 
 OmicScope: OmicScope: from quantitative proteomics to systems biology.
