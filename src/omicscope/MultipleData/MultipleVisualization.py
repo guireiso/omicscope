@@ -112,7 +112,8 @@ def diff_reg(self,
     df['value'] = abs(df['value'])
     M = 2
     N = len(groups)
-    fig, ax = plt.subplots(figsize=(1.15, 5/9*len(df)/2))
+    fig, ax = plt.subplots()
+    fig.set_figwidth(2)
     scatter = ax.scatter(x=df['variable'], y=df['index'], s=df['value'],
                          c=df['color'], ec='black', lw=0.5)
     ax.set_xticks(np.arange(M+1)-0.5, minor=True)
@@ -124,8 +125,7 @@ def diff_reg(self,
     ax.legend(*scatter.legend_elements(**kw), title="# Proteins", handleheight=2,
               bbox_to_anchor=(1, 1), loc="upper left", markerscale=1,
               edgecolor='white')
-    plt.margins(x=1, y=0.1)
-
+    plt.margins()
     if save is not None:
         if vector is True:
             plt.savefig(save + 'diff_reg.svg', bbox_inches='tight')
@@ -207,7 +207,7 @@ def whole_network(self, labels=False, save=None, vector=True, dpi=300):
     return (G)
 
 
-def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=True,
+def dotplot_enrichment(self, *Terms, top=5,  fig_height=None, palette='PuBu', save=None, vector=True,
                        dpi=300):
     """Dotplot Enrichment
 
@@ -216,6 +216,7 @@ def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=Tr
     Args:
         top (int, optional): Top N pathway to considered in each group. Defaults to 5.
         palette (str, optional): color palette. Defaults to 'PuBu'.
+        fig_height (int, optional): User optionally can define figure height. Defaults to None
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
@@ -241,20 +242,24 @@ def dotplot_enrichment(self, *Terms, top=5, palette='PuBu', save=None, vector=Tr
         data['Overlap'] = data.Overlap.str.split('/', regex=False).str[0]
         data['Overlap'] = data.Overlap.astype(int)
         data['-log10(p)'] = -np.log10(data['Adjusted P-value'])
+        fig, ax = plt.subplots()
+        if fig_height is not None:
+            fig.set_figheight(fig_height)
         sns.set_style('white')
-        sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
-                        hue='-log10(p)', palette=palette, sizes=(40, 280),
-                        linewidth=0.5, edgecolor='black'
-                        )
+        ax = sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
+                             hue='-log10(p)', palette=palette, sizes=(40, 280),
+                             linewidth=0.5, edgecolor='black'
+                             )
+        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
         sns.despine()
+        plt.margins()
         plt.ylabel('')
         if save is not None:
             if vector is True:
-                plt.savefig(save + 'dotplot_enrichment.svg', bbox_inches='tight')
+                plt.savefig(save + '_'+i+'_' + 'dotplot_enrichment.svg', bbox_inches='tight')
             else:
-                plt.savefig(save + 'dotplot_enrichmnet.dpi', dpi=dpi, bbox_inches='tight')
+                plt.savefig(save + '_'+i+'_' + 'dotplot_enrichmnet.dpi', dpi=dpi, bbox_inches='tight')
         plt.show()
-    return
 
 
 def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
@@ -445,7 +450,7 @@ def similarity_network(self, pvalue=1, parameter='TotalMean',
             plt.savefig(save + 'Similarity_network.svg', bbox_inches='tight')
         else:
             plt.savefig(save + 'Similarity_network.dpi', dpi=dpi, bbox_inches='tight')
-    return data
+    plt.show()
 
 
 def similarity_heatmap(self, pvalue=1, parameter='TotalMean',
@@ -586,7 +591,6 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
         else:
             plt.savefig(save + 'overlap_stat.png', dpi=dpi, bbox_inches='tight')
     plt.show()
-    return matrix
 
 
 def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector=True, dpi=300):
@@ -655,10 +659,9 @@ def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vecto
         else:
             plt.savefig(save + 'groupNetwork.dpi', dpi=dpi, bbox_inches='tight')
     plt.show()
-    return G
 
 
-def circular_path(self, Term, save=None, vector=True):
+def circular_path(self, Term, protein_cutoff=0.05, save=None, vector=True):
     """Circular Path
 
     For a determined Term, Circular path links all groups that
@@ -681,7 +684,7 @@ def circular_path(self, Term, save=None, vector=True):
         raise IndexError('There is not Enrichment result in data!')
     data = self
     colors = self.colors
-    df = deps(data, 0.05)
+    df = deps(data, pvalue=protein_cutoff)
     terms = enrichment_filtering(data, Term)
     deps = df[df['gene_name'].isin(terms)]
     deps = deps.set_index('gene_name')

@@ -7,7 +7,7 @@ def deps(self, pvalue=0.05):
     data = copy(self)
     groups = data.groups
     regulation = data.original
-    regulation = [x[x[data.pvalue] < 0.05] for x in regulation]
+    regulation = [x[x[data.pvalue] < pvalue] for x in regulation]
     regulation = [x[['gene_name', 'log2(fc)']] for x in regulation]
     regulation = [x.rename(columns={'log2(fc)': y}) for x, y in zip(regulation, groups)]
     regulation = pd.concat(regulation)
