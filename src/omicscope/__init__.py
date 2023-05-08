@@ -5,6 +5,8 @@ from typing import Optional
 from .EnrichmentAnalysis import Enrichmentscope
 from .MultipleData.Nebula import nebula
 from .General.Omicscope import Omicscope
+from .General.Snapshot import Omicscope_Snapshot
+
 
 if __name__ != "__main__":
     print("OmicScope v " + __version__ + " For help: Insert\n" +
@@ -29,7 +31,7 @@ def OmicScope(Table: str,
         OmicScope was specially designed taking into account the proteomic workflow, in which proteins are identified, quantified and normalized with several softwares, such as Progenesis Qi for Proteomics, PatternLab V and MaxQuant.
 
         Despite proteomic optimization, users can also input data from other Omics sources (e.g. Metabolomics and Transcriptomics), using Method = 'General'. To run this approach user need to follow the instructions from Input.General directory in a Excel file.
-
+         Finally, bumpversion minorSnapshot is a input method module that enables users to import pre-analyzed data into OmicScope quickly.
         Additionally, OmicScope also perform differential expression analysis, returning p-value (from t-test, Anova, and post-hoc correction), q-value and respective conditions Fold-Changes. If user desire to import the statistical analysis from other sources, the row data (rdata) must have a column named as "pvalue".
 
     Args:
@@ -49,19 +51,26 @@ def OmicScope(Table: str,
     Returns:
         OmicScope: Return a OmicScope obj. The quantitation data is stored to obj.quant_data.
     """
-    omics = Omicscope(
-        Table,
-        Method,
-        ControlGroup,
-        ExperimentalDesign,
-        pvalue,
-        PValue_cutoff,
-        FoldChange_cutoff,
-        logTransformed,
-        ExcludeKeratins,
-        degrees_of_freedom,
-        independent_ttest,
-        **kwargs)
+    if Method == 'Snapshot':
+        omics = Omicscope_Snapshot(
+            Table,
+            pvalue,
+            PValue_cutoff,
+            FoldChange_cutoff)
+    else:
+        omics = Omicscope(
+            Table,
+            Method,
+            ControlGroup,
+            ExperimentalDesign,
+            pvalue,
+            PValue_cutoff,
+            FoldChange_cutoff,
+            logTransformed,
+            ExcludeKeratins,
+            degrees_of_freedom,
+            independent_ttest,
+            **kwargs)
 
     return omics
 
