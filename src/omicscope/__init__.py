@@ -4,7 +4,7 @@ from typing import Optional
 
 from .EnrichmentAnalysis import Enrichmentscope
 from .MultipleData.Nebula import nebula
-from .Omicscope import Omicscope
+from .General.Omicscope import Omicscope
 
 if __name__ != "__main__":
     print("OmicScope v " + __version__ + " For help: Insert\n" +

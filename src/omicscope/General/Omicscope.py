@@ -19,15 +19,11 @@ class Omicscope(Input):
     from .GeneralVisualization import bar_protein
     from .GeneralVisualization import bigtrend
     from .GeneralVisualization import boxplot_protein
-    from .GeneralVisualization import color_scheme
     from .GeneralVisualization import correlation
-    from .GeneralVisualization import find_k
     from .GeneralVisualization import heatmap
     from .GeneralVisualization import pca
     from .GeneralVisualization import PPInteractions
     from .GeneralVisualization import volcano
-    from .GeneralVisualization import volcano_2cond
-    from .GeneralVisualization import volcano_Multicond
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', PValue_cutoff=0.05,
@@ -211,7 +207,7 @@ class Omicscope(Input):
         with open(Path + '/' + string + '.omics', 'w') as f:
             dfAsString = data.quant_data[['gene_name', 'Accession', self.pvalue, 'log2(fc)', 'TotalMean']].to_csv(
                 sep='\t', index=False)
-            f.write("Omics v1.0.0" + "\n" +
+            f.write("OmicScope" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
                     " for group comparisons having the controlling group used as used according to OmicScope." +
                     "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python" +
@@ -228,13 +224,9 @@ class Omicscope(Input):
         'DynamicRange',
         'pca',
         'PPInteractions',
-        'color_scheme',
         'bar_protein',
         'boxplot_protein',
         'MAplot',
-        'find_k',
         'bigtrend',
-        'volcano',
-        'volcano_2cond',
-        'volcano_Multicond'
+        'volcano'
     ]

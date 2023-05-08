@@ -68,7 +68,7 @@ class Enrichmentscope():
             elif self.Analysis == 'GSEA':
                 enrichment = data.results[['Gene_set', 'Term', 'NES', 'Overlap', 'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False)
 
-            f.write("OmicScope v1.0.0" + "\n" +
+            f.write("OmicScope" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
                     " for group comparisons having the controlling group used as used according to OmicScope." +
                     "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python " +
