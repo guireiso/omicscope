@@ -71,8 +71,10 @@ def circlize(matrix, colmat, colors, labels, width=3000, height=3000,
                   "vector": vector
                   }
     pickle.dump(dictionary, open(wdir+'circlize.p', 'wb'))
-    subprocess.run('Rscript '+circlize_path+'circlize.R', shell=True,
-                   text=True, capture_output=True)
+    command = subprocess.run('Rscript '+circlize_path+'circlize.R', shell=True,
+                             text=True, capture_output=True)
+    if command.returncode != 0:
+        raise SystemError('Please verify if R is in your Path')
 
     if save is None:
         figure = plt.imread(wdir+'_my_plot.png')
