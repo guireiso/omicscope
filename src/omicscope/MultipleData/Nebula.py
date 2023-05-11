@@ -25,7 +25,7 @@ class nebula:
         self.group_data = []
         for o, g, l in zip(self.original, self.groups, self.labels):
             self.group_data.append(self.importing(o, g, l, pvalue_cutoff=pvalue_cutoff))
-
+        self.enrichment = self.remap()
         print(f'''You imported your data successfully!
         Data description:
         1. N groups imported: {len(self.groups)}
@@ -61,9 +61,15 @@ class nebula:
                 else:
                     original.append(pd.read_csv(i, header=positions[0]+1, sep='\t',
                                                 nrows=int((positions[1]/2)-5)))
-                    enrichment.append(pd.read_csv(i, header=int((positions[1]+1)/2)+4,
-                                                  sep='\t'))
+                    enrichment_original = pd.read_csv(i, header=int((positions[1]+1)/2)+4,
+                                                      sep='\t')
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("'", '')
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("[", '')
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("]", '')
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.split(', ')
+                    enrichment.append(enrichment_original)
                 archive.close()
+
             self.groups = groups
             self.colors = sns.color_palette(palette, as_cmap=False, n_colors=len(groups)).as_hex()
             self.labels = labels
@@ -76,6 +82,19 @@ class nebula:
         df['group'] = label
         df['color'] = df['log2(fc)'].round()
         return (df)
+
+    def remap(self):
+        # Remap all genes from enrichment into respective gene annotation
+        dic = pd.concat(self.original)[['gene_name']].drop_duplicates().reset_index(drop=True)
+        dic.index = dic['gene_name'].str.upper()
+        dic = dic.to_dict()
+        dic = dic['gene_name']
+        remap_enrichment = []
+        original_enrichment = self.enrichment
+        for i in original_enrichment:
+            i['Genes'] = i['Genes'].apply(lambda x: [dic.get(i, i) for i in x])
+            remap_enrichment.append(i)
+        return remap_enrichment
 
     __all__ = [
         'circos_plot',

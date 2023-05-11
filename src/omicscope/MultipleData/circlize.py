@@ -21,10 +21,6 @@ def enrichment_filtering(self, Term_enriched):
     data = [x[x['Term'].str.contains(Term_enriched)] for x in data]
     data = pd.concat(data)
     deps = list(data['Genes'])
-    deps = [x.replace("'", '') for x in deps]
-    deps = [x.replace("[", '') for x in deps]
-    deps = [x.replace("]", '') for x in deps]
-    deps = [x.split(', ') for x in deps]
     deps = sum(deps, [])
     deps = list(set(deps))
     return deps
@@ -74,6 +70,7 @@ def circlize(matrix, colmat, colors, labels, width=3000, height=3000,
     command = subprocess.run('Rscript '+circlize_path+'circlize.R', shell=True,
                              text=True, capture_output=True)
     if command.returncode != 0:
+        print(command.returncode)
         raise SystemError('Please verify if R is in your Path')
 
     if save is None:
