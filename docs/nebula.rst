@@ -251,7 +251,7 @@ Circular graphs - *object.circular_path()*
 
 The circular plot was designed to compare groups that were enriched for a specific term based on their respective differentially regulated proteins. Furthermore, the proteins are plotted with their corresponding regulations, either up-regulated (in red) or down-regulated (in blue).
 
-**NOTE**\ : To use circular_path, R with the circlize package must be installed on the system.
+**NOTE**\ : To use circular_path, R must be installed and included in system Path. Additionally, maybe user must install manually circlize and jsonlite packages.
 
 .. code-block:: python
 

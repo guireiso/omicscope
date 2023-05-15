@@ -1,21 +1,27 @@
-list.of.packages <- c("reticulate", "circlize")
+list.of.packages <- c("jsonlite", "circlize")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
+library(jsonlite)
 suppressPackageStartupMessages(library("circlize"))
+library(circlize)
 
-pydata = reticulate::py_load_object('circlize.p')
+pydata = jsonlite::read_json('circlize.json')
 
-matrix = pydata$matrix
-colmat = pydata$colmat
-grid.col = array(pydata$colors)
-name.grid = pydata$labels
+#define matrix and colmat
+matrix = as.data.frame(fromJSON(pydata$matrix))
+colmat = as.data.frame(fromJSON(pydata$colmat))
+gene_names = fromJSON(pydata$gene_names)
+row.names(matrix) = gene_names
+row.names(colmat) = gene_names
+# define other parameters
+grid.col = fromJSON(pydata$colors)
+name.grid = fromJSON(pydata$labels)
 wid = pydata$width
 hei = pydata$height
 save = pydata$save
 vector = pydata$vector
 
-library(circlize)
 names(grid.col) = name.grid
 
 circos.plot <- function(mat, colmat,grid.col, save, vector, y0 = -1.3, y = 0){

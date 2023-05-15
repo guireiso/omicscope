@@ -42,35 +42,35 @@ def color_matrix(df, colors):
 
 
 def circlize(matrix, colmat, colors, labels, width=3000, height=3000,
-             save=None, vector=True):
+             save=None, vector=True, dpi=300):
     import os
     import inspect
     import subprocess
-    import pickle
+    import json
     import shutil
     import matplotlib.pyplot as plt
-
+    plt.rcParams['figure.dpi'] = dpi
     circlize_path = os.path.abspath(inspect.getfile(circlize))
     circlize_path = circlize_path.removesuffix('circlize.py')
     wdir = os.getcwd()
     wdir = wdir + '\\'
     if save is None:
         vector = False
-
-    dictionary = {"matrix": matrix,
-                  "colmat": colmat,
-                  "colors": list(colors),
-                  "labels": labels,
+    dictionary = {"matrix": matrix.to_json(orient='records'),
+                  "colmat": colmat.to_json(orient='records'),
+                  "gene_names": json.dumps(list(matrix.index)),
+                  "colors": json.dumps(list(colors)),
+                  "labels": json.dumps(list(labels)),
                   "width": width,
                   "height": height,
                   "save": wdir,
                   "vector": vector
                   }
-    pickle.dump(dictionary, open(wdir+'circlize.p', 'wb'))
+    json.dump(dictionary, open(wdir+'circlize.json', 'w'))
     command = subprocess.run('Rscript '+circlize_path+'circlize.R', shell=True,
                              text=True, capture_output=True)
     if command.returncode != 0:
-        print(command.returncode)
+        print('Subprocess error code: ' + str(command.returncode))
         raise SystemError('Please verify if R is in your Path')
 
     if save is None:
@@ -87,4 +87,4 @@ def circlize(matrix, colmat, colors, labels, width=3000, height=3000,
             extension = '.png'
         shutil.move(wdir+'_my_plot'+extension, save+'_my_plot'+extension)
         print('Your file was saved in ' + save)
-    os.remove(wdir+'circlize.p')
+    os.remove(wdir+'circlize.json')

@@ -235,5 +235,5 @@ class circos():
             os.remove(self.original_path+'\\circos.png')
 
 
-def circos_plot(self, enrichment_cutoff=0.05, save=None):
-    circos(self, enrichment_cutoff=enrichment_cutoff, save=save)
+def circos_plot(self, enrichment_cutoff=0.05, dpi=300, save=None):
+    circos(self, enrichment_cutoff=enrichment_cutoff, dpi=dpi, save=save)
