@@ -42,7 +42,7 @@ To access the conditions that were evaluated during proteomics experiments, user
 
 
 
-In this study, two groups were identified as WT and KO. Since we defined ControlGroup as 'WT' in the OmicScope function, we can check the value of the Control Group using the following command:
+In this study, two groups were identified as CTRL and COVID. Since we defined ControlGroup as 'CTRL' in the OmicScope function, we can check the value of the Control Group using the following command:
 
 .. code-block:: python
 
@@ -419,7 +419,6 @@ The ``bar_ident()`` function generates a bar plot that displays the number of pr
 
 
 .. image:: omicscope_files/omicscope_15_0.png
-   :target: omicscope_files/omicscope_15_0.png
    :alt: png
 
 
@@ -435,7 +434,6 @@ The Dynamic Range plot is a classical plot in proteomics studies. It ranks prote
 
 
 .. image:: omicscope_files/omicscope_17_0.png
-   :target: omicscope_files/omicscope_17_0.png
    :alt: png
 
 
@@ -450,7 +448,6 @@ The volcano plot visualizes the distribution of proteins according to their p-va
 
 
 .. image:: omicscope_files/omicscope_19_0.png
-   :target: omicscope_files/omicscope_19_0.png
    :alt: png
 
 
@@ -465,7 +462,6 @@ The MA-plot is a commonly used tool in proteomics data analysis that allows eval
 
 
 .. image:: omicscope_files/omicscope_21_0.png
-   :target: omicscope_files/omicscope_21_0.png
    :alt: png
 
 
@@ -483,7 +479,6 @@ Bar plot of proteins - *object.bar_protein(args)*
 
 
 .. image:: omicscope_files/omicscope_23_0.png
-   :target: omicscope_files/omicscope_23_0.png
    :alt: png
 
 
@@ -496,7 +491,6 @@ Boxplot plot of proteins - *object.bar_protein(args)*
 
 
 .. image:: omicscope_files/omicscope_25_0.png
-   :target: omicscope_files/omicscope_25_0.png
    :alt: png
 
 
@@ -516,7 +510,6 @@ The Heatmap function in OmicScope performs hierarchical clustering for both samp
 
 
 .. image:: omicscope_files/omicscope_28_0.png
-   :target: omicscope_files/omicscope_28_0.png
    :alt: png
 
 
@@ -531,7 +524,6 @@ The correlation function calculates the pair-wise Pearson's correlation between 
 
 
 .. image:: omicscope_files/omicscope_30_0.png
-   :target: omicscope_files/omicscope_30_0.png
    :alt: png
 
 
@@ -546,7 +538,6 @@ Principal Component Analysis (PCA) is a method available in OmicScope for perfor
 
 
 .. image:: omicscope_files/omicscope_32_0.png
-   :target: omicscope_files/omicscope_32_0.png
    :alt: png
 
 
@@ -569,7 +560,6 @@ The bigtrend function is primarily designed for longitudinal analysis, such as T
 
 
 .. image:: omicscope_files/omicscope_34_1.png
-   :target: omicscope_files/omicscope_34_1.png
    :alt: png
 
 
@@ -732,6 +722,5 @@ Since plotting graphs can be challenging depending on the amount of data, OmicSc
 
 
 .. image:: omicscope_files/omicscope_36_1.png
-   :target: omicscope_files/omicscope_36_1.png
    :alt: png
 
