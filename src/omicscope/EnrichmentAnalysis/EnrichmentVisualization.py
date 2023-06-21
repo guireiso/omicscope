@@ -366,8 +366,8 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
             carac = original[['Term', '-log10(pAdj)', 'Combined Score']]
             carac['Label'] = carac.Term
             # Produce color palette according to p-value of each term
-            norm = mpl.colors.Normalize(vmin=0,
-                                        vmax=max(carac['-log10(pAdj)']))
+            norm = mpl.colors.Normalize(vmin=int(carac['-log10(pAdj)'].drop_duplicates().min()),
+                                        vmax=int(carac['-log10(pAdj)'].drop_duplicates().max()))
             cmap = cm.PuBu
             m = cm.ScalarMappable(norm=norm, cmap=cmap)
             color_hex = [mcolors.to_hex(m.to_rgba(x)) for x in carac['-log10(pAdj)']]
@@ -375,9 +375,10 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         elif Analysis == 'GSEA':
             carac = original[['Term', '-log10(pAdj)', 'NES']]
             carac['Label'] = carac.Term
-            norm = mpl.colors.TwoSlopeNorm(vmin=min(carac['NES']),
-                                           vmax=max(carac['NES']),
-                                           vcenter=0)
+            norm = mpl.colors.TwoSlopeNorm(vmin=int(carac['NES'].drop_duplicates().min()),
+                                           vmax=int(
+                carac['NES'].drop_duplicates().max()),
+                vcenter=0)
             cmap = cm.RdYlBu_r
             m = cm.ScalarMappable(norm=norm, cmap=cmap)
             carac['color'] = [mcolors.to_hex(m.to_rgba(x)) for x in carac['NES']]
@@ -397,11 +398,15 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
             module = []
             terms = []
             color = []
+            degree = []
             # Linking Terms, module, colors
             norm = mpl.colors.Normalize(vmin=0,
                                         vmax=len(communities)+1)
             cmap = sns.color_palette('turbo', len(communities)+1, desat=.9)
             for i, g in enumerate(communities):
+                subgraph = G.subgraph(g)
+                degree_subgraph = subgraph.degree
+                degree.extend(degree_subgraph)
                 module.extend([i]*len(g))
                 terms.extend(list(g))
                 if len(g) > 1:
@@ -409,28 +414,21 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                 else:
                     color.extend(['#a6a6a6'])
                 # DataFrame
-            modularity = pd.DataFrame(zip(module, terms, color), columns=['Module', 'Term', 'color'])
-            # Assign best annotation for each module
-            # based on following levels: 1) Node Degree (Hub); 2) P-value
-            degree = dict(G.degree)  # Getting degree
-            modularity['Degree'] = modularity.Term.replace(degree)
-            # Merging carac with modularity data
+            modularity = pd.DataFrame(zip(module, terms, color,
+                                          [x[1] for x in degree]), columns=[
+                'Module', 'Term', 'color', 'Degree'])
             carac = carac.merge(modularity, on='Term')
-            label_module = []
-            # Assign labels for each module
-            for i in range(0, max(carac.Module)+1):
-                label = carac[carac.Module == i]
-                if len(label[label.Degree == max(label.Degree)]) == 1:
-                    label['Label'] = np.where(label.Degree == max(label.Degree),
-                                              label.Term, '')
-                    label_module.append(label)
-                else:
-                    label['Label'] = np.where(label['-log10(pAdj)'] == max(label['-log10(pAdj)']),
-                                              label.Term, '')
-                    label_module.append(label)
-                # Construct feature dataframe
-            carac = pd.concat(label_module)
             carac = carac.sort_values('-log10(pAdj)', ascending=False)
+            Label = carac[['Term', 'Module', 'Degree',
+                           '-log10(pAdj)']].sort_values(['Module', 'Degree', '-log10(pAdj)'],
+                                                        ascending=False)
+            Label['mark'] = Label[['Module']].duplicated()
+            carac = carac.merge(Label, how='left', on=['Term',
+                                'Module', 'Degree', '-log10(pAdj)'])
+
+            carac['Label'] = np.where(
+                carac['mark'] == False,
+                carac['Term'], "")
             carac = carac.set_index('Term')
             # Set node attributes to export
             nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
