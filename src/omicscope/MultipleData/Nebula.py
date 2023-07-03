@@ -8,7 +8,7 @@ import seaborn as sns
 class nebula:
     from .MultipleVisualization import circos_plot
     from .MultipleVisualization import barplot
-    from .MultipleVisualization import circular_path
+    from .MultipleVisualization import circular_term
     from .MultipleVisualization import similarity_heatmap
     from .MultipleVisualization import similarity_network
     from .MultipleVisualization import diff_reg
@@ -102,7 +102,7 @@ class nebula:
     __all__ = [
         'circos_plot',
         'barplot',
-        'circular_path',
+        'circular_term',
         'similarity_heatmap',
         'similarity_network',
         'diff_reg',
