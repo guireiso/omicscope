@@ -6,7 +6,7 @@ import seaborn as sns
 
 
 class nebula:
-    from .circos import circos_plot
+    from .MultipleVisualization import circos_plot
     from .MultipleVisualization import barplot
     from .MultipleVisualization import circular_path
     from .MultipleVisualization import similarity_heatmap
@@ -92,8 +92,11 @@ class nebula:
         remap_enrichment = []
         original_enrichment = self.enrichment
         for i in original_enrichment:
-            i['Genes'] = i['Genes'].apply(lambda x: [dic.get(i, i) for i in x])
-            remap_enrichment.append(i)
+            try:
+                i['Genes'] = i['Genes'].apply(lambda x: [dic.get(i, i) for i in x])
+                remap_enrichment.append(i)
+            except TypeError:
+                remap_enrichment.append(None)
         return remap_enrichment
 
     __all__ = [
