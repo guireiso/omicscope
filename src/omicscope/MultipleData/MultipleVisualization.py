@@ -5,6 +5,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from pycirclize import Circos
 
 
 def barplot(self, save=None, vector=True, dpi=300):
@@ -671,39 +672,6 @@ def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vecto
     plt.show()
 
 
-def circular_path(self, Term, protein_cutoff=0.05, save=None, vector=True):
-    """Circular Path
-
-    For a determined Term, Circular path links all groups that
-    enriched for that term to respective differentially regulated protein.
-    To run this code, R and circlize package must be installed in the system.
-
-    Args:
-       Term (str): Terms that must be shown. Defaults to 0.05.
-       save (str, optional): Path to save image. Defaults to None.
-       vector (bool, optional): If image should be export as .svg.
-       Defaults to True.
-
-   """
-    from .circlize import circlize
-    from .circlize import color_matrix
-    from .circlize import deps
-    from .circlize import deps_matrix
-    from .circlize import enrichment_filtering
-    if all(enr is None for enr in self.enrichment):
-        raise IndexError('There is not Enrichment result in data!')
-    data = self
-    colors = self.colors
-    df = deps(data, pvalue=protein_cutoff)
-    terms = enrichment_filtering(data, Term)
-    deps = df[df['gene_name'].isin(terms)]
-    deps = deps.set_index('gene_name')
-    matrix = deps_matrix(deps)
-    colmat = color_matrix(deps, colors)
-    labels = data.groups
-    circlize(matrix, colmat, colors, labels, save=save, vector=vector)
-
-
 def linkproteins(deps, groups):
     # retrieving overlapped proteins among groups
     overlapped_proteins = pd.concat(deps)
@@ -772,9 +740,7 @@ def linkenrichment(enrichment, groups, number_deps):
 
 
 def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
-                colorenrichment='black',  save=None, vector=True):
-    from pycirclize import Circos
-    import numpy as np
+                colorenrichment='black',  save=None, vector=True, dpi=300):
     # Data
     enrichment = copy(self.enrichment)
     groups = copy(self.groups)
@@ -812,7 +778,7 @@ def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
         for i in linkenr.to_dict('records'):
             region1 = (i['query_chr'], i['query_start'], i['query_end'])
             region2 = (i['ref_chr'], i['ref_start'], i['ref_end'])
-            circos.link(region1, region2, color='black')
+            circos.link(region1, region2, color=colorenrichment)
     # drawing links
     for i in links.to_dict('records'):
         region1 = (i['query_chr'], i['query_start'], i['query_end'])
@@ -825,4 +791,63 @@ def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
         if vector is True:
             fig.savefig(save + 'circos.svg')
         else:
-            fig.savefig(save + 'circos.png')
+            fig.savefig(save + 'circos.png', dpi=dpi)
+
+
+def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
+                  save=None, vector=True, dpi=300):
+    enrichment = [x for x in self.enrichment if x is not None]
+    deps = self.original
+    deps = [x[x[self.pvalue] < pvalue] for x in deps]
+    groups = self.groups
+    colors = dict(zip(groups, self.colors))
+    # Select genes from enriched term.
+    enrichTerms = []
+    for term in Terms:
+        enr = [x[x['Term'].str.contains(term)] for x in enrichment]
+        enrichTerms.extend(enr)
+    enrichTerms = pd.concat(enrichTerms)
+    enrichGenes = list(enrichTerms['Genes'])
+    enrichGenes = sum(enrichGenes, [])
+    enrichGenes = list(set(enrichGenes))
+    # Filtering based on enrichgenes
+    data = [x[x['gene_name'].isin(enrichGenes)] for x in deps]
+    data = [x[['gene_name', "log2(fc)"]] for x in data]
+    data = [x.rename(columns={'log2(fc)': y}) for x, y in zip(data, groups)]
+    data = [x.set_index('gene_name') for x in data]
+    data = pd.concat(data, axis=1).T
+    data = data.sort_index(axis=1)
+    heatmaps = data
+    heatmaps[heatmaps > vmax] = vmax
+    heatmaps[heatmaps < vmin] = vmin
+    heatmaps = [np.array([heatmaps[x].dropna()]) for x in heatmaps]
+    heatmaps = [np.array([[np.nan]])]*len(groups) + heatmaps
+    heatmaps = [x[:, ::-1] for x in heatmaps]
+    matrix = data.notnull().astype(int)
+    matrix = matrix.fillna(0)
+    if len(matrix.columns) == 0:
+        raise TypeError('Matrix length is zero. Please review Terms used.')
+    circos = Circos.initialize_from_matrix(
+        matrix,
+        start=-265,
+        end=95,
+        space=0.3,
+        r_lim=(93, 100),
+        cmap=colors,
+        label_kws=dict(r=101, orientation="vertical"),
+    )
+    for sector, heatmap in zip(circos.sectors, heatmaps):
+        # Outer Track
+        # foldchange track
+        if sector.name not in data.index:
+            rect_track = sector.add_track((93, 100))
+            rect_track.heatmap(heatmap, cmap=colormap, vmin=vmin, vmax=vmax)
+
+    circos.colorbar(bounds=(1.1, 0.3, 0.02, 0.4), vmin=vmin, vmax=vmax, cmap="RdBu_r",
+                    colorbar_kws=dict(label="log2(FoldChange)"))
+    fig = circos.plotfig()
+    if save is not None:
+        if vector is True:
+            fig.savefig(save+'/Term_circular_plot.svg')
+        else:
+            fig.savefig(save+'/Term_circular_plot.png', dpi=dpi)

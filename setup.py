@@ -145,7 +145,6 @@ setup(
         "requests-toolbelt==0.10.1",
         "rfc3986==2.0.0",
         "rich==13.0.0",
-        # "rpy2==3.5.7",
         "scikit-learn==1.1.3",
         "scipy==1.9.3",
         "seaborn==0.12.1",
@@ -166,6 +165,7 @@ setup(
         "webencodings==0.5.1",
         "xlrd==2.0.1",
         "zipp==3.11.0",
+        "pycirclize==0.4.0"
     ],
     extras_require={
         # eg:

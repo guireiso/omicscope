@@ -101,7 +101,8 @@ requires = [
     "wcwidth==0.2.5",
     "webencodings==0.5.1",
     "xlrd==2.0.1",
-    "zipp==3.11.0"]
+    "zipp==3.11.0",
+    "pycirclize==0.4.0"]
 
 [tool.black]
 line-length = 140
