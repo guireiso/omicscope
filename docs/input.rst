@@ -1,10 +1,12 @@
 Input
 =====
 
-*OmicScope* offers four methods for integrating data into its pipeline, three of which rely on proteomic software for protein identification and quantitative analyses:
+*OmicScope* offers five methods for integrating data into its pipeline, three of which rely on proteomic software for protein identification and quantitative analyses:
 
 
-* **Progenesis QI for proteomics** *(Method = 'Progenesis')*\ : Progenesis is a software that enables protein quantification and identification (coupled to PLGS) for experiments that use Data Independent Acquisition (DIA). 
+* 
+  **Progenesis QI for proteomics** *(Method = 'Progenesis')*\ : Progenesis is a software that enables protein quantification and identification (coupled to PLGS) for experiments that use Data Independent Acquisition (DIA).
+
 * 
   **PatternLab V** *(Method = 'PatternLab')*\ : PatternLab V is an integrated computational environment for analyzing shotgun proteomic data, and is considered one of the best options for quantitative proteomics using data-dependent acquisition, due to its high-confidence parameters for protein quantitation and identification.
 
@@ -13,6 +15,9 @@ Input
 
 * 
   **General** *(Method = 'General')*\ : A generic input method that requires users to specify quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata) using an Excel file.
+
+* 
+  **Snapshot** *(Method = 'Snapshot')*\ : The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and more.
 
 Import OmicScope
 ----------------
@@ -23,7 +28,7 @@ Import OmicScope
 
 .. code-block::
 
-   OmicScope v 1.0.6 For help: Insert
+   OmicScope v 1.0.5 For help: Insert
    If you use  in published research, please cite: 'XXXXX'
    Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
 
@@ -936,6 +941,20 @@ In order to provide a clearer understanding of how to construct a pdata, we have
    </div>
 
 
+Snapshot
+--------
+
+The Snapshot method is an alternative option in OmicScope that allows for the analysis of multiple studies (omics) by importing pre-analyzed data from other platforms.
+
+To use the Snapshot method, the user needs to upload a CSV or Excel file organized as follows:
+
+
+#. First row: **ControlGroup: INSERT_HERE_YOUR_CONTROL**
+#. Second row: **Experimental: INSERT_HERE_YOUR_EXPERIMENTAL_GROUPS_SEPARATED_BY_COMMAS**
+#. Subsequent rows: A table containing the following columns: 'Accession', 'gene_name', 'log2(fc)', and either 'pvalue' or 'pAdjusted'. This table structure is mandatory and must be included in file starting from the third row.
+
+It is important to note that Snapshot contains a limited amount of information, which means that not all plots and enrichment analyses are available. However, once the data is imported into OmicScope, it can be exported as an .omics file and used in the Nebula module.
+
 Additional Informations
 -----------------------
 
@@ -965,3 +984,6 @@ Users can also define and optimize any extra parameters that are in the OmicScop
 
 #. 
    **degrees_of_freedom** (default = 2): For longitudinal analysis, users can optimize the parameters according to their study, choosing a greater degree of freedom to perform the analysis.
+
+#. 
+   **independent_ttest** (default = True): If running a t-test, the user can specify if data sampling is independent (default) or paired (independent_ttest=False). Defaults to True.
