@@ -5,5 +5,5 @@ Omicscope visualization
 
     from omicscope.General.GeneralVisualization import *
 
-.. automodule:: omicscope.GeneralVisualization
+.. automodule:: omicscope.General.GeneralVisualization
     :members:
