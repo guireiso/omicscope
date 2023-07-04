@@ -3,7 +3,7 @@ Omicscope visualization
 
 .. testsetup::
 
-    from omicscope.GeneralVisualization import *
+    from omicscope.General.GeneralVisualization import *
 
 .. automodule:: omicscope.GeneralVisualization
     :members:

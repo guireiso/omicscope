@@ -739,8 +739,20 @@ def linkenrichment(enrichment, groups, number_deps):
     return result
 
 
-def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
+def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkcyan',
                 colorenrichment='black',  save=None, vector=True, dpi=300):
+    """_summary_
+
+    Args:
+        vmin (int, optional): minimum value for foldchange. Defaults to -1.
+        vmax (int, optional): maximum value for foldchange. Defaults to 1.
+        colormap (str, optional): Colormap for heatmap. Defaults to 'RdBu_r'.
+        colorproteins (str, optional): Color for protein links. Defaults to 'darkcyan'.
+        colorenrichment (str, optional): Color for enrichment links. Defaults to 'black'.
+        save (str, optional): Path to save file. Defaults to None.
+        vector (bool, optional): Save as svg extension, if False, save as png. Defaults to True.
+        dpi (int, optional): Figure resolution. Defaults to 300.
+    """
     # Data
     enrichment = copy(self.enrichment)
     groups = copy(self.groups)
@@ -770,7 +782,7 @@ def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
         outer_track.xticks_by_interval(interval=10, label_orientation="vertical")  # colocar xticks nas tracks
         # foldchange track
         rect_track = sector.add_track((80, 85))
-        rect_track.heatmap(matrix, cmap="RdYlBu_r", )
+        rect_track.heatmap(matrix, cmap=colormap, )
 
     # drawing enrichment links if applicable
     if len(enrichment) > 1:
@@ -784,7 +796,7 @@ def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
         region1 = (i['query_chr'], i['query_start'], i['query_end'])
         region2 = (i['ref_chr'], i['ref_start'], i['ref_end'])
         circos.link(region1, region2, color=colorproteins)
-    circos.colorbar(vmin=vmin, vmax=vmax, cmap="RdYlBu_r",
+    circos.colorbar(vmin=vmin, vmax=vmax, cmap=colormap,
                     colorbar_kws=dict(label="log2(FoldChange)"))
     fig = circos.plotfig()
     if save is not None:
@@ -796,6 +808,23 @@ def circos_plot(self, vmax=2, vmin=-2, colorproteins='darkcyan',
 
 def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
                   save=None, vector=True, dpi=300):
+    """Circular term
+        Allows the visualization of all proteins related to a pre-specified term.
+        This term is extracted from enrichment data.
+
+    Args:
+        pvalue (float, optional): Pvalue to consider differentially regulated proteins
+         . Defaults to 0.05.
+        vmin (int, optional): minimum value for foldchange. Defaults to -1.
+        vmax (int, optional): maximum value for foldchange. Defaults to 1.
+        colormap (str, optional): Colormap for heatmap. Defaults to 'RdBu_r'.
+        save (str, optional): Path to save file. Defaults to None.
+        vector (bool, optional): Save as svg extension, if False, save as png. Defaults to True.
+        dpi (int, optional): Figure resolution. Defaults to 300.
+
+    Raises:
+        TypeError: Term/Terms was/were not found in dataset. 
+    """
     enrichment = [x for x in self.enrichment if x is not None]
     deps = self.original
     deps = [x[x[self.pvalue] < pvalue] for x in deps]
@@ -826,7 +855,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     matrix = data.notnull().astype(int)
     matrix = matrix.fillna(0)
     if len(matrix.columns) == 0:
-        raise TypeError('Matrix length is zero. Please review Terms used.')
+        raise TypeError('Matrix length is zero. Term/Terms was/were not found in dataset.')
     circos = Circos.initialize_from_matrix(
         matrix,
         start=-265,
