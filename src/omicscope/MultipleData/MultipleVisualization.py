@@ -741,7 +741,9 @@ def linkenrichment(enrichment, groups, number_deps):
 
 def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkcyan',
                 colorenrichment='black',  save=None, vector=True, dpi=300):
-    """_summary_
+    """Circos plot
+     This plot offers an overview of proteins differentially regulated
+     between groups using circular plots.
 
     Args:
         vmin (int, optional): minimum value for foldchange. Defaults to -1.

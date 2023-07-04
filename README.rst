@@ -2,15 +2,9 @@
 Overview
 ========
 
-
-
 .. image:: https://readthedocs.org/projects/omicscope/badge/?style=flat
     :target: https://omicscope.readthedocs.io/
     :alt: Documentation Status
-
-.. image:: https://github.com/guireiso/omicscope/actions/workflows/github-actions.yml/badge.svg
-    :alt: GitHub Actions Build Status
-    :target: https://github.com/guireiso/omicscope/actions
 
 .. image:: https://img.shields.io/pypi/v/omicscope.svg
     :alt: PyPI Package latest release
