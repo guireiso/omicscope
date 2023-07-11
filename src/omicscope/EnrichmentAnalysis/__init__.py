@@ -62,11 +62,13 @@ class Enrichmentscope():
         string = '-'.join(data.OmicScope.Conditions)
         with open(save + '/' + string + '.omics', 'w') as f:
             expression = data.OmicScope.quant_data[['gene_name', 'Accession',
-                                                    data.OmicScope.pvalue, 'log2(fc)', 'TotalMean']].to_csv(sep='\t', index=False)
+                                                    data.OmicScope.pvalue, 'log2(fc)', 'TotalMean']].to_csv(sep='\t', index=False).replace('\r', "")
             if self.Analysis == 'ORA':
-                enrichment = data.results[['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False)
+                enrichment = data.results[['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes']
+                                          ].to_csv(sep='\t', index=False).replace('\r', "")
             elif self.Analysis == 'GSEA':
-                enrichment = data.results[['Gene_set', 'Term', 'NES', 'Overlap', 'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False)
+                enrichment = data.results[['Gene_set', 'Term', 'NES', 'Overlap',
+                                           'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False).replace('\r', "")
 
             f.write("OmicScope" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +

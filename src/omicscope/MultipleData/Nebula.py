@@ -60,9 +60,11 @@ class nebula:
                     enrichment.append(None)
                 else:
                     original.append(pd.read_csv(i, header=positions[0]+1, sep='\t',
-                                                nrows=int((positions[1]/2)-5)))
-                    enrichment_original = pd.read_csv(i, header=int((positions[1]+1)/2)+4,
+                                                nrows=int(positions[1]-10)))
+                    enrichment_original = pd.read_csv(i, header=int(positions[1]),
                                                       sep='\t')
+                    print(enrichment_original.head())
+                    print(enrichment_original.tail())
                     enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("'", '')
                     enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("[", '')
                     enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("]", '')
