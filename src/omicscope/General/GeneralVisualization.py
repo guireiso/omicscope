@@ -846,6 +846,7 @@ def bar_protein(self, *Proteins, logscale=True,
     sns.despine()
     plt.title('Abundance - ' + ' and '.join(Proteins))
     plt.xlabel('')
+    plt.xticks(rotation=70)
     plt.ylabel('log2(Abundance)')
     if save is not None:
         if vector is True:
@@ -911,7 +912,7 @@ def boxplot_protein(self, *Proteins, logscale=True,
         sns.boxplot(x=df.index, y='value',
                     data=df,
                     palette=color,
-                    edgecolor='black', linewidth=1, dodge=False)
+                    linewidth=1, dodge=False)
     else:
         sns.boxplot(x='gene_name', y='value', hue=list(df.index),
                     data=df,
@@ -921,6 +922,7 @@ def boxplot_protein(self, *Proteins, logscale=True,
     sns.despine()
     plt.title('Abundance - ' + ' and '.join(Proteins))
     plt.xlabel('')
+    plt.xticks(rotation=70)
     plt.ylabel('log2(Abundance)')
     if save is not None:
         if vector is True:
