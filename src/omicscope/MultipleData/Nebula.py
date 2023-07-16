@@ -25,6 +25,8 @@ class nebula:
         self.group_data = []
         for o, g, l in zip(self.original, self.groups, self.labels):
             self.group_data.append(self.importing(o, g, l, pvalue_cutoff=pvalue_cutoff))
+        if len(self.groups) != len(set(self.groups)):
+            raise Exception("There are duplicated group labels. Please verify the .omics file to ensure that the Experimental groups have distinct labels.")
         self.enrichment = self.remap()
         print(f'''You imported your data successfully!
         Data description:

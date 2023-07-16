@@ -759,6 +759,7 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
     enrichment = copy(self.enrichment)
     groups = copy(self.groups)
     deps = copy(self.group_data)
+    deps = [x.dropna().reset_index(drop=True) for x in deps]
     colors = self.colors
     grouplen = [len(x) for x in deps]
 
@@ -841,21 +842,24 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     enrichGenes = list(enrichTerms['Genes'])
     enrichGenes = sum(enrichGenes, [])
     enrichGenes = list(set(enrichGenes))
-    # Filtering based on enrichgenes
+   # Filtering based on enrichgenes
     data = [x[x['gene_name'].isin(enrichGenes)] for x in deps]
     data = [x[['gene_name', "log2(fc)"]] for x in data]
     data = [x.rename(columns={'log2(fc)': y}) for x, y in zip(data, groups)]
     data = [x.set_index('gene_name') for x in data]
     data = pd.concat(data, axis=1).T
     data = data.sort_index(axis=1)
+    matrix = data
+    matrix = matrix.notnull().astype(int)
+    matrix = matrix.fillna(0)
+    row_sums = matrix.sum(axis=1)
+    matrix = matrix.drop(index=matrix.index[row_sums == 0])
     heatmaps = data
     heatmaps[heatmaps > vmax] = vmax
     heatmaps[heatmaps < vmin] = vmin
     heatmaps = [np.array([heatmaps[x].dropna()]) for x in heatmaps]
-    heatmaps = [np.array([[np.nan]])]*len(groups) + heatmaps
+    heatmaps = [np.array([[np.nan]])]*len(matrix) + heatmaps
     heatmaps = [x[:, ::-1] for x in heatmaps]
-    matrix = data.notnull().astype(int)
-    matrix = matrix.fillna(0)
     if len(matrix.columns) == 0:
         raise TypeError('Matrix length is zero. Term/Terms was/were not found in dataset.')
     circos = Circos.initialize_from_matrix(
