@@ -24,7 +24,10 @@ class Input:
         self.Table = Table
         self.quant_strategy = quant_strategy
         self.rdata = self.rdata()
-        self.pdata = pd.read_excel(pdata)
+        try:
+            self.pdata = pd.read_excel(pdata)
+        except ValueError:
+            self.pdata = pd.read_csv(pdata)
         self.assay = self.assay()
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
         # self.filtering_data()

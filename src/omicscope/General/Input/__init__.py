@@ -19,7 +19,7 @@ class Input():
             Method (str): algorithm/software used to perform quantitative
             proteomics
         """
-        Methods = ['Progenesis', 'General', 'PatternLab', 'MaxQuant']
+        Methods = ['Progenesis', 'General', 'PatternLab', 'MaxQuant', 'DIA-NN']
         if Method not in Methods:
             raise ValueError("Invalid Method input. Expected one of: %s" % Methods)
         if Method == 'Progenesis':
@@ -30,6 +30,8 @@ class Input():
             from .PatternLab import Input
         elif Method == 'MaxQuant':
             from .MaxQuant import Input
+        elif Method == 'DIA-NN':
+            from .DIANN import Input
         data = Input(Table, **kwargs)
         self.Table = Table
         self.rdata = data.rdata
