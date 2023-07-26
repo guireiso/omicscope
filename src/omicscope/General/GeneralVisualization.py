@@ -214,9 +214,9 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
         for a, b, c in zip(ls_final['log2(fc)'], ls_final[f'-log10({OmicScope.pvalue})'],
                            ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
-            adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
-                        expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
-                        arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
+        adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
+                    expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
+                    arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
     ax_scatter.axhline(y=-np.log10(0.05), color='gray', linestyle=':')
     ax_scatter.legend()
     if FoldChange_cutoff == 0:
@@ -227,7 +227,7 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     liml = round(fc.min(), 2)
     limp = round(pval.max() + 0.5, 0)
     ax_scatter.set_xlim((liml - (limh - liml) * 0.10, limh + ((limh - liml) * 0.10)))
-    ax_scatter.set_ylim((0, limp + limp * .1))
+    ax_scatter.set_ylim((pval.min(), limp + limp * .1))
     ax_histx.set_xlim(ax_scatter.get_xlim())
     ax_histy.set_ylim(ax_scatter.get_ylim())
     if save is not None:
@@ -346,9 +346,8 @@ def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
         for a, b, c in zip(ls_final['log2(fc)'], ls_final[f'-log10({OmicScope.pvalue})'],
                            ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
-            adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
-                        expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
-                        arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
+        adjust_text(texts, ax=ax_scatter,
+                    arrowprops=dict(arrowstyle="-", color='k', lw=0.5))
     ax_scatter.axhline(y=-np.log10(0.05), color='gray', linestyle=':')
 
     # Fold change cutoff
@@ -366,7 +365,7 @@ def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
     limp = round(pval.max() + 0.5, 0)
     ax_scatter.set_xlim((liml - ((limh - liml) * 0.10),
                          limh + ((limh - liml) * 0.10)))
-    ax_scatter.set_ylim((0, limp))
+    ax_scatter.set_ylim((pval.min(), limp))
     ax_histx.set_xlim(ax_scatter.get_xlim())
     ax_histy.set_ylim(ax_scatter.get_ylim())
     # save figure and how to save
@@ -647,9 +646,9 @@ def DynamicRange(self, *Proteins, color='#565059',
         for a, b, c in zip(ls_final['mean'], ls_final['rank'],
                            ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
-            adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
-                        expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
-                        arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
+        adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
+                    expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
+                    arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
     plt.grid(b=False)
     plt.xlabel('log10(Abundance)')
     plt.ylabel('Rank')
@@ -982,9 +981,9 @@ def MAplot(self, *Proteins,
         for a, b, c in zip(ls_final['TotalMean'], ls_final['log2(fc)'],
                            ls_final['gene_name']):
             texts.append(ax_scatter.text(a, b, c, size=8))
-            adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
-                        expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
-                        arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
+        adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
+                    expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
+                    arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
     sns.despine()
     plt.axhline(y=0, color='gray', linestyle=':')
     plt.grid(b=False)

@@ -65,7 +65,7 @@ setup(
     install_requires=[
         "setuptools>=30.3.0",
         "wheel",
-        "adjustText==0.7.3",
+        "adjustText==0.8",
         "altair==4.2.0",
         "arrow==1.2.3",
         "asttokens==2.1.0",
