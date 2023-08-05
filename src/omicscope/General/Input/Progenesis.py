@@ -36,9 +36,9 @@ class Input:
 
         # Read .csv or .xlsx/.xls files
         Table = self.Table
-        if Table.endswith('.csv'):
+        try:
             df = pd.read_csv(Table, header=0)
-        else:
+        except UnicodeDecodeError:
             df = pd.read_excel(Table, header=0)
         df = df.replace("Best identification", np.nan)
         df.iloc[1] = df.iloc[1].astype(str)
