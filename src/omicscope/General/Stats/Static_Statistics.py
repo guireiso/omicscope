@@ -13,46 +13,44 @@ def ttest(params):
         params (list): list containing control and experimental groups,
         normalized dataframe and if the variables are dependent or related.
     """
-    ind_variables = params[0]
-    ControlGroup = params[1]
-    Experimental = params[2]
-    quant_data = params[3]
-    pvalue = params[5]
+    ind_variables = copy(params[0])
+    ControlGroup = copy(params[1])
+    Experimental = copy(params[2])
+    quant_data = copy(params[3])
+    pvalue = copy(params[5])
 
     if ind_variables is True:
         from scipy.stats import ttest_ind
 
         #  Perform an independent t-test
-        result = ttest_ind(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)],
-                           quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1,
-                           nan_policy='omit')
-        quant_data['pvalue'] = result[1]
-        quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
-        quant_data = quant_data.sort_values('pvalue')
+        result = ttest_ind(copy(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)]),
+                           copy(quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
+                           axis=1, nan_policy='omit')
         print('Independent T-test was carried out!')
         #  Perform a sample-related t-test
     elif ind_variables is False:
         from scipy.stats import ttest_rel
-        result = ttest_rel(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)],
-                           quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)], axis=1,
-                           nan_policy='omit')
-        quant_data['pvalue'] = result[1]
-        quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
-        quant_data = quant_data.sort_values('pvalue')
+        result = ttest_rel(copy(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)]),
+                           copy(quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
+                           axis=1, nan_policy='omit')
         print('T-test of related variables was carried out!')
+
+    quant_data['pvalue'] = result[1]
+    quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
+    quant_data = quant_data.sort_values('pvalue')
 
     #  Correcting multilple hypothesis test according to fdr_bh
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
-                                            method='fdr_bh', is_sorted=False, returnsorted=False)[1]
+                                            method='fdr_bh')[1]
 
     #  Mean abundance for each protein among conditions
     quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
-        quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)])
+        copy(quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)]))
     quant_data['mean ' + ControlGroup] = quant_data.loc[:,
                                                         quant_data.columns.str.endswith(ControlGroup)].mean(axis=1)
 
     quant_data.loc[:, quant_data.columns.str.endswith(Experimental)] = np.exp2(
-        quant_data.loc[:, quant_data.columns.str.endswith(Experimental)])
+        copy(quant_data.loc[:, quant_data.columns.str.endswith(Experimental)]))
     quant_data['mean ' + Experimental] = quant_data.loc[:,
                                                         quant_data.columns.str.endswith(Experimental)].mean(axis=1)
     #  Mean abundance for each protein
@@ -64,7 +62,7 @@ def ttest(params):
     #  -log10(pvalue)
     quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
     quant_data = quant_data.reset_index()
-    return (quant_data)
+    return quant_data
 
 
 def tukey_correction(df):
