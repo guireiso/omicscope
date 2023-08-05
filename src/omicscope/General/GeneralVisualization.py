@@ -106,7 +106,7 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     """Creates a volcano plot for multiple conditions.
 
     In general, volcano plots are designed to compare 2 conditions.
-    Here, we aim to see the distribution of quantified proteins' p-value and 
+    Here, we aim to see the distribution of quantified proteins' p-value and
     fold changes among multiple conditions.
 
     Args:
@@ -1023,7 +1023,7 @@ def bigtrend(self, pvalue=0.05, k_cluster=None,
 
     BigTrend apply k-mean algorithm to identify co-expressed
     proteins/genes. For longitudinal analysis, k-means can help users to
-    visualize the trends of proteins in the evaluated timecourse. 
+    visualize the trends of proteins in the evaluated timecourse.
 
     Optionally, the user can define the number of clusters that k-means will cluster proteins and samples.
     By default, OmicScope run KneeLocator algorithm to suggest an optimal number of clusters.
@@ -1094,15 +1094,21 @@ def bigtrend(self, pvalue=0.05, k_cluster=None,
     return k_data_protein
 
 
-def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
+def PPInteractions(self, *Proteins,
+                   network_k=None,
+                   network_iterations=50,
+                   score_threshold=0.6, labels=False, modules=False,
                    module_palette='Paired', species=9606,
                    pvalue=0.05, network_type='funtional', save=None, dpi=300, vector=True):
     """Protein-Protein interaction
 
     Using String API, OmicScope search or protein-protein interactions among
-    the proteins from users's dataset. 
+    the proteins from users's dataset.
 
     Args:
+        network_k (int, optional): Optimal distance between nodes. If None the distance is set to
+          1/sqrt(n) where n is the number of nodes. Defauts to None.
+        network_iterations (int, optional): Maximum number of iterations taken. Defaults to 50.
         score_threshold (float, optional): String-score threshold. Defaults to 0.6.
         labels (bool, optional): Show protein names. Defaults to False.
         modules (bool, optional): Perform Louvain Method to find communities/modules.
@@ -1111,7 +1117,7 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
         species (int, optional): String requires the definition of organism to search
          for proteins name, according to NCBI identifier. Defaults to 9606 (Human).
          Mus musculus = 10090; Rattus norvegicus = 10116.
-        pvalue (float, optional): p-value threshold to proteins to be accepted. 
+        pvalue (float, optional): p-value threshold to proteins to be accepted.
          Defaults to 0.05 (differentially regulated).
         network_type (str, optional): Interactions can be defined as 'funtional' or
          'physical'. Defaults to 'funtional'.
@@ -1131,6 +1137,8 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
     data = copy.copy(self)
     data = data.quant_data
     data = data[data[self.pvalue] < pvalue]
+    if len(Proteins) > 0:
+        data = data[data['gene_name'].isin(Proteins)]
     foldchange_range = data['log2(fc)']
     genes = data['gene_name'].dropna().drop_duplicates()
     genes = list(genes.astype(str))
@@ -1183,7 +1191,7 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
     if modules is True:
         import networkx.algorithms.community as nx_comm
         # Find communities based on label propagation
-        communities = nx_comm.louvain_communities(G, seed=7)
+        communities = nx_comm.louvain_communities(G)
         module = []
         terms = []
         color = []
@@ -1203,8 +1211,12 @@ def PPInteractions(self, score_threshold=0.6, labels=False, modules=False,
         carac = carac.set_index('ID')
         nx.set_node_attributes(G, dict(zip(carac.index, carac.Module)), name="Module")
         carac = carac.reindex(G.nodes())
-        linewidths = 2
-    pos = nx.kamada_kawai_layout(G)
+        linewidths = 1.5
+    pos = nx.spring_layout(G,
+                           k=network_k,
+                           iterations=network_iterations,
+                           threshold=0.0001, weight='weight',
+                           center=None,)
     carac = carac.reindex(G.nodes())
     weights = nx.get_edge_attributes(G, 'weight')
     nx.draw(G,
