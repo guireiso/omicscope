@@ -24,14 +24,16 @@ def ttest(params):
 
         #  Perform an independent t-test
         result = ttest_ind(copy(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)]),
-                           copy(quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
+                           copy(
+                               quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
                            axis=1, nan_policy='omit')
         print('Independent T-test was carried out!')
         #  Perform a sample-related t-test
     elif ind_variables is False:
         from scipy.stats import ttest_rel
         result = ttest_rel(copy(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)]),
-                           copy(quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
+                           copy(
+                               quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
                            axis=1, nan_policy='omit')
         print('T-test of related variables was carried out!')
 
@@ -54,9 +56,11 @@ def ttest(params):
     quant_data['mean ' + Experimental] = quant_data.loc[:,
                                                         quant_data.columns.str.endswith(Experimental)].mean(axis=1)
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.')].mean(axis=1)
+    quant_data['TotalMean'] = quant_data.loc[:,
+                                             quant_data.columns.str.contains('.')].mean(axis=1)
     #  Protein Fold change (Experimental/Control)
-    quant_data['fc'] = quant_data['mean ' + Experimental] / quant_data['mean ' + ControlGroup]
+    quant_data['fc'] = quant_data['mean ' + Experimental] / \
+        quant_data['mean ' + ControlGroup]
     #  Log2(FC)
     quant_data['log2(fc)'] = np.log2(quant_data['fc'])
     #  -log10(pvalue)
@@ -86,7 +90,8 @@ def tukey_correction(df):
     df = pairwise_tukeyhsd(endog=df['abundance'],
                            groups=df['Comparison'],
                            alpha=0.05)
-    df = pd.DataFrame(data=df._results_table.data[1:], columns=df._results_table.data[0])
+    df = pd.DataFrame(
+        data=df._results_table.data[1:], columns=df._results_table.data[0])
     df['Comparison'] = df.group1 + '-vs-' + df.group2
     padj = list(df['p-adj'])
     comparison = list(df['Comparison'])
@@ -180,11 +185,14 @@ def anova(params):
     quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
         quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
     #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
+    quant_data['TotalMean'] = quant_data.loc[:,
+                                             quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
     #  Log2(FC)
-    quant_data['log2(fc)'] = quant_data['Condition2'] - quant_data['Condition1']
+    quant_data['log2(fc)'] = quant_data['Condition2'] - \
+        quant_data['Condition1']
     #  -log10(pvalue)
     quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
-    quant_data = quant_data.iloc[:, ~quant_data.columns.isin(['Condition_All'])]
+    quant_data = quant_data.iloc[:, ~
+                                 quant_data.columns.isin(['Condition_All'])]
     quant_data = quant_data.reset_index()
     return (quant_data)

@@ -33,7 +33,7 @@ class Input:
         # self.filtering_data()
 
     def rdata(self):
-        df = pd.read_csv(self.Table, sep='\t')
+        df = pd.read_csv(copy(self.Table), sep='\t')
         # Filter Contaminants and Reverses
         df = df[~df['Protein IDs'].str.contains('REV__|CON__')]
         # Filter Andromeda Score >0
@@ -55,12 +55,13 @@ class Input:
         quant_strategy = self.quant_strategy
         assay = []
         if quant_strategy in QUANTIFICATION_STRATEGIES:
-            assay = pd.read_csv(self.Table, sep='\t')
+            assay = pd.read_csv(copy(self.Table), sep='\t')
             assay = assay.rename(columns={'Majority protein IDs': "Accession"})
             assay = assay[assay['Accession'].isin(self.rdata['Accession'])]
             assay = assay.set_index('Accession')
             assay = assay.iloc[:, assay.columns.str.startswith(quant_strategy)]
-            assay.columns = assay.columns.str.removeprefix(quant_strategy + ' ')
+            assay.columns = assay.columns.str.removeprefix(
+                quant_strategy + ' ')
         else:
             print(f'{quant_strategy} is not a MaxQuant quantification strategy.\n' +
                   f'User should try one of: {", ".join(QUANTIFICATION_STRATEGIES)}.')

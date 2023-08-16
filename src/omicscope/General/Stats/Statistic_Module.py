@@ -42,6 +42,9 @@ def perform_static_stat(self):
     # Filter Keratin proteins
     data = data[~data['Description'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
+    data = copy(data)
+    data.iloc[:, data.columns.str.contains(
+        '.', regex=False)] = data.iloc[:, data.columns.str.contains('.', regex=False)].replace(np.nan, 0)
     return (data)
 
 
@@ -73,4 +76,7 @@ def perform_longitudinal_stat(self):
     data['Description'] = data['Description'].astype(str)
     data = data[~data['Description'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
+    data = copy(data)
+    data.iloc[:, data.columns.str.contains(
+        '.', regex=False)] = data.iloc[:, data.columns.str.contains('.', regex=False)].replace(np.nan, 0)
     return (data)

@@ -33,7 +33,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 
 
-def bar_ident(self, logscale=True, col='darkcyan', save=None, dpi=300,
+def bar_ident(self, logscale=False, col='darkcyan', save=None, dpi=300,
               vector=True):
     """Show the amount of entities identified and differentially regulated
     in the study.
@@ -413,6 +413,7 @@ def volcano(self, *Proteins,
 
 
 def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
+            clust_metric="euclidean", clust_method='average',
             palette='RdYlBu_r', line=0.01, color_groups='tab20',
             save=None, dpi=300, vector=True):
     """ Heatmap with hierarchical clustering
@@ -421,6 +422,12 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
         pvalue (float, optional): p-value threshold. Defaults to 0.05.
         c_cluster (bool, optional): Applies Hierarchical clustering for
          columns. Defaults to True.
+        clust_metric (str, optional): The distance metric to use. Optionally: braycurtis, canberra,
+         chebyshev, cityblock, correlation, cosine, dice, euclidean, hamming, jaccard, 
+         jensenshannon, kulczynski1, mahalanobis, matching, minkowski, rogerstanimoto, russellrao,
+         seuclidean, sokalmichener, sokalsneath, sqeuclidean, yule.
+        clust_method (str, optional): Linkage method to use for calculating clusters. 
+         Optionally: single, complete, average, weighted, centroid, median, or ward.
         color_groups (str, optional): Palette for group colors.
          Defaults to 'tab20'.
         palette (str, optional): Palette for protein abundance. Defaults to 'RdYlBu_r'.
@@ -439,7 +446,8 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     sample_condition = dict(zip(pdata.Sample, pdata.Condition))
     sort_columns = list(pdata.sort_values(['Condition'])['Sample'])
     if 'TimeCourse' in pdata.columns:
-        sort_columns = list(pdata.sort_values(['Condition', 'TimeCourse'])['Sample'])
+        sort_columns = list(pdata.sort_values(
+            ['Condition', 'TimeCourse'])['Sample'])
         times = pdata.TimeCourse.drop_duplicates()
         ntimes = len(times)
         pal = sns.color_palette(palette='BuPu', as_cmap=False, n_colors=ntimes)
@@ -447,7 +455,8 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
         for C, c in zip(times, pal):
             dic.update({C: c})
         replacer = dic.get
-        time_colors = [replacer(n, n) for n in list(pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
+        time_colors = [replacer(n, n) for n in list(
+            pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
     else:
         time_colors = []
     Conditions = OmicScope.Conditions
@@ -468,7 +477,8 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     Col = list(heatmap.columns)
     # Creating matrix for group colors
     ngroup = len(Conditions)
-    pal = sns.color_palette(palette=color_groups, as_cmap=False, n_colors=ngroup)
+    pal = sns.color_palette(palette=color_groups,
+                            as_cmap=False, n_colors=ngroup)
     dic = {}
     for C, c in zip(Conditions, pal):
         dic.update({C: c})
@@ -478,13 +488,14 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     if colors[-1] == []:
         colors = colcolors
     # Title
-    title = 'Heatmap - ' + OmicScope.ctrl + ' vs ' + '-'.join(OmicScope.experimental)
+    title = 'Heatmap - ' + OmicScope.ctrl + \
+        ' vs ' + '-'.join(OmicScope.experimental)
     # Plot
     heatmap.columns.name = 'Samples'
     heatmap.index.name = 'Gene name'
     sns.clustermap(heatmap,
                    cmap=palette, z_score=0, linewidths=line, linecolor='black',
-                   col_colors=colors,
+                   col_colors=colors, metric=clust_metric, method=clust_method,
                    col_cluster=c_cluster, center=0).fig.suptitle(title, y=1.02)
     # Save
     if save is not None:
@@ -496,15 +507,23 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
 
 
 def correlation(self, *Proteins, pvalue=1.0,
-                Method='pearson', palette='RdYlBu_r', line=0.005,
+                sample_method='pearson',
+                clust_metric='euclidean',
+                clust_method='average', palette='RdYlBu_r', line=0.005,
                 color_groups='tab20',
                 save=None, dpi=300, vector=True):
     """Pairwise correlation plot for samples.
 
     Args:
         pvalue (float, optional): p-value threshold. Defaults to 1.0.
-        Method (str, optional): Method to compute pair-wise correlation.
+        sample_method (str, optional): Method to compute pair-wise correlation.
          Options: pearson, kendal, spearman. Defaults to 'pearson'.
+        clust_metric (str, optional): The distance metric to use. Optionally: braycurtis, canberra,
+         chebyshev, cityblock, correlation, cosine, dice, euclidean, hamming, jaccard, 
+         jensenshannon, kulczynski1, mahalanobis, matching, minkowski, rogerstanimoto, russellrao,
+         seuclidean, sokalmichener, sokalsneath, sqeuclidean, yule.
+        clust_method (str, optional): Linkage method to use for calculating clusters. 
+         Optionally: single, complete, average, weighted, centroid, median, or ward.
         palette (str, optional): Palette for R-distribution. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.005.
         color_groups (str, optional): Color of each group. Defaults to 'tab20'.
@@ -522,7 +541,8 @@ def correlation(self, *Proteins, pvalue=1.0,
     sample_condition = dict(zip(pdata.Sample, pdata.Condition))
     sort_columns = list(pdata.sort_values(['Condition'])['Sample'])
     if 'TimeCourse' in pdata.columns:
-        sort_columns = list(pdata.sort_values(['Condition', 'TimeCourse'])['Sample'])
+        sort_columns = list(pdata.sort_values(
+            ['Condition', 'TimeCourse'])['Sample'])
         times = pdata.TimeCourse.drop_duplicates()
         ntimes = len(times)
         pal = sns.color_palette(palette='BuPu', as_cmap=False, n_colors=ntimes)
@@ -530,7 +550,8 @@ def correlation(self, *Proteins, pvalue=1.0,
         for C, c in zip(times, pal):
             dic.update({C: c})
         replacer = dic.get
-        time_colors = [replacer(n, n) for n in list(pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
+        time_colors = [replacer(n, n) for n in list(
+            pdata.sort_values(['Condition', 'TimeCourse']).TimeCourse)]
     else:
         time_colors = []
     Conditions = OmicScope.Conditions
@@ -547,7 +568,7 @@ def correlation(self, *Proteins, pvalue=1.0,
     # log2 transform
     pearson = np.log2(pearson).replace([-np.inf], int(0))
     # Performing Pearson's Correlation
-    corr_matrix = pearson.corr(method=Method)
+    corr_matrix = pearson.corr(method=sample_method)
     # Creating matrix for group colors
 
     corr_matrix = corr_matrix[sort_columns]
@@ -569,7 +590,7 @@ def correlation(self, *Proteins, pvalue=1.0,
     # Plot
     corr_matrix.columns.name = 'Samples'
     corr_matrix.index.name = 'Samples'
-    sns.clustermap(corr_matrix,
+    sns.clustermap(corr_matrix, metric=clust_metric, method=clust_method,
                    xticklabels=corr_matrix.columns, row_colors=colors,
                    yticklabels=corr_matrix.columns, col_colors=colors,
                    cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
@@ -1017,8 +1038,8 @@ def find_k(df):
     return k
 
 
-def bigtrend(self, pvalue=0.05, k_cluster=None,
-             save=None, dpi=300, vector=True):
+def k_trend(self, pvalue=0.05, k_cluster=None,
+            save=None, dpi=300, vector=True):
     """Perform a K-mean algorithm
 
     BigTrend apply k-mean algorithm to identify co-expressed
@@ -1073,24 +1094,23 @@ def bigtrend(self, pvalue=0.05, k_cluster=None,
     dictionary = dict(zip(pdata['sample'], pdata['Condition']))
     k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
     k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
-    g = sns.relplot(data=k_data_protein,
-                    palette='dark',
-                    col='cluster',
-                    hue='Condition',
-                    col_wrap=2,
-                    x='sample',
-                    y='value',
-                    kind='line',
-                    facet_kws=dict(sharex=False))
-    g.set_ylabels('z-score', clear_inner=True)
-    g.set_xlabels('Conditions', clear_inner=True)
-    g.set(xticklabels=[])
+    g = sns.catplot(
+        data=k_data_protein, x="sample", y="value", hue="Condition", col="cluster",
+        capsize=.2, palette="viridis", errorbar="se",
+        kind="point", col_wrap=2
+    )
+    g.despine()
+    (g.map(plt.axhline, y=0, color="black", dashes=(2, 1), zorder=0)
+     .set_ylabels('z-score', clear_inner=True)
+     .set_xlabels('Conditions', clear_inner=True)
+     .set(xticklabels=[]))
     if save is not None:
         if vector is True:
             plt.savefig(save + 'MAPlot.svg', bbox_inches='tight')
         else:
             plt.savefig(save + 'MAPlot.png', dpi=dpi, bbox_inches='tight')
     plt.show()
+    k_data_protein = k_data_protein.groupby('cluster')['gene_name'].apply(list).reset_index()
     return k_data_protein
 
 
@@ -1099,7 +1119,7 @@ def PPInteractions(self, *Proteins,
                    network_iterations=50,
                    score_threshold=0.6, labels=False, modules=False,
                    module_palette='Paired', species=9606,
-                   pvalue=0.05, network_type='funtional', save=None, dpi=300, vector=True):
+                   pvalue=0.05, network_type='functional', save=None, dpi=300, vector=True):
     """Protein-Protein interaction
 
     Using String API, OmicScope search or protein-protein interactions among
@@ -1119,8 +1139,8 @@ def PPInteractions(self, *Proteins,
          Mus musculus = 10090; Rattus norvegicus = 10116.
         pvalue (float, optional): p-value threshold to proteins to be accepted.
          Defaults to 0.05 (differentially regulated).
-        network_type (str, optional): Interactions can be defined as 'funtional' or
-         'physical'. Defaults to 'funtional'.
+        network_type (str, optional): Interactions can be defined as 'functional' or
+         'physical'. Defaults to 'functional'.
         save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
@@ -1195,9 +1215,13 @@ def PPInteractions(self, *Proteins,
         module = []
         terms = []
         color = []
+        degree = []
         # Linking Terms, module, colors
         cmap = sns.color_palette(module_palette, len(communities), desat=.9)
         for i, g in enumerate(communities):
+            subgraph = G.subgraph(g)
+            degree_subgraph = subgraph.degree
+            degree.extend(degree_subgraph)
             module.extend([i]*len(g))
             terms.extend(list(g))
             if len(g) > len(source)*0.05:
@@ -1205,7 +1229,8 @@ def PPInteractions(self, *Proteins,
             else:
                 color.extend(['#666666']*len(g))
             # DataFrame
-        modularity = pd.DataFrame(zip(module, terms, color), columns=['Module', 'ID', 'color_edge'])
+        modularity = pd.DataFrame(zip(module, terms, color, degree), columns=[
+                                  'Module', 'ID', 'color_edge', 'Degree'])
         # Merging carac with modularity data
         carac = carac.merge(modularity, on='ID', suffixes=('_x', ''))
         carac = carac.set_index('ID')

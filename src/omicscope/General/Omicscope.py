@@ -17,7 +17,7 @@ class Omicscope(Input):
     from .GeneralVisualization import MAplot
     from .GeneralVisualization import bar_ident
     from .GeneralVisualization import bar_protein
-    from .GeneralVisualization import bigtrend
+    from .GeneralVisualization import k_trend
     from .GeneralVisualization import boxplot_protein
     from .GeneralVisualization import correlation
     from .GeneralVisualization import heatmap
@@ -73,7 +73,8 @@ class Omicscope(Input):
         self.ind_variables = independent_ttest
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
-            raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues)
+            raise ValueError(
+                "Invalid pvalue specification. Expected one of: %s" % pvalues)
         if 'pdata' in kwargs:
             # If pdata was assigned by user, OmicScope read
             # excel or csv frames.
@@ -91,7 +92,8 @@ class Omicscope(Input):
         if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat
             self.quant_data = imported_stat(self, statistics)
-            self.pdata['Sample'] = self.pdata['Sample']+'.'+self.pdata['Condition']
+            self.pdata['Sample'] = self.pdata['Sample'] + \
+                '.'+self.pdata['Condition']
             print('User already performed statistical analysis')
 
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics
@@ -113,12 +115,12 @@ class Omicscope(Input):
                              "User did not add statistical column into rdata, " +
                              "neither specify 'static' or 'longitudinal' experimental design. "
                              )
-
         self.deps = self.deps()
         if len(self.deps) == 0:
             print('ATTENTION: There is no differential regulation in your dataset')
         else:
-            print('OmicScope identifies: ' + str(len(self.deps)) + ' deregulations')
+            print('OmicScope identifies: ' +
+                  str(len(self.deps)) + ' deregulations')
 
     def define_conditions(self):
         """Determine conditions for statistical analysis
@@ -136,7 +138,8 @@ class Omicscope(Input):
                 Conditions.remove(self.ControlGroup)
                 self.experimental = Conditions
             except ValueError:
-                raise ValueError('The user-defined ControlGroup is not present in pdata.')
+                raise ValueError(
+                    'The user-defined ControlGroup is not present in pdata.')
         self.Conditions = copy([self.ControlGroup]) + copy(self.experimental)
 
     def expression(self):
@@ -227,6 +230,6 @@ class Omicscope(Input):
         'bar_protein',
         'boxplot_protein',
         'MAplot',
-        'bigtrend',
+        'k_trend',
         'volcano'
     ]
