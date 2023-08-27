@@ -45,6 +45,8 @@ class Enrichment:
         pvalue_cutoff = copy.copy(self.OmicScope.PValue_cutoff)
         foldchange_cutoff = copy.copy(self.OmicScope.FoldChange_cutoff)
         omics = copy.copy(self.OmicScope.quant_data)
+        conditions = [copy.copy(self.OmicScope.ControlGroup)]
+        conditions.extend(self.OmicScope.experimental)
         # Filtering data based on Fold Change and P-value
         omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
         omics = omics[omics[self.OmicScope.pvalue] <= pvalue_cutoff]
@@ -54,6 +56,8 @@ class Enrichment:
         gsea_input = np.log2(gsea_input)
         gsea_input = gsea_input.replace(-np.inf, 0)
         gsea_input = gsea_input.replace(np.nan, 0)
+        sorting_columns = [column for cond in conditions for column in gsea_input.columns if column.endswith(cond)]
+        gsea_input = gsea_input.reindex(columns=sorting_columns)
         groups = gsea_input.columns.str.split('.', regex=False).str[1]
         gsea_input = gsea_input.reset_index()
         gsea_input['gene_name'] = gsea_input['gene_name'].str.upper()
