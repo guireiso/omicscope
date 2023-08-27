@@ -47,6 +47,7 @@ class Enrichment:
         omics = copy.copy(self.OmicScope.quant_data)
         conditions = [copy.copy(self.OmicScope.ControlGroup)]
         conditions.extend(self.OmicScope.experimental)
+        conditions = conditions[::-1]
         # Filtering data based on Fold Change and P-value
         omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
         omics = omics[omics[self.OmicScope.pvalue] <= pvalue_cutoff]
