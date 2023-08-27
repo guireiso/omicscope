@@ -21,7 +21,7 @@ import pandas as pd
 import seaborn as sns
 
 
-def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
+def dotplot(self, top=10, palette='BuPu', alpha=1, s=10,
             x_size=5, y_size=6, label_wrap=50,
             save=None, dpi=300, vector=True):
     """Dotplot for enriched terms.
@@ -31,7 +31,7 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
          Defaults to 10.
         palette (str, optional): color map to visualization,
          for more information https://matplotlib.org/stable/tutorials/colors/colormaps.html.
-         Defaults to 'Spectral'.
+         Defaults to 'BuPu'. For GSEA enrichment, we advise a divergent palette.
         alpha (int, optional): dots transparency. Defaults to 1.
         s (int, optional): dotsize. Defaults to 10.
         x_size (int, optional): Size of horizontal axis. Defaults to 5.
@@ -48,10 +48,11 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
     for i in list(dbs):
         df_db = df[df['Gene_set'] == i]
         df_db = df_db.iloc[:top, :]
-        xaxis = df_db['-log10(pAdj)']
+        xaxis = df_db[['-log10(pAdj)']]
         size = df_db['N_Proteins']
         if self.Analysis == 'GSEA':
             color = df_db['NES']
+            xaxis = df_db[['NES']]
         else:
             color = df_db['N_Proteins']
         yaxis = df_db['Term']
@@ -66,9 +67,10 @@ def dotplot(self, top=10, palette='Spectral', alpha=1, s=10,
         sns.despine()
         if self.Analysis == 'GSEA':
             plt.colorbar().set_label('NES')
+            plt.axvline(0, c='black', ls='--')
         else:
             plt.colorbar().set_label('# Proteins')
-        plt.xlabel('-log(p-Adjusted)')
+        plt.xlabel(xaxis.columns[0])
         plt.margins(x=.1, y=0.1)
         if save is not None:
             if vector is True:
@@ -117,7 +119,6 @@ def heatmap(self, *Terms, top=5, foldchange=False,
             heatmap = heatmap[ordering]
             heatmap = heatmap.sort_values(ordering)
         sns.reset_orig()
-        # f, ax = plt.subplots(figsize=(x_size, y_size))7
         px = 1/plt.rcParams['figure.dpi']
         f, ax = plt.subplots(figsize=(x_size,
                                       len(heatmap)*px*20))
@@ -169,13 +170,17 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
         df_db = df_db.sort_values(by=['Adjusted P-value', 'N_Proteins'])
         df_db = df_db.iloc[:top, ]
         df_db = df_db.set_index('Term')
-        ysize_graph = len(df_db)
+        ysize = len(df_db)
         df_db = df_db[['up-regulated', 'down-regulated']]
         df_db = df_db.melt(ignore_index=False)
         df_db = df_db.reset_index()
         df_db = df_db.rename(columns={'variable': 'Regulation',
                                       'value': 'Size'})
-        plt.figure(figsize=(1, ysize_graph*0.4))
+        if min(df_db['Size']) == 0:
+            sizes = (0, 500)
+        else:
+            sizes = (10, 500)
+        plt.figure(figsize=(1, ysize*0.4))
         sns.scatterplot(data=df_db,
                         x='Regulation',
                         y='Term',
@@ -185,13 +190,14 @@ def number_deps(self, *Terms, top=20, palette='RdBu',
                         linewidth=0.5,
                         alpha=1,
                         hue='Regulation',
-                        sizes=(0, 500))
-        leg = plt.legend(bbox_to_anchor=(1, 1, 0.1, 0))
+                        sizes=sizes)
+        leg = plt.legend(bbox_to_anchor=(1, 1, 0, 0))
         leg.get_frame().set_edgecolor('white')
         plt.xticks(rotation=45, ha='right')
         plt.ylabel('')
         plt.xlabel('')
-        plt.margins(x=1, y=0.1)
+        plt.margins(x=1, y=1/ysize)
+        plt.tight_layout()
         sns.despine()
         if save is not None:
             if vector is True:
@@ -240,9 +246,10 @@ def enrichment_network(self, *Terms, top=5, labels=False,
         df = df.iloc[0:top,]
         df = df.explode(['Genes', 'regulation'])
         if self.Analysis == 'GSEA':
-            norm = mpl.colors.TwoSlopeNorm(vmin=min(df['NES']),
-                                           vmax=max(df['NES']),
-                                           vcenter=0)
+            norm = mpl.colors.TwoSlopeNorm(vmin=omics[omics['Gene_set'] == i]['NES'].min(),
+                                           vcenter=0,
+                                           vmax=omics[omics['Gene_set'] == i]['NES'].max(),
+                                           )
             cmap = cm.RdYlBu_r
             m = cm.ScalarMappable(norm=norm, cmap=cmap)
             term_color = [mcolors.to_hex(m.to_rgba(x)) for x in df['NES']]
@@ -460,7 +467,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
     return G_objects
 
 
-def gsea_heatmap(self, save=None, dpi=300, vector=True):
+def gsea_heatmap(self, *Terms, top=5, linewidths=0.01, save=None, dpi=300, vector=True):
     """GSEA Heatmap
     Plot a heatmap with colors based on Normalized Enrichment Score (NES)
     reported by GSEA Analysis.
@@ -472,12 +479,22 @@ def gsea_heatmap(self, save=None, dpi=300, vector=True):
          True.
     """
     plt.rcParams['figure.dpi'] = dpi
-    df = copy.copy(self.results)
-    df = df[df['Adjusted P-value'] <= 1]
+    omics = copy.copy(self.results)
+    omics = omics.sort_values('-log10(pAdj)')
+    if len(Terms) > 0:
+        top = len(Terms)
+        omics = omics[omics['Term'].isin(Terms)]
+    for i in omics.Gene_set.drop_duplicates():
+        df = omics[omics['Gene_set'] == i]
+        df = df.iloc[0:top, :]
     df = df.set_index('Term')
     df = df[['NES']].astype(float)
+    df = df.sort_values('NES')
+    px = 1/plt.rcParams['figure.dpi']
+    f, ax = plt.subplots(figsize=(0.5,
+                                  len(df)*px*100))
     sns.heatmap(df, center=0, cmap='RdYlBu_r', vmin=-2, vmax=2,
-                linewidths=0.8, linecolor='black')
+                linewidths=linewidths, linecolor='black')
     plt.ylabel('')
     plt.xticks(rotation=45, ha='right')
     if save is not None:

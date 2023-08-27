@@ -57,6 +57,7 @@ class Enrichment:
         groups = gsea_input.columns.str.split('.', regex=False).str[1]
         gsea_input = gsea_input.reset_index()
         gsea_input['gene_name'] = gsea_input['gene_name'].str.upper()
+        gsea_input = gsea_input[gsea_input['gene_name'].notna()]
 
         gsea_result = gsea(gsea_input, gene_sets=db,
                            cls=groups, no_plot=True, outdir=None)
@@ -70,6 +71,7 @@ class Enrichment:
                                           'Tag %': 'Overlap'},
                                          axis='columns')
 
+        gsea_result = gsea_result[gsea_result['Adjusted P-value'] < self.padjust_cutoff]
         gsea_result['Genes'] = gsea_result['Genes'].str.split(';')
         gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange[i] for i in x if x != ['']])
         gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i < 0]))
