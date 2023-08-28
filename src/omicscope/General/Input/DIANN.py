@@ -41,7 +41,7 @@ class Input:
         assay = pd.pivot_table(table, values='PG.MaxLFQ', index='Accession', columns='Sample')
         rdata = table[['Accession', 'ProteinIds', 'ProteinNames',
                        'gene_name', 'FirstProteinDescription']]
-
+        rdata = rdata[rdata['Accession'].isin(assay.index)]
         rdata = rdata.drop_duplicates('Accession')
 
         rdata['gene_name'] = np.where(rdata['gene_name'] == np.nan, rdata['Accession'], rdata['gene_name'])
