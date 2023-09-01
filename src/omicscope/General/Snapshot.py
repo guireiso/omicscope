@@ -77,8 +77,8 @@ class Omicscope_Snapshot():
             Conditions.columns = ['Conditions']
             Conditions = Conditions.sort_values(by='Conditions')
             Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1]
-            self.ctrl = self.ControlGroup = Conditions[0]
-            self.experimental = Conditions[1].split(',')
+            self.ctrl = self.ControlGroup = Conditions[1]
+            self.experimental = Conditions[0].split(',')
 
     def savefile(self, Path: str):
         from copy import copy

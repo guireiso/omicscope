@@ -375,22 +375,33 @@ def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#
     plt.show()
 
 
-def similarity_network(self, pvalue=1, parameter='TotalMean',
+def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
                        metric='jaccard',
-                       similarity_cutoff=0.2,
+                       absolute_similarity_cutoff=0.2,
                        save=None, vector=True,
                        dpi=300):
-    """Similarity heatmap plot
+    """Similarity Network plot
 
-    Pair-wise similarity comparison heatmap.
+        Perform a pairwise correlation analysis and create a graph where groups 
+        are depicted as nodes, and pairwise similarity indices serve as edges. 
+        In order to establish a connection between two groups, the function filters 
+        edges based on an absolute similarity cutoff, excluding edges that fall within 
+        a specified interval range, for instance, -0.2 to 0.2, when the 
+        absolute_similarity_cutoff is set to 0.2.
+
+        Furthermore, when utilizing the Jaccard similarity index, 
+        this function takes into account the shared 'gene_name' between groups. 
+        In contrast, for the other available options, the function considers either 
+        'TotalMean' or 'log2(fc)' columns
 
     Args:
         pvalue (int, optional): P-value threshold to proteins that
          OmicScope must consider for analysis. Defaults to 1.
-        parameter (str, optional): Parameter to take into account in pairwise comparison.
-         Defaults to 'TotalMean'. Optionally 'log2(fc)'.
-        similarity_cutoff (float, optional): Cuttoff to consider edges between groups.
-         Defaults to 0.5.
+        comparison_param (str, optional): Parameter/column to take into account in pairwise comparison.
+         Defaults to 'log2(fc)'. Optionally 'TotalMean'.
+        absolute_similarity_cutoff (float, optional): Cuttoff to consider the links between groups. Since major
+         similarity indexes have positive and negative values, the function expect an absolute value to perform cuttof.
+         Defaults to 0.2 (which means -0.2 < cutoff< 0.2).
         metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'correlation'.
          Optionally, user can test other algorithm described in scipy.spatial.distance.
         center(float, optional): number to center the heatmap color gradient.
@@ -400,6 +411,7 @@ def similarity_network(self, pvalue=1, parameter='TotalMean',
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
     """
+    from copy import copy
     plt.rcParams['figure.dpi'] = dpi
     palette = self.colors
     conditions = self.groups
@@ -409,24 +421,45 @@ def similarity_network(self, pvalue=1, parameter='TotalMean',
     totalMean = []
     colors = data.colors
     for i in data1:
-        df = i.set_index('Accession')
+        df = i.groupby('gene_name').mean()
         df = df[df[self.pvalue] < pvalue]
-        df = df[[parameter]]
+        df = df[[comparison_param]]
         totalMean.append(df)
     wholedata = pd.concat(totalMean, axis=1, join='outer')
     wholedata.columns = data.groups
-    wholedata = wholedata.reset_index()
-    wholedata = wholedata.melt(['Accession']).replace(np.nan, 0)
-    corr = wholedata.pivot(index='Accession', columns='variable')
+    corr = wholedata
     from sklearn.metrics import pairwise_distances
     # Replace -inf to the lowest non-inf value in data
     corr = corr.replace(-np.inf,
                         corr.replace(-np.inf,
                                      np.nan).dropna().min().min())
-    corr = 1-pd.DataFrame(pairwise_distances(corr.T.to_numpy(),
-                                             metric=metric))
-    corr[corr < similarity_cutoff] = 0
+
+    # Inicializar um DataFrame vazio para armazenar as distâncias
+# Inicializar um DataFrame vazio para armazenar as distâncias
+    df_dist = pd.DataFrame(index=corr.columns, columns=corr.columns)
+    # Calculate the distance between each group
+    for col1 in corr.columns:
+        for col2 in corr.columns:
+            if col1 != col2:
+                # Jaccard uses the index for the computation
+                if metric == 'jaccard':
+                    set1 = set(corr[col1].dropna().index)
+                    set2 = set(corr[col2].dropna().index)
+                    distance = len(set1.intersection(set2))/len(set1.union(set2))
+                    df_dist.at[col1, col2] = 1-distance
+                else:
+                    # For other methods, we use the non-zero quantitative values from each condition
+                    distance = corr[[col1, col2]].dropna(axis=0)
+                    distance = pairwise_distances(distance.T.to_numpy(),
+                                                  metric=metric, force_all_finite='allow-nan')
+                    df_dist.at[col1, col2] = distance[0][1]
+            df = 1-df_dist
+    corr = df
+    # Perform the absoltute_cuttoff for values
+    corr = df.applymap(lambda x: 0 if -absolute_similarity_cutoff <= x <= absolute_similarity_cutoff else x)
     corr.columns, corr.index = data.groups, data.groups
+    corr = corr.replace(np.nan, 0)
+    # Plotting graph
     G = nx.from_pandas_adjacency(corr)
     G.edges(data=True)
     size = [len(set(x[x[pval] < pvalue].gene_name)) for x in self.original]
@@ -435,7 +468,6 @@ def similarity_network(self, pvalue=1, parameter='TotalMean',
     carac = carac.set_index('ID')
     nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
     nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
-    pos = nx.kamada_kawai_layout(G, )
     carac = carac.reindex(G.nodes())
     pos = nx.kamada_kawai_layout(G, weight=None)
     edges = G.edges
@@ -464,20 +496,24 @@ def similarity_network(self, pvalue=1, parameter='TotalMean',
     plt.show()
 
 
-def similarity_heatmap(self, pvalue=1, parameter='TotalMean',
+def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
                        metric='correlation',
                        center=0, palette='RdYlBu_r',
                        annotation=True, save=None, vector=True,
                        dpi=300):
     """Similarity heatmap plot
+        Perform a pair-wise similarity analysis and plot a heatmap.
 
-    Pair-wise similarity comparison heatmap.
+        When utilizing the Jaccard similarity index, 
+        this function takes into account the shared 'gene_name' between groups. 
+        In contrast, for the other available options, the function considers either 
+        'TotalMean' or 'log2(fc)' columns
 
     Args:
         pvalue (int, optional): P-value threshold to proteins that
          OmicScope must consider for analysis. Defaults to 1.
-        parameter (str, optional): Parameter to take into account in pairwise comparison.
-        Defaults to 'TotalMean'. Optionally 'log2(fc)'.
+        comparison_param (str, optional): Parameter to take into account in pairwise comparison.
+        Defaults to 'log2(fc)'. Optionally 'TotalMean'.
         metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'correlation'.
          Optionally, user can test other algorithm described in scipy.spatial.distance.
         center(float, optional): number to center the heatmap color gradient.
@@ -487,30 +523,50 @@ def similarity_heatmap(self, pvalue=1, parameter='TotalMean',
         vector (bool, optional): If image should be export as .svg. Defaults to True.
         dpi (int, optional): Image resolution. Defaults to 300.
     """
+    from copy import copy
     plt.rcParams['figure.dpi'] = dpi
     data = copy(self)
     data1 = data.original
     totalMean = []
     colors = data.colors
     for i in data1:
-        df = i.set_index('Accession')
+        df = i.groupby('gene_name').mean()
         df = df[df[self.pvalue] < pvalue]
-        df = df[[parameter]]
+        df = df[[comparison_param]]
         totalMean.append(df)
     wholedata = pd.concat(totalMean, axis=1, join='outer')
     wholedata.columns = data.groups
-    wholedata = wholedata.reset_index()
-    wholedata = wholedata.melt(['Accession']).replace(np.nan, 0)
-    corr = wholedata.pivot(index='Accession', columns='variable')
+    corr = wholedata
     from sklearn.metrics import pairwise_distances
     # Replace -inf to the lowest non-inf value in data
     corr = corr.replace(-np.inf,
                         corr.replace(-np.inf,
                                      np.nan).dropna().min().min())
-    # Calculating distance
-    corr = 1-pd.DataFrame(pairwise_distances(corr.T.to_numpy(),
-                                             metric=metric))
+
+    # Inicializar um DataFrame vazio para armazenar as distâncias
+    # Inicializar um DataFrame vazio para armazenar as distâncias
+    df_dist = pd.DataFrame(index=corr.columns, columns=corr.columns)
+    # Calculate the distance between each group
+    for col1 in corr.columns:
+        for col2 in corr.columns:
+            if col1 != col2:
+                # Jaccard uses the index for the computation
+                if metric == 'jaccard':
+                    set1 = set(corr[col1].dropna().index)
+                    set2 = set(corr[col2].dropna().index)
+                    distance = len(set1.intersection(set2))/len(set1.union(set2))
+                    df_dist.at[col1, col2] = 1-distance
+                else:
+                    # For other methods, we use the non-zero quantitative values from each condition
+                    distance = corr[[col1, col2]].dropna(axis=0)
+                    distance = pairwise_distances(distance.T.to_numpy(),
+                                                  metric=metric, force_all_finite='allow-nan')
+                    df_dist.at[col1, col2] = distance[0][1]
+            df = 1-df_dist
+    corr = df
+    # Perform the absoltute_cuttoff for values
     corr.columns, corr.index = data.groups, data.groups
+    corr = corr.replace(np.nan, 0)
     annot = copy(corr)
     if annotation is False:
         annot[annot != -2] = np.nan
@@ -762,7 +818,7 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
     deps = [x.dropna().reset_index(drop=True) for x in deps]
     colors = self.colors
     grouplen = [len(x) for x in deps]
-
+    higher_group = max(grouplen)
     # retrieving links and matrixes
     links, matrixes = linkproteins(deps, groups)
 
@@ -782,7 +838,7 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
         # Outer Track
         outer_track = sector.add_track((88, 90))  # Tamanho da primeira Track, contendo as cores dos grupos
         outer_track.axis(fc=sector_colors[sector.name])  # cores dos grupos
-        outer_track.xticks_by_interval(interval=10, label_orientation="vertical")  # colocar xticks nas tracks
+        outer_track.xticks_by_interval(interval=int(higher_group/20), label_orientation="vertical")  # colocar xticks nas tracks
         # foldchange track
         rect_track = sector.add_track((80, 85))
         rect_track.heatmap(matrix, cmap=colormap, )
@@ -846,7 +902,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     data = [x[x['gene_name'].isin(enrichGenes)] for x in deps]
     data = [x[['gene_name', "log2(fc)"]] for x in data]
     data = [x.rename(columns={'log2(fc)': y}) for x, y in zip(data, groups)]
-    data = [x.set_index('gene_name') for x in data]
+    data = [x.groupby('gene_name').mean() for x in data]
     data = pd.concat(data, axis=1).T
     data = data.sort_index(axis=1)
     matrix = data
