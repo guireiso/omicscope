@@ -51,7 +51,7 @@ def barplot(self, save=None, vector=True, dpi=300):
            linewidth=1)
     colors = copy(self.colors)
     colors.extend(['gray'])
-    ax.bar(r, deps, edgecolor='black', width=0.5, linewidth=1)
+    ax.bar(r, deps, color=colors, edgecolor='black', width=0.5, linewidth=1)
     plt.xticks(r,
                fontweight=None, rotation=45, ha='right')
 
