@@ -600,7 +600,6 @@ def overlap_fisher(group1, group2, union):
 
     deps1 = set(group1)
     deps2 = set(group2)
-    union = len(union)
     intersection = len(deps1.intersection(deps2))
     distribution = min([len(deps1), len(deps2)])
     [M, n, N] = [union, len(deps1), len(deps2)]
@@ -611,7 +610,7 @@ def overlap_fisher(group1, group2, union):
 
 
 def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
-                   annotation=True,
+                   background_lenght=None, annotation=True,
                    save=None, vector=True, dpi=300):
     """ Heatmap according to statistical significance
 
@@ -622,7 +621,12 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
 
     Args:
         palette (str, optional): color palette. Defaults to 'Spectral'.
-        pvalue (float, optional): P-value. Defaults to 0.05.
+        pvalue (float, optional):  P-value cuttoff for proteins (e.g. differentially regulated).
+        Defaults to 0.05.
+        background_lenght (int, optional): Number of genes/proteins that must
+        be used as background. By default, nebula uses all proteins/genes identified
+        considering all files imported. Optionally, user can insert the number of proteins
+        present in the proteome of target organism
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
         Defaults to True.
@@ -639,19 +643,24 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
     conditions = self.groups
     colors = self.colors
     pval = self.pvalue
-    union = set(pd.concat(self.original).gene_name)
+    if background_lenght is None:
+        union = set(pd.concat(self.original).gene_name)
+        union = len(union)
+    else:
+        union = background_lenght
     sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
     sets = pd.DataFrame(sets)
     matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
     matrix = squareform(matrix)
     matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
-    annot = -np.log10(matrix)
+    annot = matrix.copy()
     if annotation is False:
         annot[annot != np.inf] = np.nan
-    annot[annot == np.inf] = np.nan
+    annot[annot == 0] = np.nan
     sns.clustermap(matrix, cmap=palette, annot=annot,
                    mask=annot.isnull(),
                    col_colors=colors, row_colors=colors)
+    plt.title('Pvalue')
     if save is not None:
         if vector is True:
             plt.savefig(save + 'overlap_stat.svg', bbox_inches='tight')
@@ -660,15 +669,21 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
     plt.show()
 
 
-def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vector=True, dpi=300):
+def fisher_network(self, protein_pvalue=0.05,
+                   background_lenght=None, graph_pvalue=0.1, save=None,
+                   vector=True, dpi=300):
     """ Network for pair-wise comparison.
 
     Network of all groups analysed, linking groups based on
     statistical results from hypergeometric distribution.
 
     Args:
-        protein_pvalue (float, optional): P-value cuttoff for proteins (e.g. differentially regulated).
-         Defaults to 0.05.
+        protein_pvalue (float, optional):  P-value cuttoff for proteins (e.g. differentially regulated).
+        Defaults to 0.05.
+        background_lenght (int, optional): Number of genes/proteins that must
+        be used as background. By default, nebula uses all proteins/genes identified
+        considering all files imported. Optionally, user can insert the number of proteins
+        present in the proteome of target organism
         graph_pvalue (float, optional): P-value cuttoff for fisher's test and networks. Defaults to 0.1.
         save (str, optional): Path to save image. Defaults to None.
         vector (bool, optional): If image should be export as .svg.
@@ -684,7 +699,11 @@ def fisher_network(self, protein_pvalue=0.05, graph_pvalue=0.1, save=None, vecto
     palette = self.colors
     conditions = self.groups
     pval = self.pvalue
-    union = set(pd.concat(self.original).gene_name)
+    if background_lenght is None:
+        union = set(pd.concat(self.original).gene_name)
+        union = len(union)
+    else:
+        union = background_lenght
     sets = [set(x[x[pval] < protein_pvalue].gene_name) for x in self.original]
     sets = pd.DataFrame(sets)
     matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
