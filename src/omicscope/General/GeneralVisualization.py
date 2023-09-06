@@ -415,6 +415,7 @@ def volcano(self, *Proteins,
 def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
             clust_metric="euclidean", clust_method='average',
             palette='RdYlBu_r', line=0.01, color_groups='tab20',
+            sample_label=False,
             save=None, dpi=300, vector=True):
     """ Heatmap with hierarchical clustering
 
@@ -432,6 +433,8 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
          Defaults to 'tab20'.
         palette (str, optional): Palette for protein abundance. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.01.
+        sample_label (bool, optional): insert biological sample label and condition. 
+        Defaults to False.
         save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
         vector (bool, optional): Save figure in as vector (.svg). Defaults to
@@ -473,6 +476,7 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     # Log2 transform
     heatmap = np.log2(heatmap).replace([-np.inf], int(0))
     heatmap = heatmap[sort_columns]
+    heatmap_original_label = heatmap.copy()
     heatmap = heatmap.rename(columns=sample_condition)
     Col = list(heatmap.columns)
     # Creating matrix for group colors
@@ -493,6 +497,8 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     # Plot
     heatmap.columns.name = 'Samples'
     heatmap.index.name = 'Gene name'
+    if sample_label is True:
+        heatmap = heatmap_original_label
     sns.clustermap(heatmap,
                    cmap=palette, z_score=0, linewidths=line, linecolor='black',
                    col_colors=colors, metric=clust_metric, method=clust_method,
@@ -510,7 +516,7 @@ def correlation(self, *Proteins, pvalue=1.0,
                 sample_method='pearson',
                 clust_metric='euclidean',
                 clust_method='average', palette='RdYlBu_r', line=0.005,
-                color_groups='tab20',
+                color_groups='tab20', sample_label=False,
                 save=None, dpi=300, vector=True):
     """Pairwise correlation plot for samples.
 
@@ -526,6 +532,8 @@ def correlation(self, *Proteins, pvalue=1.0,
          Optionally: single, complete, average, weighted, centroid, median, or ward.
         palette (str, optional): Palette for R-distribution. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.005.
+        sample_label (bool, optional): insert biological sample label and condition. 
+        Defaults to False.
         color_groups (str, optional): Color of each group. Defaults to 'tab20'.
         save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
@@ -568,11 +576,10 @@ def correlation(self, *Proteins, pvalue=1.0,
     # log2 transform
     pearson = np.log2(pearson).replace([-np.inf], int(0))
     # Performing Pearson's Correlation
-    corr_matrix = pearson.corr(method=sample_method)
+    corr_matrix_raw = pearson.corr(method=sample_method)
     # Creating matrix for group colors
-
-    corr_matrix = corr_matrix[sort_columns]
-    corr_matrix = corr_matrix.rename(columns=sample_condition)
+    corr_matrix_raw = corr_matrix_raw[sort_columns]
+    corr_matrix = corr_matrix_raw.rename(columns=sample_condition)
     Col = list(corr_matrix.columns)
     # Creating matrix for group colors
     ngroup = len(Conditions)
@@ -590,10 +597,16 @@ def correlation(self, *Proteins, pvalue=1.0,
     # Plot
     corr_matrix.columns.name = 'Samples'
     corr_matrix.index.name = 'Samples'
-    sns.clustermap(corr_matrix, metric=clust_metric, method=clust_method,
-                   xticklabels=corr_matrix.columns, row_colors=colors,
-                   yticklabels=corr_matrix.columns, col_colors=colors,
-                   cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
+    if sample_label is False:
+        sns.clustermap(corr_matrix, metric=clust_metric, method=clust_method,
+                       xticklabels=corr_matrix.columns, row_colors=colors,
+                       yticklabels=corr_matrix.columns, col_colors=colors,
+                       cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
+    else:
+        sns.clustermap(corr_matrix_raw, metric=clust_metric, method=clust_method,
+                       xticklabels=corr_matrix_raw.columns, row_colors=colors,
+                       yticklabels=corr_matrix_raw.columns, col_colors=colors,
+                       cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
     if save is not None:
         if vector is True:
             plt.savefig(save + 'pearson.svg', bbox_inches='tight')
@@ -684,14 +697,14 @@ def DynamicRange(self, *Proteins, color='#565059',
 
 
 def pca(self, pvalue=1.00, scree_color='#900C3F',
-        marks=False, palette='tab20', FoldChange_cutoff=0,
+        sample_label=False, palette='tab20', FoldChange_cutoff=0,
         save=None, dpi=300, vector=True):
     """ Perform Principal Component Analysis.
 
     Args:
         pvalue (float, optional): p-value threshold. Defaults to 1.00.
         scree_color (str, optional): Color of Scree plot. Defaults to '#900C3F'.
-        marks (bool, optional): Insert group annotation. Defaults to False.
+        sample_label (bool, optional): Insert biological sample label. Defaults to False.
         palette (str, optional): Palette for groups. Defaults to 'tab20'.
          FoldChange_cutoff (int, optional): Fold change threshold. Defaults to 0.
         save (str, optional): Path to save figure. Defaults to None.
@@ -747,17 +760,25 @@ def pca(self, pvalue=1.00, scree_color='#900C3F',
     else:
         pca_df = pca_df.merge(conditions, right_index=True, left_index=True)
         pca_df = pca_df.set_index(['Condition'])
-    sns.scatterplot(x="PC1", y="PC2", data=pca_df, hue=list(pca_df.index), palette=palette,
-                    edgecolor='black', linewidth=1, s=100, alpha=0.7)
+
+    ax_scatter = sns.scatterplot(x="PC1", y="PC2", data=pca_df,
+                                 hue=list(pca_df.index), palette=palette,
+                                 edgecolor='black', linewidth=1, s=100, alpha=0.7)
     plt.title('Principal Component Analysis ' + '(pvalue=' + str(pvalue) + ')')
     plt.xlabel('PC1 - {0}%'.format(per_var[0]))
     plt.ylabel('PC2 - {0}%'.format(per_var[1]))
     plt.grid(b=False)
     sns.despine()
     # Annotate samples in PCA plot
-    if marks is True:
-        for sample in pca_df.index:
-            plt.annotate(sample, (pca_df.PC1.loc[sample], pca_df.PC2.loc[sample]))
+    if sample_label is True:
+        from adjustText import adjust_text
+        texts = []
+        for a, b, c in zip(pca_df['PC1'], pca_df['PC2'],
+                           conditions.index):
+            texts.append(ax_scatter.text(a, b, c.split('.')[0], size=8))
+        adjust_text(texts, ax=ax_scatter, force_points=0.25, force_text=0.25,
+                    expand_points=(1.5, 1.5), expand_text=(1.5, 1.5),
+                    arrowprops=dict(arrowstyle="-", color='black', lw=0.5))
     if save is not None:
         if vector is True:
             plt.savefig(save + 'pca.svg', bbox_inches='tight')

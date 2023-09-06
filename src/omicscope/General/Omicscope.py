@@ -147,6 +147,7 @@ class Omicscope(Input):
         conditions.
         """
         import numpy as np
+        from copy import copy
 
         pdata = []
         for i in self.pdata.columns:
@@ -160,6 +161,9 @@ class Omicscope(Input):
         expression = expression.set_index(rdata).T
         pdata_columns = list(self.pdata.columns)
         pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples']))
+        technical = copy(self.pdata)
+        technical = technical.groupby(pdata_columns).agg(','.join).reset_index()
+        technical.columns = pdata_columns + ['technical']
         expression = expression.groupby(pdata_columns).mean(numeric_only=True)
         pdata = expression.index.to_frame().reset_index(drop=True)
         Variables = pdata.loc[:, pdata.columns != 'Biological']
@@ -182,6 +186,8 @@ class Omicscope(Input):
         rdata = rdata[rdata['Accession'].isin(nanvalues.index)]
         # New pdata
         pdata['Sample'] = Sample_name
+        pdata = pdata.merge(technical, how='left', on=pdata_columns)
+
         self.pdata = pdata
 
         # New rdata

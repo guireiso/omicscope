@@ -68,6 +68,9 @@ def imported_stat(self, statistics):
             quant_data = quant_data.rename(columns=statistical_dictionary)
             quant_data[f'-log10({self.pvalue})'] = -np.log10(quant_data[self.pvalue])
             if self.ExcludeKeratins is True:
-                quant_data = quant_data[~quant_data['Description'].str.contains('Krt|KRT|krt')]
+                if 'Description' in quant_data.columns:
+                    quant_data = quant_data[~quant_data['Description'].str.contains('Krt|KRT|krt')]
+                else:
+                    quant_data = quant_data[~quant_data['gene_name'].str.contains('Krt|KRT|krt')]
             break
     return (quant_data)

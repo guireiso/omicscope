@@ -885,7 +885,7 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
 
 
 def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
-                  save=None, vector=True, dpi=300):
+                  label_size=12, save=None, vector=True, dpi=300):
     """Circular term
         Allows the visualization of all proteins related to a pre-specified term.
         This term is extracted from enrichment data.
@@ -944,7 +944,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
         space=0.3,
         r_lim=(93, 100),
         cmap=colors,
-        label_kws=dict(r=101, orientation="vertical"),
+        label_kws=dict(r=101, orientation="vertical", size=label_size),
     )
     for sector, heatmap in zip(circos.sectors, heatmaps):
         # Outer Track
@@ -958,6 +958,6 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     fig = circos.plotfig()
     if save is not None:
         if vector is True:
-            fig.savefig(save+'/Term_circular_plot.svg')
+            fig.savefig(save+'Term_circular_plot.svg')
         else:
-            fig.savefig(save+'/Term_circular_plot.png', dpi=dpi)
+            fig.savefig(save+'Term_circular_plot.png', dpi=dpi)

@@ -38,9 +38,13 @@ def perform_static_stat(self):
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # Filtering Keratin
-    data['Description'] = data['Description'].astype(str)
-    # Filter Keratin proteins
-    data = data[~data['Description'].str.contains('Krt|KRT|krt')]
+    if self.ExcludeKeratins is True:
+        if 'Description' in data.columns:
+            data['Description'] = data['Description'].astype(str)
+            data = data[~data['Description'].str.contains('Krt|KRT|krt')]
+        else:
+            data['gene_name'] = data['gene_name'].astype(str)
+            data = data[~data['gene_name'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
     data = copy(data)
     data.iloc[:, data.columns.str.contains(
@@ -73,8 +77,13 @@ def perform_longitudinal_stat(self):
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # # Filtering Keratin
-    data['Description'] = data['Description'].astype(str)
-    data = data[~data['Description'].str.contains('Krt|KRT|krt')]
+    if self.ExcludeKeratins is True:
+        if 'Description' in data.columns:
+            data['Description'] = data['Description'].astype(str)
+            data = data[~data['Description'].str.contains('Krt|KRT|krt')]
+        else:
+            data['gene_name'] = data['gene_name'].astype(str)
+            data = data[~data['gene_name'].str.contains('Krt|KRT|krt')]
     data = data.reset_index(drop=True)
     data = copy(data)
     data.iloc[:, data.columns.str.contains(
