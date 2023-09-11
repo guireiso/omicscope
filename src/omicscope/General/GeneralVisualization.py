@@ -15,18 +15,16 @@ Additionally, colors and color palettes follows the matplotlib and seaborn libra
 import copy
 import itertools
 import random
-import requests
-
-
 import matplotlib as mpl
 import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import pandas as pd
+import requests
 import seaborn as sns
 from kneed import KneeLocator
-import networkx as nx
 from scipy.stats import zscore
 from sklearn import preprocessing
 from sklearn.cluster import KMeans
@@ -424,16 +422,16 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
         c_cluster (bool, optional): Applies Hierarchical clustering for
          columns. Defaults to True.
         clust_metric (str, optional): The distance metric to use. Optionally: braycurtis, canberra,
-         chebyshev, cityblock, correlation, cosine, dice, euclidean, hamming, jaccard, 
+         chebyshev, cityblock, correlation, cosine, dice, euclidean, hamming, jaccard,
          jensenshannon, kulczynski1, mahalanobis, matching, minkowski, rogerstanimoto, russellrao,
          seuclidean, sokalmichener, sokalsneath, sqeuclidean, yule.
-        clust_method (str, optional): Linkage method to use for calculating clusters. 
+        clust_method (str, optional): Linkage method to use for calculating clusters.
          Optionally: single, complete, average, weighted, centroid, median, or ward.
         color_groups (str, optional): Palette for group colors.
          Defaults to 'tab20'.
         palette (str, optional): Palette for protein abundance. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.01.
-        sample_label (bool, optional): insert biological sample label and condition. 
+        sample_label (bool, optional): insert biological sample label and condition.
         Defaults to False.
         save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
@@ -525,14 +523,14 @@ def correlation(self, *Proteins, pvalue=1.0,
         sample_method (str, optional): Method to compute pair-wise correlation.
          Options: pearson, kendal, spearman. Defaults to 'pearson'.
         clust_metric (str, optional): The distance metric to use. Optionally: braycurtis, canberra,
-         chebyshev, cityblock, correlation, cosine, dice, euclidean, hamming, jaccard, 
+         chebyshev, cityblock, correlation, cosine, dice, euclidean, hamming, jaccard,
          jensenshannon, kulczynski1, mahalanobis, matching, minkowski, rogerstanimoto, russellrao,
          seuclidean, sokalmichener, sokalsneath, sqeuclidean, yule.
-        clust_method (str, optional): Linkage method to use for calculating clusters. 
+        clust_method (str, optional): Linkage method to use for calculating clusters.
          Optionally: single, complete, average, weighted, centroid, median, or ward.
         palette (str, optional): Palette for R-distribution. Defaults to 'RdYlBu_r'.
         line (float, optional): Line width. Defaults to 0.005.
-        sample_label (bool, optional): insert biological sample label and condition. 
+        sample_label (bool, optional): insert biological sample label and condition.
         Defaults to False.
         color_groups (str, optional): Color of each group. Defaults to 'tab20'.
         save (str, optional): Path to save figure. Defaults to None.
@@ -1231,6 +1229,7 @@ def PPInteractions(self, *Proteins,
     # Find Communities
     if modules is True:
         import networkx.algorithms.community as nx_comm
+
         # Find communities based on label propagation
         communities = nx_comm.louvain_communities(G)
         module = []

@@ -15,14 +15,14 @@ warnings.filterwarnings("ignore")
 class Omicscope(Input):
     from .GeneralVisualization import DynamicRange
     from .GeneralVisualization import MAplot
+    from .GeneralVisualization import PPInteractions
     from .GeneralVisualization import bar_ident
     from .GeneralVisualization import bar_protein
-    from .GeneralVisualization import k_trend
     from .GeneralVisualization import boxplot_protein
     from .GeneralVisualization import correlation
     from .GeneralVisualization import heatmap
+    from .GeneralVisualization import k_trend
     from .GeneralVisualization import pca
-    from .GeneralVisualization import PPInteractions
     from .GeneralVisualization import volcano
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
@@ -146,8 +146,9 @@ class Omicscope(Input):
         """Joins the technical replicates and organizes biological
         conditions.
         """
-        import numpy as np
         from copy import copy
+
+        import numpy as np
 
         pdata = []
         for i in self.pdata.columns:

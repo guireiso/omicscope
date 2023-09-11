@@ -1,14 +1,14 @@
-import numpy as np
-import pandas as pd
 import warnings
 
+import numpy as np
+import pandas as pd
 
 warnings.filterwarnings("ignore")
 
 
 class Omicscope_Snapshot():
-    from .GeneralVisualization import bar_ident
     from .GeneralVisualization import PPInteractions
+    from .GeneralVisualization import bar_ident
     from .GeneralVisualization import volcano
 
     def __init__(self, Table,

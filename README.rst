@@ -41,7 +41,7 @@ Both differential expression and enrichment analyses have a comprehensive toolse
 Finally, for each experiment performed by *OmicScope*, it is possible to export an omics file (.omics extension) for further use in the **Nebula workflow**. Nebula is a specialized module that enables analysis of multiple studies or comparisons, providing several types of analysis to compare those groups and find similarities among them.
 
 
-.. image:: docs/figure/Workflow.png
+.. image:: ./Workflow.png
    :width: 600
    :align: center
 

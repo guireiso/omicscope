@@ -6,18 +6,18 @@ import seaborn as sns
 
 
 class nebula:
-    from .MultipleVisualization import circos_plot
     from .MultipleVisualization import barplot
+    from .MultipleVisualization import circos_plot
     from .MultipleVisualization import circular_term
-    from .MultipleVisualization import similarity_heatmap
-    from .MultipleVisualization import similarity_network
     from .MultipleVisualization import diff_reg
     from .MultipleVisualization import dotplot_enrichment
     from .MultipleVisualization import enrichment_overlap
     from .MultipleVisualization import fisher_heatmap
     from .MultipleVisualization import fisher_network
-    from .MultipleVisualization import whole_network
     from .MultipleVisualization import protein_overlap
+    from .MultipleVisualization import similarity_heatmap
+    from .MultipleVisualization import similarity_network
+    from .MultipleVisualization import whole_network
 
     def __init__(self, folder, palette='Dark2', pvalue_cutoff=0.05):
         self.original_path = os.getcwd()
@@ -26,7 +26,8 @@ class nebula:
         for o, g, l in zip(self.original, self.groups, self.labels):
             self.group_data.append(self.importing(o, g, l, pvalue_cutoff=pvalue_cutoff))
         if len(self.groups) != len(set(self.groups)):
-            raise Exception("There are duplicated group labels. Please verify the .omics file to ensure that the Experimental groups have distinct labels.")
+            raise Exception("There are duplicated group labels. Please verify the .omics file to ensure that the Experimental groups" +
+                            " have distinct labels.")
         self.enrichment = self.remap()
         print(f'''You imported your data successfully!
         Data description:

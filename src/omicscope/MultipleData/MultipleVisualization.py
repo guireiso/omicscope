@@ -248,10 +248,10 @@ def dotplot_enrichment(self, *Terms, top=5,  fig_height=None, palette='PuBu', sa
         if fig_height is not None:
             fig.set_figheight(fig_height)
         sns.set_style('white')
-        ax = sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
-                             hue='-log10(p)', palette=palette, sizes=(40, 280),
-                             linewidth=0.5, edgecolor='black'
-                             )
+        sns.scatterplot(data=data, x='Group', y='Term', size='-log10(p)',
+                        hue='-log10(p)', palette=palette, sizes=(40, 280),
+                        linewidth=0.5, edgecolor='black'
+                        )
         plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
         sns.despine()
         plt.margins()
@@ -266,7 +266,7 @@ def dotplot_enrichment(self, *Terms, top=5,  fig_height=None, palette='PuBu', sa
 
 def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f0f0",
                     edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
-    """Upset plot 
+    """Upset plot
     Upset plot to evaluate protein overlap among groups.
 
     Args:
@@ -314,7 +314,7 @@ def protein_overlap(self, min_subset=10, face_color='darkcyan', shad_color="#f0f
 
 def enrichment_overlap(self,  min_subset=1, face_color='darkcyan', shad_color="#f0f0f0",
                        edge_color='black', linewidth=1, save=None, vector=True, dpi=300):
-    """Upset plot 
+    """Upset plot
     Upset plot to evaluate enrichment terms overlap among groups.
 
     Args:
@@ -382,16 +382,16 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
                        dpi=300):
     """Similarity Network plot
 
-        Perform a pairwise correlation analysis and create a graph where groups 
-        are depicted as nodes, and pairwise similarity indices serve as edges. 
-        In order to establish a connection between two groups, the function filters 
-        edges based on an absolute similarity cutoff, excluding edges that fall within 
-        a specified interval range, for instance, -0.2 to 0.2, when the 
+        Perform a pairwise correlation analysis and create a graph where groups
+        are depicted as nodes, and pairwise similarity indices serve as edges.
+        In order to establish a connection between two groups, the function filters
+        edges based on an absolute similarity cutoff, excluding edges that fall within
+        a specified interval range, for instance, -0.2 to 0.2, when the
         absolute_similarity_cutoff is set to 0.2.
 
-        Furthermore, when utilizing the Jaccard similarity index, 
-        this function takes into account the shared 'gene_name' between groups. 
-        In contrast, for the other available options, the function considers either 
+        Furthermore, when utilizing the Jaccard similarity index,
+        this function takes into account the shared 'gene_name' between groups.
+        In contrast, for the other available options, the function considers either
         'TotalMean' or 'log2(fc)' columns
 
     Args:
@@ -419,7 +419,6 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
     data = copy(self)
     data1 = data.original
     totalMean = []
-    colors = data.colors
     for i in data1:
         df = i.groupby('gene_name').mean()
         df = df[df[self.pvalue] < pvalue]
@@ -429,6 +428,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
     wholedata.columns = data.groups
     corr = wholedata
     from sklearn.metrics import pairwise_distances
+
     # Replace -inf to the lowest non-inf value in data
     corr = corr.replace(-np.inf,
                         corr.replace(-np.inf,
@@ -504,9 +504,9 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
     """Similarity heatmap plot
         Perform a pair-wise similarity analysis and plot a heatmap.
 
-        When utilizing the Jaccard similarity index, 
-        this function takes into account the shared 'gene_name' between groups. 
-        In contrast, for the other available options, the function considers either 
+        When utilizing the Jaccard similarity index,
+        this function takes into account the shared 'gene_name' between groups.
+        In contrast, for the other available options, the function considers either
         'TotalMean' or 'log2(fc)' columns
 
     Args:
@@ -538,6 +538,7 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
     wholedata.columns = data.groups
     corr = wholedata
     from sklearn.metrics import pairwise_distances
+
     # Replace -inf to the lowest non-inf value in data
     corr = corr.replace(-np.inf,
                         corr.replace(-np.inf,
@@ -616,7 +617,7 @@ def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
 
     Perform a pair-wise comparison of all conditions
     based on hypergeometric distribution and plot a heatmap
-    with hierarchical clustering. In the plot, it the p-value is 
+    with hierarchical clustering. In the plot, it the p-value is
     labeled in a log10-transformation.
 
     Args:
@@ -901,7 +902,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
         dpi (int, optional): Figure resolution. Defaults to 300.
 
     Raises:
-        TypeError: Term/Terms was/were not found in dataset. 
+        TypeError: Term/Terms was/were not found in dataset.
     """
     enrichment = [x for x in self.enrichment if x is not None]
     deps = self.original
@@ -917,7 +918,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     enrichGenes = list(enrichTerms['Genes'])
     enrichGenes = sum(enrichGenes, [])
     enrichGenes = list(set(enrichGenes))
-   # Filtering based on enrichgenes
+    # Filtering based on enrichgenes
     data = [x[x['gene_name'].isin(enrichGenes)] for x in deps]
     data = [x[['gene_name', "log2(fc)"]] for x in data]
     data = [x.rename(columns={'log2(fc)': y}) for x, y in zip(data, groups)]

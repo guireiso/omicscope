@@ -8,8 +8,8 @@ When importing data into OmicScope, users must select the correct method to perf
 It should be noted that pdata is required to perform longitudinal analysis.
 
 
-.. image:: OmicScope_to_relatorio-Statistics.drawio.png
-   :target: OmicScope_to_relatorio-Statistics.drawio.png
+.. image:: Statistics.png
+   :target: Statistics.png
    :alt: 
 
 

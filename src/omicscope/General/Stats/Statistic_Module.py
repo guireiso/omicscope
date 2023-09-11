@@ -5,8 +5,9 @@ by OmicScope for differential expression analysis.
         DataFrame: DataFrame with recommended statistical
         analysis performed
 """
-import pandas as pd
 import os
+
+import pandas as pd
 
 
 def perform_static_stat(self):

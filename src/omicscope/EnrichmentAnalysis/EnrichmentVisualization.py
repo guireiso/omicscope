@@ -3,7 +3,7 @@
 This module allows the user to extract and visualize information from EnrichmentScope object.
 
 Here, it is possible to evaluate enrichment results with 1) dotplots, 2)heatmaps and 3) network analysis.
-Dotplots allows the visualization of statistical significance and size of dataset enriched (*number_deps*), and 
+Dotplots allows the visualization of statistical significance and size of dataset enriched (*number_deps*), and
 the number of up- and down-regulated proteins (*number_deps*). Heatmaps can be plotted according statistical
 significance and also protein foldchange; for GSEA analysis, the function gsea_heatmap plots the normalization
 enrichment score (NES) as color pattern. Finally, the network plots can be used to visualize shared proteins
@@ -434,7 +434,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                                 'Module', 'Degree', '-log10(pAdj)'])
 
             carac['Label'] = np.where(
-                carac['mark'] == False,
+                carac['mark'] is False,
                 carac['Term'], "")
             carac = carac.set_index('Term')
             # Set node attributes to export

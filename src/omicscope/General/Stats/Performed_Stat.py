@@ -5,12 +5,11 @@ by OmicScope for differential expression analysis.
         DataFrame: DataFrame with recommended statistical
         analysis performed
 """
-
+import os
 from copy import copy
 
 import numpy as np
 import pandas as pd
-import os
 
 
 def imported_stat(self, statistics):
@@ -72,7 +71,7 @@ def imported_stat(self, statistics):
             if self.ExcludeContaminants is True:
                 path = os.path.dirname(os.path.abspath(__file__))
                 contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
-                data = data[~data['Accession'].isin(contaminants['Accession'])]
-                data = data[~data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
+                quant_data = quant_data[~quant_data['Accession'].isin(contaminants['Accession'])]
+                quant_data = quant_data[~quant_data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
             break
     return (quant_data)

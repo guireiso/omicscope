@@ -73,7 +73,7 @@ class Input:
                              gene_name=gene_name)
         # Normalization factors
         norm_factor = pd.read_excel(df, sheet_name='Normalization Factors')
-        norm_factor = dict(zip(norm_factor['File Name'], norm_factor['Normalization Factor']))            
+        norm_factor = dict(zip(norm_factor['File Name'], norm_factor['Normalization Factor']))
         return (assay, pdata, rdata, norm_factor)
 
     def filtering_data(self):
