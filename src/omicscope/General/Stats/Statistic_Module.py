@@ -5,6 +5,8 @@ by OmicScope for differential expression analysis.
         DataFrame: DataFrame with recommended statistical
         analysis performed
 """
+import pandas as pd
+import os
 
 
 def perform_static_stat(self):
@@ -38,13 +40,11 @@ def perform_static_stat(self):
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # Filtering Keratin
-    if self.ExcludeKeratins is True:
-        if 'Description' in data.columns:
-            data['Description'] = data['Description'].astype(str)
-            data = data[~data['Description'].str.contains('Krt|KRT|krt')]
-        else:
-            data['gene_name'] = data['gene_name'].astype(str)
-            data = data[~data['gene_name'].str.contains('Krt|KRT|krt')]
+    if self.ExcludeContaminants is True:
+        path = os.path.dirname(os.path.abspath(__file__))
+        contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
+        data = data[~data['Accession'].isin(contaminants['Accession'])]
+        data = data[~data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
     data = data.reset_index(drop=True)
     data = copy(data)
     data.iloc[:, data.columns.str.contains(
@@ -77,13 +77,11 @@ def perform_longitudinal_stat(self):
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # # Filtering Keratin
-    if self.ExcludeKeratins is True:
-        if 'Description' in data.columns:
-            data['Description'] = data['Description'].astype(str)
-            data = data[~data['Description'].str.contains('Krt|KRT|krt')]
-        else:
-            data['gene_name'] = data['gene_name'].astype(str)
-            data = data[~data['gene_name'].str.contains('Krt|KRT|krt')]
+    if self.ExcludeContaminants is True:
+        path = os.path.dirname(os.path.abspath(__file__))
+        contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
+        data = data[~data['Accession'].isin(contaminants['Accession'])]
+        data = data[~data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
     data = data.reset_index(drop=True)
     data = copy(data)
     data.iloc[:, data.columns.str.contains(

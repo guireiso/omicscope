@@ -9,6 +9,8 @@ by OmicScope for differential expression analysis.
 from copy import copy
 
 import numpy as np
+import pandas as pd
+import os
 
 
 def imported_stat(self, statistics):
@@ -19,7 +21,7 @@ def imported_stat(self, statistics):
     3) calculates the fold-change in relation to ControlGroup;
     4) calculates log2(fc);
     5) calculates -log10(p-value);
-    6) If ExcludeKeratins = True, they are excluded.
+    6) If ExcludeContaminants = True, they are excluded.
 
         Returns:
         DataFrame: Quantitative data
@@ -67,10 +69,10 @@ def imported_stat(self, statistics):
                 quant_data['Comparison'] = Comparison
             quant_data = quant_data.rename(columns=statistical_dictionary)
             quant_data[f'-log10({self.pvalue})'] = -np.log10(quant_data[self.pvalue])
-            if self.ExcludeKeratins is True:
-                if 'Description' in quant_data.columns:
-                    quant_data = quant_data[~quant_data['Description'].str.contains('Krt|KRT|krt')]
-                else:
-                    quant_data = quant_data[~quant_data['gene_name'].str.contains('Krt|KRT|krt')]
+            if self.ExcludeContaminants is True:
+                path = os.path.dirname(os.path.abspath(__file__))
+                contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
+                data = data[~data['Accession'].isin(contaminants['Accession'])]
+                data = data[~data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
             break
     return (quant_data)

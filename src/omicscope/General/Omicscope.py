@@ -27,7 +27,7 @@ class Omicscope(Input):
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', PValue_cutoff=0.05,
-                 FoldChange_cutoff=0, logTransformed=False, ExcludeKeratins=True,
+                 FoldChange_cutoff=0, logTransformed=False, ExcludeContaminants=True,
                  degrees_of_freedom=2, independent_ttest=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
@@ -57,7 +57,7 @@ class Omicscope(Input):
             PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
             FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
             logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
-            ExcludeKeratins (bool, optional): Keratins proteins is excluded. Defaults to True.
+            ExcludeContaminants (bool, optional): Contaminant proteins is excluded. Defaults to True.
             degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
             independent_ttest (bool, optional): If running a t-test, the user can specify if samples
                 are independent (default) or paired (independent_ttest=False). Defaults to True.
@@ -67,7 +67,7 @@ class Omicscope(Input):
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
         self.logTransformed = logTransformed
-        self.ExcludeKeratins = ExcludeKeratins
+        self.ExcludeContaminants = ExcludeContaminants
         self.pvalue = pvalue
         self.ControlGroup = ControlGroup
         self.ind_variables = independent_ttest

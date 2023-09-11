@@ -1,0 +1,382 @@
+Accession,gene_name,organism,source
+P00722,lacZ b0344 JW0335,Escherichia coli (strain K12),Bacterial Ecoli
+P09870,cloSI,Hathewaya histolytica (Clostridium histolyticum),Enzyme 
+P30879,PGC,Sus scrofa (Pig),Enzyme 
+P0C1U8,sspA,Staphylococcus aureus,Enzyme 
+Q2FZL2,sspA SAOUHSC_00988,Staphylococcus aureus (strain NCTC 8325 / PS 47),Enzyme 
+P00698,LYZ,Gallus gallus (Chicken),Enzyme 
+Q7M135,,Lysobacter enzymogenes,Enzyme 
+P13717,nucA nuc,Serratia marcescens,Enzyme 
+P00791,PGA,Sus scrofa (Pig),Enzyme 
+Q10735,PGB,Sus scrofa (Pig),Enzyme 
+P81054,MEP,Grifola frondosa (Maitake) (Polyporus frondosus),Enzyme 
+P15636,,Achromobacter lyticus,Enzyme 
+AAAA1,FLAG,,FLAG Affinity beads
+Q9U6Y5,,Zoanthus sp. (Green polyp),GFP Fluorescent Protein
+P42212,GFP,Aequorea victoria (Water jellyfish) (Mesonema victoria),GFP Fluorescent Protein
+AAAA2,HA,,HA Affinity beads
+A1A580,KRTAP23-1 KAP23.1,Homo sapiens (Human),Human skin and hair
+A6NCN2,KRT87P KRT121P KRTHBP4,Homo sapiens (Human),Human skin and hair
+A8MTY7,KRTAP9-7 KAP9.7 KRTAP9.7 KRTAP9L1,Homo sapiens (Human),Human skin and hair
+A8MUX0,KRTAP16-1 KAP16.1,Homo sapiens (Human),Human skin and hair
+A8MVA2,KRTAP9-6 KAP9.6 KRTAP9.6 KRTAP9L2,Homo sapiens (Human),Human skin and hair
+A8MX34,KRTAP29-1 KAP29.2,Homo sapiens (Human),Human skin and hair
+A8MXZ3,KRTAP9-1 KAP9.1 KRTAP9.1 KRTAP9L3,Homo sapiens (Human),Human skin and hair
+O43790,KRT86 KRTHB6,Homo sapiens (Human),Human skin and hair
+O75690,KRTAP5-8 KAP5.8 KRTAP5.8 UHSKB,Homo sapiens (Human),Human skin and hair
+O76009,KRT33A HHA3-I HKA3A KRTHA3A,Homo sapiens (Human),Human skin and hair
+O76011,KRT34 HHA4 HKA4 KRTHA4,Homo sapiens (Human),Human skin and hair
+O76013,KRT36 HHA6 HKA6 KRTHA6,Homo sapiens (Human),Human skin and hair
+O76014,KRT37 HHA7 HKA7 KRTHA7,Homo sapiens (Human),Human skin and hair
+O76015,KRT38 HHA8 HKA8 KRTHA8,Homo sapiens (Human),Human skin and hair
+O95678,KRT75 K6HF KB18,Homo sapiens (Human),Human skin and hair
+P02533,KRT14,Homo sapiens (Human),Human skin and hair
+P02538,KRT6A K6A KRT6D,Homo sapiens (Human),Human skin and hair
+P04259,KRT6B K6B KRTL1,Homo sapiens (Human),Human skin and hair
+P04264,KRT1 KRTA,Homo sapiens (Human),Human skin and hair
+P05783,KRT18 CYK18 PIG46,Homo sapiens (Human),Human skin and hair
+P05787,KRT8 CYK8,Homo sapiens (Human),Human skin and hair
+P08727,KRT19,Homo sapiens (Human),Human skin and hair
+P08729,KRT7 SCL,Homo sapiens (Human),Human skin and hair
+P08779,KRT16 KRT16A,Homo sapiens (Human),Human skin and hair
+P0C5Y4,KRTAP1-4 KAP1.4 KRTAP1.4,Homo sapiens (Human),Human skin and hair
+P0C7H8,KRTAP2-3 KAP2.3 KRTAP2.3,Homo sapiens (Human),Human skin and hair
+P12035,KRT3,Homo sapiens (Human),Human skin and hair
+P13645,KRT10 KPP,Homo sapiens (Human),Human skin and hair
+P13646,KRT13,Homo sapiens (Human),Human skin and hair
+P13647,KRT5,Homo sapiens (Human),Human skin and hair
+P19012,KRT15 KRTB,Homo sapiens (Human),Human skin and hair
+P19013,KRT4 CYK4,Homo sapiens (Human),Human skin and hair
+P20930,FLG,Homo sapiens (Human),Human skin and hair
+P26371,KRTAP5-9 KAP5.9 KRN1 KRTAP5.9 UHSK1,Homo sapiens (Human),Human skin and hair
+P35527,KRT9,Homo sapiens (Human),Human skin and hair
+P35900,KRT20,Homo sapiens (Human),Human skin and hair
+P35908,KRT2 KRT2A KRT2E,Homo sapiens (Human),Human skin and hair
+P48668,KRT6C KRT6E,Homo sapiens (Human),Human skin and hair
+P59990,KRTAP12-1 KAP12.1 KRTAP12.1,Homo sapiens (Human),Human skin and hair
+P59991,KRTAP12-2 KAP12.2 KRTAP12.2,Homo sapiens (Human),Human skin and hair
+P60014,KRTAP10-10 KAP10.10 KAP18-10 KRTAP10.10 KRTAP18-1 KRTAP18.10,Homo sapiens (Human),Human skin and hair
+P60328,KRTAP12-3 KAP12.3 KRTAP12.3,Homo sapiens (Human),Human skin and hair
+P60329,KRTAP12-4 KAP12.4 KRTAP12.4,Homo sapiens (Human),Human skin and hair
+P60331,KRTAP10-1 KAP10.1 KAP18-1 KRTAP10.1 KRTAP18-1 KRTAP18.1,Homo sapiens (Human),Human skin and hair
+P60368,KRTAP10-2 KAP10.2 KAP18-2 KRTAP10.2 KRTAP18-2 KRTAP18.2,Homo sapiens (Human),Human skin and hair
+P60369,KRTAP10-3 KAP10.3 KAP18-3 KRTAP10.3 KRTAP18-3 KRTAP18.3,Homo sapiens (Human),Human skin and hair
+P60370,KRTAP10-5 KAP10.5 KAP18-5 KRTAP10.5 KRTAP18-5 KRTAP18.5,Homo sapiens (Human),Human skin and hair
+P60371,KRTAP10-6 KAP10.6 KAP18-6 KRTAP10.6 KRTAP18-6 KRTAP18.6,Homo sapiens (Human),Human skin and hair
+P60372,KRTAP10-4 KAP10.4 KAP18-4 KRTAP10.4 KRTAP18-4 KRTAP18.4,Homo sapiens (Human),Human skin and hair
+P60409,KRTAP10-7 KAP10.7 KAP18-7 KRTAP10.7 KRTAP18-7 KRTAP18.7,Homo sapiens (Human),Human skin and hair
+P60410,KRTAP10-8 KAP10.8 KAP18-8 KRTAP10.8 KRTAP18-8 KRTAP18.8,Homo sapiens (Human),Human skin and hair
+P60411,KRTAP10-9 KAP10.9 KAP18-9 KRTAP10.9 KRTAP18-9 KRTAP18.9,Homo sapiens (Human),Human skin and hair
+P60412,KRTAP10-11 KAP10.11 KAP18-11 KRTAP10.11 KRTAP18-11 KRTAP18.11,Homo sapiens (Human),Human skin and hair
+P60413,KRTAP10-12 KAP10.12 KAP18-12 KRTAP10.12 KRTAP18-12 KRTAP18.12,Homo sapiens (Human),Human skin and hair
+P78385,KRT83 KRTHB3,Homo sapiens (Human),Human skin and hair
+P78386,KRT85 KRTHB5,Homo sapiens (Human),Human skin and hair
+Q01546,KRT76 KRT2B KRT2P,Homo sapiens (Human),Human skin and hair
+Q04695,KRT17,Homo sapiens (Human),Human skin and hair
+Q07627,KRTAP1-1 B2A KAP1.1 KAP1.6 KAP1.7 KRTAP1.1,Homo sapiens (Human),Human skin and hair
+Q14525,KRT33B HHA3-II HKA3B KRTHA3B,Homo sapiens (Human),Human skin and hair
+Q14532,KRT32 HHA2 HKA2 KRTHA2,Homo sapiens (Human),Human skin and hair
+Q14533,KRT81 KRTHB1 MLN137,Homo sapiens (Human),Human skin and hair
+Q14CN4,KRT72 K6IRS2 KB35 KRT6 KRT6IRS2,Homo sapiens (Human),Human skin and hair
+Q15323,KRT31 HHA1 HKA1 KRTHA1,Homo sapiens (Human),Human skin and hair
+Q2M2I5,KRT24 KA24,Homo sapiens (Human),Human skin and hair
+Q3KNV1,KRT7,Homo sapiens (Human),Human skin and hair
+Q3LHN0,KRTAP25-1 KAP25.1,Homo sapiens (Human),Human skin and hair
+Q3LHN1,KRTAP21-3 KAP21.3,Homo sapiens (Human),Human skin and hair
+Q3LHN2,KRTAP19-2 KAP19.2,Homo sapiens (Human),Human skin and hair
+Q3LI54,KRTAP19-8 KAP19.8,Homo sapiens (Human),Human skin and hair
+Q3LI58,KRTAP21-1 KAP21.1,Homo sapiens (Human),Human skin and hair
+Q3LI59,KRTAP21-2 KAP21.2,Homo sapiens (Human),Human skin and hair
+Q3LI61,KRTAP20-2 KAP20.2,Homo sapiens (Human),Human skin and hair
+Q3LI63,KRTAP20-1 KAP20.1,Homo sapiens (Human),Human skin and hair
+Q3LI64,KRTAP6-1 C21orf103 KAP6.1,Homo sapiens (Human),Human skin and hair
+Q3LI66,KRTAP6-2 KAP6.2,Homo sapiens (Human),Human skin and hair
+Q3LI67,KRTAP6-3 KAP6.3,Homo sapiens (Human),Human skin and hair
+Q3LI70,KRTAP19-6 KAP19.6,Homo sapiens (Human),Human skin and hair
+Q3LI72,KRTAP19-5 KAP19.5,Homo sapiens (Human),Human skin and hair
+Q3LI73,KRTAP19-4 KAP19.4,Homo sapiens (Human),Human skin and hair
+Q3LI76,KRTAP15-1 KAP15.1,Homo sapiens (Human),Human skin and hair
+Q3LI77,KRTAP13-4 KAP13.4,Homo sapiens (Human),Human skin and hair
+Q3LI81,KRTAP27-1 KAP27.1,Homo sapiens (Human),Human skin and hair
+Q3LI83,KRTAP24-1 KAP24.1,Homo sapiens (Human),Human skin and hair
+Q3MIV0,KRTAP22-1 KAP22.1,Homo sapiens (Human),Human skin and hair
+Q3SY46,KRTAP13-3 KAP13.3,Homo sapiens (Human),Human skin and hair
+Q3SY84,KRT71 K6IRS1 KB34 KRT6IRS1,Homo sapiens (Human),Human skin and hair
+Q3SYF9,KRTAP19-7 KAP19.7,Homo sapiens (Human),Human skin and hair
+Q52LG2,KRTAP13-2 KAP13.2,Homo sapiens (Human),Human skin and hair
+Q5D862,FLG2 IFPS,Homo sapiens (Human),Human skin and hair
+Q5XKE5,KRT79 K6L KB38 KRT6L,Homo sapiens (Human),Human skin and hair
+Q6A162,KRT40 KA36,Homo sapiens (Human),Human skin and hair
+Q6A163,KRT39 KA35,Homo sapiens (Human),Human skin and hair
+Q6E0U4,DMKN UNQ729/PRO1411,Homo sapiens (Human),Human skin and hair
+Q6KB66,KRT80 KB20,Homo sapiens (Human),Human skin and hair
+Q6L8G4,KRTAP5-11 KAP5.11 KRTAP5.11,Homo sapiens (Human),Human skin and hair
+Q6L8G5,KRTAP5-10 KAP5.10 KRTAP5.10,Homo sapiens (Human),Human skin and hair
+Q6L8G8,KRTAP5-7 KAP5-7 KAP5.3 KRTAP5.3 KRTAP5.7,Homo sapiens (Human),Human skin and hair
+Q6L8G9,KRTAP5-6 KAP5.6 KRTAP5.6,Homo sapiens (Human),Human skin and hair
+Q6L8H1,KRTAP5-4 KAP5.4 KRTAP5.4,Homo sapiens (Human),Human skin and hair
+Q6L8H2,KRTAP5-3 KAP5-9 KAP5.3 KRTAP5-9 KRTAP5.3 KRTAP5.9,Homo sapiens (Human),Human skin and hair
+Q6L8H4,KRTAP5-1 KAP5.1 KRN1L KRTAP5.1,Homo sapiens (Human),Human skin and hair
+Q6PEX3,KRTAP26-1 KAP26.1,Homo sapiens (Human),Human skin and hair
+Q701N2,KRTAP5-5 KAP5-11 KAP5.5 KRTAP5-11 KRTAP5.11 KRTAP5.5,Homo sapiens (Human),Human skin and hair
+Q701N4,KRTAP5-2 KAP5-8 KAP5.2 KRTAP5-8 KRTAP5.2 KRTAP5.8,Homo sapiens (Human),Human skin and hair
+Q7RTS7,KRT74 K6IRS4 KB37 KRT5C KRT6IRS4,Homo sapiens (Human),Human skin and hair
+Q7Z3Y7,KRT28 KRT25D,Homo sapiens (Human),Human skin and hair
+Q7Z3Y8,KRT27 KRT25C,Homo sapiens (Human),Human skin and hair
+Q7Z3Y9,KRT26 KRT25B,Homo sapiens (Human),Human skin and hair
+Q7Z3Z0,KRT25 KRT25A,Homo sapiens (Human),Human skin and hair
+Q7Z4W3,KRTAP19-3 KAP19.3,Homo sapiens (Human),Human skin and hair
+Q7Z794,KRT77 KRT1B,Homo sapiens (Human),Human skin and hair
+Q86Y46,KRT73 K6IRS3 KB36 KRT6IRS3,Homo sapiens (Human),Human skin and hair
+Q86YZ3,HRNR S100A18,Homo sapiens (Human),Human skin and hair
+Q8IUB9,KRTAP19-1 KAP19.1 KRTAP19.1,Homo sapiens (Human),Human skin and hair
+Q8IUC0,KRTAP13-1 KAP13.1 KRTAP13.1,Homo sapiens (Human),Human skin and hair
+Q8IUC1,KRTAP11-1 KAP11.1 KRTAP11.1,Homo sapiens (Human),Human skin and hair
+Q8IUC2,KRTAP8-1 KAP8.1 KRTAP8.1,Homo sapiens (Human),Human skin and hair
+Q8IUC3,KRTAP7-1 KAP7.1 KRTAP7.1,Homo sapiens (Human),Human skin and hair
+Q8IUG1,KRTAP1-3 B2B KAP1.2 KAP1.3 KAP1.8 KAP1.9 KRATP1.9 KRTAP1.8,Homo sapiens (Human),Human skin and hair
+Q8N1A0,KRT222 KA21 KRT222P,Homo sapiens (Human),Human skin and hair
+Q8N1N4,KRT78 K5B KB40,Homo sapiens (Human),Human skin and hair
+Q92764,KRT35 HHA5 HKA5 KRTHA5,Homo sapiens (Human),Human skin and hair
+Q99456,KRT12,Homo sapiens (Human),Human skin and hair
+Q9BQ66,KRTAP4-12 KAP4.12 KRTAP4.12,Homo sapiens (Human),Human skin and hair
+Q9BYP8,KRTAP17-1 KAP17.1 KRTAP16.1,Homo sapiens (Human),Human skin and hair
+Q9BYP9,KRTAP9-9 KAP9.5 KAP9.9 KRTAP9-5 KRTAP9.5 KRTAP9.9,Homo sapiens (Human),Human skin and hair
+Q9BYQ0,KRTAP9-8 KAP9.8 KRTAP9.8,Homo sapiens (Human),Human skin and hair
+Q9BYQ2,KRTAP9-4 KAP9.4 KRTAP9.4,Homo sapiens (Human),Human skin and hair
+Q9BYQ3,KRTAP9-3 KAP9.3 KRTAP9.3,Homo sapiens (Human),Human skin and hair
+Q9BYQ4,KRTAP9-2 KAP9.2 KRTAP9.2,Homo sapiens (Human),Human skin and hair
+Q9BYQ5,KRTAP4-6 KAP4.15 KRTAP4-15 KRTAP4.15 KRTAP4.6,Homo sapiens (Human),Human skin and hair
+Q9BYQ6,KRTAP4-11 KAP4.14 KRTAP4-14 KRTAP4.11 KRTAP4.14,Homo sapiens (Human),Human skin and hair
+Q9BYQ7,KRTAP4-1 KAP4.10 KRTAP4-10 KRTAP4.1 KRTAP4.10,Homo sapiens (Human),Human skin and hair
+Q9BYQ8,KRTAP4-9 KAP4.9 KRTAP4.9,Homo sapiens (Human),Human skin and hair
+Q9BYQ9,KRTAP4-8 KAP4.8 KRTAP4.8,Homo sapiens (Human),Human skin and hair
+Q9BYR0,KRTAP4-7 KAP4.7 KRTAP4.7,Homo sapiens (Human),Human skin and hair
+Q9BYR2,KRTAP4-5 KAP4.5 KRTAP4.5,Homo sapiens (Human),Human skin and hair
+Q9BYR3,KRTAP4-4 KAP4.13 KAP4.4 KRTAP4-13 KRTAP4.13 KRTAP4.4,Homo sapiens (Human),Human skin and hair
+Q9BYR4,KRTAP4-3 KAP4.3 KRTAP4.3,Homo sapiens (Human),Human skin and hair
+Q9BYR5,KRTAP4-2 KAP4.2 KRTAP4.2,Homo sapiens (Human),Human skin and hair
+Q9BYR6,KRTAP3-3 KAP3.3 KRTAP3.3,Homo sapiens (Human),Human skin and hair
+Q9BYR7,KRTAP3-2 KAP3.2 KRTAP3.2,Homo sapiens (Human),Human skin and hair
+Q9BYR8,KRTAP3-1 KAP3.1 KRTAP3.1,Homo sapiens (Human),Human skin and hair
+Q9BYR9,KRTAP2-4 KAP2.4 KRTAP2.4,Homo sapiens (Human),Human skin and hair
+Q9BYS1,KRTAP1-5 KAP1.5 KRTAP1.5,Homo sapiens (Human),Human skin and hair
+Q9BYT5,KRTAP2-2 KAP2.2 KRTAP2.2,Homo sapiens (Human),Human skin and hair
+Q9BYU5,KRTAP2-1 KAP2.1 KRTAP2.1A KRTAP2.1B,Homo sapiens (Human),Human skin and hair
+Q9C075,KRT23,Homo sapiens (Human),Human skin and hair
+Q9NSB2,KRT84 KRTHB4,Homo sapiens (Human),Human skin and hair
+Q9NSB4,KRT82 KRTHB2,Homo sapiens (Human),Human skin and hair
+P15252,,Hevea brasiliensis (Para rubber tree) (Siphonia brasiliensis),Latex gloves
+O82803,SRPP HEVB3,Hevea brasiliensis (Para rubber tree) (Siphonia brasiliensis),Latex gloves
+Q1WEI2,prpL,Pseudomonas aeruginosa,Lys-C protease enzyme
+Q61765,Krt31 Hka1 Krt1-1 Krtha1,Mus musculus (Mouse),Mouse skin and hair 
+Q62168,Krt32 Hka2 Krt1-2 Krtha2,Mus musculus (Mouse),Mouse skin and hair 
+Q9D646,Krt34 Ha4 Krt1-4,Mus musculus (Mouse),Mouse skin and hair 
+Q497I4,Krt35 Krt1-24,Mus musculus (Mouse),Mouse skin and hair 
+P02535,Krt10 Krt1-10,Mus musculus (Mouse),Mouse skin and hair 
+P08730,Krt13 Krt1-13,Mus musculus (Mouse),Mouse skin and hair 
+Q9Z2K1,Krt16 Krt1-16,Mus musculus (Mouse),Mouse skin and hair 
+Q9QWL7,Krt17 Krt1-17,Mus musculus (Mouse),Mouse skin and hair 
+P05784,Krt18 Kerd Krt1-18,Mus musculus (Mouse),Mouse skin and hair 
+P19001,Krt19 Krt1-19,Mus musculus (Mouse),Mouse skin and hair 
+Q9D312,Krt20,Mus musculus (Mouse),Mouse skin and hair 
+Q99PS0,Krt23 Haik1 Krt1-23,Mus musculus (Mouse),Mouse skin and hair 
+Q6IFX4,Krt39 Ka35,Mus musculus (Mouse),Mouse skin and hair 
+Q6IFX2,Krt42 Ka22,Mus musculus (Mouse),Mouse skin and hair 
+Q6IFZ6,Krt77 Krt1b,Mus musculus (Mouse),Mouse skin and hair 
+Q3TTY5,Krt2 K2e Krt2-17 Krt2a,Mus musculus (Mouse),Mouse skin and hair 
+P07744,Krt4 Krt2-4,Mus musculus (Mouse),Mouse skin and hair 
+Q922U2,Krt5 Krt2-5,Mus musculus (Mouse),Mouse skin and hair 
+P50446,Krt6a Ker2 Krt2-6 Krt2-6a Krt6,Mus musculus (Mouse),Mouse skin and hair 
+Q9DCV7,Krt7 Krt2-7,Mus musculus (Mouse),Mouse skin and hair 
+Q9R0H5,Krt71 K6irs1 Kb34 Krt2-6g Krt6g,Mus musculus (Mouse),Mouse skin and hair 
+Q6IME9,Krt72 Kb35 Krt72-ps,Mus musculus (Mouse),Mouse skin and hair 
+Q6NXH9,Krt73 Kb36,Mus musculus (Mouse),Mouse skin and hair 
+Q8BGZ7,Krt75 Kb18,Mus musculus (Mouse),Mouse skin and hair 
+Q8VED5,Krt79 Kb38,Mus musculus (Mouse),Mouse skin and hair 
+Q0VBK2,Krt80 Kb20,Mus musculus (Mouse),Mouse skin and hair 
+P00330,ADH1 ADC1 YOL086C O0947,Saccharomyces cerevisiae (strain ATCC 204508 / S288c) (Baker's yeast),Others
+P00004,CYCS CYC,Equus caballus (Horse),Others
+P00883,ALDOA,Oryctolagus cuniculus (Rabbit),Others
+P32503,gag,Saccharomyces cerevisiae virus L-A (ScV-L-A) (ScVL1),Others
+P68082,MB,Equus caballus (Horse),Others
+P01012,SERPINB14,Gallus gallus (Chicken),Others
+Q9R4J4,,Pseudomonas fragi,Others
+Q32KY0,APOD,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIX7,,Bos taurus (Bovine),Residue cell medium containing FBS
+O02659,MBL,Bos taurus (Bovine),Residue cell medium containing FBS
+Q24K22,MST1 HGFL,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KJ39,RCN3,Bos taurus (Bovine),Residue cell medium containing FBS
+Q9TTK6,AOC3,Bos taurus (Bovine),Residue cell medium containing FBS
+P68103,EEF1A1 EEF1A EF1A,Bos taurus (Bovine),Residue cell medium containing FBS
+P12260,F13A1 F13A,Bos taurus (Bovine),Residue cell medium containing FBS
+P31836,NCAM1 NCAM,Bos taurus (Bovine),Residue cell medium containing FBS
+P42916,CL43,Bos taurus (Bovine),Residue cell medium containing FBS
+P80109,GPLD1 PIGPLD,Bos taurus (Bovine),Residue cell medium containing FBS
+Q29437,,Bos taurus (Bovine),Residue cell medium containing FBS
+Q8SPP7,PGLYRP1 PGLYRP PGRP,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3SYV4,CAP1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q9TTJ5,RGN SMP30,Bos taurus (Bovine),Residue cell medium containing FBS
+A2I7N2,SERPINA3-6,Bos taurus (Bovine),Residue cell medium containing FBS
+A6QPQ2,SERPINA3-8,Bos taurus (Bovine),Residue cell medium containing FBS
+A7E3W2,LGALS3BP,Bos taurus (Bovine),Residue cell medium containing FBS
+G3MYZ3,AFM,Bos taurus (Bovine),Residue cell medium containing FBS
+O46375,TTR,Bos taurus (Bovine),Residue cell medium containing FBS
+P00741,F9,Bos taurus (Bovine),Residue cell medium containing FBS
+P00743,F10,Bos taurus (Bovine),Residue cell medium containing FBS
+P00745,PROC,Bos taurus (Bovine),Residue cell medium containing FBS
+P01017,AGT,Bos taurus (Bovine),Residue cell medium containing FBS
+P01035,CST3,Bos taurus (Bovine),Residue cell medium containing FBS
+P01267,TG,Bos taurus (Bovine),Residue cell medium containing FBS
+P02453,COL1A1,Bos taurus (Bovine),Residue cell medium containing FBS
+P02465,COL1A2,Bos taurus (Bovine),Residue cell medium containing FBS
+P07589,FN1,Bos taurus (Bovine),Residue cell medium containing FBS
+P08169,IGF2R M6P,Bos taurus (Bovine),Residue cell medium containing FBS
+P12799,FGG,Bos taurus (Bovine),Residue cell medium containing FBS
+P13384,IGFBP2,Bos taurus (Bovine),Residue cell medium containing FBS
+P13605,FMOD,Bos taurus (Bovine),Residue cell medium containing FBS
+P18902,RBP4,Bos taurus (Bovine),Residue cell medium containing FBS
+P33433,HRG,Bos taurus (Bovine),Residue cell medium containing FBS
+P55906,TGFBI BIGH3,Bos taurus (Bovine),Residue cell medium containing FBS
+P60712,ACTB,Bos taurus (Bovine),Residue cell medium containing FBS
+P63103,YWHAZ,Bos taurus (Bovine),Residue cell medium containing FBS
+P68138,ACTA1 ACTA,Bos taurus (Bovine),Residue cell medium containing FBS
+P80012,VWF F8VWF,Bos taurus (Bovine),Residue cell medium containing FBS
+P81187,CFB BF,Bos taurus (Bovine),Residue cell medium containing FBS
+P81948,TUBA4A TUBA1,Bos taurus (Bovine),Residue cell medium containing FBS
+P98140,F12,Bos taurus (Bovine),Residue cell medium containing FBS
+Q28106,CNTN1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q28178,THBS1 TSP-1 TSP1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2HJ86,TUBA1D,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KJ63,KLKB1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KJD0,TUBB5,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3SWW8,THBS4,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3ZCH5,AZGP1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q58CQ9,VNN1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q5E9B1,LDHB,Bos taurus (Bovine),Residue cell medium containing FBS
+Q5E9Z2,HABP2,Bos taurus (Bovine),Residue cell medium containing FBS
+Q5NTB3,F11,Bos taurus (Bovine),Residue cell medium containing FBS
+Q6URK6,CDH5,Bos taurus (Bovine),Residue cell medium containing FBS
+Q9XSJ4,ENO1,Bos taurus (Bovine),Residue cell medium containing FBS
+A2I7N0,SERPINA3-4,Bos taurus (Bovine),Residue cell medium containing FBS
+A2I7N1,SERPINA3-5,Bos taurus (Bovine),Residue cell medium containing FBS
+A2I7N3,SERPINA3-7,Bos taurus (Bovine),Residue cell medium containing FBS
+E1BF81,SERPINA6 CBG,Bos taurus (Bovine),Residue cell medium containing FBS
+P00735,F2,Bos taurus (Bovine),Residue cell medium containing FBS
+P00978,AMBP ITIL,Bos taurus (Bovine),Residue cell medium containing FBS
+P01044,KNG1,Bos taurus (Bovine),Residue cell medium containing FBS
+P01045,KNG2,Bos taurus (Bovine),Residue cell medium containing FBS
+P01966,HBA,Bos taurus (Bovine),Residue cell medium containing FBS
+P02070,HBB,Bos taurus (Bovine),Residue cell medium containing FBS
+P02081,,Bos taurus (Bovine),Residue cell medium containing FBS
+P02584,PFN1,Bos taurus (Bovine),Residue cell medium containing FBS
+P02672,FGA,Bos taurus (Bovine),Residue cell medium containing FBS
+P02676,FGB,Bos taurus (Bovine),Residue cell medium containing FBS
+P07224,PROS1 PROS,Bos taurus (Bovine),Residue cell medium containing FBS
+P17690,APOH,Bos taurus (Bovine),Residue cell medium containing FBS
+P17697,CLU,Bos taurus (Bovine),Residue cell medium containing FBS
+P28800,SERPINF2 PLI,Bos taurus (Bovine),Residue cell medium containing FBS
+P35445,COMP,Bos taurus (Bovine),Residue cell medium containing FBS
+P41361,SERPINC1 AT3,Bos taurus (Bovine),Residue cell medium containing FBS
+P50448,,Bos taurus (Bovine),Residue cell medium containing FBS
+P56652,ITIH3,Bos taurus (Bovine),Residue cell medium containing FBS
+P81644,APOA2,Bos taurus (Bovine),Residue cell medium containing FBS
+Q03247,APOE,Bos taurus (Bovine),Residue cell medium containing FBS
+Q05443,LUM LDC,Bos taurus (Bovine),Residue cell medium containing FBS
+Q28065,C4BPA,Bos taurus (Bovine),Residue cell medium containing FBS
+Q28085,CFH HF1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q28107,F5,Bos taurus (Bovine),Residue cell medium containing FBS
+Q29RQ1,C7,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIG3,CPB2,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIS7,CLEC3B,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIU3,,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KJF1,A1BG,Bos taurus (Bovine),Residue cell medium containing FBS
+Q32PJ2,APOA4,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3MHN2,C9,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3MHN5,GC,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3SX14,GSN,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3T052,ITIH4,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3Y5Z3,ADIPOQ ACRP30 APM1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q58D62,FETUB,Bos taurus (Bovine),Residue cell medium containing FBS
+Q95121,SERPINF1 PEDF,Bos taurus (Bovine),Residue cell medium containing FBS
+Q95M17,CHIA,Bos taurus (Bovine),Residue cell medium containing FBS
+Q9N2I2,SERPINA5,Bos taurus (Bovine),Residue cell medium containing FBS
+Q9TT36,SERPINA7 TBG,Bos taurus (Bovine),Residue cell medium containing FBS
+Q9TTE1,SERPINA3-1 SERPINA3A,Bos taurus (Bovine),Residue cell medium containing FBS
+A0A3Q1M032,,Bos taurus (Bovine),Residue cell medium containing FBS
+A0A3Q1MJB2,FBLN1,Bos taurus (Bovine),Residue cell medium containing FBS
+A5PJ69,SERPINA10,Bos taurus (Bovine),Residue cell medium containing FBS
+E1BCW0,HGFAC,Bos taurus (Bovine),Residue cell medium containing FBS
+E1BJK2,TUBB1,Bos taurus (Bovine),Residue cell medium containing FBS
+G3N188,,Bos taurus (Bovine),Residue cell medium containing FBS
+G5E513,,Bos taurus (Bovine),Residue cell medium containing FBS
+Q1A7A4,,Bos taurus (Bovine),Residue cell medium containing FBS
+Q1RMN8,IGL@,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIF2,LRG1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIH2,APON ,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KIT0,,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KJ83,CPN1,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2KJC7,POSTN,Bos taurus (Bovine),Residue cell medium containing FBS
+Q2TBQ1,F13B,Bos taurus (Bovine),Residue cell medium containing FBS
+Q32PI4,CFI,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3MHH8,AMY2A,Bos taurus (Bovine),Residue cell medium containing FBS
+Q3ZBS7,VTN,Bos taurus (Bovine),Residue cell medium containing FBS
+Q6T181,SHBG,Bos taurus (Bovine),Residue cell medium containing FBS
+P02769,ALB,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q3SZR3,ORM1 AGP,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P34955,SERPINA1 PI,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P12763,AHSG FETUA,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q7SIH1,A2M,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q3SZ57,AFP,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00711,LALBA ALACTA,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P02662,CSN1S1,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P02663,CSN1S2,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q29463,,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P15497,APOA1,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P02666,CSN2,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P02754,LGB,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q3KUS7,BF,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00921,CA2,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00760,,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00766,,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00767,,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P04258,COL3A1,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q2UVX4,C3,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P01030,C4,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P62894,CYCS CYC,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q3ZBD7,GPI,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00366,GLUD1 GLUD,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q3SZV7,HPX,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q05B55,IGK,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q0VCM5,ITIH1,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P02668,CSN3 CSN10 CSNK,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P67983,MT1A MT-IA,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q2YDI2,ORC4 ORC4L,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P31096,SPP1 OPN,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P00792,PGA,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P06868,PLG,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P02777,PF4 CXCL4 SCYB4,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q29443,TF,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q2HJF0,LOC525947,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+P21752,TMSB10,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+Q5KR48,TPM2,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+A0A3Q1M3L6,,Bos taurus (Bovine),Residue cell medium containing FBS- Affinity beads background
+O77727,KRT15,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02438,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02439,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02440,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02441,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02443,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02444,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02445,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02534,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P02539,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P08131,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P15241,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P25690,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P25691,,Ovis aries (Sheep),Sheep keratin from wool clothing
+P26372,,Ovis aries (Sheep),Sheep keratin from wool clothing
+Q02958,KRTAP6-1 KAP6-1,Ovis aries (Sheep),Sheep keratin from wool clothing
+P22629,,Streptomyces avidinii,Streptavidin beads
+P00761,,Sus scrofa (Pig),Trypsin Protease enzyme
+P21578,luxY,Aliivibrio fischeri (Vibrio fischeri),YFP Fluorescent Protein

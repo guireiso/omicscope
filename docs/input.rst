@@ -980,7 +980,7 @@ Users can also define and optimize any extra parameters that are in the OmicScop
    **logTransformed** (default = False): Usually, software reports abundance in nominal values, requiring a log-transformation of the values. If users perform transformation before the OmicScope workflow, set logTransformed=True.
 
 #. 
-   **ExcludeKeratins** (default = True): Since keratins are considered sample contaminants in most studies, OmicScope can exclude them from final results.
+   **ExcludeContaminants** (default = True): Since keratins are considered sample contaminants in most studies, OmicScope can exclude them from final results.
 
 #. 
    **degrees_of_freedom** (default = 2): For longitudinal analysis, users can optimize the parameters according to their study, choosing a greater degree of freedom to perform the analysis.

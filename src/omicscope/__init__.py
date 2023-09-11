@@ -22,7 +22,7 @@ def OmicScope(Table: str,
               PValue_cutoff: float = 0.05,
               FoldChange_cutoff: float = 0.0,
               logTransformed: bool = False,
-              ExcludeKeratins: bool = True,
+              ExcludeContaminants: bool = True,
               degrees_of_freedom: int = 2,
               independent_ttest=True,
               ** kwargs) -> Omicscope:
@@ -43,7 +43,7 @@ def OmicScope(Table: str,
         PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
         FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
         logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
-        ExcludeKeratins (bool, optional): Keratins proteins is excluded. Defaults to True.
+        ExcludeContaminants (bool, optional): Contaminant proteins is excluded. Defaults to True.
         degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
         independent_ttest (bool, optional): If running a t-test, the user can specify if data sampling
             is independent (default) or paired (independent_ttest=False). Defaults to True.
@@ -67,7 +67,7 @@ def OmicScope(Table: str,
             PValue_cutoff,
             FoldChange_cutoff,
             logTransformed,
-            ExcludeKeratins,
+            ExcludeContaminants,
             degrees_of_freedom,
             independent_ttest,
             **kwargs)
