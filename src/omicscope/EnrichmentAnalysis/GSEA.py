@@ -83,7 +83,7 @@ class Enrichment:
         gsea_result['up-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i > 0]))
         gsea_result['N_Proteins'] = gsea_result['down-regulated'] + gsea_result['up-regulated']
         # try:
-        gsea_result['-log10(pAdj)'] = gsea_result['Adjusted P-value'].apply(lambda x: -np.log10(x) if type(x) == float else 0)
+        gsea_result['-log10(pAdj)'] = gsea_result['Adjusted P-value'].apply(lambda x: -np.log10(x) if type(x) is float else 0)
         # except TypeError:
         #     gsea_result['-log10(pAdj)'] = 1
         gsea_result = gsea_result[['Gene_set', 'Term', 'Overlap', 'P-value', 'Adjusted P-value',

@@ -15,6 +15,7 @@ Additionally, colors and color palettes follows the matplotlib and seaborn libra
 import copy
 import itertools
 import random
+
 import matplotlib as mpl
 import matplotlib.cm as cm
 import matplotlib.colors as mcolors
