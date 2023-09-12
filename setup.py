@@ -79,6 +79,7 @@ setup(
         "pandas==1.5.1",
         "Pillow==9.3.0",
         "pkginfo==1.9.4",
+        "pycirclize==0.4.0",
         "scikit-learn==1.1.3",
         "scipy==1.9.3",
         "seaborn==0.12.1",
@@ -87,7 +88,6 @@ setup(
         "UpSetPlot==0.6.1",
         "xlrd==2.0.1",
         "zipp==3.11.0",
-        "pycirclize==0.4.0"
     ],
     extras_require={
         # eg:

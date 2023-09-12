@@ -66,10 +66,10 @@ class nebula:
                                                 nrows=int(positions[1]-10)))
                     enrichment_original = pd.read_csv(i, header=int(positions[1]),
                                                       sep='\t')
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("'", '')
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("[", '')
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("]", '')
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.split(', ')
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("'", '', regex=False)
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("[", '', regex=False)
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("]", '', regex=False)
+                    enrichment_original['Genes'] = enrichment_original['Genes'].str.split(', ', regex=False)
                     enrichment.append(enrichment_original)
                 archive.close()
 

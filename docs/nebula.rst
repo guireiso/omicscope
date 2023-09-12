@@ -266,7 +266,7 @@ The circular plot was designed to compare groups that were enriched for a specif
 Circos plot - *object.circos_plot()*
 ----------------------------------------
 
-`Circos <'circos.ca'>`_\ , a software designed for visualizing complex data, is used by Nebula to display proteomic data from multiple groups in a circular mode. Circos enables users to visualize proteins that are differentially regulated across multiple groups and highlights those that are shared among the groups with dark cyan links. The regulation of the proteins is displayed using an edge heatmap. If the .omics file contains enrichment analysis, the circos_plot function incorporates the shared enrichment terms (black links) to provide insight into the number of pathways shared between the groups.
+Circos , a software designed for visualizing complex data, is used by Nebula to display proteomic data from multiple groups in a circular mode. Circos enables users to visualize proteins that are differentially regulated across multiple groups and highlights those that are shared among the groups with dark cyan links. The regulation of the proteins is displayed using an edge heatmap. If the .omics file contains enrichment analysis, the circos_plot function incorporates the shared enrichment terms (black links) to provide insight into the number of pathways shared between the groups.
 
 **NOTE**\ : To use circos_plot, the system must have Perl installed and configured according to Circos software and the appropriate configuration for the system.
 

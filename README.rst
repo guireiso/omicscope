@@ -24,7 +24,6 @@ Overview
 
 .. image:: https://img.shields.io/github/commits-since/guireiso/omicscope/v1.3.9.svg
     :alt: Commits since latest release
-    :target: https://github.com/guireiso/omicscope/compare/v1.3.9...main
 
 
 OmicScope: OmicScope: from quantitative proteomics to systems biology.
@@ -32,7 +31,7 @@ OmicScope: OmicScope: from quantitative proteomics to systems biology.
 
 *OmicScope* is a comprehensive workflow designed to analyze and provide insights on quantitative proteomics data. To date, *OmicScope* works with data generated from `Progenesis QI for Proteomics <https://www.nonlinear.com/progenesis/qi-for-proteomics/>`__, `MaxQuant <https://www.maxquant.org/>`__, and `PatternLab V <http://www.patternlabforproteomics.org/>`__. Additionally, a fourth generic input can be used, enabling users to run *OmicScope* with data from different platforms, including transcriptomics and metabolomics.
 
-*OmicScope* can perform differential expression analysis in both static and longitudinal experimental designs. For static experiments, proteins that are differentially regulated are determined by t-tests (for 2 group comparison) or One-way ANOVA (for >2 group comparison); while for longitudinal analysis, *OmicScope* performs the pipeline suggested by `Storey, 2005 <https://www.pnas.org/doi/10.1073/pnas.0504609102>`__.
+*OmicScope* can perform differential expression analysis in both static and longitudinal experimental designs. For static experiments, proteins that are differentially regulated are determined by t-tests (for 2 group comparison) or One-way ANOVA (for >2 group comparison); while for longitudinal analysis, *OmicScope* performs the pipeline suggested by Storey, 2005.
 
 Once the differential expression data is obtained, the user can perform Over-Representation Analysis (ORA) or Gene-Set Enrichment Analysis (GSEA), which are implemented according to `GSEApy <https://gseapy.readthedocs.io/>`__ in the EnrichmentScope module.
 
