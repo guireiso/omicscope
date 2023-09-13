@@ -69,7 +69,7 @@ class Enrichment:
                       cutoff=1, no_plot=True,
                       verbose=False)
         # Extracting just results file from analysis
-        df = enr.results
+        df = enr.results.copy()
         # Filtering results Adjusted P-value
         df = df[df['Adjusted P-value'] < self.padjust_cutoff]
         df['N_Proteins'] = df['Overlap'].str.split('/').str[0].astype(int)
