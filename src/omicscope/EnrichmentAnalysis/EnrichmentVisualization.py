@@ -363,8 +363,8 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         # Filter: R < pearson_cutoff
         df[df < similarity_cutoff] = 0
         # Construct graph
-        G = []
         G = nx.from_pandas_adjacency(df)
+        G.edges(data=True)
         # removing self loops
         G.remove_edges_from(nx.selfloop_edges(G))
 
@@ -443,8 +443,13 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
             nx.set_node_attributes(G, dict(zip(carac.index, carac.Module)), name="Module")
             carac = carac.reindex(G.nodes())
             # Assign position of each mode
+        edges = G.edges
+        weights = [G[u][v]['weight'] for u, v in edges]
+        weights = [round(x, 2) for x in weights]
+        norm = [float(i)/np.mean(weights) for i in weights]
         pos = nx.spring_layout(G, k=1/len(G.nodes)**0.3)
         carac = carac.reindex(G.nodes())
+        G.remove_edges_from(nx.selfloop_edges(G))
         # Draw network
         nx.draw(G, pos=pos,
                 node_color=carac.color,
@@ -452,7 +457,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                 edgecolors='black',
                 linewidths=0.4,
                 alpha=0.95,
-                width=0.2,
+                width=norm,
                 edge_color='gray')
         if labels is True:
             nx.draw_networkx_labels(G, pos, carac.Label, font_size=6)
