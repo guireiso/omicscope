@@ -24,6 +24,7 @@ Overview
 
 .. image:: https://img.shields.io/github/commits-since/guireiso/omicscope/v1.3.9.svg
     :alt: Commits since latest release
+    :target: https://github.com/guireiso/omicscope/compare/v1.3.9...main
 
 
 OmicScope: OmicScope: from quantitative proteomics to systems biology.
