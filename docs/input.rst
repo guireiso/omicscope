@@ -5,26 +5,31 @@ Input
 
 
 * 
-  **Progenesis QI for proteomics** *(Method = 'Progenesis')*\ : Progenesis is a software that enables protein quantification and identification (coupled to PLGS) for experiments that use Data Independent Acquisition (DIA).
+  **Progenesis QI for Proteomics** *(Method = 'Progenesis')*\ : Progenesis QI for Proteomics is a proprietary program that aligns and normalizes runs and enables protein quantification and identification (via Apex3D and ProteinLynx Global Server) for experiments, mainly those that use Waters instruments running with data-independent acquisition (DIA; Waters MSe and related).
 
 * 
   **PatternLab V** *(Method = 'PatternLab')*\ : PatternLab V is an integrated computational environment for analyzing shotgun proteomic data, and is considered one of the best options for quantitative proteomics using data-dependent acquisition, due to its high-confidence parameters for protein quantitation and identification.
 
 * 
-  **MaxQuant** *(Method = 'MaxQuant')*\ : MaxQuant is the most widely used software for quantitative proteomics, offering users a range of parameter options for quantitative analysis.
+  **MaxQuant** *(Method = 'MaxQuant')*\ : MaxQuant is the most widely used software for quantitative proteomics, offering users a range of parameter options for quantitative analyses, with the added benefit of being free.
 
 * 
-  **General** *(Method = 'General')*\ : A generic input method that requires users to specify quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata) using an Excel file.
+  **General** *(Method = 'General')*\ : To import data from other sources, this generic input method requires users to import an Excel workbook with 3 sheets: quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata).
 
 * 
-  **Snapshot** *(Method = 'Snapshot')*\ : The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and more.
+  **Snapshot** *(Method = 'Snapshot')*\ : The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and grouping.
+
+For more information about the formatting of these import methods, see the appropriate sections below.
 
 Import OmicScope
 ----------------
+First, OmicScope must be imported as an object in a Python programming environment with OmicScope installed.
 
 .. code-block:: python
 
    import omicscope as omics
+
+After the object has been initialized, the following message will be displayed.
 
 .. code-block::
 
@@ -38,11 +43,13 @@ Import OmicScope
 Progenesis QI for Proteomics
 ----------------------------
 
-Progenesis exports a .csv file containing information about samples, proteins, and quantitative values. For the Progenesis workflow, *OmicScope* imports these files and extracts the abundance levels of each protein (assay), the features of each protein (rdata), and features of each sample (pdata). Additionally, *OmicScope* accepts Excel files (with extensions .xls or .xlsx) that contain a **unique sheet** for the Progenesis workflow, as many users may use Excel to open and manipulate data. 
+Progenesis exports protein quantitation data in a .csv file containing information about samples, protein groups, and quantitative values. When importing using the Progenesis workflow, *OmicScope* imports these files and extracts the abundance levels of each protein (assay), the features of each protein (rdata), and features of each sample (pdata). *OmicScope* can also accept Excel spreadsheets (with extensions .xls or .xlsx) that contain a **single sheet** for the Progenesis workflow, as many users may use Excel to visualize and handle data. 
 
 .. code-block:: python
 
    progenesis = omics.OmicScope('../tests/data/proteins/progenesis.xls', Method='Progenesis')
+
+After importing a file, *OmicScope* will provide the following message:
 
 .. code-block::
 
@@ -50,13 +57,7 @@ Progenesis exports a .csv file containing information about samples, proteins, a
 
 
 
-In addition, since Progenesis exports a limited amount of information about samples, *OmicScope* allows the user to input an Excel file containing all this information. Furthermore, users can filter data based on the minimum number of unique peptides, by adding the parameter function 'UniquePeptides' (recommended: UniquePeptides = 1).
-
-**Note:** As Progenesis performs differential proteomics, *OmicScope* takes into account the statistical analysis exported by Progenesis. However, if the user has a specific experimental design and requires the *OmicScope* Statistical Workflow, they must rewrite the original .csv file as follows:
-
-
-* "Anova (p)" → "Original Anova (p)"
-* "q Value" → "Original q Value"
+Since Progenesis exports certain information about sample groupings, *OmicScope* allows the user to input an Excel file containing all this information. Furthermore, if data were not filtered before exporting, users can filter identifications based on a minimum number of unique peptides by specifying the parameter 'UniquePeptides' (recommended: UniquePeptides = 1).
 
 .. code-block:: python
 
@@ -71,16 +72,24 @@ In addition, since Progenesis exports a limited amount of information about samp
    Original proteomics data: 2236
    Filtered proteomics data: 1847
 
+**Note:** Progenesis performs differential proteomics analyses based on preset groups. *OmicScope* takes these statistical analyses exported by Progenesis into account. However, if the user has a more complex (e.g. both technical and biological replicates) or wishes to use a different experimental design, the *OmicScope* Statistical Workflow can be used by renaming two columns in the original .csv file, as follows:
+
+
+* "Anova (p)" → "Original Anova (p)"
+* "q Value" → "Original q Value"
+
 
 
 PatternLab
 ----------
 
-PatternLab exports an Excel file with an .xlsx extension, which contains the same type of information as Progenesis, including assay, pdata, and rdata. However, this export does not include differential proteomics statistics. Therefore, *OmicScope* automatically performs statistical analysis for PatternLab data.
+PatternLab exports an Excel file with an .xlsx extension, which contains the same type of information as Progenesis, including assay, pdata, and rdata. However, this exported file does not include differential proteomics statistics. Therefore, *OmicScope* automatically performs statistical analyses for PatternLab data.
 
 .. code-block:: python
 
    plv = omics.OmicScope('../tests/data/proteins/patternlab.xlsx', Method='PatternLab')
+
+After importing a file, *OmicScope* will provide the following message:
 
 .. code-block::
 
@@ -92,7 +101,7 @@ PatternLab exports an Excel file with an .xlsx extension, which contains the sam
 MaxQuant
 --------
 
-MaxQuant exports a **proteinGroups** file with a .txt extension, which contains a comprehensive description of the assay and rdata. However, since pdata is missing, the MaxQuant workflow **requires** an Excel file for pdata.
+MaxQuant exports a **proteinGroups** file with a .txt extension, which contains a comprehensive description of the assay and rdata. However, since pdata is missing, the MaxQuant workflow **requires** a second Excel file for pdata. See the pdata section below for how to format this file.
 
 .. code-block:: python
 
@@ -109,12 +118,12 @@ MaxQuant exports a **proteinGroups** file with a .txt extension, which contains 
 General
 -------
 
-The General workflow allows users to analyze data generated by other platforms, such as Transcriptomics and Metabolomics. To do this, users need to organize an Excel file into three sheets containing an assay, rdata, and pdata.
+The General workflow allows users to analyze data generated by other platforms, including Transcriptomics and Metabolomics. To do this, users need to organize an Excel file into three sheets: assay, rdata, and pdata. Alternatively, data can be imported separately via the Panda package. For more information about how to properly format and import each of these sheets, see the respective sections below.
 
 
 * **Assay:** Contains the abundance of N proteins (rows) from M samples (columns).
 * **Rdata:** Includes N proteins (rows) with their respective features within each column.
-* **Pdata:** Contains M samples (rows) with their respective characteristics, such as conditions, biological and technical replicates.
+* **Pdata:** Contains M samples (rows) with their respective characteristics, such as conditions as well as the organization of biological and technical replicates.
 
 The following sections provide examples of how to describe each sheet.
 
@@ -130,6 +139,8 @@ The following sections provide examples of how to describe each sheet.
 
 Assay
 ^^^^^
+
+The assay sheet should contain the abundance data for each protein/feature/transcript. The first row contains the sample names for each of the abundance values below.
 
 .. code-block:: python
 
@@ -459,8 +470,8 @@ rdata
 The rdata sheet needs to have at least two columns: 'Accession' and 'Description'.
 
 
-#. **Accession:** An array of unique values that represent the proteins in the dataframe.
-#. **Description:** The header from UniProt Fasta.
+#. **Accession:** An array of unique values that represent the proteins in the assay dataframe.
+#. **Description:** The header from UniProt Fasta or other identifying information.
 
 .. code-block:: python
 
@@ -665,16 +676,16 @@ The rdata sheet needs to have at least two columns: 'Accession' and 'Description
 pdata
 ^^^^^
 
-Pdata presents a description of each sample analysed. Pdata must have at least 3 columns: 'Sample', 'Condition', and 'Biological'.
+Pdata contains a description of each sample analyzed in the workflow. Pdata must have at least the following 3 columns: 'Sample', 'Condition', and 'Biological'.
 
 
-#. **Sample:** Identifier for each sample analysed.
-#. **Condition:** Respective group for each sample.
-#. **Biological:** Respective biological replicates for each sample.
+#. **Sample:** The name of each sample to be analysed, matching those in the first row of the Assay sheet.
+#. **Condition:** Respective group for each sample. All technical and biological replicates belonging to an experimental condition should have the same identifier here.
+#. **Biological:** Respective biological replicate for each sample. If two or more technical replicates were used for a single biological replicate, those replicates should have the same identifier here.
 
-When performing longitudinal analysis, users must input a 'TimeCourse' column showing day/hour/time associated with the respective sample.
+When performing longitudinal analysis, users must also include a 'TimeCourse' column containing the day/hour/time/etc. associated with each sample.
 
-In order to provide a clearer understanding of how to construct a pdata, we have dedicated an entire section to its detailed description.
+See the example below for how to construct a pdata sheet. In this example, there are two groups being compared: COVID *vs.* CTRL. COVID contains 12 biological replicates, CTRL contains 7 biological replicates. All replicates were injected twice for two instrumental replicates. These replicates will be averaged and not considered individual samples for T-Test purposes.
 
 .. code-block:: python
 
@@ -941,49 +952,51 @@ In order to provide a clearer understanding of how to construct a pdata, we have
    </div>
 
 
+
 Snapshot
 --------
 
-The Snapshot method is an alternative option in OmicScope that allows for the analysis of multiple studies (omics) by importing pre-analyzed data from other platforms.
+The Snapshot method is an alternative option in OmicScope that allows for the analysis of multiple 'omics studies, importing pre-analyzed data from other platforms.
 
 To use the Snapshot method, the user needs to upload a CSV or Excel file organized as follows:
 
 
-#. First row: **ControlGroup: INSERT_HERE_YOUR_CONTROL**
-#. Second row: **Experimental: INSERT_HERE_YOUR_EXPERIMENTAL_GROUPS_SEPARATED_BY_COMMAS**
-#. Subsequent rows: A table containing the following columns: 'Accession', 'gene_name', 'log2(fc)', and either 'pvalue' or 'pAdjusted'. This table structure is mandatory and must be included in file starting from the third row.
+#. First row: **ControlGroup: LIST_YOUR_CONTROL_HERE**
+#. Second row: **Experimental: LIST_YOUR_EXPERIMENTAL_GROUPS_SEPARATED_BY_COMMAS**
+#. Third row: A table header containing the following values: 'Accession', 'gene_name', 'log2(fc)', and either 'pvalue' or 'pAdjusted'. 
+#. Subsequent rows: The molecular data to fill the columns listed in the third row.
 
-It is important to note that Snapshot contains a limited amount of information, which means that not all plots and enrichment analyses are available. However, once the data is imported into OmicScope, it can be exported as an .omics file and used in the Nebula module.
+It is important to note that Snapshot contains a comparatively limited amount of information, which means that not all plots and enrichment analyses will be available. Nevertheless, once the data is imported into OmicScope, it can still be exported as an .omics file and used in the Nebula module.
 
-Additional Informations
+Additional Information
 -----------------------
 
-Users can also define and optimize any extra parameters that are in the OmicScope function.
+Users can also define any of the following additional parameters that are in the OmicScope function to optimize their analysis.
 
 
 #. 
-   **ControlGroup** (default = None): Users can define a control group ('ControlGroup=None', default) to perform comparisons against a specific group (this group has to be explicitly defined in the 'Conditions' column on the pdata table).
+   **ControlGroup** (default, ControlGroup = 'None'): Users can define a control group to perform comparisons against a specific group. The name of this group has to be explicitly defined in the 'Conditions' column on the pdata table.
 
 #. 
-   **ExperimentalDesign** (default = 'static'): Comparisons among independent groups are called 'static' experimental designs. On the other hand, if the experiment takes into account several time points, then it is performing a 'longitudinal' experimental design (in this case, a pdata table must present a 'TimeCourse' column).
+   **ExperimentalDesign** (default, ExperimentalDesign = 'static') (options: 'static', 'longitudinal'): Comparisons among independent groups are called static experimental designs. However, if the experiment takes into account several time points of related samples, then it is performing a longitudinal experimental design. **Note:** in this case, the pdata table must present a 'TimeCourse' column.
 
 #. 
-   **pvalue** (default = 'pAdjusted'): Defines the type of statistics used to report differentially regulated proteins. The options are nominal p-value ('pvalue'), Benjamini-Hochberg adjusted p-value ('pAdjusted'), or Tukey post-hoc correction ('pTukey', only for multiple group comparisons in static experiments).
+   **pvalue** (default, pvalue = 'pAdjusted') (options: 'pvalue', 'pAdjusted', 'pTukey'): Defines the type of statistics used to report differentially regulated proteins. The options are nominal p-value ('pvalue'), Benjamini-Hochberg adjusted p-value ('pAdjusted'), or Tukey post-hoc correction ('pTukey', only available for multiple group comparisons in static experiments).
 
 #. 
-   **PValue_cutoff** (default = 0.05): Statistical cutoff to consider proteins differentially regulated.
+   **PValue_cutoff** (default, PValue_cutoff = 0.05): Statistical cutoff to consider proteins differentially regulated, represented in decimal format.
 
 #. 
-   **FoldChange_cutoff** (default = 0): Cutoff of abundance ratio to consider proteins differentially regulated.
+   **FoldChange_cutoff** (default, FoldChange_cutoff = 0): Cutoff of the absolute abundance ratio to consider a protein to be differentially regulated. 0 indicates that p-values alone are sufficient to determine dysregulation.
 
 #. 
-   **logTransformed** (default = False): Usually, software reports abundance in nominal values, requiring a log-transformation of the values. If users perform transformation before the OmicScope workflow, set logTransformed=True.
+   **logTransformed** (default, logTransformed = False): Usually, analysis software reports abundance in nominal values, requiring a log-transformation of the values to normalize abundance data. If users performed transformation before the OmicScope workflow, set logTransformed=True.
 
 #. 
-   **ExcludeContaminants** (default = True): Since keratins are considered sample contaminants in most studies, OmicScope can exclude them from final results.
+   **ExcludeContaminants** (default, ExcludeContaminants = True): In most studies, keratins are considered sample contaminants and are removed from analyses. If this is not desired, OmicScope can leave them in the final results with ExcludeContaminants=False.
 
 #. 
-   **degrees_of_freedom** (default = 2): For longitudinal analysis, users can optimize the parameters according to their study, choosing a greater degree of freedom to perform the analysis.
+   **degrees_of_freedom** (default, degrees_of_freedom = 2): For longitudinal experiments, users can optimize this parameter according to their study, choosing a greater degree of freedom to perform the subsequent statistical analyses. Note that ExperimentalDesign and pdata must still be appropriately configured.
 
 #. 
-   **independent_ttest** (default = True): If running a t-test, the user can specify if data sampling is independent (default) or paired (independent_ttest=False). Defaults to True.
+   **independent_ttest** (default, independent_ttest = True): If running a t-test, the user can specify if data sampling was independent (True) or paired (False).
