@@ -48,9 +48,9 @@ class Enrichment:
         conditions = [copy.copy(self.OmicScope.ControlGroup)]
         conditions.extend(self.OmicScope.experimental)
         conditions = conditions[::-1]
-        # Filtering data based on Fold Change and P-value
-        omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
-        omics = omics[omics[self.OmicScope.pvalue] <= pvalue_cutoff]
+        # GSEA DO NOT REQUIRE FILTERING STEPS TO ANALYSE DATA
+        # omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
+        # omics = omics[omics[self.OmicScope.pvalue] <= pvalue_cutoff]
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
         gsea_input = omics.set_index('gene_name')
         gsea_input = gsea_input.iloc[:, gsea_input.columns.str.contains('.', regex=False)]

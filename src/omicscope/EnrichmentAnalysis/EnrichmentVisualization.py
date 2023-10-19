@@ -403,7 +403,6 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
             # Find communities based on label propagation
             communities = nx_comm.louvain_communities(G)
             module = []
-            terms = []
             color = []
             degree = []
             # Linking Terms, module, colors
@@ -415,13 +414,12 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                 degree_subgraph = subgraph.degree
                 degree.extend(degree_subgraph)
                 module.extend([i]*len(g))
-                terms.extend(list(g))
                 if len(g) > 1:
                     color.extend([mcolors.to_hex(cmap[i])]*len(g))
                 else:
                     color.extend(['#a6a6a6'])
                 # DataFrame
-            modularity = pd.DataFrame(zip(module, terms, color,
+            modularity = pd.DataFrame(zip(module, [x[0] for x in degree], color,
                                           [x[1] for x in degree]), columns=[
                 'Module', 'Term', 'color', 'Degree'])
             carac = carac.merge(modularity, on='Term')
@@ -438,6 +436,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
                 carac['Term'], "")
             carac = carac.set_index('Term')
             # Set node attributes to export
+            nx.set_node_attributes(G, dict(zip(carac.index, carac.Degree)), name="IntraModuleDegree")
             nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
             nx.set_node_attributes(G, dict(zip(carac.index, carac.Label)), name="Annotation")
             nx.set_node_attributes(G, dict(zip(carac.index, carac.Module)), name="Module")
