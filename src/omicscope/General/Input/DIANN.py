@@ -37,8 +37,8 @@ class Input:
             'First.Protein.Description': 'FirstProteinDescription',
             'Run': 'Sample'
         })
-
-        assay = pd.pivot_table(table, values='PG.MaxLFQ', index='Accession', columns='Sample')
+        table.columns = table.columns.str.replace('.', '', regex=False)
+        assay = pd.pivot_table(table, values='PGMaxLFQ', index='Accession', columns='Sample')
         rdata = table[['Accession', 'ProteinIds', 'ProteinNames',
                        'gene_name', 'FirstProteinDescription']]
         rdata = rdata[rdata['Accession'].isin(assay.index)]

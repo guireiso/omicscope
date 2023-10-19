@@ -41,7 +41,9 @@ class Input:
         if ['gene_name'] is self.readxl(sheetno=1).columns:
             self.rdata = self.readxl(sheetno=1)
         else:
-            self.rdata = self.readxl(sheetno=1)
+            rdata = self.readxl(sheetno=1)
+            rdata.columns = rdata.columns.str.replace('.', '', regex=False)
+            self.rdata = rdata
             if 'gene_name' not in self.rdata.columns:
                 self.rdata['gene_name'] = self.rdata['Description'].str.split(
                     'GN=').str[1].str.split(' ').str[0]

@@ -123,14 +123,15 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Definitions for the axes
     df_initial = OmicScope.quant_data
+    dropped_inf = copy.copy(df_initial)
+    dropped_inf = dropped_inf.replace([np.inf, -np.inf], np.nan)
+    dropped_inf = dropped_inf.dropna()
     fc = df_initial['log2(fc)']
-    max_fc = max([x for x in fc if x < max(fc)])
-    min_fc = min([x for x in fc if x > min(fc)])
-    fc = fc.replace([np.inf], max_fc + 1)
-    fc = fc.replace([-np.inf], min_fc - 1)
+    fc = fc.replace(np.inf, dropped_inf['log2(fc)'].max() + 1)
+    fc = fc.replace(-np.inf, dropped_inf['log2(fc)'].min() - 1)
     pval = df_initial[f'-log10({OmicScope.pvalue})']
-    max_pval = max([x for x in pval if x < max(pval)])
-    pval = pval.replace([np.inf], max_pval + 1)
+    pval = pval.replace(
+        np.inf, dropped_inf[f'-log10({OmicScope.pvalue})'].max() + 1)
     df_initial[f'-log10({OmicScope.pvalue})'] = pval
     df_initial['log2(fc)'] = fc
 
@@ -263,14 +264,15 @@ def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Definitions for the axes
     df_initial = OmicScope.quant_data
+    dropped_inf = copy.copy(df_initial)
+    dropped_inf = dropped_inf.replace([np.inf, -np.inf], np.nan)
+    dropped_inf = dropped_inf.dropna()
     fc = df_initial['log2(fc)']
-    max_fc = max([x for x in fc if x < max(fc)])
-    min_fc = min([x for x in fc if x > min(fc)])
-    fc = fc.replace([np.inf], max_fc + 1)
-    fc = fc.replace([-np.inf], min_fc - 1)
+    fc = fc.replace(np.inf, dropped_inf['log2(fc)'].max() + 1)
+    fc = fc.replace(-np.inf, dropped_inf['log2(fc)'].min() - 1)
     pval = df_initial[f'-log10({OmicScope.pvalue})']
-    max_pval = max([x for x in pval if x < max(pval)])
-    pval = pval.replace([np.inf], max_pval + 1)
+    pval = pval.replace(
+        np.inf, dropped_inf[f'-log10({OmicScope.pvalue})'].max() + 1)
     df_initial[f'-log10({OmicScope.pvalue})'] = pval
     df_initial['log2(fc)'] = fc
     # Defining colors for dots

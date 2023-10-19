@@ -47,7 +47,8 @@ class Input:
         df = df[columns]
         df = df.rename(columns={'Majority protein IDs': "Accession",
                                 'Fasta headers': 'Description',
-                                'Gene names': 'gene_name'})
+                                'Gene names': 'gene_name',
+                                'Mol. weight [kDa]': "Mol weight [kDa]"})
         return df
 
     def assay(self):
