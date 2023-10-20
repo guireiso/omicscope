@@ -85,6 +85,7 @@ setup(
         "seaborn==0.12.1",
         "statsmodels==0.13.5",
         "tox==3.27.0",
+        "sphinx-rtd-theme",
         "UpSetPlot==0.6.1",
         "xlrd==2.0.1",
         "zipp==3.11.0",
