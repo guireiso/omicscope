@@ -84,7 +84,8 @@ def EnrichmentScope(OmicScope: Omicscope,
                     Analysis: str = 'ORA',
                     dbs: List[str] = ['KEGG_2021_Human'],
                     padjust_cutoff: float = 0.05,
-                    organism: str = 'human') -> Enrichmentscope:
+                    organism: str = 'human',
+                    background=None) -> Enrichmentscope:
     """EnrichmentScope - Enrichment Analysis
 
         EnrichmentScope is the module designed to perform over-representation and Gene-Set Enrichment Analyses of proteins and genes.
@@ -95,6 +96,10 @@ def EnrichmentScope(OmicScope: Omicscope,
         dbs (List[str]): List of enrichment databases to perform the enrichment analysis. Defaults to ['KEGG_2021_Human'].
         padjust_cutoff (float, optional): statistical cutoff. Defaults to 0.05.
         organism (str, optional): Organism from which entities belong. Defaults to 'human'.
+        background (int, list, str, bool): Background genes. By default, all genes listed in the `gene_sets` input will be used 
+            as background. Alternatively, user can use all genes evaluated in study (Recommended, background = True). Still,
+            user can insert a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
+            in the target organism on Uniprot.
 
     Returns:
         Enrichmentscope: Return a EnrichmentScope obj. The results is stored to obj.results.
@@ -104,7 +109,8 @@ def EnrichmentScope(OmicScope: Omicscope,
         Analysis,
         dbs,
         padjust_cutoff,
-        organism)
+        organism,
+        background)
 
     return enrichment
 

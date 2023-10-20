@@ -25,13 +25,17 @@ class Enrichment:
 
     def __init__(self, OmicScope, dbs,
                  padjust_cutoff=0.05,
-                 organism='Human', save=''):
+                 organism='Human', background=None, save=''):
         """Over-Representation Analysis (also known as Enrichment Analysis)
 
         Args:
             OmicScope (OmicScope object): OmicScope Experiment
             dbs (list, optional): Databases to search against . Defaults to ['KEGG_2021_Human'].
             organism (str, optional): Organism to search in dbs. Defaults to 'Human'.
+            background (int, list, str, bool): Background genes. By default, all genes listed in the `gene_sets` input will be used 
+                as background. Alternatively, user can use all genes evaluated in study (Recommended, background = True). Still,
+                user can insert a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
+                in the target organism on Uniprot.
             save (str, optional): File path to save OmicScope Experiment.
             Defaults to ''.
         """
@@ -40,6 +44,7 @@ class Enrichment:
         self.padjust_cutoff = padjust_cutoff,
         self.dbs = copy.copy(dbs)
         self.organism = copy.copy(organism)
+        self.background = background
         # Perform Over Representation Analysis
         try:
             self.results = copy.copy(self.enrichr())
@@ -58,6 +63,9 @@ class Enrichment:
         foldchange_cutoff = self.OmicScope.FoldChange_cutoff
         gene_set = self.dbs
         omics = self.OmicScope.quant_data
+        background = self.background
+        if background is True:
+            background = omics.gene_name.dropna().drop_duplicates()
         # Filtering data based on Fold Change and P-value
         omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
         genes = list(omics[omics[self.OmicScope.pvalue] <= pvalue_cutoff]['gene_name'].dropna())
@@ -66,16 +74,17 @@ class Enrichment:
                       gene_sets=gene_set,
                       outdir=None,  # dbs
                       organism=organism,
+                      background=background,
                       cutoff=1, no_plot=True,
                       verbose=False)
         # Extracting just results file from analysis
         df = enr.results.copy()
         # Filtering results Adjusted P-value
         df = df[df['Adjusted P-value'] < self.padjust_cutoff]
-        df['N_Proteins'] = df['Overlap'].str.split('/').str[0].astype(int)
         df['-log10(pAdj)'] = -np.log10(df['Adjusted P-value'])
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
         df.Genes = df.Genes.str.split(';')
+        df['N_Proteins'] = df['Genes'].apply(lambda x: len(x))
         df['regulation'] = df['Genes'].apply(lambda x: [foldchange[i] for i in x])
         df['down-regulated'] = df['regulation'].apply(lambda x: len([i for i in x if i < 0]))
         df['up-regulated'] = df['regulation'].apply(lambda x: len([i for i in x if i > 0]))

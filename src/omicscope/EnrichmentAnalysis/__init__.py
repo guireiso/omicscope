@@ -13,7 +13,7 @@ class Enrichmentscope():
     from .EnrichmentVisualization import number_deps
 
     def __init__(self, OmicScope, Analysis, dbs,
-                 padjust_cutoff=0.05, organism='Human'):
+                 padjust_cutoff=0.05, organism='Human', background=None):
         """EnrichmentScope is the module designed to perform over-representation
             and Gene-Set Enrichment Analyses of proteins and genes.
             Args:
@@ -24,6 +24,10 @@ class Enrichmentscope():
                 Defaults to ['KEGG_2021_Human'].
                 padjust_cutoff (float, optional): statistical cutoff. Defaults to 0.05.
                 organism (str, optional): Organism from which entities belong. Defaults to 'human'.
+                background (int, list, str, bool): Background genes. By default, all genes listed in the `gene_sets` input will be used 
+                    as background. Alternatively, user can use all genes evaluated in study (Recommended, background = True). Still,
+                    user can insert a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
+                    in the target organism on Uniprot.
 
                 Raises:
                     ValueError: Users choose an invalid analysis.
@@ -45,7 +49,8 @@ class Enrichmentscope():
         self.organism = copy.copy(organism)
         self.padjust_cutoff = copy.copy(padjust_cutoff)
         enrichment = Enrichment(OmicScope=OmicScope, dbs=dbs,
-                                padjust_cutoff=padjust_cutoff, organism=organism)
+                                padjust_cutoff=padjust_cutoff, organism=organism,
+                                background=background)
         self.results = enrichment.results
 
     def libraries(self):

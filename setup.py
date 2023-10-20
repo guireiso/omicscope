@@ -68,7 +68,7 @@ setup(
         "adjustText==0.8",
         "altair==4.2.0",
         "flake8==6.0.0",
-        "gseapy==1.0.3",
+        "gseapy==1.0.6",
         "kneed==0.8.1",
         "matplotlib==3.6.2",
         "matplotlib-inline==0.1.6",

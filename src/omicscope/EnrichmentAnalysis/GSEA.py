@@ -21,7 +21,7 @@ import pandas as pd
 
 class Enrichment:
     def __init__(self, OmicScope, dbs,
-                 organism='Human', padjust_cutoff=0.05):
+                 organism='Human', padjust_cutoff=0.05, background=None):
 
         self.Analysis = 'GSEA'
         self.dbs = copy.copy(dbs)
