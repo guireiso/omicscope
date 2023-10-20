@@ -39,7 +39,7 @@ html_split_index = False
 html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'logo_only': True,
     'display_version': True,
