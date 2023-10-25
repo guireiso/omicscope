@@ -38,7 +38,7 @@ def ttest(params):
         print('T-test of related variables was carried out!')
 
     quant_data['pvalue'] = result[1]
-    quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 0)
+    quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     quant_data = quant_data.sort_values('pvalue')
 
     #  Correcting multilple hypothesis test according to fdr_bh
@@ -135,7 +135,7 @@ def anova(params):
     pvalue = params[3]
 
     # Perform ANOVA test according to SCI-PY algorithm
-    expression = []
+    expression = []  # List of abundances for each group
     for i in Conditions:
         df = quant_data.iloc[:, quant_data.columns.str.endswith(i)]
         df = df.to_numpy()
@@ -143,7 +143,7 @@ def anova(params):
         expression.append(df)
     stat = pd.DataFrame(expression).T
     stat = stat.apply(lambda x: f_oneway(*x)[1], axis=1)
-    # Perform Tukey's Post-hoc correction
+    # Multiple hypothesis correction
     stat = pd.Series(stat)
     stat.index = quant_data.index
     quant_data['pvalue'] = stat
@@ -152,7 +152,7 @@ def anova(params):
     # BH-correction
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
                                             method='fdr_bh', is_sorted=False, returnsorted=False)[1]
-
+    # Perform Tukey's Post-hoc correction
     Tukey = Tukey_hsd(quant_data)
     quant_data = quant_data.join(Tukey)
     quant_data = quant_data.explode(['pTukey', 'Comparison'])

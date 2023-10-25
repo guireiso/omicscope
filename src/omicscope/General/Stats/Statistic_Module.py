@@ -24,7 +24,7 @@ def perform_static_stat(self):
     if log is False:
         expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
-        # Apply t-test if len(conditions) == 2
+    # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest
         params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata,
@@ -40,7 +40,7 @@ def perform_static_stat(self):
         data = params[1].merge(data, on='Accession')
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
-    # Filtering Keratin
+    # Filtering contaminants
     if self.ExcludeContaminants is True:
         path = os.path.dirname(os.path.abspath(__file__))
         contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]

@@ -178,7 +178,8 @@ class Omicscope(Input):
         expression = expression.set_index(rdata.Accession)
 
         # Filtering data
-        nanvalues = expression.notna()
+        nanvalues = expression.replace(0, np.nan)
+        nanvalues = nanvalues.notna()
         nanvalues.columns = pdata.Condition
         nanvalues = nanvalues.groupby(nanvalues.columns, axis=1).sum()
         nanvalues[nanvalues <= 0] = np.nan
