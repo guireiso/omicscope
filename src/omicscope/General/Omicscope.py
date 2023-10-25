@@ -177,12 +177,12 @@ class Omicscope(Input):
         rdata = expression.index.to_frame().reset_index(drop=True)
         expression = expression.set_index(rdata.Accession)
 
-        # Filtering data
+        # Filtering data. Protein must be detected at least in one sample per group
         nanvalues = expression.replace(0, np.nan)
         nanvalues = nanvalues.notna()
         nanvalues.columns = pdata.Condition
         nanvalues = nanvalues.groupby(nanvalues.columns, axis=1).sum()
-        nanvalues[nanvalues <= 0] = np.nan
+        nanvalues[nanvalues <= 1] = np.nan
         nanvalues = nanvalues.dropna()
         expression = expression[expression.index.isin(nanvalues.index)]
         rdata = rdata[rdata['Accession'].isin(nanvalues.index)]
