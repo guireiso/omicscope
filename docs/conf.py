@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 import os
+import sys
+sys.path.insert(0, os.path.abspath('../src/'))
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -11,8 +13,7 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
-    'sphinx-rtd-theme'
+    'sphinx.ext.viewcode'
 ]
 source_suffix = '.rst'
 master_doc = 'index'
@@ -32,12 +33,12 @@ extlinks = {
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 if not on_rtd:  # only set the theme if we're building docs locally
-    html_theme = 'sphinx_rtd_theme'
+    html_theme = 'alabaster'
 
 html_use_smartypants = True
 html_last_updated_fmt = '%b %d, %Y'
 html_split_index = False
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'alabaster'
 html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
