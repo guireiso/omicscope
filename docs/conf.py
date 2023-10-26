@@ -4,6 +4,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
 
+
+autodoc_mock_imports = ['matplotlib']
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
@@ -42,10 +45,7 @@ html_theme = 'alabaster'
 html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
-html_theme_options = {
-    'logo_only': True,
-    'display_version': True,
-}
+
 html_theme_path = ["."]
 html_logo = "logo.png"
 
