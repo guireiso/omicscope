@@ -4,10 +4,10 @@ This module allows the user to extract and visualize information from OmicScope 
 Here, it is possible to evaluate data normalization (MA-Plot, Volcano Plot, Dynamic range plot),
 individual protein abundance (barplot, boxplot), search for protein-protein interactions,
 and perform Principal Component Analysis (PCA), Hierarchical clustering analysis (heatmap, pearson
-correlation plot) and K-means clustering (bigtrend).
+correlation plot) and K-means clustering (k-trend).
 
 Some functions below allow user to choose protein to be highlighted and/or plotted.
-For that, user must write protein 'gene_name' as examples in OmicScope Object tab.
+For that, user must write protein 'gene_name' (See examples in OmicScope Object tab).
 Additionally, colors and color palettes follows the matplotlib and seaborn libraries options.
 
 """

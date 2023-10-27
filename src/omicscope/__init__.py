@@ -25,32 +25,32 @@ def OmicScope(Table: str,
               degrees_of_freedom: int = 2,
               independent_ttest=True,
               ** kwargs) -> Omicscope:
-    """OmicScope - Quantitative data
+    """OmicScope - Differential Proteomics
 
-        OmicScope was specially designed taking into account the proteomic workflow, in which proteins are identified,
-         quantified and normalized with several softwares, such as Progenesis Qi for Proteomics, PatternLab V and MaxQuant.
+        OmicScope was designed to be compatible with several Proteomics software,
+        such as Progenesis Qi for Proteomics, PatternLab V, MaxQuant, and DIA-NN
 
-        Despite proteomic optimization, users can also input data from other Omics sources (e.g. Metabolomics and Transcriptomics),
-         using Method = 'General'. To run this approach user need to follow the instructions from Input.General directory in a Excel file.
-         Finally, Snapshot is a input method module that enables users to import pre-analyzed data into OmicScope quickly.
-        Additionally, OmicScope also perform differential expression analysis, returning p-value (from t-test, Anova, and post-hoc
-         correction), q-value and respective conditions Fold-Changes. If user desire to import the statistical analysis from other sources,
-         the row data (rdata) must have a column named as "pvalue".
+        Additionally, users can also input data from other Omics sources (e.g.Transcriptomics),
+         using `General` and `Snapshot` methods. In General, users can analyse data in a pre-specified format using excel workbooks.
+         On the other hand, Snapshot enables users to import pre-analyzed data into OmicScope quickly.
+
+        OmicScope are able to perform differential proteomics analysis, returning p-value, adjusted p-value
+        (Benjamini-Hochberg approach), and  fold-changes.
 
     Args:
-        Table (str): Path to quantitative data.
-        Method (str): Algorithm/software used to perform quantitative.
+        Table (str): Quantitative data.
+        Method (str): Method used to import data.
         ControlGroup (Optional[str], optional): Control group. Defaults to None.
-        ExperimentalDesign (str, optional): Study experimental design in which OmicScope must take account for statistical analysis.
+        ExperimentalDesign (str, optional): Experimental design to perform statistical analysis.
          Options: 'static', 'longitudinal'. Defaults to 'static'.
-        pvalue (str, optional): Statistical parameter to take into account to consider entities differentially regulated.
+        pvalue (str, optional): Statistical parameter to consider entities differentially regulated.
           Options: 'pvalue', 'pAdjusted', 'pTukey'. Defaults to 'pAdjusted'.
         PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
-        FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
+        FoldChange_cutoff (float, optional): Absolute fold-change cutoff. Defaults to 0.0.
         logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
-        ExcludeContaminants (bool, optional): Contaminant proteins is excluded. Defaults to True.
-        degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
-        independent_ttest (bool, optional): If running a t-test, the user can specify if data sampling
+        ExcludeContaminants (bool, optional): Exclude the list of Contaminant proteins. Defaults to True.
+        degrees_of_freedom (int, optional): Degrees of freedom to run longitudinal analysis. Defaults to 2.
+        independent_ttest (bool, optional): while running a t-test, the user can specify if data sampling
             is independent (default) or paired (independent_ttest=False). Defaults to True.
 
     Returns:
@@ -89,16 +89,17 @@ def EnrichmentScope(OmicScope: Omicscope,
     """EnrichmentScope - Enrichment Analysis
 
         EnrichmentScope is the module designed to perform over-representation and Gene-Set Enrichment Analyses of proteins and genes.
+        In EnrichmentScope, several figures enable user to see enriched terms with their respective proteins. 
 
     Args:
         OmicScope (Omicscope): Omicscope object
         Analysis (str): Over-representation Analysis (ORA) or Gene-Set Enrichment Analysis (GSEA). Defaults to 'ORA'.
         dbs (List[str]): List of enrichment databases to perform the enrichment analysis. Defaults to ['KEGG_2021_Human'].
-        padjust_cutoff (float, optional): statistical cutoff. Defaults to 0.05.
-        organism (str, optional): Organism from which entities belong. Defaults to 'human'.
+        padjust_cutoff (float, optional): P-Adjusted cutoff . Defaults to 0.05.
+        organism (str, optional): Organism to perform enrichment analysis. Defaults to 'human'.
         background (int, list, str, bool): Background genes. By default, all genes listed in the `gene_sets` input will be used 
             as background. Alternatively, user can use all genes evaluated in study (Recommended, background = True). Still,
-            user can insert a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
+            user can define a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
             in the target organism on Uniprot.
 
     Returns:
@@ -120,7 +121,7 @@ def Nebula(folder: str,
            pvalue_cutoff: float = 0.05) -> nebula:
     """Nebula - Multiple group comparison
 
-        Nebula is the module to integrate all data generated by OmicScope pipeline
+        Nebula is the module to integrate all data generated by OmicScope and EnrichmentScope pipelines.
 
     Args:
         folder (str): path to folder that contains all .omics files

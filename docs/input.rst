@@ -1,3 +1,9 @@
+
+.. code-block:: python
+
+   import sys
+   sys.path.insert(1, 'C:/Users/Guilherme/omicscope/omicscope/src/')
+
 Input
 =====
 
@@ -5,22 +11,29 @@ Input
 
 
 * 
-  **Progenesis QI for proteomics** *(Method = 'Progenesis')*\ : Progenesis is a software that enables protein quantification and identification (coupled to PLGS) for experiments that use Data Independent Acquisition (DIA).
+  **Progenesis QI for Proteomics** *(\ ``Method = 'Progenesis'``\ )*\ : Progenesis QI for Proteomics (Waters Corporation) is a software that enables protein quantification and identification (via APEX3D and ProteinLynx Global Server) for experiments that use Data Independent Acquisition (DIA).
 
 * 
-  **PatternLab V** *(Method = 'PatternLab')*\ : PatternLab V is an integrated computational environment for analyzing shotgun proteomic data, and is considered one of the best options for quantitative proteomics using data-dependent acquisition, due to its high-confidence parameters for protein quantitation and identification.
+  **PatternLab V** *(\ ``Method = 'PatternLab'``\ )*\ : PatternLab V is an integrated computational environment for analyzing shotgun proteomic data, and is considered one of the best options for quantitative proteomics using data-dependent acquisition, due to its high-confidence parameters for protein quantitation and identification.
 
 * 
-  **MaxQuant** *(Method = 'MaxQuant')*\ : MaxQuant is the most widely used software for quantitative proteomics, offering users a range of parameter options for quantitative analysis.
+  **MaxQuant** *(\ ``Method = 'MaxQuant'``\ )*\ : MaxQuant is the most widely used software for quantitative proteomics, offering users a range of parameter options for quantitative analyses.
 
 * 
-  **General** *(Method = 'General')*\ : A generic input method that requires users to specify quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata) using an Excel file.
+  **DIA-NN** *(\ ``Method = 'DIA-NN'``\ )*\ : DIA-NN is a popular software that performs protein identification and quantification for DIA experiments, offering users a variety of parameter options for quantitative analyses.
 
 * 
-  **Snapshot** *(Method = 'Snapshot')*\ : The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and more.
+  **General** *(\ ``Method = 'General'``\ )*\ : To import data from other sources, this generic input method requires users to import an Excel workbook with 3 sheets: quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata).
+
+* 
+  **Snapshot** *(\ ``Method = 'Snapshot'``\ )*\ : The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and grouping.
+
+For more information about the formatting of these import methods, see the appropriate sections below.
 
 Import OmicScope
 ----------------
+
+First, OmicScope package must be imported in the Python programming environment.
 
 .. code-block:: python
 
@@ -28,7 +41,7 @@ Import OmicScope
 
 .. code-block::
 
-   OmicScope v 1.0.5 For help: Insert
+   OmicScope v 1.3.11 For help: Insert
    If you use  in published research, please cite: 'XXXXX'
    Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
 
@@ -38,29 +51,26 @@ Import OmicScope
 Progenesis QI for Proteomics
 ----------------------------
 
-Progenesis exports a .csv file containing information about samples, proteins, and quantitative values. For the Progenesis workflow, *OmicScope* imports these files and extracts the abundance levels of each protein (assay), the features of each protein (rdata), and features of each sample (pdata). Additionally, *OmicScope* accepts Excel files (with extensions .xls or .xlsx) that contain a **unique sheet** for the Progenesis workflow, as many users may use Excel to open and manipulate data. 
+Progenesis exports protein quantitation data in a csv file containing information about samples, protein groups, and quantitative values. 
+
+*OmicScope* imports Progenesis output and extracts the abundance levels of each protein (assay), the features of each protein (rdata), and features of each sample (pdata). *OmicScope*  can also accept Excel spreadsheets (with extensions .xls or .xlsx) that contain a **single sheet** for the Progenesis workflow, as many users may use Excel to visualize and handle data.
 
 .. code-block:: python
 
-   progenesis = omics.OmicScope('../tests/data/proteins/progenesis.xls', Method='Progenesis')
+   progenesis = omics.OmicScope('../../tests/data/proteins/progenesis.xls', Method='Progenesis')
 
 .. code-block::
 
    User already performed statistical analysis
+   OmicScope identifies: 697 deregulations
 
 
 
-In addition, since Progenesis exports a limited amount of information about samples, *OmicScope* allows the user to input an Excel file containing all this information. Furthermore, users can filter data based on the minimum number of unique peptides, by adding the parameter function 'UniquePeptides' (recommended: UniquePeptides = 1).
-
-**Note:** As Progenesis performs differential proteomics, *OmicScope* takes into account the statistical analysis exported by Progenesis. However, if the user has a specific experimental design and requires the *OmicScope* Statistical Workflow, they must rewrite the original .csv file as follows:
-
-
-* "Anova (p)" → "Original Anova (p)"
-* "q Value" → "Original q Value"
+Since Progenesis exports certain information about sample groupings, *OmicScope* allows the user to input an Excel file containing all this information using pdata argument (for more information about pdata format, see below). Furthermore, users can filter identifications based on the minimum number of unique peptides by specifying the parameter ``UniquePeptides`` (recommended: ``UniquePeptides = 1``\ ).
 
 .. code-block:: python
 
-   progenesis_uniquepepfilt = omics.OmicScope('../tests/data/proteins/progenesis.xls', Method='Progenesis', UniquePeptides=1)
+   progenesis_uniquepepfilt = omics.OmicScope('../../tests/data/proteins/progenesis.xls', Method='Progenesis', UniquePeptides=1)
    print('Original proteomics data: ' + str(len(progenesis.quant_data)) + '\n'+
          'Filtered proteomics data: ' + str(len(progenesis_uniquepepfilt.quant_data))
          )
@@ -68,75 +78,88 @@ In addition, since Progenesis exports a limited amount of information about samp
 .. code-block::
 
    User already performed statistical analysis
-   Original proteomics data: 2236
-   Filtered proteomics data: 1847
+   OmicScope identifies: 582 deregulations
+   Original proteomics data: 2179
+   Filtered proteomics data: 1797
 
 
+
+**Note**\ : Progenesis performs differential proteomics analyses based on preset groups, and *OmicScope* takes these statistical analyses into account. However, if the user has a specific experimental design, *OmicScope* Statistical Workflow can be used by renaming two columns in the original .csv file, as follows:
+
+
+* "Anova (p)" → "Original Anova (p)"
+* "q Value" → "Original q Value"
 
 PatternLab
 ----------
 
-PatternLab exports an Excel file with an .xlsx extension, which contains the same type of information as Progenesis, including assay, pdata, and rdata. However, this export does not include differential proteomics statistics. Therefore, *OmicScope* automatically performs statistical analysis for PatternLab data.
+PatternLab exports an Excel file with an .xlsx extension, which contains the same type of information as Progenesis, including assay, pdata, and rdata. However, this exported file does not include differential proteomics statistics. Therefore, *OmicScope* automatically performs statistical analyses for PatternLab data.
 
 .. code-block:: python
 
-   plv = omics.OmicScope('../tests/data/proteins/patternlab.xlsx', Method='PatternLab')
+   plv = omics.OmicScope('../../tests/data/proteins/patternlab.xlsx', Method='PatternLab')
 
 .. code-block::
 
    Anova test was performed!
    OmicScope performed statistical analysis (Static workflow)
+   ATTENTION: There is no differential regulation in your dataset
 
 
 
-MaxQuant
---------
+MaxQuant and DIA-NN
+-------------------
 
-MaxQuant exports a **proteinGroups** file with a .txt extension, which contains a comprehensive description of the assay and rdata. However, since pdata is missing, the MaxQuant workflow **requires** an Excel file for pdata.
+While MaxQuant exports the **proteinGroups.txt** file, which contains a comprehensive description of the assay and rdata, DIA-NN exports the main output containing the same information. However, since in both cases the pdata is missing, these methods **requires** an additional Excel file for pdata. See the pdata section below for how to format this file.
 
 .. code-block:: python
 
-   maxquant = omics.OmicScope('../tests/data/proteins/MQ.txt', Method='MaxQuant',
-                              pdata='../tests/data/proteins/MQ_pdata.xlsx')
+   maxquant = omics.OmicScope('../../tests/data/proteins/MQ.txt', Method='MaxQuant',
+                              pdata='../../tests/data/proteins/MQ_pdata.xlsx')
 
 .. code-block::
 
    Anova test was performed!
    OmicScope performed statistical analysis (Static workflow)
+   ATTENTION: There is no differential regulation in your dataset
 
 
 
 General
 -------
 
-The General workflow allows users to analyze data generated by other platforms, such as Transcriptomics and Metabolomics. To do this, users need to organize an Excel file into three sheets containing an assay, rdata, and pdata.
+The General workflow allows users to analyze data generated by other platforms, including Genomics and Transcriptomics. To do this, users need to organize an Excel file into three sheets: assay, rdata, and pdata. 
 
 
 * **Assay:** Contains the abundance of N proteins (rows) from M samples (columns).
 * **Rdata:** Includes N proteins (rows) with their respective features within each column.
-* **Pdata:** Contains M samples (rows) with their respective characteristics, such as conditions, biological and technical replicates.
+* **Pdata:** Contains M samples (rows) with their respective characteristics, such as conditions as well as the organization of biological and technical replicates.
 
-The following sections provide examples of how to describe each sheet.
+For more information about how to properly format and import each of these sheets, see the respective sections below.
 
 .. code-block:: python
 
-   general = omics.OmicScope('../tests/data/proteins/general.xlsx', Method='General')
+   general = omics.OmicScope('../../tests/data/proteins/general.xlsx', Method='General')
 
 .. code-block::
 
    User already performed statistical analysis
+   OmicScope identifies: 697 deregulations
 
 
 
 Assay
 ^^^^^
 
+The assay sheet should contain the abundance data for each protein/feature/transcript. The first row contains the sample names for each of the abundance values below.
+
 .. code-block:: python
 
    import pandas as pd
 
-   assay = pd.read_excel('../tests/data/proteins/general.xlsx', sheet_name=0)
-   assay
+   assay = pd.read_excel('../../tests/data/proteins/general.xlsx', sheet_name=0)
+   # Slicing example to facilitate visualization
+   assay.head().iloc[:,0:5]
 
 
 .. raw:: html
@@ -164,22 +187,6 @@ Assay
          <th>VCC_HB_2_1</th>
          <th>VCC_HB_2_1_2</th>
          <th>VCC_HB_3_1</th>
-         <th>VCC_HB_3_1_2</th>
-         <th>VCC_HB_4_1</th>
-         <th>VCC_HB_4_1_2</th>
-         <th>VCC_HB_5_1</th>
-         <th>VCC_HB_5_1_2</th>
-         <th>...</th>
-         <th>VCC_HB_C_1</th>
-         <th>VCC_HB_C_1_2</th>
-         <th>VCC_HB_D_1</th>
-         <th>VCC_HB_D_1_2</th>
-         <th>VCC_HB_E_1</th>
-         <th>VCC_HB_E_1_2</th>
-         <th>VCC_HB_F_1</th>
-         <th>VCC_HB_F_1_2</th>
-         <th>VCC_HB_G_1</th>
-         <th>VCC_HB_G_1_2</th>
        </tr>
      </thead>
      <tbody>
@@ -190,22 +197,6 @@ Assay
          <td>2.521807e+04</td>
          <td>3.090703e+04</td>
          <td>2.383499e+04</td>
-         <td>2.267237e+04</td>
-         <td>3.290661e+04</td>
-         <td>3.595543e+04</td>
-         <td>3.116039e+04</td>
-         <td>3.083176e+04</td>
-         <td>...</td>
-         <td>1.318972e+04</td>
-         <td>1.295723e+04</td>
-         <td>1.438445e+04</td>
-         <td>1.345175e+04</td>
-         <td>1.136301e+04</td>
-         <td>1.296883e+04</td>
-         <td>1.273169e+04</td>
-         <td>1.323385e+04</td>
-         <td>1.505976e+04</td>
-         <td>1.242351e+04</td>
        </tr>
        <tr>
          <th>1</th>
@@ -214,22 +205,6 @@ Assay
          <td>5.825493e+04</td>
          <td>5.931610e+04</td>
          <td>6.309095e+04</td>
-         <td>5.933534e+04</td>
-         <td>4.769155e+04</td>
-         <td>4.923312e+04</td>
-         <td>5.540644e+04</td>
-         <td>5.816974e+04</td>
-         <td>...</td>
-         <td>1.177108e+04</td>
-         <td>1.309192e+04</td>
-         <td>1.790318e+04</td>
-         <td>1.597053e+04</td>
-         <td>1.299094e+04</td>
-         <td>1.297193e+04</td>
-         <td>1.732675e+04</td>
-         <td>2.065285e+04</td>
-         <td>1.496680e+04</td>
-         <td>1.349288e+04</td>
        </tr>
        <tr>
          <th>2</th>
@@ -238,22 +213,6 @@ Assay
          <td>7.301329e+04</td>
          <td>7.349391e+04</td>
          <td>9.766835e+04</td>
-         <td>9.952204e+04</td>
-         <td>9.291146e+04</td>
-         <td>7.996892e+04</td>
-         <td>8.602800e+04</td>
-         <td>8.490852e+04</td>
-         <td>...</td>
-         <td>1.224955e+05</td>
-         <td>1.330394e+05</td>
-         <td>1.223455e+05</td>
-         <td>1.248028e+05</td>
-         <td>1.051494e+05</td>
-         <td>9.843347e+04</td>
-         <td>1.224127e+05</td>
-         <td>1.154907e+05</td>
-         <td>1.364931e+05</td>
-         <td>1.432545e+05</td>
        </tr>
        <tr>
          <th>3</th>
@@ -262,22 +221,6 @@ Assay
          <td>2.992691e+04</td>
          <td>3.460095e+04</td>
          <td>2.596320e+04</td>
-         <td>2.578964e+04</td>
-         <td>3.433567e+04</td>
-         <td>3.174725e+04</td>
-         <td>5.536738e+04</td>
-         <td>6.139519e+04</td>
-         <td>...</td>
-         <td>2.827172e+04</td>
-         <td>2.642189e+04</td>
-         <td>2.325916e+04</td>
-         <td>2.394876e+04</td>
-         <td>2.288316e+04</td>
-         <td>2.246984e+04</td>
-         <td>1.679230e+04</td>
-         <td>1.792154e+04</td>
-         <td>2.125956e+04</td>
-         <td>2.326553e+04</td>
        </tr>
        <tr>
          <th>4</th>
@@ -286,170 +229,9 @@ Assay
          <td>1.060396e+06</td>
          <td>1.078239e+06</td>
          <td>1.003426e+06</td>
-         <td>9.853668e+05</td>
-         <td>9.319196e+05</td>
-         <td>8.415161e+05</td>
-         <td>1.046464e+06</td>
-         <td>1.094484e+06</td>
-         <td>...</td>
-         <td>9.032477e+05</td>
-         <td>9.224474e+05</td>
-         <td>8.579011e+05</td>
-         <td>8.631613e+05</td>
-         <td>8.902884e+05</td>
-         <td>9.156146e+05</td>
-         <td>7.709503e+05</td>
-         <td>7.985187e+05</td>
-         <td>8.478530e+05</td>
-         <td>8.362974e+05</td>
-       </tr>
-       <tr>
-         <th>...</th>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-       </tr>
-       <tr>
-         <th>2273</th>
-         <td>3.654582e+06</td>
-         <td>4.052283e+06</td>
-         <td>3.865664e+06</td>
-         <td>4.097018e+06</td>
-         <td>3.904966e+06</td>
-         <td>3.948974e+06</td>
-         <td>3.361720e+06</td>
-         <td>3.377376e+06</td>
-         <td>3.553030e+06</td>
-         <td>3.585600e+06</td>
-         <td>...</td>
-         <td>3.683729e+06</td>
-         <td>3.937861e+06</td>
-         <td>3.958128e+06</td>
-         <td>3.966355e+06</td>
-         <td>3.891880e+06</td>
-         <td>3.949765e+06</td>
-         <td>3.785332e+06</td>
-         <td>3.987608e+06</td>
-         <td>4.958008e+06</td>
-         <td>5.095684e+06</td>
-       </tr>
-       <tr>
-         <th>2274</th>
-         <td>3.404704e+06</td>
-         <td>3.868381e+06</td>
-         <td>1.460918e+07</td>
-         <td>1.770459e+07</td>
-         <td>3.409452e+06</td>
-         <td>3.743869e+06</td>
-         <td>4.549866e+06</td>
-         <td>4.549434e+06</td>
-         <td>4.131214e+06</td>
-         <td>4.325119e+06</td>
-         <td>...</td>
-         <td>2.855731e+06</td>
-         <td>3.215217e+06</td>
-         <td>4.188039e+06</td>
-         <td>4.599402e+06</td>
-         <td>4.887900e+06</td>
-         <td>5.347565e+06</td>
-         <td>4.919236e+06</td>
-         <td>5.455081e+06</td>
-         <td>4.757800e+06</td>
-         <td>5.204147e+06</td>
-       </tr>
-       <tr>
-         <th>2275</th>
-         <td>2.249648e+05</td>
-         <td>2.365908e+05</td>
-         <td>2.035899e+05</td>
-         <td>1.925923e+05</td>
-         <td>2.638737e+05</td>
-         <td>2.647051e+05</td>
-         <td>3.204020e+05</td>
-         <td>2.865846e+05</td>
-         <td>2.102448e+05</td>
-         <td>2.156030e+05</td>
-         <td>...</td>
-         <td>2.642441e+05</td>
-         <td>2.660566e+05</td>
-         <td>2.794582e+05</td>
-         <td>2.686382e+05</td>
-         <td>2.870855e+05</td>
-         <td>2.940200e+05</td>
-         <td>2.614172e+05</td>
-         <td>2.533796e+05</td>
-         <td>3.254633e+05</td>
-         <td>3.297688e+05</td>
-       </tr>
-       <tr>
-         <th>2276</th>
-         <td>2.276456e+06</td>
-         <td>2.976481e+06</td>
-         <td>1.280703e+07</td>
-         <td>1.644311e+07</td>
-         <td>2.334264e+06</td>
-         <td>2.590021e+06</td>
-         <td>2.587180e+06</td>
-         <td>2.693531e+06</td>
-         <td>3.252054e+06</td>
-         <td>3.787151e+06</td>
-         <td>...</td>
-         <td>1.739140e+06</td>
-         <td>1.913206e+06</td>
-         <td>2.827441e+06</td>
-         <td>3.181103e+06</td>
-         <td>3.306627e+06</td>
-         <td>3.886518e+06</td>
-         <td>3.709116e+06</td>
-         <td>4.356867e+06</td>
-         <td>3.156444e+06</td>
-         <td>3.649251e+06</td>
-       </tr>
-       <tr>
-         <th>2277</th>
-         <td>1.575684e+05</td>
-         <td>1.709010e+05</td>
-         <td>2.185840e+05</td>
-         <td>2.397707e+05</td>
-         <td>1.621122e+05</td>
-         <td>1.605849e+05</td>
-         <td>6.805103e+04</td>
-         <td>6.544271e+04</td>
-         <td>1.724174e+05</td>
-         <td>1.859680e+05</td>
-         <td>...</td>
-         <td>1.370555e+05</td>
-         <td>1.445220e+05</td>
-         <td>1.366811e+05</td>
-         <td>1.409139e+05</td>
-         <td>1.526514e+05</td>
-         <td>1.631331e+05</td>
-         <td>1.467560e+05</td>
-         <td>1.543588e+05</td>
-         <td>1.805445e+05</td>
-         <td>1.884684e+05</td>
        </tr>
      </tbody>
    </table>
-   <p>2278 rows × 38 columns</p>
    </div>
 
 
@@ -459,13 +241,15 @@ rdata
 The rdata sheet needs to have at least two columns: 'Accession' and 'Description'.
 
 
-#. **Accession:** An array of unique values that represent the proteins in the dataframe.
+#. **Accession:** An array of unique values that represent the proteins in the assay dataframe.
 #. **Description:** The header from UniProt Fasta.
+
+Optionally, user may add "gene_name" column for alternative names.
 
 .. code-block:: python
 
-   rdata = pd.read_excel('../tests/data/proteins/general.xlsx', sheet_name=1)
-   rdata
+   rdata = pd.read_excel('../../tests/data/proteins/general.xlsx', sheet_name=1)
+   rdata.head(3)
 
 
 .. raw:: html
@@ -544,141 +328,28 @@ The rdata sheet needs to have at least two columns: 'Accession' and 'Description
          <td>COVID</td>
          <td>NADH-ubiquinone oxidoreductase chain 1 OS=Homo...</td>
        </tr>
-       <tr>
-         <th>3</th>
-         <td>Q9BSM1</td>
-         <td>2</td>
-         <td>2</td>
-         <td>12.2670</td>
-         <td>5.516988e-07</td>
-         <td>0.000105</td>
-         <td>1.726615</td>
-         <td>0.999984</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Polycomb group RING finger protein 1 OS=Homo s...</td>
-       </tr>
-       <tr>
-         <th>4</th>
-         <td>O94819</td>
-         <td>32</td>
-         <td>16</td>
-         <td>190.5708</td>
-         <td>5.575815e-07</td>
-         <td>0.000105</td>
-         <td>1.245223</td>
-         <td>0.999984</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Kelch repeat and BTB domain-containing protein...</td>
-       </tr>
-       <tr>
-         <th>...</th>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-         <td>...</td>
-       </tr>
-       <tr>
-         <th>2273</th>
-         <td>P20020</td>
-         <td>67</td>
-         <td>21</td>
-         <td>523.2192</td>
-         <td>9.977449e-01</td>
-         <td>0.411967</td>
-         <td>1.006182</td>
-         <td>0.050001</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Plasma membrane calcium-transporting ATPase 1 ...</td>
-       </tr>
-       <tr>
-         <th>2274</th>
-         <td>Q14240</td>
-         <td>30</td>
-         <td>8</td>
-         <td>228.9400</td>
-         <td>9.979637e-01</td>
-         <td>0.411967</td>
-         <td>1.115801</td>
-         <td>0.050001</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Eukaryotic initiation factor 4A-II OS=Homo sap...</td>
-       </tr>
-       <tr>
-         <th>2275</th>
-         <td>P11279</td>
-         <td>8</td>
-         <td>4</td>
-         <td>49.3820</td>
-         <td>9.980765e-01</td>
-         <td>0.411967</td>
-         <td>1.006122</td>
-         <td>0.050001</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Lysosome-associated membrane glycoprotein 1 OS...</td>
-       </tr>
-       <tr>
-         <th>2276</th>
-         <td>P02100</td>
-         <td>5</td>
-         <td>2</td>
-         <td>53.0892</td>
-         <td>9.997813e-01</td>
-         <td>0.412321</td>
-         <td>1.163175</td>
-         <td>0.050000</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Hemoglobin subunit epsilon OS=Homo sapiens OX=...</td>
-       </tr>
-       <tr>
-         <th>2277</th>
-         <td>O00194</td>
-         <td>5</td>
-         <td>1</td>
-         <td>39.7453</td>
-         <td>9.998110e-01</td>
-         <td>0.412321</td>
-         <td>1.052006</td>
-         <td>0.050000</td>
-         <td>COVID</td>
-         <td>CTRL</td>
-         <td>Ras-related protein Rab-27B OS=Homo sapiens OX...</td>
-       </tr>
      </tbody>
    </table>
-   <p>2278 rows × 11 columns</p>
    </div>
 
 
 pdata
 ^^^^^
 
-Pdata presents a description of each sample analysed. Pdata must have at least 3 columns: 'Sample', 'Condition', and 'Biological'.
+Pdata contains a description of each sample analyzed in the workflow. Pdata must have at least the following 3 columns: 'Sample', 'Condition', and 'Biological'.
 
 
-#. **Sample:** Identifier for each sample analysed.
-#. **Condition:** Respective group for each sample.
-#. **Biological:** Respective biological replicates for each sample.
+#. **Sample:** The name of each sample to be analysed, matching those in the first row of the Assay sheet.
+#. **Condition:** Respective group for each sample. All technical and biological replicates belonging to an experimental condition should have the same identifier here.
+#. **Biological:** Respective biological replicate for each sample. If two or more technical replicates were used for a single biological replicate, those replicates should have the same identifier here.
 
-When performing longitudinal analysis, users must input a 'TimeCourse' column showing day/hour/time associated with the respective sample.
+When performing longitudinal analysis, users must also include a ``TimeCourse`` column containing the day/hour/time/etc. associated with each sample.
 
-In order to provide a clearer understanding of how to construct a pdata, we have dedicated an entire section to its detailed description.
+See the example below for how to construct a pdata sheet. In this example, there are two groups being compared: COVID *vs.* CTRL. COVID contains 12 biological replicates, CTRL contains 7 biological replicates. All replicates were injected twice for two instrumental replicates. These replicates will be averaged and not considered individual samples for T-Test purposes.
 
 .. code-block:: python
 
-   pdata = pd.read_excel('../tests/data/proteins/general.xlsx', sheet_name=2)
+   pdata = pd.read_excel('../../tests/data/proteins/general.xlsx', sheet_name=2)
    pdata
 
 
@@ -944,46 +615,47 @@ In order to provide a clearer understanding of how to construct a pdata, we have
 Snapshot
 --------
 
-The Snapshot method is an alternative option in OmicScope that allows for the analysis of multiple studies (omics) by importing pre-analyzed data from other platforms.
+The Snapshot method is an alternative option in OmicScope that allows for the analysis of multiple 'omics studies, importing pre-analyzed data from other platforms.
 
 To use the Snapshot method, the user needs to upload a CSV or Excel file organized as follows:
 
 
-#. First row: **ControlGroup: INSERT_HERE_YOUR_CONTROL**
-#. Second row: **Experimental: INSERT_HERE_YOUR_EXPERIMENTAL_GROUPS_SEPARATED_BY_COMMAS**
-#. Subsequent rows: A table containing the following columns: 'Accession', 'gene_name', 'log2(fc)', and either 'pvalue' or 'pAdjusted'. This table structure is mandatory and must be included in file starting from the third row.
+#. First row: **ControlGroup: LIST_YOUR_CONTROL_HERE**
+#. Second row: **Experimental: LIST_YOUR_EXPERIMENTAL_GROUPS_SEPARATED_BY_COMMAS**
+#. Third row: A table header containing the following values: 'Accession', 'gene_name', 'log2(fc)', and either 'pvalue' or 'pAdjusted'. 
+#. Subsequent rows: The molecular data to fill the columns listed in the third row.
 
-It is important to note that Snapshot contains a limited amount of information, which means that not all plots and enrichment analyses are available. However, once the data is imported into OmicScope, it can be exported as an .omics file and used in the Nebula module.
+It is important to note that Snapshot contains a comparatively limited amount of information, which means that not all plots and enrichment analyses will be available. Nevertheless, once the data is imported into OmicScope, it can still be exported as an .omics file and used in the Nebula module.
 
 Additional Informations
 -----------------------
 
-Users can also define and optimize any extra parameters that are in the OmicScope function.
+Users can also define any of the following additional parameters that are in the OmicScope function to optimize their analysis.
 
 
 #. 
-   **ControlGroup** (default = None): Users can define a control group ('ControlGroup=None', default) to perform comparisons against a specific group (this group has to be explicitly defined in the 'Conditions' column on the pdata table).
+   **ControlGroup** (default, ``ControlGroup = None``\ ): Users can define a control group to perform comparisons against a specific group. The name of this group has to be explicitly defined in the 'Conditions' column on the pdata table.
 
 #. 
-   **ExperimentalDesign** (default = 'static'): Comparisons among independent groups are called 'static' experimental designs. On the other hand, if the experiment takes into account several time points, then it is performing a 'longitudinal' experimental design (in this case, a pdata table must present a 'TimeCourse' column).
+   **ExperimentalDesign** (default, ``ExperimentalDesign = 'static'``\ ) (options: 'static', 'longitudinal'): Comparisons among independent groups are called static experimental designs. However, if the experiment takes into account several time points of related samples, then it is performing a longitudinal experimental design. **Note:** in this case, the pdata table must present a 'TimeCourse' column.
 
 #. 
-   **pvalue** (default = 'pAdjusted'): Defines the type of statistics used to report differentially regulated proteins. The options are nominal p-value ('pvalue'), Benjamini-Hochberg adjusted p-value ('pAdjusted'), or Tukey post-hoc correction ('pTukey', only for multiple group comparisons in static experiments).
+   **pvalue** (default, ``pvalue = 'pAdjusted'``\ ) (options: 'pvalue', 'pAdjusted', 'pTukey'): Defines the type of statistics used to report differentially regulated proteins. The options are nominal p-value ('pvalue'), Benjamini-Hochberg adjusted p-value ('pAdjusted'), or Tukey post-hoc correction ('pTukey', only available for multiple group comparisons in static experiments).
 
 #. 
-   **PValue_cutoff** (default = 0.05): Statistical cutoff to consider proteins differentially regulated.
+   **PValue_cutoff** (default = ``PValue_cutoff = 0.05``\ ): Statistical cutoff to consider proteins differentially regulated.
 
 #. 
-   **FoldChange_cutoff** (default = 0): Cutoff of abundance ratio to consider proteins differentially regulated.
+   **FoldChange_cutoff** (default, ``FoldChange_cutoff = 0``\ ): Cutoff of the absolute abundance ratio to consider a protein to be differentially regulated. 0 indicates that p-values alone are sufficient to determine dysregulation.
 
 #. 
-   **logTransformed** (default = False): Usually, software reports abundance in nominal values, requiring a log-transformation of the values. If users perform transformation before the OmicScope workflow, set logTransformed=True.
+   **logTransformed** (default, ``logTransformed = False``\ ): Usually, analysis software reports abundance in nominal values, requiring a log-transformation of the values to normalize abundance data. If users performed transformation before the OmicScope workflow, set logTransformed=True.
 
 #. 
-   **ExcludeContaminants** (default = True): Since keratins are considered sample contaminants in most studies, OmicScope can exclude them from final results.
+   **ExcludeContaminants** (default, ``ExcludeContaminants = True``\ ): Recently, Frankenfield (2022) evaluated the most common contaminants found in proteomics workflows. By default, OmicScope removes them from analyses. If this is not desired, OmicScope can leave them in the final results with ExcludeContaminants=False.
 
 #. 
-   **degrees_of_freedom** (default = 2): For longitudinal analysis, users can optimize the parameters according to their study, choosing a greater degree of freedom to perform the analysis.
+   **degrees_of_freedom** (default, ``degrees_of_freedom = 2``\ ): For longitudinal experiments, users can optimize this parameter according to their study, choosing a greater degree of freedom to perform the subsequent statistical analyses. Note that ExperimentalDesign and pdata must still be appropriately configured.
 
 #. 
-   **independent_ttest** (default = True): If running a t-test, the user can specify if data sampling is independent (default) or paired (independent_ttest=False). Defaults to True.
+   **independent_ttest** (default, ``independent_ttest = True``\ ): If running a t-test, the user can specify if data sampling was independent (True) or paired (False).

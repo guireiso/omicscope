@@ -71,7 +71,6 @@ For merging, you should:
 1. Include passing tests (run ``tox``).
 2. Update documentation when there's new API, functionality etc.
 3. Add a note to ``CHANGELOG.rst`` about the changes.
-4. Add yourself to ``AUTHORS.rst``.
 
 
 
