@@ -61,6 +61,7 @@ def perform_longitudinal_stat(self):
     import numpy as np
     degrees_of_freedom = copy(self.degrees_of_freedom)
     expression = copy(self.expression)
+    expression = expression.replace(np.nan, 0)
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
     pdata = copy(self.pdata)
