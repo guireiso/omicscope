@@ -41,7 +41,7 @@ First, OmicScope package must be imported in the Python programming environment.
 
 .. code-block::
 
-   OmicScope v 1.3.11 For help: Insert
+   OmicScope v 1.3.12 For help: Insert
    If you use  in published research, please cite: 'XXXXX'
    Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
 
@@ -103,7 +103,6 @@ PatternLab exports an Excel file with an .xlsx extension, which contains the sam
 
    Anova test was performed!
    OmicScope performed statistical analysis (Static workflow)
-   ATTENTION: There is no differential regulation in your dataset
 
 
 
@@ -121,7 +120,6 @@ While MaxQuant exports the **proteinGroups.txt** file, which contains a comprehe
 
    Anova test was performed!
    OmicScope performed statistical analysis (Static workflow)
-   ATTENTION: There is no differential regulation in your dataset
 
 
 

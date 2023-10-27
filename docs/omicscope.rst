@@ -11,7 +11,7 @@ This section provides an overview of the diverse functionalities of OmicScope, w
 
 .. code-block::
 
-   OmicScope v 1.3.11 For help: Insert
+   OmicScope v 1.3.12 For help: Insert
    If you use  in published research, please cite: 'XXXXX'
    Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
 
