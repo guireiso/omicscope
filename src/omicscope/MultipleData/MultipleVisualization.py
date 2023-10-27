@@ -832,7 +832,7 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
         dpi (int, optional): Figure resolution. Defaults to 300.
     """
     # Data
-    enrichment = copy(self.enrichment)
+    enrichment = [x for x in self.enrichment if x is not None]
     groups = copy(self.groups)
     deps = copy(self.group_data)
     deps = [x.dropna().reset_index(drop=True) for x in deps]
