@@ -20,7 +20,7 @@ def read(*names, **kwargs):
 
 setup(
     name='omicscope',
-    version='1.3.11',
+    version='1.3.12',
     license='MIT',
     description='OmicScope: from quantitative proteomics to systems biology.',
     long_description='{}\n{}'.format(
