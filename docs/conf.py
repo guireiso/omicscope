@@ -5,7 +5,22 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
 
 
-autodoc_mock_imports = ['matplotlib', 'numpy', 'pandas', 'seaborn', 'pycirclize', 'networkx']
+autodoc_mock_imports = ['adjustText',
+                        'altair',
+                        'gseapy',
+                        'kneed',
+                        'matplotlib',
+                        'networkx',
+                        'numpy',
+                        'pandas',
+                        'scikit-learn',
+                        'scipy',
+                        'seaborn',
+                        'statsmodels',
+                        'UpSetPlot',
+                        'xlrd',
+                        'zipp',
+                        'pycirclize']
 
 extensions = [
     'sphinx.ext.autodoc',
