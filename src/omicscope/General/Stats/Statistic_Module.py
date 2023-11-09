@@ -20,6 +20,7 @@ def perform_static_stat(self):
     log = copy(self.logTransformed)
     rdata = copy(self.rdata)
     pvalue = copy(self.pvalue)
+    PValue_cutoff = copy(self.PValue_cutoff)
     # Log-normalize data if it was not
     if log is False:
         expression = expression.replace(0, np.nan)
@@ -28,14 +29,14 @@ def perform_static_stat(self):
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest
         params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata,
-                  pvalue]
+                  pvalue, PValue_cutoff]
         data = ttest(params=params)
         data = params[4].merge(data, on='Accession')
 
     # Apply ANOVA if len(conditions) > 2
     elif len(self.Conditions) > 2:
         from .Static_Statistics import anova
-        params = [expression, rdata, self.Conditions, pvalue]
+        params = [expression, rdata, self.Conditions, pvalue, PValue_cutoff]
         data = anova(params=params)
         data = params[1].merge(data, on='Accession')
     data = data.sort_values('pvalue')
@@ -67,18 +68,20 @@ def perform_longitudinal_stat(self):
     pdata = copy(self.pdata)
     pvalue = copy(self.pvalue)
     ctrl = copy(self.ctrl)
+    PValue_cutoff = copy(self.PValue_cutoff)
     # Log-normalize data if it was not
     if log is False:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
     from .Longitudinal_Stat import Longitudinal_Stats
     data = Longitudinal_Stats(assay=expression, pdata=pdata.drop(columns=['technical']),
-                              degrees_of_freedom=degrees_of_freedom, pvalue=pvalue, ctrl=ctrl)
+                              degrees_of_freedom=degrees_of_freedom, pvalue=pvalue, ctrl=ctrl,
+                              PValue_cutoff=PValue_cutoff)
     data = rdata.merge(data, on='Accession')
     # longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
-    # # Filtering Keratin
+    # # Filtering Contaminants
     if self.ExcludeContaminants is True:
         path = os.path.dirname(os.path.abspath(__file__))
         contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]

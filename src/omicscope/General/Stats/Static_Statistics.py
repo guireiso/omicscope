@@ -42,8 +42,8 @@ def ttest(params):
     quant_data = quant_data.sort_values('pvalue')
 
     #  Correcting multilple hypothesis test according to fdr_bh
-    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
-                                            method='fdr_bh')[1]
+    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],alpha=params[6],
+                                            method='fdr_tsbh')[1]
 
     #  Mean abundance for each protein among conditions
     quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
@@ -150,8 +150,8 @@ def anova(params):
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     quant_data = quant_data.sort_values('pvalue')
     # BH-correction
-    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],
-                                            method='fdr_bh', is_sorted=False, returnsorted=False)[1]
+    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=params[4],
+                                            method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
     # Perform Tukey's Post-hoc correction
     Tukey = Tukey_hsd(quant_data)
     quant_data = quant_data.join(Tukey)

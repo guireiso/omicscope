@@ -223,7 +223,7 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
     return pvalue, Mean_Conditions, log2fc
 
 
-def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue, ctrl):
+def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue, ctrl, PValue_cutoff):
     quant_data = copy(assay)
     pdata = copy(pdata)
     pdata = pdata.set_index(['Biological', 'Sample'])
@@ -232,7 +232,7 @@ def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue, ctrl):
     pval = stat[0]
     quant_data['pvalue'] = list(pval)
     #  Correcting multilple hypothesis test according to fdr_bh
-    pAdjusted = multipletests(pval, alpha=0.1,
+    pAdjusted = multipletests(pval, alpha=PValue_cutoff,
                               method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
 
     quant_data['pAdjusted'] = pAdjusted
