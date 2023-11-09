@@ -149,11 +149,15 @@ class Omicscope(Input):
         from copy import copy
 
         import numpy as np
-
+        pdata_original = self.pdata.copy()
+        assay = self.assay.copy()
+        # Create a custom sorting key using the template
+        sorting_samples = list(pdata_original.Sample)
+        assay = assay[sorting_samples]
         pdata = []
-        for i in self.pdata.columns:
-            pdata.append(self.pdata[i])
-        expression = self.assay.T
+        for i in pdata_original.columns:
+            pdata.append(pdata_original[i])
+        expression = assay.T
         expression = expression.set_index(pdata).T
 
         rdata = []
@@ -162,7 +166,7 @@ class Omicscope(Input):
         expression = expression.set_index(rdata).T
         pdata_columns = list(self.pdata.columns)
         pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples']))
-        technical = copy(self.pdata)
+        technical = copy(pdata_original)
         technical = technical.groupby(pdata_columns).agg(','.join).reset_index()
         technical.columns = pdata_columns + ['technical']
         expression = expression.groupby(pdata_columns).mean(numeric_only=True)

@@ -72,7 +72,7 @@ def perform_longitudinal_stat(self):
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
     from .Longitudinal_Stat import Longitudinal_Stats
-    data = Longitudinal_Stats(assay=expression, pdata=pdata,
+    data = Longitudinal_Stats(assay=expression, pdata=pdata.drop(columns=['technical']),
                               degrees_of_freedom=degrees_of_freedom, pvalue=pvalue, ctrl=ctrl)
     data = rdata.merge(data, on='Accession')
     # longitudinal modules
