@@ -62,7 +62,7 @@ class Input:
         df['Description'] = df.Description.astype(str)
 
         # Filtering unique peptides
-        if len(kwargs) > 0:
+        if 'UniquePeptides' in kwargs:
             df = df[df['Unique peptides'] >= kwargs['UniquePeptides']]
         df = df.reset_index(drop=True)
         df = df.rename(columns={'Anova (p)': 'pvalue',
