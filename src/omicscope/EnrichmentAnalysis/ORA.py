@@ -82,7 +82,7 @@ class Enrichment:
         # Filtering results Adjusted P-value
         df = df[df['Adjusted P-value'] < self.padjust_cutoff]
         # GSEApy presents a threshold to consider pvalue = 0
-        minimum_value = df[df['Adjusted P-value']].drop_duplicates().sort_values()
+        minimum_value = df['Adjusted P-value'].drop_duplicates().sort_values()
         minimum_value = minimum_value[minimum_value != 0].reset_index(drop=True)
         minimum_value = minimum_value[0]
         df['Adjusted P-value'] = df['Adjusted P-value'].replace(0, minimum_value)
@@ -94,4 +94,6 @@ class Enrichment:
         df['regulation'] = df['Genes'].apply(lambda x: [foldchange[i] for i in x])
         df['down-regulated'] = df['regulation'].apply(lambda x: len([i for i in x if i < 0]))
         df['up-regulated'] = df['regulation'].apply(lambda x: len([i for i in x if i > 0]))
+        df = df.sort_values(['Adjusted P-value', 'Combined Score'])
+        df = df.reset_index()
         return df
