@@ -448,7 +448,6 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         norm = [float(i)/np.mean(weights) for i in weights]
         pos = nx.spring_layout(G, k=1/len(G.nodes)**0.3)
         carac = carac.reindex(G.nodes())
-        print(carac)
         G.remove_edges_from(nx.selfloop_edges(G))
         # Draw network
         nx.draw(G, pos=pos,
