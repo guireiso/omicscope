@@ -81,6 +81,12 @@ class Enrichment:
         df = enr.results.copy()
         # Filtering results Adjusted P-value
         df = df[df['Adjusted P-value'] < self.padjust_cutoff]
+        # GSEApy presents a threshold to consider pvalue = 0
+        minimum_value = df[df['Adjusted P-value']].drop_duplicates().sort_values()
+        minimum_value = minimum_value[minimum_value != 0].reset_index(drop=True)
+        minimum_value = minimum_value[0]
+        df['Adjusted P-value'] = df['Adjusted P-value'].replace(0, minimum_value)
+        # Adjusting table
         df['-log10(pAdj)'] = -np.log10(df['Adjusted P-value'])
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
         df.Genes = df.Genes.str.split(';')
