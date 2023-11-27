@@ -42,8 +42,8 @@ class Enrichment:
         """GSEA workflow according to gseapy
         """
         from gseapy import gsea
-        pvalue_cutoff = copy.copy(self.OmicScope.PValue_cutoff)
-        foldchange_cutoff = copy.copy(self.OmicScope.FoldChange_cutoff)
+        # pvalue_cutoff = copy.copy(self.OmicScope.PValue_cutoff)
+        # foldchange_cutoff = copy.copy(self.OmicScope.FoldChange_cutoff)
         omics = copy.copy(self.OmicScope.quant_data)
         conditions = [copy.copy(self.OmicScope.ControlGroup)]
         conditions.extend(self.OmicScope.experimental)
@@ -63,7 +63,6 @@ class Enrichment:
         gsea_input = gsea_input.reset_index()
         gsea_input['gene_name'] = gsea_input['gene_name'].str.upper()
         gsea_input = gsea_input[gsea_input['gene_name'].notna()]
-
         gsea_result = gsea(gsea_input, gene_sets=db,
                            cls=groups, no_plot=True, outdir=None)
         gsea_result = gsea_result.res2d
