@@ -51,6 +51,7 @@ class nebula:
             with open(i, 'r') as archive:
                 lines = archive.readlines()
                 for n, line in enumerate(lines):
+                    line = line.replace('\r\n', '\n')
                     if line == '-------\n':
                         positions.append(n)
                     if line.startswith('Experimental'):

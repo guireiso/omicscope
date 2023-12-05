@@ -216,13 +216,14 @@ class Omicscope(Input):
 
     def savefile(self, Path: str):
         from copy import copy
+        import os
         data = copy(self)
         experimental = data.experimental
         string = '-'.join(data.Conditions)
         with open(Path + '/' + string + '.omics', 'w') as f:
             dfAsString = data.quant_data[['gene_name', 'Accession', self.pvalue, 'log2(fc)', 'TotalMean']].to_csv(
                 sep='\t', index=False).replace('\r', "")
-            f.write("OmicScope" + "\n" +
+            file = str("OmicScope" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
                     " for group comparisons having the controlling group used as used according to OmicScope." +
                     "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python" +
@@ -232,6 +233,7 @@ class Omicscope(Input):
                     'Statistics:' + '\t' + self.pvalue + '\n' +
                     'Expression:\n' + '-------\n' +
                     dfAsString)
+            f.write(file.replace(os.linesep, '\n'))
     __all__ = [
         'bar_ident',
         'heatmap',

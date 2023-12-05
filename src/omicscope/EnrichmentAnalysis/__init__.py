@@ -62,6 +62,7 @@ class Enrichmentscope():
 
     def savefile(self, Path: str):
         from copy import copy
+        import os
         save = Path
         data = copy(self)
         string = '-'.join(data.OmicScope.Conditions)
@@ -75,8 +76,7 @@ class Enrichmentscope():
             elif self.Analysis == 'GSEA':
                 enrichment = data.results[['Gene_set', 'Term', 'NES', 'Overlap',
                                            'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False).replace('\r', "")
-
-            f.write("OmicScope" + "\n" +
+            file = str("OmicScope" + "\n" +
                     "This file is the output performed by OmicScope pipeline and can be used as input" +
                     " for group comparisons having the controlling group used as used according to OmicScope." +
                     "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python " +
@@ -88,6 +88,7 @@ class Enrichmentscope():
                     expression + '\n' +
                     'Enrichment Analysis:\n' + '-------\n' +
                     enrichment)
+            f.write(file.replace(os.linesep, '\n'))
     __all__ = ['dotplot',
                'heatmap',
                'number_deps',
