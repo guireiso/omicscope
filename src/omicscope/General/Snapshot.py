@@ -32,6 +32,8 @@ class Omicscope_Snapshot():
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
         self.pvalue = pvalue
+        self.pdata = None
+        self.rdata = None
         # Define Conditions and Quant_data
         self.define_conditions_quantdata()
 
