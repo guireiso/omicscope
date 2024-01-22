@@ -26,8 +26,25 @@ class nebula:
         for o, g, l in zip(self.original, self.groups, self.labels):
             self.group_data.append(self.importing(o, g, l, pvalue_cutoff=pvalue_cutoff))
         if len(self.groups) != len(set(self.groups)):
-            raise Exception("There are duplicated group labels. Please verify the .omics file to ensure that the Experimental groups" +
-                            " have distinct labels.")
+            # Create a dictionary to keep track of counts for each string
+            string_count = {}
+            group_without_duplicates = []
+            # Loop through the original list and modify duplicates
+            for item in self.groups:
+                # If the string is already in the dictionary (a duplicate)
+                if item in string_count:
+                    # Increment the count
+                    string_count[item] += 1
+                    # Append the modified string with count to the second list
+                    modified_item = f"{item}_{string_count[item]}"
+                    group_without_duplicates.append(modified_item)
+                else:
+                    # If it's the first occurrence, add it as is to the second list
+                    group_without_duplicates.append(item)
+                    # Add the string to the dictionary with a count of 1
+                    string_count[item] = 1
+            self.groups = group_without_duplicates
+            self.labels = group_without_duplicates
         self.enrichment = self.remap()
         print(f'''You imported your data successfully!
         Data description:

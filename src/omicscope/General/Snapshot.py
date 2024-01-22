@@ -55,7 +55,7 @@ class Omicscope_Snapshot():
         The study conditions must be specified in the first two rows of the imported file,
          of which the first one must be the ControlGroup and the second the experimental groups.
         """
-        if self.Table.endswith('.csv'):
+        try:
             quant_data = pd.read_csv(self.Table, header=2)
             quant_data['TotalMean'] = 1
             self.quant_data = self.deps = quant_data
@@ -64,7 +64,7 @@ class Omicscope_Snapshot():
             Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1]
             self.ctrl = self.ControlGroup = Conditions[0]
             self.experimental = Conditions[1].split(',')
-        else:
+        except UnicodeDecodeError:
             quant_data = pd.read_excel(self.Table, header=2)
             quant_data['TotalMean'] = 1
             self.quant_data = self.deps = quant_data
