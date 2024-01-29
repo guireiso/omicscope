@@ -15,6 +15,7 @@ also can produces ready-to-publish figures.
 """
 
 import copy
+import warnings
 
 import numpy as np
 
@@ -81,11 +82,14 @@ class Enrichment:
         df = enr.results.copy()
         # Filtering results Adjusted P-value
         df = df[df['Adjusted P-value'] < self.padjust_cutoff]
-        # GSEApy presents a threshold to consider pvalue = 0
-        minimum_value = df['Adjusted P-value'].drop_duplicates().sort_values()
-        minimum_value = minimum_value[minimum_value != 0].reset_index(drop=True)
-        minimum_value = minimum_value[0]
-        df['Adjusted P-value'] = df['Adjusted P-value'].replace(0, minimum_value)
+        # GSEApy package presents a threshold to consider pvalue = 0
+        try:
+            minimum_value = df['Adjusted P-value'].drop_duplicates().sort_values()
+            minimum_value = minimum_value[minimum_value != 0].reset_index(drop=True)
+            minimum_value = minimum_value[0]
+            df['Adjusted P-value'] = df['Adjusted P-value'].replace(0, minimum_value)
+        except KeyError:
+            pass
         # Adjusting table
         df['-log10(pAdj)'] = -np.log10(df['Adjusted P-value'])
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
