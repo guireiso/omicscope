@@ -56,10 +56,20 @@ You can also install the in-development version with::
 
     pip install https://github.com/guireiso/omicscope/archive/main.zip
 
+Note: OmicScope uses the package SciPy, which requires a fortran compiler to be installed to build its source,which can be tricky on some systems. An alternative to this is to use Anaconda environment. OmicScope can then be more easily installed within this environment, using the command line or preferred method.
+
+Note2: Installing OmicScope may take some time on certain systems. If you observe the command line halting, please be patient, as the installation process may require seconds to minutes to complete.
 
 Documentation
 -------------
 
 
 https://omicscope.readthedocs.io/
+
+
+Demo
+----
+
+In the repository, specifically in tests/data/proteins, you'll discover raw protein quantification data for executing both OmicScope and EnrichmentScope pipelines. Furthermore, within tests/data/MultipleGroups/omics_file, you'll locate the omics outputs suitable for utilization in the Nebula pipeline.
+
 
