@@ -77,6 +77,7 @@ setup(
         "packaging==21.3",
         "pandas==1.5.1",
         "pkginfo==1.9.4",
+        "pkgutil",
         "pycirclize==0.4.0",
         "scikit-learn==1.1.3",
         "scipy==1.9.3",
