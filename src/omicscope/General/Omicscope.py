@@ -63,6 +63,7 @@ class Omicscope(Input):
                 are independent (default) or paired (independent_ttest=False). Defaults to True.
         """
         import pandas as pd
+        self.Params = {'Params': {}}
         super().__init__(Table, Method=Method, **kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
