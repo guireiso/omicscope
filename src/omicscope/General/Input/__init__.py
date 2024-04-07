@@ -19,7 +19,7 @@ class Input():
             Method (str): algorithm/software used to perform quantitative
             proteomics
         """
-        Methods = ['Progenesis', 'General', 'PatternLab', 'MaxQuant', 'DIA-NN']
+        Methods = ['Progenesis', 'General', 'PatternLab', 'MaxQuant', 'DIA-NN', 'FragPipe']
         if Method not in Methods:
             raise ValueError("Invalid Method input. Expected one of: %s" % Methods)
         if Method == 'Progenesis':
@@ -44,6 +44,9 @@ class Input():
             from .DIANN import Input
             self.Params['Params']['ImportMethod'] = 'DIA-NN'
             self.Params['Params']['ImportWarning_1'] = 'Quantification using PGMaxLFQ'
+        elif Method == 'FragPipe':
+            from .FragPipe import Input
+            self.Params['Params']['ImportMethod'] = 'FragPipe'
         data = Input(Table, **kwargs)
         self.Table = Table
         self.rdata = data.rdata

@@ -83,6 +83,8 @@ class Omicscope(Input):
                 self.pdata = pd.read_excel(kwargs['pdata'])
             except ValueError:
                 self.pdata = pd.read_csv(kwargs['pdata'])
+                if self.pdata.shape[1] == 1:
+                    raise KeyError('OmicScope does not import pdata correctly. Please, confirm if data is xlsx, xls or csv.')
 
         self.define_conditions()
 
