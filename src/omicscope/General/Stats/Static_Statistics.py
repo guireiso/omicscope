@@ -6,7 +6,7 @@ import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
 
-def ttest(params):
+def ttest(self, params):
     """Perform a T-test on the data
 
     Args:
@@ -27,7 +27,8 @@ def ttest(params):
                            copy(
                                quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
                            axis=1, nan_policy='omit')
-        print('Independent T-test was carried out!')
+        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed Independent T-test'
+
         #  Perform a sample-related t-test
     elif ind_variables is False:
         from scipy.stats import ttest_rel
@@ -35,15 +36,17 @@ def ttest(params):
                            copy(
                                quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
                            axis=1, nan_policy='omit')
-        print('T-test of related variables was carried out!')
+        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed Independent T-test'
 
     quant_data['pvalue'] = result[1]
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
+    self.Params['Params']['Stats_Workflow_4'] = 'OmicScope replaceD p-value = NaN to 1.0'
     quant_data = quant_data.sort_values('pvalue')
 
     #  Correcting multilple hypothesis test according to fdr_bh
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],alpha=params[6],
                                             method='fdr_tsbh')[1]
+    self.Params['Params']['Stats_Workflow_5'] = 'OmicScope performed two-stage Benjamini-Hochberg correction'
 
     #  Mean abundance for each protein among conditions
     quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
@@ -123,13 +126,14 @@ def Tukey_hsd(quant_data):
     return df
 
 
-def anova(params):
+def anova(self, params):
     """Test for ANOVA for parametric and multiple comparisons
 
     Args:
         params ([type]): [description]
     """
     from scipy.stats import f_oneway
+    self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed One-way ANOVA'
     quant_data = params[0]
     Conditions = params[2]
     pvalue = params[3]
@@ -148,12 +152,15 @@ def anova(params):
     stat.index = quant_data.index
     quant_data['pvalue'] = stat
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
+    self.Params['Params']['Stats_Workflow_4'] = 'OmicScope replaceD p-value = NaN to 1.0'
     quant_data = quant_data.sort_values('pvalue')
     # BH-correction
     quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=params[4],
                                             method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
+    self.Params['Params']['Stats_Workflow_5'] = 'OmicScope performed two-stage Benjamini-Hochberg correction'
     # Perform Tukey's Post-hoc correction
     Tukey = Tukey_hsd(quant_data)
+    self.Params['Params']['Stats_Workflow_6'] = 'OmicScope performed Tukey HSD correction with pAdjusted < 0.05'
     quant_data = quant_data.join(Tukey)
     quant_data = quant_data.explode(['pTukey', 'Comparison'])
     quant_data['pTukey'] = quant_data.pTukey.astype(float)
@@ -179,7 +186,6 @@ def anova(params):
     quant_data['Condition2'] = np.where(
         quant_data['pvalue'] > 0.05, quant_data['Condition_All'], quant_data['Condition2'])
     quant_data = quant_data.sort_values(['pTukey', 'pAdjusted', 'pvalue'])
-    print('Anova test was performed!')
 
     # #  Mean abundance for each protein among conditions
     quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(

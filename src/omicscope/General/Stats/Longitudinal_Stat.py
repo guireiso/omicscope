@@ -7,7 +7,7 @@ from patsy import dmatrix
 from statsmodels.stats.multitest import multipletests
 
 
-def Spline_Model_Full(pdata, df):
+def Spline_Model_Full(self, pdata, df):
     """
     Natural Cubic Spline
     This algorithm perform the Natural Cubic Spline regression
@@ -43,14 +43,14 @@ def Spline_Model_Full(pdata, df):
         variables = 1
         dictionary = dictTC
         sentence = f"~ cr((TimeCourse), df ={df}, constraints='center')"
-    print('Full Model: ' + sentence)
     transformed_x = dmatrix(sentence,
                             dictionary, return_type='dataframe')
     transformed_x = transformed_x.reset_index(drop=True)
+    self.Params['Params']['Stats_Workflow_4'] = "FullModel: "+sentence
     return transformed_x
 
 
-def Spline_Model_Null(pdata, df):
+def Spline_Model_Null(self, pdata, df):
     """
     Natural Cubic Spline
     This algorithm perform the Natural Cubic Spline regression
@@ -90,7 +90,7 @@ def Spline_Model_Null(pdata, df):
                                 dictionary, return_type='dataframe')
     except PatsyError:
         transformed_x = pd.DataFrame([1] * len(pdata), columns=['Intercept'])
-    print('Null Model: ' + sentence)
+    self.Params['Params']['Stats_Workflow_5'] = "NullModel: "+sentence
     transformed_x = transformed_x.reset_index(drop=True)
     return transformed_x
 
@@ -158,7 +158,7 @@ def Spline_Normalization(expression, full_model, null_model):
     return F_stat
 
 
-def Longitudinal_pval(assay, pdata, df, ctrl):
+def Longitudinal_pval(self, assay, pdata, df, ctrl):
     """
     Perform Longitudinal Statistics based on Natural Cubic Spline Regression
 
@@ -177,11 +177,12 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
     # Calculating full and null models
     # While data from the same individuals was collected overtime
     if 'Individual' in pdata.columns:
+        self.Params['Params']['Stats_Workflow_3'] = 'Related sampling detected'
         pdata2 = pdata.loc[:, pdata.columns != 'Individual']
         pdata2 = pdata2.loc[:, pdata2.columns != 'Biological']
-        full_model = Spline_Model_Full(pdata2, df)
+        full_model = Spline_Model_Full(self, pdata=pdata2, df=df)
         full_model_len = len(full_model.columns)
-        null_model = Spline_Model_Null(pdata2, df)
+        null_model = Spline_Model_Null(self, pdata=pdata2, df=df)
         longitudinal_workflow = longitudinal(assay, pdata, full_model, null_model)
         full_model = longitudinal_workflow[1]
         null_model = longitudinal_workflow[0]
@@ -192,9 +193,10 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
 
     else:
         # While data from the different individuals was collected overtime
+        self.Params['Params']['Stats_Workflow_3'] = 'Independent sampling detected'
         pdata = pdata.loc[:, pdata.columns != 'Biological']
-        full_model = Spline_Model_Full(pdata, df)
-        null_model = Spline_Model_Null(pdata, df)
+        full_model = Spline_Model_Full(self, pdata=pdata, df=df)
+        null_model = Spline_Model_Null(self, pdata=pdata, df=df)
         df1 = df
         df2 = len(assay.columns) - len(full_model.columns)
     # Fi for each gene
@@ -223,11 +225,11 @@ def Longitudinal_pval(assay, pdata, df, ctrl):
     return pvalue, Mean_Conditions, log2fc
 
 
-def Longitudinal_Stats(assay, pdata, degrees_of_freedom, pvalue, ctrl, PValue_cutoff):
+def Longitudinal_Stats(self, assay, pdata, degrees_of_freedom, pvalue, ctrl, PValue_cutoff):
     quant_data = copy(assay)
     pdata = copy(pdata)
     pdata = pdata.set_index(['Biological', 'Sample'])
-    stat = Longitudinal_pval(assay=assay, pdata=pdata, df=degrees_of_freedom,
+    stat = Longitudinal_pval(self, assay=assay, pdata=pdata, df=degrees_of_freedom,
                              ctrl=ctrl)
     pval = stat[0]
     quant_data['pvalue'] = list(pval)

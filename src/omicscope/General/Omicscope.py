@@ -170,9 +170,11 @@ class Omicscope(Input):
         technical = technical.groupby(pdata_columns).agg(','.join).reset_index()
         technical.columns = pdata_columns + ['technical']
         expression = expression.groupby(pdata_columns).mean(numeric_only=True)
+        self.Params['Params']['DataHandling_BeforeStat_1'] = 'Biological replicates abundance estimated as mean of technical measures'
         pdata = expression.index.to_frame().reset_index(drop=True)
         Variables = pdata.loc[:, pdata.columns != 'Biological']
         Variables = Variables.apply(lambda x: '-'.join(x.astype(str)), axis=1)
+        self.Params['Params']['DataHandling_BeforeStat_2'] = 'Biological replicates was renamed as BioRep_. More info can be found in pdata'
         Sample_name = 'BioRep_' + \
             pdata['Biological'].astype(str) + \
             '.' + Variables
@@ -182,6 +184,7 @@ class Omicscope(Input):
         expression = expression.set_index(rdata.Accession)
 
         # Filtering data. Protein must be detected at least in one sample per group
+        self.Params['Params']['DataHandling_BeforeStat_3'] = 'Filter proteins: minimum 2 samples/condition'
         nanvalues = expression.replace(0, np.nan)
         nanvalues = nanvalues.notna()
         nanvalues.columns = pdata.Condition
