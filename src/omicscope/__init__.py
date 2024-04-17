@@ -19,8 +19,10 @@ def OmicScope(Table: str,
               ExperimentalDesign: str = 'static',
               pvalue: str = 'pAdjusted',
               PValue_cutoff: float = 0.05,
+              normalization_method: Optional[str] = None,
+              imputation_method: Optional[str] = None,
               FoldChange_cutoff: float = 0.0,
-              logTransformed: bool = False,
+              logTransform: bool = True,
               ExcludeContaminants: bool = True,
               degrees_of_freedom: int = 2,
               independent_ttest=True,
@@ -46,8 +48,12 @@ def OmicScope(Table: str,
         pvalue (str, optional): Statistical parameter to consider entities differentially regulated.
           Options: 'pvalue', 'pAdjusted', 'pTukey'. Defaults to 'pAdjusted'.
         PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
+        normalization_method (str, optional): Data normalization can be performed. Options:
+          Options: "median", "mean", "quantile". Defaults to None.
+        imputation_method (str, optional): Impute values to data instead of NaN. 
+          Options: "median", "mean", "knn". Defaults to None.
         FoldChange_cutoff (float, optional): Absolute fold-change cutoff. Defaults to 0.0.
-        logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
+        logTransform (bool, optional): Log-transform protein abundances. Defaults to False.
         ExcludeContaminants (bool, optional): Exclude the list of Contaminant proteins. Defaults to True.
         degrees_of_freedom (int, optional): Degrees of freedom to run longitudinal analysis. Defaults to 2.
         independent_ttest (bool, optional): while running a t-test, the user can specify if data sampling
@@ -70,8 +76,10 @@ def OmicScope(Table: str,
             ExperimentalDesign,
             pvalue,
             PValue_cutoff,
+            normalization_method,
+            imputation_method,
             FoldChange_cutoff,
-            logTransformed,
+            logTransform,
             ExcludeContaminants,
             degrees_of_freedom,
             independent_ttest,

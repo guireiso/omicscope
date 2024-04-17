@@ -8,6 +8,8 @@ all OmicScope workflow, being the input for all other modules.
 import warnings
 
 from .Input import Input
+from .Stats.imputation import value_imputation
+from .Stats.normalization import normalization
 
 warnings.filterwarnings("ignore")
 
@@ -26,8 +28,9 @@ class Omicscope(Input):
     from .GeneralVisualization import volcano
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
-                 pvalue='pAdjusted', PValue_cutoff=0.05,
-                 FoldChange_cutoff=0, logTransformed=False, ExcludeContaminants=True,
+                 pvalue='pAdjusted', PValue_cutoff=0.05, 
+                 normalization_method = None, imputation_method=None,
+                 FoldChange_cutoff=0, logTransform=True, ExcludeContaminants=True,
                  degrees_of_freedom=2, independent_ttest=True, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
@@ -55,8 +58,12 @@ class Omicscope(Input):
             to consider entities differentially regulated. Defaults to 'pAdjusted'.
             pdata (Optional[str], optional): Path to phenotype data of each sample. Defaults to None.
             PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
+            normalization_method (str, optional): Data normalization can be performed. Options:
+              Options: "median", "mean", "quantile". Defaults to None.
+            imputation_method (str, optional): Impute values to data instead of NaN. 
+              Options: "median", "mean", "knn". Defaults to None.
             FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
-            logTransformed (bool, optional): Abundance values were previously log-transformed. Defaults to False.
+            logTransform (bool, optional): Log-transform protein abundances. Defaults to True.
             ExcludeContaminants (bool, optional): Contaminant proteins is excluded. Defaults to True.
             degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
             independent_ttest (bool, optional): If running a t-test, the user can specify if samples
@@ -67,7 +74,9 @@ class Omicscope(Input):
         super().__init__(Table, Method=Method, **kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
-        self.logTransformed = logTransformed
+        self.logTransform = logTransform
+        self.normalization_method = normalization_method
+        self.imputation_method = imputation_method
         self.ExcludeContaminants = ExcludeContaminants
         self.pvalue = pvalue
         self.ControlGroup = ControlGroup
@@ -102,13 +111,23 @@ class Omicscope(Input):
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics
             from .Stats.Statistic_Module import perform_static_stat
             # Construct pivot-table considering technical and biological replicates
-            self.expression = self.expression()
+            expression = self.expression()
+            expression = normalization(self, expression)
+            #expression = value_imputation(self, expression)
+            self.expression = expression.copy()
+                
             # perform stat
             self.quant_data = perform_static_stat(self)
             print('OmicScope performed statistical analysis (Static workflow)')
+        
         elif ExperimentalDesign == 'longitudinal':
             from .Stats.Statistic_Module import perform_longitudinal_stat
-            self.expression = self.expression()
+            expression = self.expression()
+            expression = normalization(self, expression)
+            expression = value_imputation(self, expression)
+            self.expression = expression.copy()
+
+            # perform stat
             self.degrees_of_freedom = degrees_of_freedom
             self.quant_data = perform_longitudinal_stat(self)
             print('OmicScope performed statistical analysis (Longitudinal workflow)')

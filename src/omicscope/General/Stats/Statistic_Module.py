@@ -18,12 +18,12 @@ def perform_static_stat(self):
     import numpy as np
     self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Static Workflow'
     expression = copy(self.expression)
-    log = copy(self.logTransformed)
+    log = copy(self.logTransform)
     rdata = copy(self.rdata)
     pvalue = copy(self.pvalue)
     PValue_cutoff = copy(self.PValue_cutoff)
-    # Log-normalize data if it was not
-    if log is False:
+    # Log-normalize data
+    if log is True:
         expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
         self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
@@ -66,15 +66,15 @@ def perform_longitudinal_stat(self):
     degrees_of_freedom = copy(self.degrees_of_freedom)
     expression = copy(self.expression)
     expression = expression.replace(np.nan, 0)
-    log = copy(self.logTransformed)
+    log = copy(self.logTransform)
     rdata = copy(self.rdata)
     pdata = copy(self.pdata)
     pvalue = copy(self.pvalue)
     ctrl = copy(self.ctrl)
     PValue_cutoff = copy(self.PValue_cutoff)
     self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Longitudinal Workflow'
-    # Log-normalize data if it was not
-    if log is False:
+    # Log-normalize data
+    if log is True:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
         self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
