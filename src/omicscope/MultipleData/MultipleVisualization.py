@@ -402,7 +402,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
         absolute_similarity_cutoff (float, optional): Cuttoff to consider the links between groups. Since major
          similarity indexes have positive and negative values, the function expect an absolute value to perform cuttof.
          Defaults to 0.2 (which means -0.2 < cutoff< 0.2).
-        metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'correlation'.
+        metric (str, optional): algorithm to perform pairwise comparison. Defaults to 'correlation'.
          Optionally, user can test other algorithm described in scipy.spatial.distance.
         center(float, optional): number to center the heatmap color gradient.
         palette (str, optional): color palette to plot heatmap.
@@ -514,7 +514,7 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
          OmicScope must consider for analysis. Defaults to 1.
         comparison_param (str, optional): Parameter to take into account in pairwise comparison.
         Defaults to 'log2(fc)'. Optionally 'TotalMean'.
-        metric (str, optional): statistical algorithm to perform pairwise comparison. Defaults to 'correlation'.
+        metric (str, optional): algorithm to perform pairwise comparison. Defaults to 'correlation'.
          Optionally, user can test other algorithm described in scipy.spatial.distance.
         center(float, optional): number to center the heatmap color gradient.
         palette (str, optional): color palette to plot heatmap.
@@ -596,7 +596,6 @@ def overlap_fisher(group1, group2, union):
     Returns:
         Pvalue (float): P-value
     """
-    import numpy as np
     from scipy.stats import hypergeom
 
     deps1 = set(group1)
@@ -609,95 +608,67 @@ def overlap_fisher(group1, group2, union):
     pval = sum(rv.pmf(x))
     return pval
 
-
-def fisher_heatmap(self, palette='Spectral', pvalue=0.05,
-                   background_lenght=None, annotation=True,
-                   save=None, vector=True, dpi=300):
-    """ Heatmap according to statistical significance
-
-    Perform a pair-wise comparison of all conditions
-    based on hypergeometric distribution and plot a heatmap
-    with hierarchical clustering. In the plot, it the p-value is
-    labeled in a log10-transformation.
-
+def distribution_test(self, protein_pvalue, 
+                   method):
+    """This function performs a statistical analysis on protein data considering overlaps between groups. The function performs different statistical tests depending on the chosen method:
+        1. t-test (ttest): This test is used to compare the means of two groups assuming normally distributed data.
+        2. Wilcoxon signed-rank test (wilcoxon): This non-parametric test is used to compare two related groups when the data may not be normally distributed.
+        3. Kolmogorov-Smirnov test (ks): This test is used to compare the probability distributions of two samples.
+    
     Args:
-        palette (str, optional): color palette. Defaults to 'Spectral'.
-        pvalue (float, optional):  P-value cuttoff for proteins (e.g. differentially regulated).
-        Defaults to 0.05.
-        background_lenght (int, optional): Number of genes/proteins that must
-        be used as background. By default, nebula uses all proteins/genes identified
-        considering all files imported. Optionally, user can insert the number of proteins
-        present in the proteome of target organism
-        save (str, optional): Path to save image. Defaults to None.
-        vector (bool, optional): If image should be export as .svg.
-        Defaults to True.
-        dpi (int, optional): Image resolution. Defaults to 300.
+        protein_pvalue (float): The cut-off value for protein p-values.
+        method (str):  The statistical method to be used for comparison. Valid options include "ttest" (t-test), "wilcoxon" (Wilcoxon signed-rank test), and "ks" (Kolmogorov-Smirnov test).
+        comparison among groups considering t-test (for parametric distributions),
+        wilcoxon (for non-parametric distributions), and ks (kolmorov-smirnov test).
 
     Returns:
-        DataFrame: Dataframe of pvalues between each condition.
+        matrix (DataFrame, pandas): P-value
     """
-    import numpy as np
-    import pandas as pd
-    from scipy.spatial.distance import pdist
+    from scipy.stats import ttest_ind, wilcoxon, kstest
     from scipy.spatial.distance import squareform
-    plt.rcParams['figure.dpi'] = dpi
+    import itertools
+    protein_pvalue = protein_pvalue
+    stat = method
+
     conditions = self.groups
-    colors = self.colors
-    pval = self.pvalue
-    if background_lenght is None:
-        union = set(pd.concat(self.original).gene_name)
-        union = len(union)
-    else:
-        union = background_lenght
-    sets = [set(x[x[pval] < pvalue].gene_name) for x in self.original]
-    sets = pd.DataFrame(sets)
-    matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
-    matrix = squareform(matrix)
+
+    data = [i[i[self.pvalue]<protein_pvalue] for i in self.original]
+    data = [i.set_index('Accession') for i in data]
+    data = [i['log2(fc)']for i in data]
+    data = [i.replace(-np.inf, np.nan) for i in data]
+    data = [i.replace(np.nan, min(i)-1) for i in data]
+
+
+    pair_data = list(itertools.combinations(data,2))
+
+    overlap = [ set(i[0].index) & set(i[1].index) for i in pair_data]
+    pair_data = [ (i[0][i[0].index.isin(j)], i[1][i[1].index.isin(j)]  ) for i,j in zip(pair_data,overlap)]
+
+    if stat == 'ttest':
+        stats = [ttest_ind(i[0], i[1])[1] for i in pair_data]
+    if stat == 'wilcoxon':
+        stats = [wilcoxon(i[0], i[1])[1] for i in pair_data]
+    if stat == 'ks':
+        stats= [kstest(i[0], i[1])[1] for i in pair_data]
+    matrix = squareform(stats)
     matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
-    annot = matrix.copy()
-    if annotation is False:
-        annot[annot != np.inf] = np.nan
-    annot[annot == 0] = np.nan
-    sns.clustermap(matrix, cmap=palette, annot=annot,
-                   mask=annot.isnull(),
-                   col_colors=colors, row_colors=colors)
-    plt.title('Pvalue')
-    if save is not None:
-        if vector is True:
-            plt.savefig(save + 'overlap_stat.svg', bbox_inches='tight')
-        else:
-            plt.savefig(save + 'overlap_stat.png', dpi=dpi, bbox_inches='tight')
-    plt.show()
+    return matrix
 
-
-def fisher_network(self, protein_pvalue=0.05,
-                   background_lenght=None, graph_pvalue=0.1, save=None,
-                   vector=True, dpi=300):
-    """ Network for pair-wise comparison.
-
-    Network of all groups analysed, linking groups based on
-    statistical results from hypergeometric distribution.
+def fisher_test(self, protein_pvalue,
+                   background_lenght):
+    """This function performs a pair-wise statistical analysis using Fisher's exact test.
+    Fisher's exact test is a statistical test used to compare two nominal variables from two samples. 
+    In this context, it's used to compare the proportions of proteins with significant p-values
+    (determined by protein_pvalue) between groups.
 
     Args:
-        protein_pvalue (float, optional):  P-value cuttoff for proteins (e.g. differentially regulated).
-        Defaults to 0.05.
-        background_lenght (int, optional): Number of genes/proteins that must
-        be used as background. By default, nebula uses all proteins/genes identified
-        considering all files imported. Optionally, user can insert the number of proteins
-        present in the proteome of target organism
-        graph_pvalue (float, optional): P-value cuttoff for fisher's test and networks. Defaults to 0.1.
-        save (str, optional): Path to save image. Defaults to None.
-        vector (bool, optional): If image should be export as .svg.
-        Defaults to True.
-        dpi (int, optional): Image resolution. Defaults to 300.
-
+        protein_pvalue (float): The cut-off value for protein p-values.
+        background_lenght (float, optional): The total number of entities in the background set (optional).
+        If not provided, all genes from the original data are used as the background (Recommended).
     Returns:
-        Graph (Networkx.G): Networkx object
+        matrix (DataFrame, pandas): P-value
     """
-    from scipy.spatial.distance import pdist
-    from scipy.spatial.distance import squareform
-    plt.rcParams['figure.dpi'] = dpi
-    palette = self.colors
+    from scipy.spatial.distance import squareform, pdist
     conditions = self.groups
     pval = self.pvalue
     if background_lenght is None:
@@ -710,7 +681,102 @@ def fisher_network(self, protein_pvalue=0.05,
     matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
     matrix = squareform(matrix)
     matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
-    matrix[matrix > graph_pvalue] = 0
+    return matrix
+
+def stat_matrix(self, method, protein_pvalue, background_lenght):
+    """
+  Performs a pair-wise statistical comparison between groups based on the 
+  chosen method and a protein p-value cut-off.
+
+  Args:
+      self: Reference to the class instance where this function is called.
+      method (str): The statistical method to be used for the comparison.
+          Valid options include:
+              * "fisher": Performs Fisher's exact test, suitable for comparing 
+                  proportions of significant proteins between groups.
+              * "ttest": Performs a t-test, assuming normally distributed data.
+              * "wilcoxon": Performs a Wilcoxon signed-rank test, a non-parametric 
+                  alternative for comparing related groups when normality cannot 
+                  be assumed.
+              * "ks": Performs a Kolmogorov-Smirnov test, used to compare the 
+                  probability distributions of two samples.
+      protein_pvalue (float): The cut-off value for protein p-values. This value 
+          determines which proteins are considered significant based on a 
+          previous analysis.
+      background_lenght (int, optional): The total number of entities in the 
+          background set. This argument is only used for the "fisher" method 
+          to define the population size. If not provided, all genes from the 
+          original data are used as the background.
+
+  Returns:
+      pandas.DataFrame: A DataFrame containing the p-values for each pair-wise 
+          comparison between groups.
+  """
+    if method == 'fisher':
+        matrix = fisher_test(self, protein_pvalue=protein_pvalue, 
+                    background_lenght=background_lenght)
+    elif method in ['ttest', 'wilcoxon', 'ks']:
+        matrix = distribution_test(self, protein_pvalue=protein_pvalue,
+                                   method=method)
+    else:
+        raise ValueError('''Please, verify if it was selected a valid method ("fisher", "ttest", "wilcoxon", or "ks").''')
+    return matrix
+
+def stat_network(self, method='fisher', protein_pvalue=0.05, background_lenght=None, dpi=300,
+                 graph_pvalue=0.1,
+                 save=None, vector=True):
+    """
+  Generates a network visualization based on statistical comparisons 
+  between groups imported on Nebula
+
+  Args:
+      method (str, optional): The statistical method used for comparison 
+          between groups. Valid options include:
+              * "fisher": Performs Fisher's exact test, suitable for comparing 
+                  proportions of significant proteins.
+              * "ttest": Performs a t-test, assuming normally distributed data.
+              * "wilcoxon": Performs a Wilcoxon signed-rank test, a non-parametric 
+                  alternative for related groups when normality cannot be assumed.
+              * "ks": Performs a Kolmogorov-Smirnov test, used to compare the 
+                  probability distributions of two samples.
+          Defaults to "fisher".
+      protein_pvalue (float, optional): The cut-off value for protein p-values. 
+          This value determines which proteins are considered significant 
+          based on a previous analysis. Defaults to 0.05.
+      background_lenght (int, optional): The total number of entities in the 
+          background set. This argument is only used for the "fisher" method 
+          to define the population size. If not provided, all genes from the 
+          original data are used as the background. Defaults to None (Recommended).
+      dpi (int, optional): The resolution (dots per inch) for the generated 
+          plot. Defaults to 300.
+      graph_pvalue (float, optional): The threshold for p-values to consider
+          the links between network nodes. Edges with 
+          p-values greater than (for "fisher") or less than (for other methods) to 
+          this value will be excluded from the network.
+          Defaults to 0.1.
+      save (str, optional): The filename prefix to save the network image 
+          (e.g., "groupNetwork"). If provided, the function will save both 
+          the GraphML representation of the network and the plot image.
+      vector (bool, optional): If True (default), saves the image as an SVG 
+          file (scalable vector graphics) suitable for high-quality printing. 
+          If False, saves the image as a PNG file.
+
+  Returns:
+      None. This function generates a network visualization and potentially 
+          saves image files, but it doesn't return any data.
+  """
+    import matplotlib.pyplot as plt
+    plt.rcParams['figure.dpi'] = dpi
+    palette = self.colors
+    conditions = self.groups
+    pval = self.pvalue
+    matrix = stat_matrix(self, method=method,
+                         protein_pvalue=protein_pvalue,
+                         background_lenght=background_lenght)
+    if method == 'fisher':
+        matrix[matrix >= graph_pvalue] = 0
+    elif method in ['ttest', 'wilcoxon','ks']:
+        matrix[matrix <= graph_pvalue] = 0
     G = nx.from_pandas_adjacency(matrix)
     G.edges(data=True)
     size = [len(set(x[x[pval] < protein_pvalue].gene_name)) for x in self.original]
@@ -724,8 +790,10 @@ def fisher_network(self, protein_pvalue=0.05,
     pos = nx.kamada_kawai_layout(G, weight=None)
     edges = G.edges
     weights = [G[u][v]['weight'] for u, v in edges]
-    weights = -np.log10(weights)
+    if method == 'fisher':
+            weights = -np.log10(weights)
     weights = [round(x, 2) for x in weights]
+    G.remove_edges_from(nx.selfloop_edges(G))
     norm = [float(i)*5/np.mean(weights) for i in weights]
     nx.draw(G,
             pos=pos,
@@ -746,6 +814,69 @@ def fisher_network(self, protein_pvalue=0.05,
         else:
             plt.savefig(save + 'groupNetwork.dpi', dpi=dpi, bbox_inches='tight')
     plt.show()
+
+def stat_heatmap(self, palette='Spectral', method='fisher', pvalue=0.05,
+                   background_lenght=None, annotation=True,
+                   save=None, vector=True, dpi=300):
+    """
+    Generates a heatmap visualization to represent the p-values from 
+    pair-wise statistical comparisons between groups.
+
+    Args:
+        palette (str, optional): The color palette to use for the heatmap. 
+            Defaults to "Spectral".
+        method (str, optional): The statistical method used for comparison 
+            between groups. Valid options include:
+                * "fisher": Performs Fisher's exact test, suitable for comparing 
+                    proportions of significant proteins.
+                * "ttest": Performs a t-test, assuming normally distributed data.
+                * "wilcoxon": Performs a Wilcoxon signed-rank test, a non-parametric 
+                    alternative for related groups when normality cannot be assumed.
+                * "ks": Performs a Kolmogorov-Smirnov test, used to compare the 
+                    probability distributions of two samples.
+            Defaults to "fisher".
+        pvalue (float, optional): The cut-off value for protein p-values. 
+            This value determines which proteins are considered significant 
+            based on a previous analysis. Defaults to 0.05.
+        background_lenght (int, optional): The total number of entities in the 
+            background set. This argument is only used for the "fisher" method 
+            to define the population size. If not provided, all genes from the 
+            original data are used as the background. Defaults to None.
+        annotation (bool, optional): If True (default), displays the p-values 
+            within each heatmap cell. If False, hides the p-value annotations.
+        save (str, optional): The filename prefix to save the heatmap image 
+            (e.g., "overlap_stat"). If provided, the function will save the plot 
+            image.
+        vector (bool, optional): If True (default), saves the image as an SVG 
+            file (scalable vector graphics) suitable for high-quality printing. 
+            If False, saves the image as a PNG file.
+        dpi (int, optional): The resolution (dots per inch) for the generated 
+            plot. Defaults to 300.
+
+    Returns:
+        None. This function generates a heatmap visualization and potentially 
+            saves an image file, but it doesn't return any data.
+    """
+    plt.rcParams['figure.dpi'] = dpi
+    colors = self.colors
+    matrix = stat_matrix(self, method=method,
+                         protein_pvalue=pvalue,
+                         background_lenght=background_lenght)
+    annot = matrix.copy()
+    if annotation is False:
+        annot[annot != np.inf] = np.nan
+    annot[annot == 0] = np.nan
+    sns.clustermap(matrix, cmap=palette, annot=annot,
+                   mask=annot.isnull(),
+                   col_colors=colors, row_colors=colors)
+    plt.title('Pvalue')
+    if save is not None:
+        if vector is True:
+            plt.savefig(save + 'overlap_stat.svg', bbox_inches='tight')
+        else:
+            plt.savefig(save + 'overlap_stat.png', dpi=dpi, bbox_inches='tight')
+    plt.show()
+
 
 
 def linkproteins(deps, groups):

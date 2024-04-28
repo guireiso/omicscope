@@ -12,8 +12,8 @@ class nebula:
     from .MultipleVisualization import diff_reg
     from .MultipleVisualization import dotplot_enrichment
     from .MultipleVisualization import enrichment_overlap
-    from .MultipleVisualization import fisher_heatmap
-    from .MultipleVisualization import fisher_network
+    from .MultipleVisualization import stat_heatmap
+    from .MultipleVisualization import stat_network
     from .MultipleVisualization import protein_overlap
     from .MultipleVisualization import similarity_heatmap
     from .MultipleVisualization import similarity_network
@@ -129,8 +129,8 @@ class nebula:
         'diff_reg',
         'dotplot_enrichment',
         'enrichment_overlap',
-        'fisher_heatmap',
-        'fisher_network',
+        'stat_heatmap',
+        'stat_network',
         'whole_network',
         'protein_overlap',
     ]

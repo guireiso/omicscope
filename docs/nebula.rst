@@ -213,7 +213,7 @@ A heatmap is plotted and colored based on nominal p-values, however, the labels 
    :alt: png
 
 
-Fisher Network - ``object.fisher_network()``
+Statistical Network - ``object.stat_network()``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This function empowers users to filter proteins based on a specific p-value threshold (default: ``protein_pvalue=0.05``\ ) and subsequently applies a pairwise Fisher's exact test. Users can also customize edge filtering based on Fisher's p-value (default: ``graph_pvalue=0.05``\ ) to assign edges to the graph. The graph's labels are displayed in the log10 scale.
