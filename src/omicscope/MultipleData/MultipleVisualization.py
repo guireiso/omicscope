@@ -153,7 +153,7 @@ def whole_network(self, labels=False, save=None, vector=True, dpi=300):
     network_frame = []
     for group, df, color in zip(data.groups, data.original, data.colors):
         df['Experiment'] = group
-        df = df[df[self.pvalue] < 0.05]
+        df = df[df[self.pvalue] <= 0.05]
         df['Size'] = len(df)
         df['color'] = color
         network_frame.append(df)
@@ -421,7 +421,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
     totalMean = []
     for i in data1:
         df = i.groupby('gene_name').mean()
-        df = df[df[self.pvalue] < pvalue]
+        df = df[df[self.pvalue] <= pvalue]
         df = df[[comparison_param]]
         totalMean.append(df)
     wholedata = pd.concat(totalMean, axis=1, join='outer')
@@ -462,7 +462,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
     # Plotting graph
     G = nx.from_pandas_adjacency(corr)
     G.edges(data=True)
-    size = [len(set(x[x[pval] < pvalue].gene_name)) for x in self.original]
+    size = [len(set(x[x[pval] <= pvalue].gene_name)) for x in self.original]
     carac = pd.DataFrame(zip(conditions, palette, size),
                          columns=['ID', 'color', 'Size'])
     carac = carac.set_index('ID')
@@ -531,7 +531,7 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
     colors = data.colors
     for i in data1:
         df = i.groupby('gene_name').mean()
-        df = df[df[self.pvalue] < pvalue]
+        df = df[df[self.pvalue] <= pvalue]
         df = df[[comparison_param]]
         totalMean.append(df)
     wholedata = pd.concat(totalMean, axis=1, join='outer')
@@ -632,7 +632,7 @@ def distribution_test(self, protein_pvalue,
 
     conditions = self.groups
 
-    data = [i[i[self.pvalue]<protein_pvalue] for i in self.original]
+    data = [i[i[self.pvalue]<=protein_pvalue] for i in self.original]
     data = [i.set_index('Accession') for i in data]
     data = [i['log2(fc)']for i in data]
     data = [i.replace(-np.inf, np.nan) for i in data]
@@ -676,7 +676,7 @@ def fisher_test(self, protein_pvalue,
         union = len(union)
     else:
         union = background_lenght
-    sets = [set(x[x[pval] < protein_pvalue].gene_name) for x in self.original]
+    sets = [set(x[x[pval] <= protein_pvalue].gene_name) for x in self.original]
     sets = pd.DataFrame(sets)
     matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
     matrix = squareform(matrix)
@@ -779,7 +779,7 @@ def stat_network(self, method='fisher', protein_pvalue=0.05, background_lenght=N
         matrix[matrix <= graph_pvalue] = 0
     G = nx.from_pandas_adjacency(matrix)
     G.edges(data=True)
-    size = [len(set(x[x[pval] < protein_pvalue].gene_name)) for x in self.original]
+    size = [len(set(x[x[pval] <= protein_pvalue].gene_name)) for x in self.original]
     carac = pd.DataFrame(zip(conditions, palette, size),
                          columns=['ID', 'color', 'Size'])
     carac = carac.set_index('ID')
@@ -1037,7 +1037,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     """
     enrichment = [x for x in self.enrichment if x is not None]
     deps = self.original
-    deps = [x[x[self.pvalue] < pvalue] for x in deps]
+    deps = [x[x[self.pvalue] <= pvalue] for x in deps]
     groups = self.groups
     colors = dict(zip(groups, self.colors))
     # Select genes from enriched term.

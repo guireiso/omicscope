@@ -81,7 +81,7 @@ class Enrichment:
         # Extracting just results file from analysis
         df = enr.results.copy()
         # Filtering results Adjusted P-value
-        df = df[df['Adjusted P-value'] < self.padjust_cutoff]
+        df = df[df['Adjusted P-value'] <= self.padjust_cutoff]
         # GSEApy package presents a threshold to consider pvalue = 0
         try:
             minimum_value = df['Adjusted P-value'].drop_duplicates().sort_values()
