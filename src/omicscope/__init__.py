@@ -30,7 +30,8 @@ def OmicScope(Table: str,
     """OmicScope - Differential Proteomics
 
         OmicScope was designed to be compatible with several Proteomics software,
-        such as Progenesis Qi for Proteomics, PatternLab V, MaxQuant, and DIA-NN
+        such as Progenesis Qi for Proteomics, PatternLab V, MaxQuant, 
+        DIA-NN, ProteomeDiscoverer, and FragPipe.
 
         Additionally, users can also input data from other Omics sources (e.g.Transcriptomics),
          using `General` and `Snapshot` methods. In General, users can analyse data in a pre-specified format using excel workbooks.

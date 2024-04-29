@@ -19,12 +19,18 @@ class Input():
             Method (str): algorithm/software used to perform quantitative
             proteomics
         """
-        Methods = ['Progenesis', 'General', 'PatternLab', 'MaxQuant', 'DIA-NN', 'FragPipe']
+        Methods = ['Progenesis', 'General', 'PatternLab',
+                   'MaxQuant', 'DIA-NN', 'FragPipe',
+                   'ProteomeDiscoverer']
         if Method not in Methods:
             raise ValueError("Invalid Method input. Expected one of: %s" % Methods)
         if Method == 'Progenesis':
             from .Progenesis import Input
             self.Params['Params']['ImportMethod'] = 'Progenesis'
+            self.Params['Params']['ImportWarning_1'] = 'Quantification using Normalized Abundance'
+        if Method == 'ProteomeDiscoverer':
+            from .ProteomeDiscoverer import Input
+            self.Params['Params']['ImportMethod'] = 'ProteomeDiscoverer'
             self.Params['Params']['ImportWarning_1'] = 'Quantification using Normalized Abundance'
         elif Method == 'General':
             from .General import Input
