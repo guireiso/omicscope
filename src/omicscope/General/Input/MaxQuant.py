@@ -30,7 +30,6 @@ class Input:
             self.pdata = pd.read_csv(pdata)
         self.assay = self.assay()
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
-        # self.filtering_data()
 
     def rdata(self):
         df = pd.read_csv(copy(self.Table), sep='\t')
@@ -44,7 +43,7 @@ class Input:
                    'Gene names', 'Fasta headers', 'Number of proteins', 'Peptides',
                    'Razor + unique peptides', 'Unique peptides', 'Mol. weight [kDa]',
                    'Sequence length', 'Score']
-        df = df[columns]
+        df = df.iloc[:,df.columns.isin(columns)]
         df = df.rename(columns={'Majority protein IDs': "Accession",
                                 'Fasta headers': 'Description',
                                 'Gene names': 'gene_name',
@@ -56,18 +55,18 @@ class Input:
         quant_strategy = self.quant_strategy
         assay = []
         if quant_strategy in QUANTIFICATION_STRATEGIES:
-            assay = pd.read_csv(copy(self.Table), sep='\t')
-            assay = assay.rename(columns={'Majority protein IDs': "Accession"})
-            assay = assay[assay['Accession'].isin(self.rdata['Accession'])]
-            assay = assay.set_index('Accession')
-            assay = assay.iloc[:, assay.columns.str.startswith(quant_strategy)]
-            assay.columns = assay.columns.str.removeprefix(
-                quant_strategy + ' ')
+            assay_raw = pd.read_csv(copy(self.Table), sep='\t')
+            assay_raw = assay_raw.rename(columns={'Majority protein IDs': "Accession"})
+            assay_raw = assay_raw[assay_raw['Accession'].isin(self.rdata['Accession'])]
+            assay_raw = assay_raw.set_index('Accession')
+            assay = assay_raw.iloc[:, assay_raw.columns.str.startswith(quant_strategy)]
+            assay.columns = assay.columns.str.removeprefix(quant_strategy + ' ')
+            if len(assay.columns)==0:
+                assay = assay_raw.iloc[:, assay_raw.columns.str.startswith('Intensity')]
+                assay.columns = assay.columns.str.removeprefix('Intensity' + ' ')
         else:
-            print(f'{quant_strategy} is not a MaxQuant quantification strategy.\n' +
+            raise ValueError(f'{quant_strategy} is not a MaxQuant quantification strategy.\n' +
                   f'User should try one of: {", ".join(QUANTIFICATION_STRATEGIES)}.')
-            assay = f'{quant_strategy} is not a MaxQuant quantification strategy.\n' +\
-                f'User should try one of: {", ".join(QUANTIFICATION_STRATEGIES)}.'
         return assay
 
     def filtering_data(self):

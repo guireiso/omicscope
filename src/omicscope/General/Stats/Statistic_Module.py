@@ -16,33 +16,36 @@ def perform_static_stat(self):
     from copy import copy
 
     import numpy as np
+    self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Static Workflow'
     expression = copy(self.expression)
-    log = copy(self.logTransformed)
+    log = copy(self.logTransform)
     rdata = copy(self.rdata)
     pvalue = copy(self.pvalue)
     PValue_cutoff = copy(self.PValue_cutoff)
-    # Log-normalize data if it was not
-    if log is False:
+    # Log-normalize data
+    if log is True:
         expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
+        self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
     # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest
         params = [self.ind_variables, self.ctrl, self.experimental[0], expression, rdata,
                   pvalue, PValue_cutoff]
-        data = ttest(params=params)
+        data = ttest(self, params=params)
         data = params[4].merge(data, on='Accession')
 
     # Apply ANOVA if len(conditions) > 2
     elif len(self.Conditions) > 2:
         from .Static_Statistics import anova
         params = [expression, rdata, self.Conditions, pvalue, PValue_cutoff]
-        data = anova(params=params)
+        data = anova(self, params=params)
         data = params[1].merge(data, on='Accession')
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # Filtering contaminants
     if self.ExcludeContaminants is True:
+        self.Params['Params']['Stats_Warning'] = 'Drop protein contaminants based on Frankenfield, 2022'
         path = os.path.dirname(os.path.abspath(__file__))
         contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
         data = data[~data['Accession'].isin(contaminants['Accession'])]
@@ -63,18 +66,20 @@ def perform_longitudinal_stat(self):
     degrees_of_freedom = copy(self.degrees_of_freedom)
     expression = copy(self.expression)
     expression = expression.replace(np.nan, 0)
-    log = copy(self.logTransformed)
+    log = copy(self.logTransform)
     rdata = copy(self.rdata)
     pdata = copy(self.pdata)
     pvalue = copy(self.pvalue)
     ctrl = copy(self.ctrl)
     PValue_cutoff = copy(self.PValue_cutoff)
-    # Log-normalize data if it was not
-    if log is False:
+    self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Longitudinal Workflow'
+    # Log-normalize data
+    if log is True:
         expression = expression.replace(0, 0.01)
         expression = np.log2(expression)
+        self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
     from .Longitudinal_Stat import Longitudinal_Stats
-    data = Longitudinal_Stats(assay=expression, pdata=pdata.drop(columns=['technical']),
+    data = Longitudinal_Stats(self, assay=expression, pdata=pdata.drop(columns=['technical']),
                               degrees_of_freedom=degrees_of_freedom, pvalue=pvalue, ctrl=ctrl,
                               PValue_cutoff=PValue_cutoff)
     data = rdata.merge(data, on='Accession')
@@ -83,6 +88,7 @@ def perform_longitudinal_stat(self):
     data = data.reset_index(drop=True)
     # # Filtering Contaminants
     if self.ExcludeContaminants is True:
+        self.Params['Params']['Stats_Warning'] = 'Drop protein contaminants based on Frankenfield, 2022'
         path = os.path.dirname(os.path.abspath(__file__))
         contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
         data = data[~data['Accession'].isin(contaminants['Accession'])]

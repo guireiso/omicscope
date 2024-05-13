@@ -146,7 +146,7 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     col = []
     comparison = []
     for pv, comp in zip(pval, comparisons):
-        if pv > -np.log10(pvalue):
+        if pv >= -np.log10(pvalue):
             comparison.append(comp)
             col.append(comp)
         else:
@@ -279,14 +279,14 @@ def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
     col = []
     comparison = []
     for i, j in zip(fc, pval):
-        if j < -np.log10(pvalue):
+        if j <= -np.log10(pvalue):
             col.append(non_regulated)
             comparison.append('non-regulated')
         else:
-            if i > FoldChange_cutoff:
+            if i >= FoldChange_cutoff:
                 col.append(up_regulated)
                 comparison.append('up-regulated')
-            elif i < -FoldChange_cutoff:
+            elif i <= -FoldChange_cutoff:
                 col.append(down_regulated)
                 comparison.append('down-regulated')
             else:
@@ -719,7 +719,7 @@ def pca(self, pvalue=1.00, scree_color='#900C3F',
     df = OmicScope.quant_data
     FoldChange_cutoff = OmicScope.FoldChange_cutoff
     # Filtering P-value and Fold Change
-    df = df[df[OmicScope.pvalue] < pvalue]
+    df = df[df[OmicScope.pvalue] <= pvalue]
     if len(OmicScope.Conditions) == 2:
         df = df.loc[(df['log2(fc)'] <= -FoldChange_cutoff) | (df['log2(fc)'] >= FoldChange_cutoff)]
     df = df.loc[:, df.columns.str.contains('.', regex=False)]
@@ -1003,11 +1003,11 @@ def MAplot(self, *Proteins,
     y = df[f'-log10({OmicScope.pvalue})']
     x = df['log2(fc)']
     # Defining colors
-    col = np.where(y > -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,
-                                                   np.where(x < FoldChange_cutoff, non_regulated, up_regulated),
+    col = np.where(y >= -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,
+                                                   np.where(x <= FoldChange_cutoff, non_regulated, up_regulated),
                                                    down_regulated), non_regulated)
-    regulation = np.where(y > -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,
-                                                          np.where(x < FoldChange_cutoff, 'non-regulated',
+    regulation = np.where(y >= -np.log10(pvalue), np.where(x >= -FoldChange_cutoff,
+                                                          np.where(x <= FoldChange_cutoff, 'non-regulated',
                                                                    'up-regulated'), 'down-regulated'), 'non-regulated')
     df['col'] = col
     df['Regulation'] = regulation
@@ -1094,7 +1094,7 @@ def k_trend(self, pvalue=0.05, k_cluster=None,
         pdata['sample'] = pdata[['Condition', 'Biological']].astype(str).apply(lambda x: '-'.join(x), axis=1)
     data = omics.quant_data
     protein_dictionary = dict(zip(data['Accession'], data['gene_name']))
-    data = data[data[omics.pvalue] < pvalue]
+    data = data[data[omics.pvalue] <= pvalue]
     data = data.set_index('Accession')
     data = data.iloc[:, data.columns.str.contains('.', regex=False)]
     data = data.replace(0, 0.01)
@@ -1132,7 +1132,7 @@ def k_trend(self, pvalue=0.05, k_cluster=None,
         else:
             plt.savefig(save + 'MAPlot.png', dpi=dpi, bbox_inches='tight')
     plt.show()
-    k_data_protein = k_data_protein.groupby('cluster')['gene_name'].apply(list).reset_index()
+    k_data_protein = k_data_protein.groupby('cluster')['gene_name'].apply(set).reset_index()
     return k_data_protein
 
 
@@ -1178,7 +1178,7 @@ def PPInteractions(self, *Proteins,
     method = "network"
     data = copy.copy(self)
     data = data.quant_data
-    data = data[data[self.pvalue] < pvalue]
+    data = data[data[self.pvalue] <= pvalue]
     if len(Proteins) > 0:
         data = data[data['gene_name'].isin(Proteins)]
     foldchange_range = data['log2(fc)']
@@ -1200,7 +1200,7 @@ def PPInteractions(self, *Proteins,
 
     string = pd.read_json(response.text)
     # Filter string results based on score
-    string = string[string['score'] > score_threshold]
+    string = string[string['score'] >= score_threshold]
 
     norm = mpl.colors.TwoSlopeNorm(vmin=min(foldchange_range),
                                    vmax=max(foldchange_range),

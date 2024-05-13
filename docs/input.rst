@@ -639,10 +639,16 @@ Users can also define any of the following additional parameters that are in the
    **PValue_cutoff** (default = ``PValue_cutoff = 0.05``\ ): Statistical cutoff to consider proteins differentially regulated.
 
 #. 
+   **normalization_method** (default, ``normalization_method = None``\ ): User can normalize data using OmicScope. Nowadays, OmicScope offers normalization using "average", "median", and "quantile" approaches.
+
+#. 
+   **imputation_method** (default, ``imputation_method = None``\ ): User can replace null values using three imputation methods: "mean", "knn", and "median".
+
+#. 
    **FoldChange_cutoff** (default, ``FoldChange_cutoff = 0``\ ): Cutoff of the absolute abundance ratio to consider a protein to be differentially regulated. 0 indicates that p-values alone are sufficient to determine dysregulation.
 
 #. 
-   **logTransformed** (default, ``logTransformed = False``\ ): Usually, analysis software reports abundance in nominal values, requiring a log-transformation of the values to normalize abundance data. If users performed transformation before the OmicScope workflow, set logTransformed=True.
+   **logTransform** (default, ``logTransform = True``\ ): Usually, analysis software reports abundance in nominal values, requiring a log-transformation of the values to normalize abundance data.
 
 #. 
    **ExcludeContaminants** (default, ``ExcludeContaminants = True``\ ): Recently, Frankenfield (2022) evaluated the most common contaminants found in proteomics workflows. By default, OmicScope removes them from analyses. If this is not desired, OmicScope can leave them in the final results with ExcludeContaminants=False.

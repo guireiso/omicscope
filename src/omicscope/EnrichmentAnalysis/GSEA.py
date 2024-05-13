@@ -75,7 +75,7 @@ class Enrichment:
                                           'Tag %': 'Overlap'},
                                          axis='columns')
 
-        gsea_result = gsea_result[gsea_result['Adjusted P-value'] < self.padjust_cutoff]
+        gsea_result = gsea_result[gsea_result['Adjusted P-value'] <= self.padjust_cutoff]
         gsea_result['Genes'] = gsea_result['Genes'].str.split(';')
         gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange[i] for i in x if x != ['']])
         gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i < 0]))
