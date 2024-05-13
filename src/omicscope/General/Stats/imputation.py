@@ -20,7 +20,7 @@ def value_imputation(self, expression):
         imputated_values = pd.DataFrame(imp.fit_transform(data.values))
     elif self.imputation_method == 'knn':
         imp = sklearn.impute.KNNImputer(n_neighbors=2, weights="uniform")
-        imputated_values = imp.fit_transform(data.values)
+        imputated_values = pd.DataFrame(imp.fit_transform(data.values))
     else:
         raise ValueError("Please, select None or one of following imputation methods: 'mean', 'median', 'knn'.")
     imputated_values.index = data.index

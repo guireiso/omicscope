@@ -113,7 +113,11 @@ class Omicscope(Input):
             # Construct pivot-table considering technical and biological replicates
             expression = self.expression()
             expression = normalization(self, expression)
-            #expression = value_imputation(self, expression)
+            expression = value_imputation(self, expression)
+            if len(expression)==0:
+                raise ValueError("""
+                OmicScope filtered out all proteins in our dataset.
+                Please verify if quantitative values were correctly inserted and/or if they differ from zero.""")
             self.expression = expression.copy()
                 
             # perform stat

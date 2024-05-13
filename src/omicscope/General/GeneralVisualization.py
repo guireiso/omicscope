@@ -1132,7 +1132,7 @@ def k_trend(self, pvalue=0.05, k_cluster=None,
         else:
             plt.savefig(save + 'MAPlot.png', dpi=dpi, bbox_inches='tight')
     plt.show()
-    k_data_protein = k_data_protein.groupby('cluster')['gene_name'].apply(list).reset_index()
+    k_data_protein = k_data_protein.groupby('cluster')['gene_name'].apply(set).reset_index()
     return k_data_protein
 
 

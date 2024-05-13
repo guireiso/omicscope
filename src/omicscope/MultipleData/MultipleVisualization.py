@@ -947,7 +947,8 @@ def linkenrichment(enrichment, groups, number_deps):
 
 
 def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkcyan',
-                colorenrichment='black',  save=None, vector=True, dpi=300):
+                colorenrichment='black',
+                linewidth_heatmap=1, save=None, vector=True, dpi=300):
     """Circos plot
      This plot offers an overview of proteins differentially regulated
      between groups using circular plots.
@@ -992,7 +993,8 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
         outer_track.xticks_by_interval(interval=int(higher_group/20), label_orientation="vertical")  # colocar xticks nas tracks
         # foldchange track
         rect_track = sector.add_track((80, 85))
-        rect_track.heatmap(matrix, cmap=colormap, )
+        rect_track.heatmap(matrix, cmap=colormap,
+                        rect_kws=dict(ec="black", lw=linewidth_heatmap))
 
     # drawing enrichment links if applicable
     if len(enrichment) > 1:
