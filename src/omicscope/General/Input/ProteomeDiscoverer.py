@@ -12,10 +12,10 @@ import pandas as pd
 
 class Input:
     def __init__(self, Table, **kwargs):
-        """   Progenesis output for OmicScope input
+        """   Proteome Discoverer output for OmicScope input
 
         Args:
-            Table (str): Path to Progenesis output (.xslx or .csv)
+            Table (str): Path to Proteome Discoverer output (.xslx)
             pdata (DataFrame): Phenotype data. Default: None.
             If user desires it is possible to defines externally
             the sample conditions.
@@ -30,7 +30,7 @@ class Input:
         self.assay.index = self.rdata['Accession']
 
     def ProteomeDiscoverer(self):
-        """ Extract rdata and assay from Progenesis output
+        """ Extract rdata and assay from Proteome Discoverer output
         """
         # Read .csv or .xlsx/.xls files
         Table = self.Table

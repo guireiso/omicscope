@@ -50,7 +50,7 @@ def OmicScope(Table: str,
           Options: 'pvalue', 'pAdjusted', 'pTukey'. Defaults to 'pAdjusted'.
         PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
         normalization_method (str, optional): Data normalization can be performed. Options:
-          Options: "median", "mean", "quantile". Defaults to None.
+          Options: 'average', 'median', 'quantile'. Defaults to None.
         imputation_method (str, optional): Impute values to data instead of NaN. 
           Options: "median", "mean", "knn". Defaults to None.
         FoldChange_cutoff (float, optional): Absolute fold-change cutoff. Defaults to 0.0.

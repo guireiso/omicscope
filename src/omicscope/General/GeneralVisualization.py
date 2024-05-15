@@ -20,6 +20,7 @@ import matplotlib as mpl
 import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -98,6 +99,46 @@ def bar_ident(self, logscale=False, col='darkcyan', save=None, dpi=300,
     plt.show()
     return ax
 
+def normalization_boxplot(self, palette='Dark2', dpi=300,
+                          save=None, vector=True):
+        """
+        Generates a boxplot of log2-transformed expression data for each sample to 
+        evaluate normalization.
+
+        Parameters:
+        - palette (str): The color palette to use for the boxplot. Default is 'Dark2'.
+        - dpi (int): resolution of the saved figure. Default is 300.
+        - save (str): Filepath to save the generated plot. If None, the plot is not saved. Default is None.
+        - vector (bool): If True, save the plot in vector format (SVG). If False, save in raster format (PNG). Default is True.
+
+        """
+        plt.rcParams['figure.dpi']=dpi
+        df = self.expression.copy()
+        df = np.log2(df)
+        df = df.replace([-np.inf,np.inf],0)
+        conditions = self.pdata.Condition
+        colors = sns.color_palette(palette=palette,
+                                as_cmap=False, n_colors=len(conditions.drop_duplicates()))
+        color_dict = {i:j for i,j in zip(conditions.drop_duplicates(),colors)}
+        bplot = plt.boxplot(df, vert=True,  # vertical box alignment
+                            patch_artist=True, labels=df.columns,
+                            notch=True, medianprops=dict(color='black'),
+                            boxprops=dict(linewidth=0.8))
+        plt.xticks(rotation=90)
+        plt.title('Normalization Boxplot')
+        for patch, condition in zip(bplot['boxes'], conditions):
+            patch.set_facecolor(color_dict[condition])
+        # Create legend for colors
+        legend_labels = [mpatches.Patch(color=color_dict[i], label=i) for i in color_dict]
+        plt.legend(handles=legend_labels, loc='center', bbox_to_anchor=(1.1, .5))
+        sns.despine()
+        plt.tight_layout()
+        if save is not None:
+            if vector is True:
+                plt.savefig(save + 'boxplot_normalization.svg', bbox_inches='tight')
+            else:
+                plt.savefig(save + 'boxplot_normalization.png', dpi=dpi, bbox_inches='tight')
+        plt.show()
 
 def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
                       bcol='#962558', non_regulated='#606060',

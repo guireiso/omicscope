@@ -26,6 +26,7 @@ class Omicscope(Input):
     from .GeneralVisualization import k_trend
     from .GeneralVisualization import pca
     from .GeneralVisualization import volcano
+    from .GeneralVisualization import normalization_boxplot
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', PValue_cutoff=0.05, 
@@ -59,7 +60,7 @@ class Omicscope(Input):
             pdata (Optional[str], optional): Path to phenotype data of each sample. Defaults to None.
             PValue_cutoff (float, optional): Statistical cutoff. Defaults to 0.05.
             normalization_method (str, optional): Data normalization can be performed. Options:
-              Options: "median", "mean", "quantile". Defaults to None.
+              Options: 'average', 'median', 'quantile'. Defaults to None.
             imputation_method (str, optional): Impute values to data instead of NaN. 
               Options: "median", "mean", "knn". Defaults to None.
             FoldChange_cutoff (float, optional): Difference cutoff. Defaults to 0.0.
@@ -111,7 +112,7 @@ class Omicscope(Input):
         elif ExperimentalDesign == 'static':  # OmicScope perform statistics
             from .Stats.Statistic_Module import perform_static_stat
             # Construct pivot-table considering technical and biological replicates
-            expression = self.expression()
+            expression = self.expression_function()
             expression = normalization(self, expression)
             expression = value_imputation(self, expression)
             if len(expression)==0:
@@ -126,7 +127,7 @@ class Omicscope(Input):
         
         elif ExperimentalDesign == 'longitudinal':
             from .Stats.Statistic_Module import perform_longitudinal_stat
-            expression = self.expression()
+            expression = self.expression_function()
             expression = normalization(self, expression)
             expression = value_imputation(self, expression)
             self.expression = expression.copy()
@@ -167,7 +168,7 @@ class Omicscope(Input):
                     'The user-defined ControlGroup is not present in pdata.')
         self.Conditions = copy([self.ControlGroup]) + copy(self.experimental)
 
-    def expression(self):
+    def expression_function(self):
         """Joins the technical replicates and organizes biological
         conditions.
         """
@@ -273,5 +274,6 @@ class Omicscope(Input):
         'boxplot_protein',
         'MAplot',
         'k_trend',
-        'volcano'
+        'volcano',
+        'normalization_boxplot'
     ]
