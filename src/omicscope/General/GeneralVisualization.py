@@ -545,6 +545,29 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
                    cmap=palette, z_score=0, linewidths=line, linecolor='black',
                    col_colors=colors, metric=clust_metric, method=clust_method,
                    col_cluster=c_cluster, center=0).fig.suptitle(title, y=1.02)
+    
+    # Create legend for colors
+    if type(colors[0]) is list:
+        col_dict_Time = {i:j for i,j in zip(pdata.TimeCourse, colors[1])}
+        legend_labels_time = [mpatches.Patch(color=col_dict_Time[i], label=i) for i in col_dict_Time]
+        legend1 = plt.legend(handles=legend_labels_time, bbox_to_anchor=(1, 1),
+                              bbox_transform=plt.gcf().transFigure, loc='upper right',
+                              title='Time Point')
+
+        col_dict = {i:j for i,j in zip(pdata.Condition, colors[0])}
+        legend_labels = [mpatches.Patch(color=col_dict[i], label=i) for i in col_dict]
+        legend2 = plt.legend(handles=legend_labels, bbox_to_anchor=(1, 0.88),
+                              bbox_transform=plt.gcf().transFigure, loc='upper right',
+                              title='Condition')
+        plt.gca().add_artist(legend1)
+
+    else:
+        col_dict = {i:j for i,j in zip(heatmap.columns, colors)}
+        legend_labels = [mpatches.Patch(color=col_dict[i], label=i) for i in col_dict]
+        plt.legend(handles=legend_labels, bbox_to_anchor=(1, 1),
+                    bbox_transform=plt.gcf().transFigure, loc='upper right',
+                    title='Condition')
+
     # Save
     if save is not None:
         if vector is True:
@@ -552,7 +575,6 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
         else:
             plt.savefig(save + 'heatmap.png', dpi=dpi, bbox_inches='tight')
     plt.show()
-
 
 def correlation(self, *Proteins, pvalue=1.0,
                 sample_method='pearson',
@@ -649,6 +671,27 @@ def correlation(self, *Proteins, pvalue=1.0,
                        xticklabels=corr_matrix_raw.columns, row_colors=colors,
                        yticklabels=corr_matrix_raw.columns, col_colors=colors,
                        cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
+        # Create legend for colors
+    if type(colors[0]) is list:
+        col_dict_Time = {i:j for i,j in zip(pdata.TimeCourse, colors[1])}
+        legend_labels_time = [mpatches.Patch(color=col_dict_Time[i], label=i) for i in col_dict_Time]
+        legend1 = plt.legend(handles=legend_labels_time, bbox_to_anchor=(1, 1),
+                              bbox_transform=plt.gcf().transFigure, loc='upper right',
+                              title='Time Point')
+
+        col_dict = {i:j for i,j in zip(pdata.Condition, colors[0])}
+        legend_labels = [mpatches.Patch(color=col_dict[i], label=i) for i in col_dict]
+        legend2 = plt.legend(handles=legend_labels, bbox_to_anchor=(1, 0.88),
+                              bbox_transform=plt.gcf().transFigure, loc='upper right',
+                              title='Condition')
+        plt.gca().add_artist(legend1)
+    else:
+        col_dict = {i:j for i,j in zip(pdata.Condition, colors)}
+        legend_labels = [mpatches.Patch(color=col_dict[i], label=i) for i in col_dict]
+        plt.legend(handles=legend_labels, bbox_to_anchor=(1, 1),
+                    bbox_transform=plt.gcf().transFigure, loc='upper right',
+                    title='Condition')
+
     if save is not None:
         if vector is True:
             plt.savefig(save + 'pearson.svg', bbox_inches='tight')
