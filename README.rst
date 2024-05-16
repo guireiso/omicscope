@@ -27,10 +27,10 @@ Overview
     :target: https://github.com/guireiso/omicscope/compare/v1.4.0...main
 
 
-OmicScope: OmicScope: from quantitative proteomics to systems biology.
+OmicScope: from quantitative proteomics to systems biology.
 ----------------------------------------------------------------------
 
-*OmicScope* is a comprehensive workflow designed to analyze and provide insights on quantitative proteomics data. To date, *OmicScope* works with data generated from `Progenesis QI for Proteomics <https://www.nonlinear.com/progenesis/qi-for-proteomics/>`__, `MaxQuant <https://www.maxquant.org/>`__, `PatternLab V <http://www.patternlabforproteomics.org/>`__, and DIA-NN. Additionally, a fourth generic input can be used, enabling users to run *OmicScope* with data from different platforms, such as transcriptomics. For users that previously performed statistical analysis, OmicScope provides the Snapshot method to quickly import data.
+*OmicScope* is a workflow designed to analyze and provide insights on quantitative proteomics data. To date, *OmicScope* works with data generated from `Progenesis QI for Proteomics <https://www.nonlinear.com/progenesis/qi-for-proteomics/>`__, `MaxQuant <https://www.maxquant.org/>`__, `PatternLab V <http://www.patternlabforproteomics.org/>`__, and DIA-NN. Additionally, a fourth generic input can be used, enabling users to run *OmicScope* with data from different platforms, such as transcriptomics. For users that previously performed statistical analysis, OmicScope provides the Snapshot method to quickly import data.
 
 *OmicScope* can perform differential expression analysis in both static and longitudinal experimental designs. For static experiments, proteins that are differentially regulated are determined by t-tests (for 2 group comparison) or One-way ANOVA (for >2 group comparison); while for longitudinal analysis, *OmicScope* performs the pipeline suggested by Storey, 2005.
 

@@ -1,281 +1,438 @@
+.. code:: ipython3
+
+    import sys
+    sys.path.insert(1, 'C:/Users/gui_d/omicscope/omicscope/src/')
+
 Nebula
 ======
 
-Nebula is the module that allows multi-data integration and provides various functions for analyzing independent proteomics experiments. Thanks to the *General and Snapshot input workflows* performed by the OmicScope, Nebula can also analyze multi-omics data.
+`omics.Nebula() <https://omicscope.readthedocs.io/en/latest/reference/omicscope.html#omicscope.Nebula>`__
 
-To initiate the Nebula workflow, you need a folder containing .omics files that have been exported from the OmicScope and/or EnrichmentScope workflows.
+Nebula is the module that allows multi-data integration and provides
+various functions for analyzing independent proteomics experiments.
+Thanks to the `General and Snapshot input
+workflows <https://omicscope.readthedocs.io/en/latest/input.html>`__
+performed by OmicScope, Nebula can also analyze multiple datasets in a
+multi-omics fashion.
 
-Exporting **.omics** files - ``object.savefile()``
-----------------------------------------------------------
+Depending on the OmicScope environment you use Nebula, the method to
+import can vary. While using the **OmicScope python package**, you must
+insert all desired *.omics* files into a folder. On the other hand,
+while using the **OmicScope Web application**, the same files must be
+compressed in a *.zip* file and then uploaded.
 
-Both OmicScope and EnrichmentScope offer a convenient function, ``savefile``\ , for exporting data. This function enables the export of *quantitative data* from OmicScope and *quantitative and enrichment data* from EnrichmentScope. To export, simply invoke the ``savefile`` function and specify the folder path where you want to save the data.
+In the sections above, we describe how to generate .omics files and
+Nebula’s capabilities.
 
-.. code-block:: python
+How to Make Nebula Input
+------------------------
 
-   # OmicScope Example
-   import omicscope as omics
+Exporting **.omics** Files - ``OmicScope.savefile()`` or ``EnrichmentScope.savefile()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   df = omics.OmicScope('../tests/data/proteins/progenesis.xls', Method='Progenesis')
-   df.savefile(PATH_TO_SAVE)
+Both OmicScope and EnrichmentScope offer a convenient function,
+``savefile``, for exporting *.omics* data. This function enables the
+export of *quantitative data* from OmicScope and *quantitative and
+enrichment data* from EnrichmentScope. Additionally, .omics files are
+text files and the information can be accessed using notepad.
 
-   # EnrichmentScope Example
-   # Note: EnrichmentScope also includes QUANTITATIVE DATA
-   enr = omics.EnrichmentScope(df)
-   enr.savefile(PATH_TO_SAVE)
+Using the OmicScope Web Application
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, the exported file name in OmicScope/EnrichmentScope is derived from the conditions extracted during the analysis. For example, if you analyzed data with conditions "COVID" and "CTRL," the exported file name would be 'COVID-CTRL.omics'.
+When using the OmicScope web application, the .omics file is compressed
+into a .zip file that can be downloaded at the end of the process.
 
-.. code-block:: python
+-  Complete your analysis in the web application.
+-  Navigate to the export section.
+-  Download the .zip file containing your .omics data.
 
-   df.Conditions
+Using the OmicScope Python Package
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block::
+To export .omics files using the OmicScope Python package, simply invoke
+the ``savefile`` function and specify the folder path where you want to
+save the data. (code below)
+
+.. code:: ipython3
+
+    # OmicScope Example
+    import omicscope as omics
+    
+    data = omics.OmicScope('../tests/data/proteins/progenesis.xls', Method='Progenesis')
+    data.savefile(PATH_TO_SAVE)
+    
+    # EnrichmentScope Example
+    # Note: EnrichmentScope also includes QUANTITATIVE DATA
+    enr = omics.EnrichmentScope(data)
+    enr.savefile(PATH_TO_SAVE)
+
+Note: By default, the exported file name in OmicScope/EnrichmentScope is
+derived from the conditions extracted during the analysis. For example,
+if you analyzed data with conditions “COVID” and “CTRL,” the exported
+file name would be ‘COVID-CTRL.omics’.
+
+.. code:: ipython3
+
+    data.Conditions
+
+::
 
    ['COVID', 'CTRL']
-
-
-
 
 Nebula Object
 -------------
 
-Nebula seamlessly processes quantitative and enrichment data from .omics files. The experimental group is automatically extracted from the .omics file, which can be further customized by the user. This group name is used to identify the respective experiment. Nebula reports the number of imported groups/experiments, their names, and the inclusion of enrichment data.
+Nebula processes quantitative and enrichment data from .omics files,
+labeling each study using the imported “experimental condition”. If two
+or more .omics files present the same “experimental groups” labels,
+Nebula adds a numerical suffix to differentiate each study
+(recommendation: modify the experimental groups in the .omics file to
+avoid this issue).
 
-.. code-block:: python
+Since Nebula considers differentially regulated proteins to plot several
+figures, While importing data into Nebula, users may also define a
+p-value threshold (defaults to 0.05)
 
-   import omicscope as omics
+Nebula reports the number of imported groups/experiments, their names,
+and whether enrichment data is included.
 
-   nebula = omics.Nebula('../../tests/data/MultipleGroups/omics_file/')
+.. code:: ipython3
 
-.. code-block::
-
-   You imported your data successfully!
-           Data description:
-           1. N groups imported: 4
-           2. Groups: COVID,Covid_HB,NEURONS,SH_DIF
-           3. N groups with enchment data: 4
-
-
-
-
-The names of each group can also be altered via the command line, granting users full control over experiment identification.
-
-.. code-block:: python
-
-   nebula.groups = ['Astrocytes', 'Human_Brain', 'Neurons', 'SHSY5Y']
-   nebula.groups
-
-.. code-block::
-
-   ['Astrocytes', 'Human_Brain', 'Neurons', 'SHSY5Y']
+    import omicscope as omics
+    
+    nebula = omics.Nebula('../../tests/data/MultipleGroups/omics_file/')
 
 
+.. parsed-literal::
 
+    OmicScope v 1.4.0 For help: https://omicscope.readthedocs.io/en/latest/ or https://omicscope.ib.unicamp.brIf you use  in published research, please cite:
+    'Reis-de-Oliveira, G., et al (2024). OmicScope unravels systems-level insights from quantitative proteomics data 
+    
+    You imported your data successfully!
+            Data description:
+            1. N groups imported: 4
+            2. Groups: COVID,Covid_HB,NEURONS,SH_DIF
+            3. N groups with enchment data: 4
+            
+    
+
+*Note*: While using the OmicScope python package, the names/colors of
+each group can be altered via the command line, granting users full
+control over experiment identification (see below). When using the web
+app, users can change names/colors using the sidebar.
+
+.. code:: ipython3
+
+    nebula.groups = ['Astrocytes', 'Human_Brain', 'Neurons', 'SHSY5Y']
+    nebula.groups
 
 Figures and plots
 -----------------
 
-Barplot - ``object.barplot()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Barplot - `object.barplot() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.barplot>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Nebula barplot displays quantified and differentially regulated proteins/genes across all studies. 
+The Nebula barplot displays the number of quantified and differentially
+regulated proteins/genes (y-axis) across all studies (x-axis).
 
-.. code-block:: python
+**How to interpret**: Each bar represents a study imported into the
+Nebula module. The colored (or dark gray) bars represent the number of
+differentially regulated proteins in each respective study, with the
+exact number displayed at the top of each bar. The light gray bars at
+the top represent the number of quantified proteins in each experiment.
 
-   nebula.barplot(dpi=90)
+.. code:: ipython3
 
+    nebula.barplot(dpi=90)
 
-.. image:: 5_nebula_files/5_nebula_12_0.png
-   :target: 5_nebula_files/5_nebula_12_0.png
-   :alt: png
 
 
-Enrichment Dotplot - ``object.dotplot_enrichment()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. image:: nebula_files%5Cnebula_12_0.png
 
-When your ``.omics`` files contain enrichment results, you can utilize the ``dotplot_enrichment()`` function to compare the enrichment for each group. By default, the function generates a list of the top 5 terms for each imported group based on p-values, then uses this list to filter each enrichment data for comparison.
 
-.. code-block:: python
+Enrichment Dotplot - `object.dotplot_enrichment() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.dotplot_enrichment>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   nebula.dotplot_enrichment(top=20, dpi=90, fig_height=10)
+When your ``.omics`` files contain enrichment results, you can utilize
+the ``dotplot_enrichment()`` function to compare the enrichment outcomes
+from each imported study.
 
+The function generates a list of the top N terms (by default N = 5) for
+each imported study based on p-values. This list is then used to filter
+each enrichment dataset for comparison.
 
-.. image:: 5_nebula_files/5_nebula_14_0.png
-   :target: 5_nebula_files/5_nebula_14_0.png
-   :alt: png
+**How to interpret**: Each dot represents a specific term, with the
+color and size of the dot proportional to -log10(pAdjusted). This plot
+is useful for identifying pathways shared among all groups or for noting
+pathways that are unique to a specific condition compared to others.
 
+.. code:: ipython3
 
-Differentially regulated - `object.diff_reg()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    nebula.dotplot_enrichment(top=20, dpi=90, fig_height=10)
 
-Nebula's comparison between groups focuses on differentially regulated levels, offering insights into the count of up-regulated and down-regulated proteins.
 
-.. code-block:: python
 
-   nebula.diff_reg(dpi=90)
+.. image:: nebula_files%5Cnebula_14_0.png
 
 
-.. image:: 5_nebula_files/5_nebula_16_0.png
-   :target: 5_nebula_files/5_nebula_16_0.png
-   :alt: png
+Differentially Regulated - `object.diff_reg() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.diff_reg>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+In this plot, Nebula splits down- and up-regulated proteins (x-axis) in
+each imported study (y-axis), and sizes each dot according to the number
+of proteins in each condition.
 
-Protein Overlap - ``object.protein_overlap()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**How to interpret**: The larger the dot, the higher the number of
+proteins in that subset of data. This visualization helps to compare the
+proportional sizes of up- and down-regulated proteins across different
+studies.
 
-The classic Venn Diagram is a common tool for visualizing overlap and uniqueness between groups. However, conventional Venn diagram tools have limitations when dealing with multiple groups due to overlapping constraints.
+.. code:: ipython3
 
-Nebula provides an alternative approach with the Upset Plot. This plot allows for the comparison of several groups simultaneously. The lower-left barplot presents the number of entities associated with each group, while the upper-right barplot reveals the intersection size for each comparison, visually represented by colored and linked circles within the frame.
+    nebula.diff_reg(dpi=90)
+    
 
-Nebula's protein overlap function conducts comparisons between all groups at the protein level.
 
-.. code-block:: python
 
-   nebula.protein_overlap(dpi=90)
+.. image:: nebula_files%5Cnebula_16_0.png
 
 
-.. image:: 5_nebula_files/5_nebula_18_0.png
-   :target: 5_nebula_files/5_nebula_18_0.png
-   :alt: png
+Protein Overlap - `object.protein_overlap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.protein_overlap>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The classic Venn Diagram is a common tool for visualizing overlap and
+uniqueness between conditions. However, conventional Venn diagram tools
+have limitations when dealing with multiple conditions due to
+overlapping constraints. To overcome these limitations, Nebula offers
+Upset plots to evaluate overlaps at the protein and enrichment levels.
 
-Enrichment Overlap - ``object.protein_overlap()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**How to interpret an Upset plot**: This plot allows for the comparison
+of multiple studies simultaneously. The lower bar plot presents the
+number of entities associated with each group. The upper bar plot
+reveals the intersection size for each comparison, visually represented
+by colored and linked circles within the frame. A useful approach is to
+look for comparisons of interest in the frame and then refer to the top
+bar to see the number of proteins uniquely present in that comparison.
 
-Operating similarly to the protein overlap function, the ``enrichment_overlap`` function visualizes the overlap of enriched terms among different groups.
+Upset plot - Protein Level
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: python
+.. code:: ipython3
 
-   nebula.enrichment_overlap(dpi=90)
+    nebula.protein_overlap(dpi=90)
 
 
-.. image:: 5_nebula_files/5_nebula_20_0.png
-   :target: 5_nebula_files/5_nebula_20_0.png
-   :alt: png
 
+.. image:: nebula_files%5Cnebula_18_0.png
 
-Similarity comparison
-^^^^^^^^^^^^^^^^^^^^^
 
-Nebula enables users to gain a deeper understanding of the similarity between different groups based on proteome or differentially regulated protein levels. It calculates the distance between groups using the Jaccard index, although users have the flexibility to specify alternative metrics such as correlation and Euclidean distance. 
+Upset plot - Enrichment Level - `object.enrichment_overlap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.enrichment_overlap>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**NOTE**\ : while performing Jaccard similarity analysis, Nebula consider the proteins/genes overlaped across studies. Other algorithm (Pearson, Euclidean, etc) considers protein fold-change.
+.. code:: ipython3
 
-Heatmap - ``object.similarity_heatmap()``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    nebula.enrichment_overlap(dpi=90)
 
-To facilitate data visualization, Nebula generates a pair-wise comparison heatmap with hierarchical clustering.
 
-.. code-block:: python
 
-   nebula.similarity_heatmap(dpi=90, metric='jaccard')
+.. image:: nebula_files%5Cnebula_20_0.png
 
 
-.. image:: 5_nebula_files/5_nebula_22_0.png
-   :target: 5_nebula_files/5_nebula_22_0.png
-   :alt: png
+Similarity Analysis
+~~~~~~~~~~~~~~~~~~~
 
+When analyzing multiple groups, a common question is whether there is a
+metric to evaluate the similarity between studies in a pair-wise
+fashion. To address this, Nebula calculates similarity indices between
+imported studies at the protein level.
 
-Network - ``object.similarity_network()``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+By default, Nebula performs Jaccard Similarity analysis using proteins
+present in each respective study. Additionally, users can select other
+algorithms to calculate distances, such as Pearson and Euclidean, which
+also consider protein fold-changes to obtain similarity indices.
 
-An alternative approach for visualizing pair-wise comparisons is the use of a network. Users can customize the cutoff for edge assignments according to their preferences.
+The results of this analysis are displayed using two approaches: heatmap
+and network. In the heatmap analysis, all the similarity indices are
+shown, along with a hierarchical clustering approach to define which
+studies are closest together. Conversely, the network strategy uses the
+same results but applies a similarity index cutoff to establish links
+between studies, offering an alternative and cleaner visualization of
+results.
 
-.. code-block:: python
+Heatmap - `object.similarity_heatmap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.similarity_heatmap>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   nebula.similarity_network(pvalue=1, absolute_similarity_cutoff=0.3, dpi=90)
+**How to interpret**: The heatmap color-codes the similarity index, with
+stronger colors indicating higher index values. A higher index value
+indicates greater similarity between the two evaluated groups.
+Additionally, hierarchical clustering is performed to enhance the
+visualization of groups that exhibit greater similarities.
 
+.. code:: ipython3
 
-.. image:: 5_nebula_files/5_nebula_24_0.png
-   :target: 5_nebula_files/5_nebula_24_0.png
-   :alt: png
+    nebula.similarity_heatmap(dpi=90, metric='jaccard')
+    
 
 
-Fisher's test
-^^^^^^^^^^^^^
 
-Nebula introduces statistical assessment to determine if the similarity observed across groups is statistically significant. It applies a pairwise Fisher's exact test to provide p-values for the groups. The results can be visualized through a heatmap and/or network.
+.. image:: nebula_files%5Cnebula_22_0.png
 
-**NOTE**\ : It's important to highlight that the statistical principles used in this analysis are akin to those employed in an Over-Representation Analysis (ORA). Additionally, users have the flexibility to specify a background against which the analysis is conducted. By default, Nebula considers all imported proteins/genes as the background. However, users also have the option to define a specific number of genes as the background, which can be particularly useful. For example, users may choose to use the number of reviewed proteins in the Human Proteome database as their defined background for the analysis. This level of customization allows for more precise and context-specific analyses.
 
-Heatmap - *object.fisher_heatmap()*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Network - `object.similarity_network() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.similarity_network>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A heatmap is plotted and colored based on nominal p-values, however, the labels are shown in the log10-scale.
+**How to interpret**: In the network representation of the similarity
+analysis, nodes represent imported studies, while links are established
+based on a similarity index cutoff. The width of the links is also
+proportional to the index value.
 
-.. code-block:: python
+.. code:: ipython3
 
-   nebula.fisher_heatmap(pvalue=1, dpi=90)
+    nebula.similarity_network(pvalue=1, absolute_similarity_cutoff=0.3, dpi=90)
 
 
-.. image:: 5_nebula_files/5_nebula_26_0.png
-   :target: 5_nebula_files/5_nebula_26_0.png
-   :alt: png
 
+.. image:: nebula_files%5Cnebula_24_0.png
 
-Statistical Network - ``object.stat_network()``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This function empowers users to filter proteins based on a specific p-value threshold (default: ``protein_pvalue=0.05``\ ) and subsequently applies a pairwise Fisher's exact test. Users can also customize edge filtering based on Fisher's p-value (default: ``graph_pvalue=0.05``\ ) to assign edges to the graph. The graph's labels are displayed in the log10 scale.
+Statistical Test
+~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+Nebula introduces a statistical assessment to determine if the
+similarity observed across groups is statistically significant. By
+applying Fisher’s exact test, the statistical principles used in this
+analysis are similar to those employed in an Over-Representation
+Analysis (ORA).
 
-   nebula.fisher_network(protein_pvalue=1, graph_pvalue=0.05, dpi=90)
+Users have the flexibility to specify a background against which the
+analysis is conducted. By default, Nebula considers all imported
+proteins/genes as the background. However, users have the option to
+define a specific number of genes as the background. For example, users
+may choose to use the number of reviewed proteins in the Human Proteome
+database as their defined background for the analysis. This level of
+customization allows for more precise and context-specific analyses.
 
+Other Statistical Analyses
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: 5_nebula_files/5_nebula_28_0.png
-   :target: 5_nebula_files/5_nebula_28_0.png
-   :alt: png
+While using Nebula’s statistical workflow, users can specify alternative
+methods for performing statistical comparisons. The available options
+include t-test, Wilcoxon, and Kolmogorov-Smirnov tests. All tests use
+fold changes from proteins overlapping between pair-wise studies to
+compute distributions and perform statistical analysis. In these tests,
+the null hypothesis is that pair-wise studies are similar, and it is
+rejected if the p-value is lower than a threshold (0.05 by default).
 
+**How to interpret**: For Fisher’s exact test, two groups are
+statistically similar if the p-values are <= 0.05. For other statistical
+approaches, two groups are considered similar if the p-values are >
+0.05.
 
-Protein Network - *object.whole_network()*
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Heatmap - `object.stat_heatmap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.stat_heatmap>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The network function in Nebula offers an insightful overview of individual proteins shared among groups. Employing a systems biology approach, Nebula assists in identifying communities/modules and extracting information based on similarities across the groups. All networks generated in Nebula are exported as .graphml files, which can be imported into programs like Cytoscape and other network visualization software.
+**How to interpret**: The heatmap color-codes the p-values. For Fisher’s
+exact test, two groups are statistically similar if the p-values are <=
+0.05. For other statistical approaches, two groups are similar if the
+p-values are > 0.05.
 
-.. code-block:: python
+.. code:: ipython3
 
-   nebula.whole_network(dpi=90)
+    nebula.stat_heatmap(pvalue=1, dpi=90)
 
 
-.. image:: 5_nebula_files/5_nebula_30_0.png
-   :target: 5_nebula_files/5_nebula_30_0.png
-   :alt: png
 
+.. image:: nebula_files%5Cnebula_26_0.png
 
-.. code-block::
 
-   <networkx.classes.graph.Graph at 0x291e6be3090>
+Statistical Network - `object.stat_network() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.stat_network>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+**How to interpret**: In the network representation of the statistical
+analysis, nodes represent imported studies, while links are established
+based on a similarity index cutoff. The width of the links is also
+proportional to the -log(pvalue).
 
+*Note*: This function empowers users to filter proteins based on a
+specific p-value threshold (default: ``protein_pvalue=0.05``). Users can
+also customize edge filtering based on obtained p-value (default:
+``graph_pvalue=0.05``) to assign edges to the graph. The graph’s labels
+are displayed in the log10 scale.
 
+.. code:: ipython3
 
-Circular graphs - ``object.circular_term()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    nebula.stat_network(protein_pvalue=1, graph_pvalue=0.05, dpi=90)
 
-The circular plot is designed to compare groups that were enriched for a specific term based on their respective differentially regulated proteins. Additionally, proteins are represented in the plot with their corresponding regulations, denoted as up-regulated (in red) or down-regulated (in blue).
 
-.. code-block:: python
 
-   nebula.circular_term('Amyotrophic lateral sclerosis')
+.. image:: nebula_files%5Cnebula_28_0.png
 
 
-.. image:: 5_nebula_files/5_nebula_32_0.png
-   :target: 5_nebula_files/5_nebula_32_0.png
-   :alt: png
+Protein Network - `object.whole_network() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.whole_network>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The network function in Nebula provides an insightful overview of
+individual proteins shared among groups. Each study is linked with
+differentially regulated proteins, enabling easy visualization of
+proteins shared among imported outcomes. This network can be exported as
+.graphml files, allowing for network visualization in third-party
+software to perform systems biology analysis.
 
-Circos plot - ``object.circos_plot()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code:: ipython3
 
-Circos allows users to visualize differentially regulated proteins across multiple groups and highlights shared proteins with dark cyan links. The regulation of the proteins is depicted using an edge heatmap. If the .omics file contains enrichment analysis, the circos_plot function incorporates shared enrichment terms with orange links, offering insights into the number of pathways shared between groups.
+    nebula.whole_network(dpi=90)
 
-.. code-block:: python
 
-   nebula.circos_plot(colorenrichment='#F56A33')
 
+.. image:: nebula_files%5Cnebula_30_0.png
 
-.. image:: 5_nebula_files/5_nebula_34_0.png
-   :target: 5_nebula_files/5_nebula_34_0.png
-   :alt: png
+
+
+
+.. parsed-literal::
+
+    <networkx.classes.graph.Graph at 0x182060adad0>
+
+
+
+Circular Graphs - `object.circular_term() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.circular_term>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This plot integrates three levels of information: imported studies,
+protein details, and enrichment outcomes. Upon selecting a target
+enrichment term, Nebula generates a circular diagram that links all
+conditions with proteins associated with the enriched term, displaying
+the protein fold change for those groups.
+
+**How to interpret**: Each displayed protein is involved in the
+pathway/biological process/etc. chosen by the user. The diagram connects
+the groups where the protein exhibits differential regulation, while
+also highlighting the fold change in each group.
+
+.. code:: ipython3
+
+    nebula.circular_term('Amyotrophic lateral sclerosis')
+
+
+
+.. image:: nebula_files%5Cnebula_32_0.png
+
+
+Circos plot - `object.circos_plot() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.circos_plot>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Circos allows users to visualize differentially regulated proteins
+across multiple groups and highlights shared proteins with dark cyan
+links. The regulation of the proteins is depicted using an edge heatmap.
+If the .omics file contains enrichment analysis, the circos_plot
+function incorporates shared enrichment terms with orange links,
+offering insights into the number of pathways shared between groups.
+
+.. code:: ipython3
+
+    nebula.circos_plot(colorenrichment='#F56A33', linewidth_heatmap=0)
+
+
+
+.. image:: nebula_files%5Cnebula_34_0.png
 
