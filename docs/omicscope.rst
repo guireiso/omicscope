@@ -554,7 +554,7 @@ regulated proteins in relation to the whole proteome analyzed.
 
 
 
-.. image:: omicscope_files%5Comicscope_16_0.png
+.. image:: omicscope_files/omicscope_16_0.png
 
 
 
@@ -591,7 +591,7 @@ analyses.
 
 
 
-.. image:: omicscope_files%5Comicscope_18_0.png
+.. image:: omicscope_files/omicscope_18_0.png
 
 
 Volcano Plot - `object.volcano() <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.volcano>`__
@@ -623,7 +623,7 @@ distribution on the y-axis.
 
 
 
-.. image:: omicscope_files%5Comicscope_20_0.png
+.. image:: omicscope_files/omicscope_20_0.png
 
 
 MA Plot - `object.MAplot() <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.MAplot>`__
@@ -648,7 +648,7 @@ method.
 
 
 
-.. image:: omicscope_files%5Comicscope_22_0.png
+.. image:: omicscope_files/omicscope_22_0.png
 
 
 Normalization Boxplot - `object.normalization_boxplot() <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.normalization_boxplot>`__
@@ -671,7 +671,7 @@ differential proteomics analysis again.
 
 
 
-.. image:: omicscope_files%5Comicscope_24_0.png
+.. image:: omicscope_files/omicscope_24_0.png
 
 
 Evaluate Abundance of a Subset of Proteins
@@ -702,7 +702,7 @@ and adds error bars representing the standard error.
 
 
 
-.. image:: omicscope_files%5Comicscope_26_0.png
+.. image:: omicscope_files/omicscope_26_0.png
 
 
 Boxplot plot of proteins - `object.bar_protein(args) <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.boxplot_protein>`__
@@ -719,7 +719,7 @@ distribution, excluding points that are identified as “outliers”.
 
 
 
-.. image:: omicscope_files%5Comicscope_28_0.png
+.. image:: omicscope_files/omicscope_28_0.png
 
 
 Clustering Analysis
@@ -767,7 +767,7 @@ abundance changing over time among conditions.
 
 
 
-.. image:: omicscope_files%5Comicscope_31_0.png
+.. image:: omicscope_files/omicscope_31_0.png
 
 
 Sample Correlation - `object.correlation() <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.correlation>`__
@@ -795,7 +795,7 @@ impact of differentially regulated proteins on the entire proteome.
 
 
 
-.. image:: omicscope_files%5Comicscope_33_0.png
+.. image:: omicscope_files/omicscope_33_0.png
 
 
 Principal Component Analysis - `object.pca() <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.pca>`__
@@ -824,7 +824,7 @@ further apart.
 
 
 
-.. image:: omicscope_files%5Comicscope_35_0.png
+.. image:: omicscope_files/omicscope_35_0.png
 
 
 K-Means - `object.k_trend() <https://omicscope.readthedocs.io/en/latest/reference/generalvisualization.html#omicscope.General.GeneralVisualization.k_trend>`__
@@ -870,7 +870,7 @@ allowing further investigations on specific subset of proteins.
     
 
 
-.. image:: omicscope_files%5Comicscope_37_1.png
+.. image:: omicscope_files/omicscope_37_1.png
 
 
 
@@ -970,5 +970,5 @@ color is also related to a specific module.
 
 
 
-.. image:: omicscope_files%5Comicscope_39_1.png
+.. image:: omicscope_files/omicscope_39_1.png
 

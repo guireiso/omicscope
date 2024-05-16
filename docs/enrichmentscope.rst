@@ -238,7 +238,7 @@ instance, the reviewed human proteome in the case of human experiments
 background = ``[ListOfGenes]`` to specify a particular gene set for
 comparative analysis.
 
-}Plots and Figures
+Plots and Figures
 ------------------
 
 EnrichmentScope introduces a variety of figures that aim to integrate
@@ -277,7 +277,7 @@ number of associated proteins.
 
 
 
-.. image:: enrichmentscope_files%5Cenrichmentscope_7_0.png
+.. image:: enrichmentscope_files/enrichmentscope_7_0.png
 
 
 Heatmap - `object.Heatmap() <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.heatmap>`__
@@ -305,7 +305,7 @@ coding based on fold change.
 
 
 
-.. image:: enrichmentscope_files%5Cenrichmentscope_9_0.png
+.. image:: enrichmentscope_files/enrichmentscope_9_0.png
 
 
 .. code:: ipython3
@@ -315,7 +315,7 @@ coding based on fold change.
 
 
 
-.. image:: enrichmentscope_files%5Cenrichmentscope_10_0.png
+.. image:: enrichmentscope_files/enrichmentscope_10_0.png
 
 
 Number of DEPs - `object.number_deps() <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.number_deps>`__
@@ -336,7 +336,7 @@ proteins associated with each term.
 
 
 
-.. image:: enrichmentscope_files%5Cenrichmentscope_12_0.png
+.. image:: enrichmentscope_files/enrichmentscope_12_0.png
 
 
 Enrichment Network - `object.enrichment_network() <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.enrichment_network>`__
@@ -366,7 +366,7 @@ export the plot to these external tools by specifying
 
 
 
-.. image:: enrichmentscope_files%5Cenrichmentscope_14_0.png
+.. image:: enrichmentscope_files/enrichmentscope_14_0.png
 
 
 
@@ -407,7 +407,7 @@ p-value and consider that node to represent the whole module.
 
 
 
-.. image:: enrichmentscope_files%5Cenrichmentscope_16_0.png
+.. image:: enrichmentscope_files/enrichmentscope_16_0.png
 
 
 
