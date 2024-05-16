@@ -1,8 +1,3 @@
-.. code:: ipython3
-
-    import sys
-    sys.path.insert(1, 'C:/Users/gui_d/omicscope/omicscope/src/')
-
 Nebula
 ======
 
