@@ -1,36 +1,47 @@
 
-Statistical Analysis
-====================
+How to Make Pdata
+=================
 
-OmicScope offers a comprehensive toolkit for conducting differential proteomics analyses, covering statistical approaches for both static and longitudinal experimental designs (as illustrated in the figure below). By default, OmicScope assumes a static workflow (designated as 'ExperimentalDesign=static'). In this mode, it employs t-tests or analysis of variance (ANOVA) for statistical analysis. For longitudinal analyses (designated as 'ExperimentalDesign=longitudinal'), OmicScope assumes protein abundance varies overtime according to natural cubic spline, as suggested by Storey's 2005. This method assesses differences within and between groups across time. 
+Overview of Statistical Analysis
+--------------------------------
+
+OmicScope offers a toolkit for conducting differential proteomics analyses, covering statistical approaches for both static and longitudinal experimental designs (as illustrated in the figure below). By default, OmicScope assumes a static workflow (designated as 'ExperimentalDesign=static'). In this mode, it employs t-tests or analysis of variance (ANOVA) for statistical analysis. For longitudinal analyses (designated as 'ExperimentalDesign=longitudinal'), OmicScope assumes protein abundance varies over time according to a natural cubic spline, as suggested by Storey's 2005. This method assesses differences within and between groups over time. 
 
 After calculating nominal p-values, OmicScope applies the Benjamini-Hochberg correction to account for multiple hypothesis testing and reports the adjusted p-value (pAdjusted). Alternatively, users have the flexibility to import statistical analyses from other software tools by including a "pvalue" or "pAdjusted" column in the rdata using the General input method.
 
-When importing data into OmicScope, users must select the appropriate method for data handling. For Progenesis and PatternLab methods, OmicScope can automatically identify and select groups based on the software's output, always assuming a static experimental design. However, when using General, DIA-NN, and MaxQuant methods, OmicScope requires phenotype data (pdata) that includes as much sample information as possible. In all cases, OmicScope allows users to incorporate external pdata into the workflow, which helps tailor the statistical analysis to the specific experimental design (as described below).
+Pdata Role
+----------
 
-It's important to note that pdata is essential for conducting longitudinal analyses.
+Pdata (also known as phenotype data or metadata) plays a crucial role in allowing OmicScope to correctly conduct statistical analysis. To perform this task, Pdata must contain as much information as possible to compare 2 or more groups, different time courses, or different classes throughout time.
 
+When importing data into OmicScope, users must select the appropriate method for data handling. While performing static analysis for Progenesis, Proteome Discoverer, and PatternLab, OmicScope can automatically identify and select groups based on the software's output. However, when performing longitudinal analysis or using any of the General, DIA-NN, and MaxQuant methods, OmicScope requires pdata to select the appropriate test.
 
-.. image:: OmicScope_to_relatorio-Statistics.drawio.png
-   :target: OmicScope_to_relatorio-Statistics.drawio.png
-   :alt: 
-
+For all cases, OmicScope allows users to incorporate external pdata into the workflow, which helps tailor the statistical analysis to the specific experimental design (as described below).
 
 Static Experimental Design
 --------------------------
 
+Static Workflow
+^^^^^^^^^^^^^^^
+
 Most proteomics experiments aim to compare proteomic signatures between independent groups, which is why OmicScope defaults to a static experimental design (designated as ``'ExperimentalDesign=static'``\ ). The static workflow involves two main statistical tests: the t-test and ANOVA.
 
-When comparing two groups, OmicScope conducts an independent t-test (when ``independent_ttest=True``\ ) if the groups are independent, or a paired t-test (when ``independent_ttest=False``\ ) if the groups are related.
+When comparing two groups, OmicScope conducts an independent t-test (when ``independent_ttest=True``\ ) if the groups are independent, or a paired t-test (when ``independent_ttest=False``\ ) if the groups are related. For comparisons involving more than two groups, OmicScope employs a one-way ANOVA. Additionally, for proteins with a pAdjusted value less than 0.05, OmicScope performs a Tukey post-hoc correction. This helps identify and highlight the groups with significant differences.
 
-For comparisons involving more than two groups, OmicScope employs a one-way ANOVA. Following this analysis, OmicScope applies the Benjamini-Hochberg correction to address multiple hypothesis testing. Additionally, for proteins with a pAdjusted value less than 0.05, OmicScope performs a Tukey post-hoc correction. This helps identify and highlight the groups with significant differences.
+Static Pdata
+^^^^^^^^^^^^
 
 To create a pdata file for running the static workflow, users should include the following columns:
 
 
-#. **Sample:** The name of each sample to be analysed, matching those in the first row of the Assay sheet.
+#. **Sample:** The name of each sample to be analyzed, matching those in the first row of the Assay sheet.
 #. **Condition:** Respective group for each sample. All technical and biological replicates belonging to an experimental condition should have the same identifier here.
 #. **Biological:** Respective biological replicate for each sample. If two or more technical replicates were used for a single biological replicate, those replicates should have the same identifier here.
+
+Pdata Example 1
+^^^^^^^^^^^^^^^
+
+In the example below, each sample is assigned to a specific Condition, and each biological replicate is reported. Here, two distinct conditions were documented, and each biological replicate was acquired twice. Once this 'pdata' is integrated into the OmicScope workflow, the process involves calculating the mean of technical replicates and performing an independent t-test as the statistical test.
 
 .. code-block:: python
 
@@ -309,10 +320,11 @@ To create a pdata file for running the static workflow, users should include the
 
 
 
-As depicted in the table above, each sample is assigned to a specific Condition, and each biological replicate is reported. In this example, two distinct conditions were documented, and each biological replicate was collected twice. Once this 'pdata' is integrated into the OmicScope workflow, the process involves calculating the mean of technical replicates and performing an independent t-test as the statistical test.
-
 Longitudinal Experimental Design
 --------------------------------
+
+Longitudinal Workflow
+^^^^^^^^^^^^^^^^^^^^^
 
 To accommodate the potential complexities of longitudinal experimental designs, OmicScope categorizes these experiments into two primary types:
 
@@ -323,7 +335,13 @@ To accommodate the potential complexities of longitudinal experimental designs, 
 #. 
    *Between-group experiments*\ : These designs aim to detect differential protein regulation over time by comparing different groups.
 
-OmicScope manages these distinctions much like the static workflow, examining the number of conditions (#conditions) in the 'Condition' column. It selects "Within-group" if the #conditions is equal to 1, and "Between-group" if the #conditions exceed 1. Additionally, in the longitudinal workflow, the user is required to add a ``TimeCourse`` column to define the sampling frequency of the study.
+Pdata workflow
+^^^^^^^^^^^^^^
+
+OmicScope manages these distinctions much like the static workflow, examining the number of conditions (#conditions) in the 'Condition' column. It selects "Within-group" if the #conditions is equal to 1, and "Between-group" if the #conditions exceed 1. Additionally, in the longitudinal workflow, the user is **required to add a ``TimeCourse``\ ** column to define the sampling frequency of the study.
+
+Pdata Example 2
+^^^^^^^^^^^^^^^
 
 In the example below, the 'pdata' contains two distinct groups (12 Control and 12 Treatment) in the 'Condition' column, indicating a Between-group analysis. Additionally, the ``TimeCourse`` column includes 4 time points, and each biological replicate was acquired twice.
 
@@ -700,6 +718,9 @@ In the example below, the 'pdata' contains two distinct groups (12 Control and 1
    </table>
    </div>
 
+
+Pdata Example 3
+^^^^^^^^^^^^^^^
 
 It's important to note that in some cases researchers may employ independent or related sampling over time. Independent sampling involves evaluating different individuals over time, while related sampling entails assessing the same individuals repeatedly. As OmicScope assumes independent sampling by default, it's essential to add a fifth column labeled "Individual" if the experimental design involves related sampling. This column associates each sample with its respective individual number.
 

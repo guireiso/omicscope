@@ -1,18 +1,34 @@
 
+.. code-block:: python
+
+   import sys
+   sys.path.insert(1, 'C:/Users/gui_d/omicscope/omicscope/src/')
+
 EnrichmentScope Object
 ======================
 
-The EnrichmentScope is a dedicated module within OmicScope designed for conducting in silico enrichment analyses. It offers two primary types of enrichment analyses: Over-Representation Analysis (ORA) and Gene-Set Enrichment Analysis (GSEA). These analyses are powered by the GSEAPy package workflow, providing high performance and access to a comprehensive list of databases for thorough analysis.
+`\ ``omics.EnrichmentScope()`` <https://omicscope.readthedocs.io/en/latest/reference/omicscope.html#omicscope.EnrichmentScope>`_
+
+The EnrichmentScope is a dedicated module within OmicScope designed for conducting *in silico* enrichment analyses. It offers two primary types of enrichment analyses: Over-Representation Analysis (ORA) and Gene-Set Enrichment Analysis (GSEA). These analyses are powered by the `Enrichr <https://maayanlab.cloud/Enrichr/>`_ libraries, providing access to over 224 databases for thorough analysis.
+
+To perform enrichment analysis, users must initially import and perform statistical analysis using the OmicScope module.
+
+The OmicScope object is used to perform Enrichment Analysis in the EnrichmentScope module. It's important to note that ORA uses differentially regulated proteins found in OmicScope, while the GSEA algorithm uses all quantified proteins to perform the statistical analysis.
+
+To perform enrichment analysis, users also need to select appropriate databases, with ``KEGG_2021_Human`` used by default. Users can also define alternative background sizes, target organisms, or pAdjusted cutoffs to consider terms enriched.
 
 .. code-block:: python
 
    import omicscope as omics
 
-   df = omics.OmicScope('../../tests/data/proteins/progenesis.xls', Method = 'Progenesis')
+   data = omics.OmicScope('../../tests/data/proteins/progenesis.xls', Method = 'Progenesis')
 
-   ora = omics.EnrichmentScope(df, Analysis='ORA', dbs = ['KEGG_2021_Human'])
+   ora = omics.EnrichmentScope(data, Analysis='ORA', dbs = ['KEGG_2021_Human'])
 
 .. code-block::
+
+   OmicScope v 1.4.0 For help: https://omicscope.readthedocs.io/en/latest/ or https://omicscope.ib.unicamp.brIf you use  in published research, please cite:
+   'Reis-de-Oliveira, G., et al (2024). OmicScope unravels systems-level insights from quantitative proteomics data 
 
    User already performed statistical analysis
    OmicScope identifies: 697 deregulations
@@ -22,7 +38,40 @@ The EnrichmentScope is a dedicated module within OmicScope designed for conducti
 Enrichment results
 ------------------
 
-Enrichment results are stored in ``object.results`` as a table (DataFrame). This data contains all the information regarding the analyses that were run, such as the databases used to search (\ ``Gene_Set``\ ), their respective enriched terms (\ ``Term``\ ), the statistics returned for each term (\ ``P-value``\ , ``Adjusted P-value``\ , ``Odds Ratio``\ , ``Combined Score``\ ), the genes and number of genes associated with those terms (\ ``Genes``\ , ``N_Proteins``\ ), the regulation of each gene on the original data frame (\ ``regulation``\ ), and how much of the data is down- and up-regulated.
+Enrichment results are stored in ``object.results`` as a table (DataFrame), with the following columns:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Column Name
+     - Description
+   * - Gene_set
+     - Gene set library used for enrichment analysis
+   * - Term
+     - Enriched term
+   * - Overlap
+     - Ratio of proteins overlapped in the experimental gene list and the total number of genes in the library term
+   * - P-value
+     - Nominal p-value from Fisher's exact test
+   * - Adjusted P-value
+     - Adjusted p-value according to Benjamini-Hochberg (pAdjusted)
+   * - Combined Score *(ORA only)*
+     - Score for the enrichment analysis
+   * - Genes
+     - Genes overlapped between experimental data and the database
+   * - -log10(pAdj)
+     - Log-transformed pAdjusted value
+   * - N_Proteins
+     - Number of proteins overlapped between the experimental gene list and the target library term
+   * - Regulation
+     - Log2(foldchange) of each protein overlapped
+   * - Down-regulated
+     - Number of down-regulated proteins
+   * - Up-regulated
+     - Number of up-regulated proteins
+   * - Normalized Enrichment Score (NES) *(GSEA only)*
+     - An attempt to predict the effect of proteins on pathways (specific to GSEA analysis)
+
 
 .. code-block:: python
 
@@ -49,6 +98,7 @@ Enrichment results are stored in ``object.results`` as a table (DataFrame). This
      <thead>
        <tr style="text-align: right;">
          <th></th>
+         <th>index</th>
          <th>Gene_set</th>
          <th>Term</th>
          <th>Overlap</th>
@@ -69,6 +119,7 @@ Enrichment results are stored in ``object.results`` as a table (DataFrame). This
      <tbody>
        <tr>
          <th>0</th>
+         <td>0</td>
          <td>KEGG_2021_Human</td>
          <td>Parkinson disease</td>
          <td>58/249</td>
@@ -87,6 +138,7 @@ Enrichment results are stored in ``object.results`` as a table (DataFrame). This
        </tr>
        <tr>
          <th>1</th>
+         <td>1</td>
          <td>KEGG_2021_Human</td>
          <td>Pathways of neurodegeneration</td>
          <td>78/475</td>
@@ -105,6 +157,7 @@ Enrichment results are stored in ``object.results`` as a table (DataFrame). This
        </tr>
        <tr>
          <th>2</th>
+         <td>2</td>
          <td>KEGG_2021_Human</td>
          <td>Prion disease</td>
          <td>54/273</td>
@@ -123,6 +176,7 @@ Enrichment results are stored in ``object.results`` as a table (DataFrame). This
        </tr>
        <tr>
          <th>3</th>
+         <td>3</td>
          <td>KEGG_2021_Human</td>
          <td>Amyotrophic lateral sclerosis</td>
          <td>61/364</td>
@@ -144,8 +198,8 @@ Enrichment results are stored in ``object.results`` as a table (DataFrame). This
    </div>
 
 
-Background
-----------
+Background - ORA only
+---------------------
 
 When conducting Over-Representation Analysis (ORA), the background gene list assumes a pivotal role in enrichment analysis by serving as the reference set against which the experimental gene list is compared. To put it simply, the background gene list encompasses all the genes or proteins that could potentially be present in the experimental dataset.
 
@@ -154,43 +208,39 @@ By default, when ``background = None``\ , EnrichmentScope includes all genes fou
 Plots and Figures
 -----------------
 
-EnrichmentScope introduces a variety of analysis options and plot figures tailored to offer users a comprehensive understanding of the impact of differentially regulated proteins on biological systems.
+EnrichmentScope introduces a variety of figures that aim to integrate the enrichment outcomes with the differentially regulated proteins in biological systems.
 
-Users can choose between saving the generated plots in vector format (using ``vector=True``\ ) or in .png format (with ``vector=False``\ ). They have the flexibility to set the desired figure resolution (using ``dpi=300``\ ) and specify a file path for saving the plots. Moreover, users can adjust the color schemes of the plots using the "palettes" command, selecting color palettes from Matplotlib. These customizable options empower users to create informative and visually appealing visualizations that cater to their specific requirements and preferences.
+Users can choose between saving the generated plots in vector format (using ``vector=True``\ ) or in .png format (with ``vector=False``\ ). They have the flexibility to set the desired figure resolution (using ``dpi=300``\ ) and specify a file path for saving the plots. Moreover, users can adjust the color schemes of the plots using the "palettes" command, selecting color palettes from Matplotlib. These customizable options empower users to create informative and visually appealing visualizations that cater to their specific requirements and preferences
 
-Dotplot - ``object.dotplot()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Dotplot - `\ ``object.dotplot()`` <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.dotplot>`_
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``dotplot`` function within EnrichmentScope ranks enriched terms based on their adjusted p-values. Each dot's size and color in the plot correspond to the number of proteins enriched for the respective term.
+The ``dotplot`` function ranks enriched terms on the y-axis based on their adjusted p-values, while the x-axis represents the adjusted p-values. Additionally, the size of each dot is proportional to -log10(pAdjusted), providing an indication of the significance of the enrichment. Furthermore, the color of each dot is coded based on the number of proteins used in the enrichment analysis.
+
+**How to interpret**\ : The positioning of each dot on the plot indicates the statistical significance of the term, with more statistically significant terms located towards the top-right side of the plot. Additionally, the color of each dot corresponds to the number of proteins associated with that term, with darker blue indicating a higher number of associated proteins. 
 
 .. code-block:: python
 
    ora.dotplot(dpi=90, palette='PuBu')
 
 
-.. image:: 4_enrichmentscope_files/4_enrichmentscope_8_0.png
-   :target: 4_enrichmentscope_files/4_enrichmentscope_8_0.png
+.. image:: 4_enrichmentscope_files/4_enrichmentscope_9_0.png
+   :target: 4_enrichmentscope_files/4_enrichmentscope_9_0.png
    :alt: png
 
 
-Heatmap - ``object.Heatmap()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Heatmap - `\ ``object.Heatmap()`` <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.heatmap>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-The heatmap is a valuable tool within the EnrichmentScope workflow, aiding in the visualization of proteins that are shared between enriched terms. This visualization is particularly helpful in reducing data redundancy. By default, the heatmap colors are mapped according to the adjusted p-value. However, users have the option to color each protein based on its fold-change by setting ``foldchange=True``.
+The heatmap is a valuable tool within the EnrichmentScope workflow, aiding in the visualization of proteins that are shared between enriched terms, helping to reduce data redundancy. In this heatmap, proteins are depicted on the y-axis, while terms are assigned to the x-axis.
+
+By default, the heatmap colors are mapped according to the adjusted p-value. However, users have the option to color each protein based on its fold-change by setting ``foldchange=True``.
+
+**How to interpret**\ : When looking for specific proteins, users can identify the specific pathways (terms) associated with those proteins. Conversely, when exploring several pathways, users can observe the group of proteins that are shared between those pathways (terms). In the examples provided below, we highlight the default parameters and color coding based on fold change.
 
 .. code-block:: python
 
    ora.heatmap(linewidths=0.5)
-
-
-.. image:: 4_enrichmentscope_files/4_enrichmentscope_10_0.png
-   :target: 4_enrichmentscope_files/4_enrichmentscope_10_0.png
-   :alt: png
-
-
-.. code-block:: python
-
-   ora.heatmap(linewidths=0.5, foldchange=True)
 
 
 .. image:: 4_enrichmentscope_files/4_enrichmentscope_11_0.png
@@ -198,25 +248,38 @@ The heatmap is a valuable tool within the EnrichmentScope workflow, aiding in th
    :alt: png
 
 
-Number of DEPs - ``object.number_deps()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
-For users performing ORA and GSEA analyses, questions often arise about the number of differentially regulated entities. The ``number_deps`` function addresses this by providing insights into the count of up- and down-regulated entities.
+   # color based on protein fold-change
+   ora.heatmap(linewidths=0.5, foldchange=True)
+
+
+.. image:: 4_enrichmentscope_files/4_enrichmentscope_12_0.png
+   :target: 4_enrichmentscope_files/4_enrichmentscope_12_0.png
+   :alt: png
+
+
+Number of DEPs - `\ ``object.number_deps()`` <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.number_deps>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The ``number_deps`` function counts the number of up- and down-regulated entities (x-axis) and plots them according to each enriched term (y-axis). In this plot, sizes indicate the number of proteins found in each group.
+
+**How to interpret**\ : For users performing ORA and GSEA analyses, questions often arise about the number of up- and down-regulated proteins associated with each term.
 
 .. code-block:: python
 
    ora.number_deps(palette=['firebrick','darkcyan'] ,dpi = 90)
 
 
-.. image:: 4_enrichmentscope_files/4_enrichmentscope_13_0.png
-   :target: 4_enrichmentscope_files/4_enrichmentscope_13_0.png
+.. image:: 4_enrichmentscope_files/4_enrichmentscope_14_0.png
+   :target: 4_enrichmentscope_files/4_enrichmentscope_14_0.png
    :alt: png
 
 
-Enrichment Network - ``object.enrichment_network()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Enrichment Network - `\ ``object.enrichment_network()`` <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.enrichment_network>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-In proteomics, major pathways frequently share several proteins, and visualizing pathways and proteins together in a network can be highly informative. OmicScope offers two functions for plotting networks: ``enrichment_network`` and ``enrichment_map``.
+In proteomics, major pathways frequently share several proteins, and visualizing pathways and proteins together in a network can be highly informative.
 
 The Enrichment Network function visually connects terms to their associated proteins. In this visualization, terms are depicted in gray, and the node size is proportional to ``-log10(p-adjusted)``. Proteins are represented uniformly in size and are color-coded based on their fold-change. Labels can be added to the plot by using the ``labels``\ =True option (default: ``False``\ ).
 
@@ -227,38 +290,40 @@ The Enrichment Network function visually connects terms to their associated prot
    ora.enrichment_network(top = 10, dpi = 90)
 
 
-.. image:: 4_enrichmentscope_files/4_enrichmentscope_15_0.png
-   :target: 4_enrichmentscope_files/4_enrichmentscope_15_0.png
+.. image:: 4_enrichmentscope_files/4_enrichmentscope_16_0.png
+   :target: 4_enrichmentscope_files/4_enrichmentscope_16_0.png
    :alt: png
 
 
 .. code-block::
 
-   [<networkx.classes.graph.Graph at 0x1863c307410>]
+   [<networkx.classes.graph.Graph at 0x2e857ba2390>]
 
 
 
 
-Enrichment Map - ``object.enrichment_map()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Enrichment Map - `\ ``object.enrichment_map()`` <https://omicscope.readthedocs.io/en/latest/reference/enrichmentvis.html#omicscope.EnrichmentAnalysis.EnrichmentVisualization.enrichment_map>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-An advantageous aspect of employing graphical representations in enrichment analysis is their ability to reduce data redundancy. The enrichment_map function takes advantage of this by rendering nodes as terms and edges as similarity scores, typically calculated using statistical metrics such as Jaccard similarity (default). If users opt to enable ``modules=True``\ , the Louvain method is utilized to identify communities within the network. Each community is assigned a unique term, typically the one with the highest degree, to describe the community when ``labels=True`` is specified.
+An advantageous aspect of employing graphical representations in enrichment analysis is their ability to reduce data redundancy. The ``enrichment_map`` function takes advantage of this by rendering nodes as terms and edges as similarity scores, typically calculated using statistical metrics such as Jaccard similarity (default). If users opt to enable ``modules=True``\ , the Louvain method is utilized to identify communities within the network. Each community is assigned a unique term, typically the one with the highest degree, to describe the community when ``labels=True`` is specified.
 
 Similar to the ``enrichment_network`` function, users can easily export the generated enrichment map to external tools for further exploration and visualization by adding ``save=PATH_TO_SAVE``.
+
+**How to interpret**\ : While aiming to investigate pathways that share proteins, users can look inside modules to identify pathways that present high similarity regarding protein presence. On the other hand, while avoiding redundancy, users can look for the node that presents a higher degree (number of connections) inside each module and/or a lower p-value and consider that node to represent the whole module.
 
 .. code-block:: python
 
    ora.enrichment_map(dpi=90, modules=True)
 
 
-.. image:: 4_enrichmentscope_files/4_enrichmentscope_17_0.png
-   :target: 4_enrichmentscope_files/4_enrichmentscope_17_0.png
+.. image:: 4_enrichmentscope_files/4_enrichmentscope_18_0.png
+   :target: 4_enrichmentscope_files/4_enrichmentscope_18_0.png
    :alt: png
 
 
 .. code-block::
 
-   [<networkx.classes.graph.Graph at 0x1863d11cad0>]
+   [<networkx.classes.graph.Graph at 0x2e857bdf010>]
 
 
 

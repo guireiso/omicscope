@@ -1,27 +1,76 @@
 
+.. code-block:: python
+
+   import sys
+   sys.path.insert(1, 'C:/Users/gui_d/omicscope/omicscope/src/')
+
 Input
 =====
 
-*OmicScope* offers five methods for integrating data into its pipeline, three of which rely on proteomic software for protein identification and quantitative analyses:
+*OmicScope* offers eight methods for integrating data into its pipeline, six of which rely on proteomic software for protein identification and quantitative analyses:
+
+**Important:** Examples for each data format can be easily downloadable in `OmicScope Web App <https://omicscope.ib.unicamp.br/>`_.
 
 
 * 
-  **Progenesis QI for Proteomics** *(\ ``Method = 'Progenesis'``\ )*\ : Progenesis QI for Proteomics (Waters Corporation) is a software that enables protein quantification and identification (via APEX3D and ProteinLynx Global Server) for experiments that use Data Independent Acquisition (DIA).
+  **\ `Progenesis QI for Proteomics <##progenesis-qi-for-proteomics>`_\ ** (\ *Method: 'Progenesis'*\ )
+
+
+  * Progenesis QI for Proteomics (Waters Corporation) is software that enables protein quantification and identification (via APEX3D and ProteinLynx Global Server) for experiments that use Data Independent Acquisition (DIA).
+  * **Input format:** Table with normalized abundance values - .csv (recommended) or .xlsx/xls.
 
 * 
-  **PatternLab V** *(\ ``Method = 'PatternLab'``\ )*\ : PatternLab V is an integrated computational environment for analyzing shotgun proteomic data, and is considered one of the best options for quantitative proteomics using data-dependent acquisition, due to its high-confidence parameters for protein quantitation and identification.
+  **\ `PatternLab V <##patternlab>`_\ ** (\ *Method: 'PatternLab'*\ )
+
+
+  * PatternLab V is an integrated computational environment for analyzing shotgun proteomic data and is considered one of the best options for quantitative proteomics using data-dependent acquisition, due to its high-confidence parameters for protein quantitation and identification.
+  * **Input format:** Excel file exported by XIC section (user can perform filtering steps prior to export excel file) - .xlsx.
 
 * 
-  **MaxQuant** *(\ ``Method = 'MaxQuant'``\ )*\ : MaxQuant is the most widely used software for quantitative proteomics, offering users a range of parameter options for quantitative analyses.
+  **\ `MaxQuant <##maxquant>`_\ ** (\ *Method: 'MaxQuant'*\ )
+
+
+  * MaxQuant is the most widely used software for quantitative proteomics, offering users a range of parameter options for quantitative analyses.
+  * **Input format:** ProteinGroup.txt and `pdata <#pdata>`_.xlsx files.
+  * *Note: User must ensure sample names (indicated in LFQ Intensity columns) are the same in ProteinGroup and pdata files. Additionally, verify if LFQ Intensity and/or Intensities comprise valid values.*
 
 * 
-  **DIA-NN** *(\ ``Method = 'DIA-NN'``\ )*\ : DIA-NN is a popular software that performs protein identification and quantification for DIA experiments, offering users a variety of parameter options for quantitative analyses.
+  **\ `DIA-NN <##dia-nn>`_\ ** (\ *Method: 'DIA-NN'*\ )
+
+
+  * DIA-NN is a popular software that performs protein identification and quantification for DIA experiments, offering users a variety of parameter options for quantitative analyses.
+  * **Input format:** main_output.tsv and `pdata <#pdata>`_.xlsx files.
+  * *Note: User must ensure Run columns in main_output.tsv match the Sample column on pdata file. Additionally, verify if PG.MaxLFQ is present and contains valid values in the main_output.tsv columns.*
 
 * 
-  **General** *(\ ``Method = 'General'``\ )*\ : To import data from other sources, this generic input method requires users to import an Excel workbook with 3 sheets: quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata).
+  **\ `FragPipe <#fragpipe>`_\ ** (\ *Method: 'MaxQuant'*\ )
+
+
+  * FragPipe is a suite of computational tools enabling comprehensive analysis of mass spectrometry-based proteomics data.
+  * **Input format:** combined_protein.tsv and `pdata <#pdata>`_.xlsx files.
+  * *Note: User must ensure sample names (indicated in MaxLFQ columns) are the same in combined_protein and pdata files. Additionally, verify if MaxLFQ and/or Intensities comprise valid values.*
 
 * 
-  **Snapshot** *(\ ``Method = 'Snapshot'``\ )*\ : The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and grouping.
+  **\ `Proteome Discoverer <##proteome-discoverer>`_\ ** (\ *Method: 'MaxQuant'*\ )
+
+
+  * Proteome Discoverer (Thermo Fisher Scientific) performs protein identification and quantitation.
+  * **Input format:** Quantitative data on protein levels (.xls/.xlsx files) containing "Normalized" or "Abundance:" columns presenting quantitative values.
+
+
+* 
+  **\ `General <##general>`_\ ** (\ *Method: 'General'*\ )
+
+
+  * To import data from other sources, this generic input method requires users to import an Excel workbook with 3 sheets: quantitative values (sheet1 = assay), protein features (sheet2 = rdata), and sample information (sheet3 = pdata).
+  * **Input format:** Excel file containing three sheets.
+
+* 
+  **\ `Snapshot <#snapshot>`_\ ** (\ *Method: 'Snapshot'*\ )
+
+
+  * The Snapshot method is the simplest approach to be used in the OmicScope workflow. It involves using a single, concise Excel sheet that contains essential information about proteins in a study, including fold change, p-value, and grouping.
+  * **Input format:** Excel file.
 
 For more information about the formatting of these import methods, see the appropriate sections below.
 
@@ -36,9 +85,8 @@ First, OmicScope package must be imported in the Python programming environment.
 
 .. code-block::
 
-   OmicScope v 1.3.12 For help: Insert
-   If you use  in published research, please cite: 'XXXXX'
-   Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: from quantitative proteomics to systems biology.
+   OmicScope v 1.4.0 For help: https://omicscope.readthedocs.io/en/latest/ or https://omicscope.ib.unicamp.brIf you use  in published research, please cite:
+   'Reis-de-Oliveira, G., et al (2024). OmicScope unravels systems-level insights from quantitative proteomics data 
 
 
 
@@ -46,9 +94,9 @@ First, OmicScope package must be imported in the Python programming environment.
 Progenesis QI for Proteomics
 ----------------------------
 
-Progenesis exports protein quantitation data in a csv file containing information about samples, protein groups, and quantitative values. 
+Progenesis exports protein quantitation data in a CSV file containing information about samples, protein groups, and quantitative values.
 
-*OmicScope* imports Progenesis output and extracts the abundance levels of each protein (assay), the features of each protein (rdata), and features of each sample (pdata). *OmicScope*  can also accept Excel spreadsheets (with extensions .xls or .xlsx) that contain a **single sheet** for the Progenesis workflow, as many users may use Excel to visualize and handle data.
+*OmicScope* imports Progenesis output and extracts the abundance levels of each protein (assay), the features of each protein (rdata), and features of each sample (pdata). *OmicScope* can also accept Excel spreadsheets (with extensions .xls or .xlsx) that contain a **single sheet** for the Progenesis workflow, as many users may use Excel to visualize and handle data.
 
 .. code-block:: python
 
@@ -61,7 +109,9 @@ Progenesis exports protein quantitation data in a csv file containing informatio
 
 
 
-Since Progenesis exports certain information about sample groupings, *OmicScope* allows the user to input an Excel file containing all this information using pdata argument (for more information about pdata format, see below). Furthermore, users can filter identifications based on the minimum number of unique peptides by specifying the parameter ``UniquePeptides`` (recommended: ``UniquePeptides = 1``\ ).
+**Only for OmicScope Package (not available in OmicScope App)**
+
+Since Progenesis exports certain information about sample groupings, *OmicScope* allows the user to input an Excel file containing all this information using the pdata argument (for more information about pdata format, see below). Furthermore, users can filter identifications based on the minimum number of unique peptides by specifying the parameter ``UniquePeptides`` (recommended: ``UniquePeptides = 1``\ ).
 
 .. code-block:: python
 
@@ -79,7 +129,7 @@ Since Progenesis exports certain information about sample groupings, *OmicScope*
 
 
 
-**Note**\ : Progenesis performs differential proteomics analyses based on preset groups, and *OmicScope* takes these statistical analyses into account. However, if the user has a specific experimental design, *OmicScope* Statistical Workflow can be used by renaming two columns in the original .csv file, as follows:
+**IMPORTANT**\ : Progenesis performs differential proteomics analyses based on preset groups, and *OmicScope* takes these statistical analyses into account. However, if the user has a specific experimental design, *OmicScope* Statistical Workflow can be used by renaming two columns in the original .csv file, as follows:
 
 
 * "Anova (p)" → "Original Anova (p)"
@@ -94,29 +144,67 @@ PatternLab exports an Excel file with an .xlsx extension, which contains the sam
 
    plv = omics.OmicScope('../../tests/data/proteins/patternlab.xlsx', Method='PatternLab')
 
-.. code-block::
+MaxQuant
+--------
 
-   Anova test was performed!
-   OmicScope performed statistical analysis (Static workflow)
+MaxQuant exports the **proteinGroups.txt** file, which provides a comprehensive description of the assay and rdata. However, since pdata is missing in both cases, these methods **require** an additional Excel file for pdata. See the `pdata section <#pdata>`_ below for instructions on formatting this file.
+
+**Troubleshooting:** If you encounter issues with MaxQuant data, please ensure the following:
 
 
-
-MaxQuant and DIA-NN
--------------------
-
-While MaxQuant exports the **proteinGroups.txt** file, which contains a comprehensive description of the assay and rdata, DIA-NN exports the main output containing the same information. However, since in both cases the pdata is missing, these methods **requires** an additional Excel file for pdata. See the pdata section below for how to format this file.
+* *LFQ Intensity or Intensity columns are present in the data*\ : OmicScope typically uses LFQ Intensity columns for statistical analysis, falling back to 'Intensity' columns if LFQ Intensity columns are absent.
+* *LFQ Intensity or Intensity columns contain valid values*\ : MaxQuant may sometimes export null values for quantitative data, hindering OmicScope's statistical analysis.
+* *Verify if the MaxQuant output includes the following columns (exact labels)*\ : 'Majority protein IDs', 'Fasta headers', 'Gene names': 'gene_name'. Older versions of MaxQuant might use different column labels, which can cause issues in OmicScope.
 
 .. code-block:: python
 
    maxquant = omics.OmicScope('../../tests/data/proteins/MQ.txt', Method='MaxQuant',
                               pdata='../../tests/data/proteins/MQ_pdata.xlsx')
 
-.. code-block::
+DIA-NN
+------
 
-   Anova test was performed!
-   OmicScope performed statistical analysis (Static workflow)
+DIA-NN exports the **main_output.tsv** file, which provides a comprehensive description of the assay and rdata. However, since pdata is missing in both cases, these methods **require** an additional Excel file for pdata. See the `pdata section <#pdata>`_ below for instructions on formatting this file.
+
+**IMPORTANT**\ : Main-output.tsv files from DIA-NN may be larger than 1 GB, importing and analyzing these data can take a while.
+
+**Troubleshooting:** If you encounter issues with DIA-NN data, please ensure the following:
 
 
+* *PG.MaxLFQ column is present in the data*\ : OmicScope uses PG.MaxLFQ columns for statistical analysis.
+* *PG.MaxLFQ contains valid values*\ : DIA-NN may sometimes export null values for quantitative data, hindering OmicScope's statistical analysis.
+
+.. code-block:: python
+
+   diann = omics.OmicScope('../../tests/data/proteins/main_output.tsv', Method='DIA-NN',
+                              pdata='../../tests/data/proteins/pdata.xlsx')
+
+FragPipe
+--------
+
+FragPipe exports the **combined_protein.tsv** file, which provides a comprehensive description of the assay and rdata. However, since pdata is missing in both cases, these methods **require** an additional Excel file for pdata. See the `pdata section <#2_pdata>`_ below for instructions on formatting this file.
+
+**Troubleshooting:** If you encounter issues with FragPipe data, please ensure the following:
+
+
+* *MaxLFQ or Intensity columns are present in the data*\ : OmicScope uses PG.MaxLFQ columns for statistical analysis.
+* *MaxLFQ or Intensity contain valid values*\ : FragPipe may sometimes export null values for quantitative data, hindering OmicScope's statistical analysis.
+
+.. code-block:: python
+
+   fragpipe = omics.OmicScope('../../tests/data/proteins/fragpipe.txt', Method='FragPipe',
+                              pdata='../../tests/data/proteins/fragpipe.xlsx')
+
+Proteome Discoverer
+-------------------
+
+Proteome Discoverer (PD) exports protein quantitation data in an Excel file containing a single sheet that comprises samples, protein groups, and quantitative values, used to separate between assay, rdata, and pdata.
+
+Since PD allows users to select columns to be exported, we **strongly recommend** exporting the following columns: 'Description', 'Accession', 'Normalizing'/'Abundance:'. When importing statistical analysis exported by PD, also use: 'Abundance Ratio P-Value', 'Abundance Ratio Adj'.
+
+.. code-block:: python
+
+   pd = omics.OmicScope('../../tests/data/proteins/pd.xlsx', Method='ProteomeDiscoverer')
 
 General
 -------
@@ -126,7 +214,7 @@ The General workflow allows users to analyze data generated by other platforms, 
 
 * **Assay:** Contains the abundance of N proteins (rows) from M samples (columns).
 * **Rdata:** Includes N proteins (rows) with their respective features within each column.
-* **Pdata:** Contains M samples (rows) with their respective characteristics, such as conditions as well as the organization of biological and technical replicates.
+* **Pdata:** Contains M samples (rows) with their respective characteristics, such as conditions, as well as the organization of biological and technical replicates.
 
 For more information about how to properly format and import each of these sheets, see the respective sections below.
 
@@ -332,7 +420,7 @@ pdata
 Pdata contains a description of each sample analyzed in the workflow. Pdata must have at least the following 3 columns: 'Sample', 'Condition', and 'Biological'.
 
 
-#. **Sample:** The name of each sample to be analysed, matching those in the first row of the Assay sheet.
+#. **Sample:** The name of each sample to be analyzed, matching those in the first row of the Assay sheet.
 #. **Condition:** Respective group for each sample. All technical and biological replicates belonging to an experimental condition should have the same identifier here.
 #. **Biological:** Respective biological replicate for each sample. If two or more technical replicates were used for a single biological replicate, those replicates should have the same identifier here.
 
@@ -605,10 +693,12 @@ See the example below for how to construct a pdata sheet. In this example, there
    </div>
 
 
+For detailed instructions on constructing pdata and integrating it into your experimental design, please refer to the page titled `How to Make Pdata <link_to_page>`_.
+
 Snapshot
 --------
 
-The Snapshot method is an alternative option in OmicScope that allows for the analysis of multiple 'omics studies, importing pre-analyzed data from other platforms.
+The Snapshot method is an alternative option in OmicScope for analyzing multiple 'omics studies by importing pre-analyzed data from other platforms.
 
 To use the Snapshot method, the user needs to upload a CSV or Excel file organized as follows:
 
@@ -639,16 +729,16 @@ Users can also define any of the following additional parameters that are in the
    **PValue_cutoff** (default = ``PValue_cutoff = 0.05``\ ): Statistical cutoff to consider proteins differentially regulated.
 
 #. 
-   **normalization_method** (default, ``normalization_method = None``\ ): User can normalize data using OmicScope. Nowadays, OmicScope offers normalization using "average", "median", and "quantile" approaches.
+   **normalization_method** (default = ``normalization_method = None``\ ): Certain data may require a normalization preprocessing step. OmicScope offers three methods of normalization: 'average', 'median', 'quantile'. Defaults to None.
 
 #. 
-   **imputation_method** (default, ``imputation_method = None``\ ): User can replace null values using three imputation methods: "mean", "knn", and "median".
+   **imputation_method** (default = ``imputation_method = None``\ ): Some data may require data imputation to handle null values as a preprocessing step. OmicScope provides three methods of data imputation: 'mean', 'median', 'knn'. Defaults to None.
 
 #. 
    **FoldChange_cutoff** (default, ``FoldChange_cutoff = 0``\ ): Cutoff of the absolute abundance ratio to consider a protein to be differentially regulated. 0 indicates that p-values alone are sufficient to determine dysregulation.
 
 #. 
-   **logTransform** (default, ``logTransform = True``\ ): Usually, analysis software reports abundance in nominal values, requiring a log-transformation of the values to normalize abundance data.
+   **logTransform** (default, ``logTransform = True``\ ): Usually, analysis software reports abundance in nominal values, requiring a log-transformation of the values to normalize abundance data. If users performed transformation before the OmicScope workflow, set logTransformed=True.
 
 #. 
    **ExcludeContaminants** (default, ``ExcludeContaminants = True``\ ): Recently, Frankenfield (2022) evaluated the most common contaminants found in proteomics workflows. By default, OmicScope removes them from analyses. If this is not desired, OmicScope can leave them in the final results with ExcludeContaminants=False.
