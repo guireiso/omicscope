@@ -105,6 +105,7 @@ class Omicscope(Input):
         if True in self.rdata.columns.isin(statistics):
             from .Stats.Performed_Stat import imported_stat
             self.quant_data = imported_stat(self, statistics)
+            self.expression = self.assay.copy()
             self.pdata['Sample'] = self.pdata['Sample'] + \
                 '.'+self.pdata['Condition']
             print('User already performed statistical analysis')

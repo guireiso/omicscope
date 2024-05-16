@@ -456,7 +456,7 @@ def volcano(self, *Proteins,
 
 def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
             clust_metric="euclidean", clust_method='average',
-            palette='RdYlBu_r', line=0.01, color_groups='tab20',
+            palette='RdYlBu_r', linewidth=0.01, color_groups='tab20',
             sample_label=False,
             save=None, dpi=300, vector=True):
     """ Heatmap with hierarchical clustering
@@ -474,7 +474,7 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
         color_groups (str, optional): Palette for group colors.
          Defaults to 'tab20'.
         palette (str, optional): Palette for protein abundance. Defaults to 'RdYlBu_r'.
-        line (float, optional): Line width. Defaults to 0.01.
+        linewidth (float, optional): Line width. Defaults to 0.01.
         sample_label (bool, optional): insert biological sample label and condition.
         Defaults to False.
         save (str, optional): Path to save figure. Defaults to None.
@@ -542,7 +542,7 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     if sample_label is True:
         heatmap = heatmap_original_label
     sns.clustermap(heatmap,
-                   cmap=palette, z_score=0, linewidths=line, linecolor='black',
+                   cmap=palette, z_score=0, linewidths=linewidth, linecolor='black',
                    col_colors=colors, metric=clust_metric, method=clust_method,
                    col_cluster=c_cluster, center=0).fig.suptitle(title, y=1.02)
     
@@ -579,7 +579,7 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
 def correlation(self, *Proteins, pvalue=1.0,
                 sample_method='pearson',
                 clust_metric='euclidean',
-                clust_method='average', palette='RdYlBu_r', line=0.005,
+                clust_method='average', palette='RdYlBu_r', linewidth=0.005,
                 color_groups='tab20', sample_label=False,
                 save=None, dpi=300, vector=True):
     """Pairwise correlation plot for samples.
@@ -595,7 +595,7 @@ def correlation(self, *Proteins, pvalue=1.0,
         clust_method (str, optional): Linkage method to use for calculating clusters.
          Optionally: single, complete, average, weighted, centroid, median, or ward.
         palette (str, optional): Palette for R-distribution. Defaults to 'RdYlBu_r'.
-        line (float, optional): Line width. Defaults to 0.005.
+        linewidth (float, optional): Line width. Defaults to 0.005.
         sample_label (bool, optional): insert biological sample label and condition.
         Defaults to False.
         color_groups (str, optional): Color of each group. Defaults to 'tab20'.
@@ -665,12 +665,12 @@ def correlation(self, *Proteins, pvalue=1.0,
         sns.clustermap(corr_matrix, metric=clust_metric, method=clust_method,
                        xticklabels=corr_matrix.columns, row_colors=colors,
                        yticklabels=corr_matrix.columns, col_colors=colors,
-                       cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
+                       cmap=palette, linewidths=linewidth, linecolor='black').fig.suptitle(title, y=1.02)
     else:
         sns.clustermap(corr_matrix_raw, metric=clust_metric, method=clust_method,
                        xticklabels=corr_matrix_raw.columns, row_colors=colors,
                        yticklabels=corr_matrix_raw.columns, col_colors=colors,
-                       cmap=palette, linewidths=line, linecolor='black').fig.suptitle(title, y=1.02)
+                       cmap=palette, linewidths=linewidth, linecolor='black').fig.suptitle(title, y=1.02)
         # Create legend for colors
     if type(colors[0]) is list:
         col_dict_Time = {i:j for i,j in zip(pdata.TimeCourse, colors[1])}
@@ -961,11 +961,13 @@ def bar_protein(self, *Proteins, logscale=True,
         sns.barplot(x=df.index, y='value',
                     data=df, errwidth=1, capsize=0.07,
                     palette=color,
+                    errorbar='se',
                     edgecolor='black', linewidth=1, dodge=False)
     else:
         sns.barplot(x='gene_name', y='value', hue=list(df.index),
                     data=df, errwidth=1,
                     capsize=0.07, edgecolor='black',
+                    errorbar='se',
                     palette=color,
                     linewidth=1)
     plt.legend(bbox_to_anchor=(1.0, 1), loc=2, borderaxespad=0.)
@@ -1202,7 +1204,7 @@ def k_trend(self, pvalue=0.05, k_cluster=None,
     k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
     g = sns.catplot(
         data=k_data_protein, x="sample", y="value", hue="Condition", col="cluster",
-        capsize=.2, palette="viridis", errorbar="se",
+        capsize=.2, palette="viridis",
         kind="point", col_wrap=2
     )
     g.despine()
@@ -1257,14 +1259,18 @@ def PPInteractions(self, *Proteins,
     """
     # Set parameters to import data
     plt.rcParams['figure.dpi'] = dpi
-    string_api_url = "https://version-11-5.string-db.org/api"
+    string_api_url = "https://version12.string-db.org/api"
     output_format = "json"
     method = "network"
     data = copy.copy(self)
     data = data.quant_data
     data = data[data[self.pvalue] <= pvalue]
-    if len(Proteins) > 0:
-        data = data[data['gene_name'].isin(Proteins)]
+    data = data.sort_values(self.pvalue)
+    data = data.reset_index(drop=True)
+    if len(data) > 2000:
+        data = data.sort_values(self.pvalue)
+        data = data.iloc[0:1999, :]
+    data['TopTerms'] = data.index+1
     foldchange_range = data['log2(fc)']
     genes = data['gene_name'].dropna().drop_duplicates()
     genes = list(genes.astype(str))
@@ -1281,7 +1287,6 @@ def PPInteractions(self, *Proteins,
 
     }
     response = requests.post(request_url, data=params)
-
     string = pd.read_json(response.text)
     # Filter string results based on score
     string = string[string['score'] >= score_threshold]
@@ -1309,7 +1314,7 @@ def PPInteractions(self, *Proteins,
     carac = source.set_index('ID')
     carac['color_edge'] = 'black'
     linewidths = 0.8
-    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="Color")
+    nx.set_node_attributes(G, dict(zip(carac.index, carac.color)), name="color")
     nx.set_node_attributes(G, dict(zip(carac.index, carac.Size)), name="Size")
     # widths = nx.get_edge_attributes(G, 'score')
     G.edges(data=True)
