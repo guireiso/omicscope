@@ -142,7 +142,7 @@ the top represent the number of quantified proteins in each experiment.
 
 
 
-.. image:: nebula_files%5Cnebula_12_0.png
+.. image:: nebula_files/nebula_12_0.png
 
 
 Enrichment Dotplot - `object.dotplot_enrichment() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.dotplot_enrichment>`__
@@ -167,7 +167,7 @@ pathways that are unique to a specific condition compared to others.
 
 
 
-.. image:: nebula_files%5Cnebula_14_0.png
+.. image:: nebula_files/nebula_14_0.png
 
 
 Differentially Regulated - `object.diff_reg() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.diff_reg>`__
@@ -189,7 +189,7 @@ studies.
 
 
 
-.. image:: nebula_files%5Cnebula_16_0.png
+.. image:: nebula_files/nebula_16_0.png
 
 
 Protein Overlap - `object.protein_overlap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.protein_overlap>`__
@@ -218,7 +218,7 @@ Upset plot - Protein Level
 
 
 
-.. image:: nebula_files%5Cnebula_18_0.png
+.. image:: nebula_files/nebula_18_0.png
 
 
 Upset plot - Enrichment Level - `object.enrichment_overlap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.enrichment_overlap>`__
@@ -230,7 +230,7 @@ Upset plot - Enrichment Level - `object.enrichment_overlap() <https://omicscope.
 
 
 
-.. image:: nebula_files%5Cnebula_20_0.png
+.. image:: nebula_files/nebula_20_0.png
 
 
 Similarity Analysis
@@ -270,7 +270,7 @@ visualization of groups that exhibit greater similarities.
 
 
 
-.. image:: nebula_files%5Cnebula_22_0.png
+.. image:: nebula_files/nebula_22_0.png
 
 
 Network - `object.similarity_network() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.similarity_network>`__
@@ -287,7 +287,7 @@ proportional to the index value.
 
 
 
-.. image:: nebula_files%5Cnebula_24_0.png
+.. image:: nebula_files/nebula_24_0.png
 
 
 Statistical Test
@@ -337,7 +337,7 @@ p-values are > 0.05.
 
 
 
-.. image:: nebula_files%5Cnebula_26_0.png
+.. image:: nebula_files/nebula_26_0.png
 
 
 Statistical Network - `object.stat_network() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.stat_network>`__
@@ -360,7 +360,7 @@ are displayed in the log10 scale.
 
 
 
-.. image:: nebula_files%5Cnebula_28_0.png
+.. image:: nebula_files/nebula_28_0.png
 
 
 Protein Network - `object.whole_network() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.whole_network>`__
@@ -379,7 +379,7 @@ software to perform systems biology analysis.
 
 
 
-.. image:: nebula_files%5Cnebula_30_0.png
+.. image:: nebula_files/nebula_30_0.png
 
 
 
@@ -410,7 +410,7 @@ also highlighting the fold change in each group.
 
 
 
-.. image:: nebula_files%5Cnebula_32_0.png
+.. image:: nebula_files/nebula_32_0.png
 
 
 Circos plot - `object.circos_plot() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.circos_plot>`__
@@ -429,5 +429,5 @@ offering insights into the number of pathways shared between groups.
 
 
 
-.. image:: nebula_files%5Cnebula_34_0.png
+.. image:: nebula_files/nebula_34_0.png
 
