@@ -649,7 +649,12 @@ def distribution_test(self, protein_pvalue,
     if stat == 'wilcoxon':
         stats = [wilcoxon(i[0], i[1])[1] for i in pair_data]
     if stat == 'ks':
-        stats= [kstest(i[0], i[1])[1] for i in pair_data]
+        stats = []
+        for i in pair_data:
+            try:
+                stats.append(kstest(i[0], i[1])[1])
+            except:
+                stats.append(0)
     matrix = squareform(stats)
     matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
     return matrix
