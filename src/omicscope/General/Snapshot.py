@@ -1,5 +1,6 @@
 import warnings
 
+import os
 import numpy as np
 import pandas as pd
 
@@ -69,7 +70,9 @@ class Omicscope_Snapshot():
         except UnicodeDecodeError:
             quant_data = pd.read_excel(self.Table, header=2)
             quant_data['TotalMean'] = 1
-            self.quant_data = self.deps = quant_data
+            self.quant_data = quant_data
+            deps = quant_data[quant_data[self.pvalue <= self.PValue_cutoff]]
+            self.deps = deps
 
             Conditions = pd.read_excel(self.Table,
                                        nrows=2)
