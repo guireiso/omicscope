@@ -224,13 +224,16 @@ def dotplot_enrichment(self, *Terms, top=5,  fig_height=None, palette='PuBu', sa
         dpi (int, optional): Image resolution. Defaults to 300.
     """
     plt.rcParams['figure.dpi'] = dpi
-    if all(enr is None for enr in self.enrichment):
-        raise IndexError('There is not Enrichment result in data!')
-    enrichment = [x for x in self.enrichment if x is not None]
-    genesets = [list(x.Gene_set.drop_duplicates()) for x in enrichment]
+    enrichments = []
+    groups = []
+    for g,e in zip(copy(self.groups), copy(self.enrichment)):
+        if e is not None:
+            enrichments.append(e)
+            groups.append(g)
+    genesets = [list(x.Gene_set.drop_duplicates()) for x in enrichments]
     genesets = pd.Series(sum(genesets, [])).drop_duplicates()
     for i in genesets:
-        data = enrichment
+        data = enrichments
         data = [x[x['Gene_set'] == i] for x in data]
         terms = [x.iloc[:top, :] for x in data]
         terms = [list(x['Term']) for x in terms]
@@ -238,7 +241,7 @@ def dotplot_enrichment(self, *Terms, top=5,  fig_height=None, palette='PuBu', sa
         if len(Terms) > 0:
             terms = Terms
         data = [x[x['Term'].isin(terms)] for x in data]
-        data = [x.assign(Group=y) for x, y in zip(data, self.groups)]
+        data = [x.assign(Group=y) for x, y in zip(data, groups)]
         data = pd.concat(data)
         data = data[['Term', 'Overlap', 'Adjusted P-value', 'Group']]
         data['Overlap'] = data.Overlap.str.split('/', regex=False).str[0]
@@ -890,22 +893,29 @@ def linkproteins(deps, groups):
     overlapped_proteins = list(overlapped_proteins[overlapped_proteins.duplicated(
         subset=['gene_name'], keep=False)]['gene_name'].dropna())
     # ordering matrix
-    matrixes = [x.assign(duplicated=lambda x: x.gene_name.isin(overlapped_proteins)) for x in deps]
-    matrixes = [x.sort_values(['duplicated', 'log2(fc)'], ascending=False) for x in matrixes]
+    matrixes = [x.assign(duplicated=lambda x: x.gene_name.isin(
+        overlapped_proteins)) for x in deps]
+    matrixes = [x.sort_values(
+        ['duplicated', 'log2(fc)'], ascending=False) for x in matrixes]
     matrixes = [x.reset_index(drop=True) for x in matrixes]
     # Retrieving links
     dataframes = copy(matrixes)
-    result = pd.DataFrame(columns=['gene_name', 'query_chr', 'query_start', 'ref_chr', 'ref_start'])
+    result = pd.DataFrame(
+        columns=['gene_name', 'query_chr', 'query_start', 'ref_chr', 'ref_start'])
     # Perform pairwise comparison between DataFrames
     for i in range(len(dataframes)-1):
         for j in range(i+1, len(dataframes)):
-            common_names = set(dataframes[i]['gene_name']).intersection(dataframes[j]['gene_name'])
+            common_names = set(dataframes[i]['gene_name']).intersection(
+                dataframes[j]['gene_name'])
             for name in common_names:
-                index1 = dataframes[i][dataframes[i]['gene_name'] == name].index[0]
-                index2 = dataframes[j][dataframes[j]['gene_name'] == name].index[0]
+                index1 = dataframes[i][dataframes[i]
+                                       ['gene_name'] == name].index[0]
+                index2 = dataframes[j][dataframes[j]
+                                       ['gene_name'] == name].index[0]
                 result = result.append({'gene_name': name, 'query_chr': i, 'query_start': index1, 'ref_chr': j, 'ref_start': index2},
                                        ignore_index=True)
-    result['query_end'], result['ref_end'] = result['query_start']+1, result['ref_start']+1
+    result['query_end'], result['ref_end'] = result['query_start'] + \
+        1, result['ref_start']+1
     group_dict = dict(enumerate(groups))
     result['query_chr'] = result.query_chr.replace(group_dict)
     result['ref_chr'] = result.ref_chr.replace(group_dict)
@@ -923,29 +933,38 @@ def linkenrichment(enrichment, groups, number_deps):
             enrichment.append(e)
             group.append(g)
             ndeps.append(n)
-    enrichment = [x.assign(db_term=x['Gene_set']+'-'+x['Term']) for x in enrichment]
+    enrichment = [x.assign(db_term=x['Gene_set']+'-'+x['Term'])
+                  for x in enrichment]
     overlapped_enrichment = pd.concat(enrichment)
-    overlapped_enrichment['db_term'] = overlapped_enrichment['Gene_set']+'.'+overlapped_enrichment['Term']
+    overlapped_enrichment['db_term'] = overlapped_enrichment['Gene_set'] + \
+        '.'+overlapped_enrichment['Term']
     overlapped_enrichment = list(overlapped_enrichment[overlapped_enrichment.duplicated(
         subset=['db_term'], keep=False)]['db_term'].dropna())
     # ordering matrix
-    matrixes = [x.assign(duplicated=lambda x: x.db_term.isin(overlapped_enrichment)) for x in enrichment]
-    indexes = [list(np.random.randint(0, y, size=len(x))) for x, y in zip(matrixes, ndeps)]
+    matrixes = [x.assign(duplicated=lambda x: x.db_term.isin(
+        overlapped_enrichment)) for x in enrichment]
+    indexes = [list(np.random.randint(0, y, size=len(x)))
+               for x, y in zip(matrixes, ndeps)]
     matrixes = [x.set_index(pd.Index(y)) for x, y in zip(matrixes, indexes)]
     # Retrieving links
     dataframes = copy(matrixes)
-    result = pd.DataFrame(columns=['db_term', 'query_chr', 'query_start', 'ref_chr', 'ref_start'])
+    result = pd.DataFrame(
+        columns=['db_term', 'query_chr', 'query_start', 'ref_chr', 'ref_start'])
     # Perform pairwise comparison between DataFrames
     for i in range(len(dataframes)-1):
         for j in range(i+1, len(dataframes)):
-            common_names = set(dataframes[i]['db_term']).intersection(dataframes[j]['db_term'])
+            common_names = set(dataframes[i]['db_term']).intersection(
+                dataframes[j]['db_term'])
             for name in common_names:
-                index1 = dataframes[i][dataframes[i]['db_term'] == name].index[0]
-                index2 = dataframes[j][dataframes[j]['db_term'] == name].index[0]
+                index1 = dataframes[i][dataframes[i]
+                                       ['db_term'] == name].index[0]
+                index2 = dataframes[j][dataframes[j]
+                                       ['db_term'] == name].index[0]
                 result = result.append({'db_term': name, 'query_chr': i, 'query_start': index1, 'ref_chr': j, 'ref_start': index2},
                                        ignore_index=True)
-    result['query_end'], result['ref_end'] = result['query_start']+1, result['ref_start']+1
-    group_dict = dict(enumerate(groups))
+    result['query_end'], result['ref_end'] = result['query_start'] + \
+        1, result['ref_start']+1
+    group_dict = dict(enumerate(group))
     result['query_chr'] = result.query_chr.replace(group_dict)
     result['ref_chr'] = result.ref_chr.replace(group_dict)
     return result
@@ -953,7 +972,7 @@ def linkenrichment(enrichment, groups, number_deps):
 
 def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkcyan',
                 colorenrichment='black',
-                linewidth_heatmap=1, save=None, vector=True, dpi=300):
+                linewidth_heatmap=0.1, save=None, vector=True, dpi=300):
     """Circos plot
      This plot offers an overview of proteins differentially regulated
      between groups using circular plots.
@@ -969,19 +988,22 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
         dpi (int, optional): Figure resolution. Defaults to 300.
     """
     # Data
-    enrichment = [x for x in self.enrichment if x is not None]
+    enrichment = copy(self.enrichment)
     groups = copy(self.groups)
     deps = copy(self.group_data)
     deps = [x.dropna().reset_index(drop=True) for x in deps]
     colors = self.colors
     grouplen = [len(x) for x in deps]
     higher_group = max(grouplen)
+
     # retrieving links and matrixes
     links, matrixes = linkproteins(deps, groups)
 
     # Mapping heatmap
-    matrixes = [y[['log2(fc)']].applymap(lambda x: vmax if x > vmax else x) for y in matrixes]
-    matrixes = [y[['log2(fc)']].applymap(lambda x: vmin if x < vmin else x) for y in matrixes]
+    matrixes = [y[['log2(fc)']].applymap(
+        lambda x: vmax if x > vmax else x) for y in matrixes]
+    matrixes = [y[['log2(fc)']].applymap(
+        lambda x: vmin if x < vmin else x) for y in matrixes]
     matrixes = [x[['log2(fc)']].T.to_numpy() for x in matrixes]
     # Config circos
     sectors = dict(zip(groups, grouplen))
@@ -990,16 +1012,20 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
 
     for sector, matrix in zip(circos.sectors, matrixes):
         # Outer name
-        outer_track = sector.add_track((95, 110))  # Tamanho da primeira Track, contendo as cores dos grupos
-        outer_track.text(sector.name, color="Black")  # Marcar o nome dos grupos
+        # Tamanho da primeira Track, contendo as cores dos grupos
+        outer_track = sector.add_track((95, 110))
+        # Marcar o nome dos grupos
+        outer_track.text(sector.name, color="Black")
         # Outer Track
-        outer_track = sector.add_track((88, 90))  # Tamanho da primeira Track, contendo as cores dos grupos
+        # Tamanho da primeira Track, contendo as cores dos grupos
+        outer_track = sector.add_track((88, 90))
         outer_track.axis(fc=sector_colors[sector.name])  # cores dos grupos
-        outer_track.xticks_by_interval(interval=int(higher_group/20), label_orientation="vertical")  # colocar xticks nas tracks
+        outer_track.xticks_by_interval(interval=int(
+            higher_group/20), label_orientation="vertical")  # colocar xticks nas tracks
         # foldchange track
         rect_track = sector.add_track((80, 85))
         rect_track.heatmap(matrix, cmap=colormap,
-                        rect_kws=dict(ec="black", lw=linewidth_heatmap))
+                           rect_kws=dict(ec="black", lw=linewidth_heatmap))
 
     # drawing enrichment links if applicable
     if len(enrichment) > 1:
