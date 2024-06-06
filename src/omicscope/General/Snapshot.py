@@ -63,10 +63,7 @@ class Omicscope_Snapshot():
             quant_data['TotalMean'] = 1
             self.quant_data = quant_data
             deps = quant_data[quant_data[self.pvalue] <= self.PValue_cutoff]
-            self.deps = deps            self.quant_data = quant_data
-            deps = quant_data[quant_data[self.pvalue] <= self.PValue_cutoff]
             self.deps = deps
-            self.quant_data = self.deps = quant_data
             Conditions = pd.read_csv(self.Table,
                                      nrows=2, names=['Conditions'], sep='\t')
             Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1]
