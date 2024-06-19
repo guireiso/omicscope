@@ -8,6 +8,7 @@ __pycache__
 *.egg
 *.egg-info
 dist
+*.pypirc
 build
 eggs
 .eggs
