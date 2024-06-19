@@ -34,6 +34,7 @@ class Omicscope_Snapshot():
         self.FoldChange_cutoff = FoldChange_cutoff
         self.pvalue = pvalue
         self.pdata = None
+        self.Params = None
         self.rdata = None
         # Define Conditions and Quant_data
         self.define_conditions_quantdata()
@@ -61,7 +62,9 @@ class Omicscope_Snapshot():
         try:
             quant_data = pd.read_csv(self.Table, header=2)
             quant_data['TotalMean'] = 1
-            self.quant_data = self.deps = quant_data
+            self.quant_data = quant_data
+            deps = quant_data[quant_data[self.pvalue] <= self.PValue_cutoff]
+            self.deps = deps
             Conditions = pd.read_csv(self.Table,
                                      nrows=2, names=['Conditions'], sep='\t')
             Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1]
@@ -71,7 +74,7 @@ class Omicscope_Snapshot():
             quant_data = pd.read_excel(self.Table, header=2)
             quant_data['TotalMean'] = 1
             self.quant_data = quant_data
-            deps = quant_data[quant_data[self.pvalue <= self.PValue_cutoff]]
+            deps = quant_data[quant_data[self.pvalue] <= self.PValue_cutoff]
             self.deps = deps
 
             Conditions = pd.read_excel(self.Table,
