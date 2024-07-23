@@ -8,9 +8,9 @@ from .General.Snapshot import Omicscope_Snapshot
 from .MultipleData.Nebula import nebula
 
 if __name__ != "__main__":
-    print("OmicScope v " + __version__ + " For help: https://omicscope.readthedocs.io/en/latest/ or https://omicscope.ib.unicamp.br" +
+    print("OmicScope v " + __version__ + " For help: https://omicscope.readthedocs.io/en/latest/ or https://omicscope.ib.unicamp.br " +
           "If you use  in published research, please cite:\n" +
-          "'Reis-de-Oliveira, G., et al (2024). OmicScope unravels systems-level insights from quantitative proteomics data \n")
+          "'Reis-de-Oliveira, G., et al (2024). OmicScope unravels systems-level insights from quantitative proteomics data'.")
 
 
 def OmicScope(Table: str,

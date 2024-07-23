@@ -43,13 +43,16 @@ def perform_static_stat(self):
         data = params[1].merge(data, on='Accession')
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
+    # # Calculating CV
+    data['CV'] = data.iloc[:,data.columns.str.contains('.',regex=False)]\
+                .apply(lambda x: np.std(x, ddof=1) / np.mean(x), axis=1)
     # Filtering contaminants
     if self.ExcludeContaminants is True:
         self.Params['Params']['Stats_Warning'] = 'Drop protein contaminants based on Frankenfield, 2022'
         path = os.path.dirname(os.path.abspath(__file__))
-        contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
-        data = data[~data['Accession'].isin(contaminants['Accession'])]
-        data = data[~data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
+        contaminants = list(pd.read_csv(path+'/contaminants.csv')['Accession'])
+        data['Accession'] = data.Accession.str.replace(',', ';')
+        data = data[~data['Accession'].str.split(';').apply(lambda x: any(gene in contaminants for gene in x))]
     data = data.reset_index(drop=True)
     data = copy(data)
     data.iloc[:, data.columns.str.contains(
@@ -86,13 +89,16 @@ def perform_longitudinal_stat(self):
     # longitudinal modules
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
+    # # Calculating CV
+    data['CV'] = data.iloc[:,data.columns.str.contains('.',regex=False)]\
+                .apply(lambda x: np.std(x, ddof=1) / np.mean(x), axis=1)
     # # Filtering Contaminants
     if self.ExcludeContaminants is True:
         self.Params['Params']['Stats_Warning'] = 'Drop protein contaminants based on Frankenfield, 2022'
         path = os.path.dirname(os.path.abspath(__file__))
-        contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
-        data = data[~data['Accession'].isin(contaminants['Accession'])]
-        data = data[~data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
+        contaminants = list(pd.read_csv(path+'/contaminants.csv')['Accession'])
+        data['Accession'] = data.Accession.str.replace(',', ';')
+        data = data[~data['Accession'].str.split(';').apply(lambda x: any(gene in contaminants for gene in x))]
     data = data.reset_index(drop=True)
     data = copy(data)
     data.iloc[:, data.columns.str.contains(

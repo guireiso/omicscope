@@ -74,11 +74,14 @@ def imported_stat(self, statistics):
 
             quant_data = quant_data.rename(columns=statistical_dictionary)
             quant_data[f'-log10({self.pvalue})'] = -np.log10(quant_data[self.pvalue])
+            quant_data['CV'] = quant_data.iloc[:,quant_data.columns.str.contains('.',regex=False)]\
+                .apply(lambda x: np.std(x, ddof=1) / np.mean(x), axis=1)
+
             if self.ExcludeContaminants is True:
                 self.Params['Params']['Stats_Warning_2'] = 'Drop protein contaminants based on Frankenfield, 2022'
                 path = os.path.dirname(os.path.abspath(__file__))
-                contaminants = pd.read_csv(path+'/contaminants.csv')[['Accession', 'gene_name']]
-                quant_data = quant_data[~quant_data['Accession'].isin(contaminants['Accession'])]
-                quant_data = quant_data[~quant_data['gene_name'].isin(contaminants['gene_name'].str.split(' ').explode())]
+                contaminants = list(pd.read_csv(path+'/contaminants.csv')['Accession'])
+                quant_data['Accession'] = quant_data.Accession.str.replace(',', ';')
+                quant_data = quant_data[~quant_data['Accession'].str.split(';').apply(lambda x: any(gene in contaminants for gene in x))]
             break
     return (quant_data)
