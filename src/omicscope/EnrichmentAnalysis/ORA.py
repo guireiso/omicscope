@@ -95,7 +95,7 @@ class Enrichment:
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
         df.Genes = df.Genes.str.split(';')
         df['N_Proteins'] = df['Genes'].apply(lambda x: len(x))
-        df['regulation'] = df['Genes'].apply(lambda x: [foldchange[i] for i in x])
+        df['regulation'] = df['Genes'].apply(lambda x: [foldchange[i.upper()] for i in x])
         df['down-regulated'] = df['regulation'].apply(lambda x: len([i for i in x if i < 0]))
         df['up-regulated'] = df['regulation'].apply(lambda x: len([i for i in x if i > 0]))
         df = df.sort_values(['Adjusted P-value', 'Combined Score'], 
