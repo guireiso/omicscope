@@ -21,15 +21,16 @@ class Input:
             the sample conditions.
         """
         self.Table = Table
-        data = self.ProteomeDiscoverer(**kwargs)
+        try: 
+            data = self.ProteomeDiscovererV2(**kwargs)
+        except AttributeError:
+            data = self.ProteomeDiscovererV3(**kwargs)
         self.assay = data[0]
         self.rdata = data[1]
         self.pdata = data[2]
-        self.rdata['gene_name'] = self.rdata['Description'].str.split(
-            'GN=').str[1].str.split(' ').str[0]
         self.assay.index = self.rdata['Accession']
 
-    def ProteomeDiscoverer(self):
+    def ProteomeDiscovererV2(self):
         """ Extract rdata and assay from Proteome Discoverer output
         """
         # Read .csv or .xlsx/.xls files
@@ -46,13 +47,65 @@ class Input:
                             '# Unique Peptides', 'Accession', 'Coverage [%]', 'Description',
                             'Ensembl Gene ID', 'Entrez Gene ID', 'Gene ID', 'Gene Symbol', 'MW [kDa]',
                             'pvalue', 'pAdjusted']
-        rdata.columns = rdata.columns.str.split(':', regex=False).str[0]
-        rdata = rdata.rename(columns={'Abundance Ratio P-Value': 'pvalue',
-                                'Abundance Ratio Adj. P-Value':'pAdjusted'})
         rdata = df.iloc[:,df.columns.isin(rdata_columns)]
         if not {'Accession', 'Description'}.issubset(rdata.columns):
                 raise ValueError(
                     """OmicScope did not find "Accession" or "Description" columns in the dataset.
+                    Possible causes:
+                    - Incorrect export from Proteome Discoverer.
+                    - Missing variable assignments during export.
+                    Please check your Proteome Discoverer export settings and ensure the data contains the necessary abundance information.
+                    """)
+        rdata['gene_name'] = rdata['Description'].str.split(
+                'GN=').str[1].str.split(' ').str[0]
+        # assay
+        df = df.set_index('Accession')
+        assay = df.iloc[:,df.columns.str.contains('Normalized')]
+        if len(assay.columns) == 0:
+            assay = df.iloc[:,df.columns.str.contains('Abundance:', regex=False)]
+            if len(assay.columns) == 0:
+                raise ValueError(
+                    """OmicScope did not find "Abundances (Normalized)" or "Abundance" columns in the dataset.
+                    Possible causes:
+                    - Incorrect export from Proteome Discoverer.
+                    - Missing variable assignments during export.
+                    - Incompatible experimental design.
+                    Please check your Proteome Discoverer export settings and ensure the data contains the necessary abundance information.
+                    """)
+        # pdata
+        pdata = pd.DataFrame({'Sample':assay.columns})
+        pdata['Condition'] = pdata.Sample.str.split(', ').str[-1]
+        self.Conditions = pdata.Condition
+        pdata['Biological'] = pdata.Sample.str.split(', ').str[-2]
+        return (assay, rdata, pdata)
+
+    def ProteomeDiscovererV3(self):
+        """ Extract rdata and assay from Proteome Discoverer output
+        """
+        # Read .csv or .xlsx/.xls files
+        Table = self.Table
+        try:
+            df = pd.read_csv(Table, header=0)
+        except UnicodeDecodeError:
+            df = pd.read_excel(Table, header=0)
+        df = df.dropna(subset=['Checked']) #checking if it is protein
+        # rdata
+        rdata = df.copy()
+        rdata_columns = list(rdata.columns)
+        AbundanceRatios = [x.startswith('AbundanceRatio') for x in rdata_columns]
+        PvalueRatios = [x.startswith('AbundanceRatioP-Value') for x in rdata_columns]
+        rdata_columns = ['Accession','Description','Sum PEP Score',
+                        'Coverage [%]','# PSMs','# Unique Peptides',
+                        'MW [kDa]','calc. pI','Gene Symbol','Gene ID'	
+                        'pvalue', 'pAdjusted']
+        rdata_columns.extend(AbundanceRatios)
+        rdata_columns.extend(PvalueRatios)
+        rdata = df.iloc[:,df.columns.isin(rdata_columns)]
+        rdata = rdata.rename(columns={'Gene Symbol':'gene_name'})
+
+        if not {'Accession', 'Description', 'gene_name'}.issubset(rdata.columns):
+                raise ValueError(
+                    """OmicScope did not find "Accession", "Description", 'Gene Symbol' columns in the dataset.
                     Possible causes:
                     - Incorrect export from Proteome Discoverer.
                     - Missing variable assignments during export.
@@ -74,7 +127,7 @@ class Input:
                     """)
         # pdata
         pdata = pd.DataFrame({'Sample':assay.columns})
-        pdata['Condition'] = pdata.Sample.str.split(', ').str[-1]
+        pdata['Condition'] = pdata.Sample.str.split(',').str[-1]
         self.Conditions = pdata.Condition
-        pdata['Biological'] = pdata.Sample.str.split(', ').str[-2]
+        pdata['Biological'] = pdata.Sample.str.split(':').str[1]
         return (assay, rdata, pdata)
