@@ -114,7 +114,8 @@ def normalization_boxplot(self, palette='Dark2', dpi=300,
         """
         plt.rcParams['figure.dpi']=dpi
         df = self.expression.copy()
-        df = np.log2(df)
+        if self.logTransform is True:
+            df = np.log2(df)
         df = df.replace([-np.inf,np.inf],0)
         conditions = self.pdata.Condition
         colors = sns.color_palette(palette=palette,
@@ -516,7 +517,9 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     heatmap = heatmap.set_index('gene_name')
     heatmap = heatmap.loc[:, heatmap.columns.str.contains('.', regex=False)]
     # Log2 transform
-    heatmap = np.log2(heatmap).replace([-np.inf], int(0))
+    if self.logTransform is True:
+        heatmap = np.log2(heatmap)
+    heatmap = heatmap.replace([-np.inf], int(0))
     heatmap = heatmap[sort_columns]
     heatmap_original_label = heatmap.copy()
     heatmap = heatmap.rename(columns=sample_condition)
@@ -638,7 +641,9 @@ def correlation(self, *Proteins, pvalue=1.0,
     pearson = pearson.set_index('gene_name')
     pearson = pearson.loc[:, pearson.columns.str.contains('.', regex=False)]
     # log2 transform
-    pearson = np.log2(pearson).replace([-np.inf], int(0))
+    if self.logTransform is True:
+        pearson = np.log2(pearson)
+    pearson = pearson.replace([-np.inf], int(0))
     # Performing Pearson's Correlation
     corr_matrix_raw = pearson.corr(method=sample_method)
     # Creating matrix for group colors
@@ -1083,7 +1088,8 @@ def MAplot(self, *Proteins,
     plt.rcParams['figure.dpi'] = dpi
     OmicScope = copy.copy(self)
     df = copy.copy(OmicScope.quant_data)
-    df['TotalMean'] = np.log2(df['TotalMean'])
+    if self.logTransform is True:
+                df['TotalMean'] = np.log2(df['TotalMean'])
     df['TotalMean'] = df['TotalMean'].replace(-np.inf, 0.01)
     # Defining axis
     y = df[f'-log10({OmicScope.pvalue})']
@@ -1184,7 +1190,8 @@ def k_trend(self, pvalue=0.05, k_cluster=None,
     data = data.set_index('Accession')
     data = data.iloc[:, data.columns.str.contains('.', regex=False)]
     data = data.replace(0, 0.01)
-    data = np.log2(data)
+    if self.logTransform is True:
+        data = np.log2(data)
     # Scale protein abundance according to their mean (z-score)
     zscored_data = zscore(data, axis=1)
     if k_cluster is None:
