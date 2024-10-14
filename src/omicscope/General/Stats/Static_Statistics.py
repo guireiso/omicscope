@@ -49,13 +49,14 @@ def ttest(self, params):
     self.Params['Params']['Stats_Workflow_5'] = 'OmicScope performed two-stage Benjamini-Hochberg correction'
 
     #  Mean abundance for each protein among conditions
-    quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
-        copy(quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)]))
+    if self.logTransform is True:
+        quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)] = np.exp2(
+            copy(quant_data.loc[:, quant_data.columns.str.endswith(ControlGroup)]))
     quant_data['mean ' + ControlGroup] = quant_data.loc[:,
                                                         quant_data.columns.str.endswith(ControlGroup)].mean(axis=1)
-
-    quant_data.loc[:, quant_data.columns.str.endswith(Experimental)] = np.exp2(
-        copy(quant_data.loc[:, quant_data.columns.str.endswith(Experimental)]))
+    if self.logTransform is True:
+        quant_data.loc[:, quant_data.columns.str.endswith(Experimental)] = np.exp2(
+            copy(quant_data.loc[:, quant_data.columns.str.endswith(Experimental)]))
     quant_data['mean ' + Experimental] = quant_data.loc[:,
                                                         quant_data.columns.str.endswith(Experimental)].mean(axis=1)
     #  Mean abundance for each protein
@@ -188,8 +189,9 @@ def anova(self, params):
     quant_data = quant_data.sort_values(['pTukey', 'pAdjusted', 'pvalue'])
 
     # #  Mean abundance for each protein among conditions
-    quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
-        quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
+    if self.logTransform is True:
+        quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
+            quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
     #  Mean abundance for each protein
     quant_data['TotalMean'] = quant_data.loc[:,
                                              quant_data.columns.str.contains('.', regex=False)].mean(axis=1)

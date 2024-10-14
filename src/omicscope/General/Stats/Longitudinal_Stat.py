@@ -239,8 +239,9 @@ def Longitudinal_Stats(self, assay, pdata, degrees_of_freedom, pvalue, ctrl, PVa
 
     quant_data['pAdjusted'] = pAdjusted
     #  Mean abundance for each protein among conditions
-    quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
-        quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)])
+    if self.logTransform is True:
+        quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
+            quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)])
     #  Mean abundance for each protein
     quant_data['TotalMean'] = quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
     # #  Protein Fold change (Experimental/Control)
