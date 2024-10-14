@@ -21,7 +21,7 @@ class Input():
         """
         Methods = ['Progenesis', 'General', 'PatternLab',
                    'MaxQuant', 'DIA-NN', 'FragPipe',
-                   'ProteomeDiscoverer']
+                   'ProteomeDiscoverer', 'RPKM']
         if Method not in Methods:
             raise ValueError("Invalid Method input. Expected one of: %s" % Methods)
         if Method == 'Progenesis':
@@ -53,6 +53,10 @@ class Input():
         elif Method == 'FragPipe':
             from .FragPipe import Input
             self.Params['Params']['ImportMethod'] = 'FragPipe'
+        elif Method=='RPKM':
+            from .RPKM import Input
+            self.Params['Params']['ImportMethod'] = 'RPKM - Transcriptomics'
+            self.Params['Params']['ImportWarning_1'] = 'LogTransformation using log(RPKM+1)'
         data = Input(Table, **kwargs)
         self.Table = Table
         self.rdata = data.rdata
