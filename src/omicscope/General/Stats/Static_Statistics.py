@@ -117,7 +117,7 @@ def Tukey_hsd(quant_data):
        that were not differentially regulated returned 2
     """
     df = copy(quant_data)
-    df = df[df['pAdjusted'] < 0.05]
+    df = df[df['pvalue'] < 0.05]
     df = df.iloc[:, df.columns.str.contains('.', regex=False)]
     # Perform Tukey's post-hoc correction for each of differentially
     # regulated entity according ANOVA's test
@@ -160,47 +160,78 @@ def anova(self, params):
                                             method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
     self.Params['Params']['Stats_Workflow_5'] = 'OmicScope performed two-stage Benjamini-Hochberg correction'
     # Perform Tukey's Post-hoc correction
-    Tukey = Tukey_hsd(quant_data)
-    self.Params['Params']['Stats_Workflow_6'] = 'OmicScope performed Tukey HSD correction with pAdjusted < 0.05'
-    quant_data = quant_data.join(Tukey)
-    quant_data = quant_data.explode(['pTukey', 'Comparison'])
-    quant_data['pTukey'] = quant_data.pTukey.astype(float)
-    quant_data = quant_data.sort_values(['pTukey', 'pAdjusted'])
-    # # Replace '2' with repeated values from ANOVA for
-    # # non diffenrentially regulated entities.
-    quant_data['pTukey'] = quant_data['pTukey'].replace(np.nan, 2)
-    quant_data['pTukey'] = np.where(quant_data['pTukey'] == 2,
-                                    quant_data['pAdjusted'],
-                                    quant_data['pTukey'])
-    # Replace '2' with right comparisons performed
-    quant_data['Comparison'] = quant_data['Comparison'].replace(np.nan,
-                                                                '-vs-'.join(Conditions))
-    comp = copy(quant_data)
-    comp['Comparison'] = comp.Comparison.str.split('-vs-')
+    if pvalue == 'pTukey':
+        Tukey = Tukey_hsd(quant_data)
+        self.Params['Params']['Stats_Workflow_6'] = 'OmicScope performed Tukey HSD correction with pAdjusted < 0.05'
+        quant_data = quant_data.join(Tukey)
+        quant_data = quant_data.explode(['pTukey', 'Comparison'])
+        quant_data['pTukey'] = quant_data.pTukey.astype(float)
+        quant_data = quant_data.sort_values(['pTukey', 'pAdjusted']) 
+        # # Replace '2' with repeated values from ANOVA for
+        # # non diffenrentially regulated entities.
+        quant_data['pTukey'] = quant_data['pTukey'].replace(np.nan, 2)
+        quant_data['pTukey'] = np.where(quant_data['pTukey'] == 2,
+                                        quant_data['pAdjusted'], 
+                                        quant_data['pTukey']) 
+        # Replace '2' with right comparisons performed
+        quant_data['Comparison'] = quant_data['Comparison'].replace(np.nan, 
+                                                                    '-vs-'.join(Conditions)) 
+        comp = copy(quant_data)
+        comp['Comparison'] = comp.Comparison.str.split('-vs-') 
 
-    quant_data['Condition1'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[0])].mean(),
-                                          axis=1)
-    quant_data['Condition2'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[-1])].mean(),
-                                          axis=1)
-    quant_data['Condition_All'] = comp.apply(lambda x: x[x.index.str.contains('.', regex=False)].mean(),
-                                             axis=1)
-    quant_data['Condition2'] = np.where(
-        quant_data['pvalue'] > 0.05, quant_data['Condition_All'], quant_data['Condition2'])
-    quant_data = quant_data.sort_values(['pTukey', 'pAdjusted', 'pvalue'])
+        quant_data['Condition1'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[0])].mean(),
+                                            axis=1)
+        quant_data['Condition2'] = comp.apply(lambda x: x[x.index.str.endswith('.' + x.Comparison[-1])].mean(),
+                                            axis=1) 
+        quant_data['Condition_All'] = comp.apply(lambda x: x[x.index.str.contains('.', regex=False)].mean(),
+                                                axis=1) 
+        quant_data['Condition2'] = np.where(
+            quant_data['pvalue'] > 0.05, quant_data['Condition_All'], quant_data['Condition2'])
+        quant_data = quant_data.sort_values(['pTukey', 'pAdjusted', 'pvalue']) 
 
-    # #  Mean abundance for each protein among conditions
-    if self.logTransform is True:
-        quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
-            quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
-    #  Mean abundance for each protein
-    quant_data['TotalMean'] = quant_data.loc[:,
-                                             quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
-    #  Log2(FC)
-    quant_data['log2(fc)'] = quant_data['Condition2'] - \
-        quant_data['Condition1']
-    #  -log10(pvalue)
-    quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
-    quant_data = quant_data.iloc[:, ~
-                                 quant_data.columns.isin(['Condition_All'])]
+        # #  Mean abundance for each protein among conditions
+        if self.logTransform is True:
+            quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
+                quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
+        #  Mean abundance for each protein
+        quant_data['TotalMean'] = quant_data.loc[:,
+                                                quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
+        #  Log2(FC)
+        quant_data['log2(fc)'] = quant_data['Condition2'] - \
+            quant_data['Condition1']
+        #  -log10(pvalue)
+        quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
+        quant_data = quant_data.iloc[:, ~
+                                    quant_data.columns.isin(['Condition_All'])]
+        quant_data['Comparison'] = quant_data.Comparison.str.split('-vs-') 
+    else:
+        quant_data = quant_data.sort_values('pAdjusted') 
+        MeanAbundance = {}
+        for x in Conditions:
+             MeanAbundance[x] = quant_data.iloc[:,quant_data.columns.str.contains('.'+x, regex=False)].mean(axis=1)
+        MeanAbundance = pd.DataFrame(MeanAbundance)
+
+        HighestGroup = MeanAbundance.apply(lambda x: x.idxmax(), axis=1)
+        LowestGroup = MeanAbundance.apply(lambda x: x.idxmin(), axis=1)
+        MeanAbundance['HighestMean'] = MeanAbundance.max(axis=1, numeric_only=True)
+        MeanAbundance['LowestMean'] = MeanAbundance.min(axis=1, numeric_only=True)
+        MeanAbundance['HighestGroup'] = HighestGroup
+        MeanAbundance['LowestGroup'] = LowestGroup
+        quant_data = quant_data.merge(MeanAbundance, how='left', left_index=True, right_index=True)
+        quant_data['log2(fc)'] = MeanAbundance['HighestMean']-MeanAbundance['LowestMean']
+        quant_data['Comparison'] = MeanAbundance['HighestGroup']+'-vs-'+MeanAbundance['LowestGroup']
+        quant_data['Comparison'] = quant_data.Comparison.str.split('-vs-')
+        # #  Mean abundance for each protein among conditions
+        if self.logTransform is True:
+            quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(
+                quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)])
+        #  Mean abundance for each protein
+        quant_data['TotalMean'] = quant_data.loc[:,
+                                                quant_data.columns.str.contains('.', regex=False)].mean(axis=1)
+        #  -log10(pvalue)
+        quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
+        quant_data = quant_data.iloc[:, ~
+                                    quant_data.columns.isin(['Condition_All'])]
+        
     quant_data = quant_data.reset_index()
     return (quant_data)
