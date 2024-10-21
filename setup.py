@@ -63,6 +63,8 @@ setup(
     ],
     python_requires='>=3.7',
     install_requires=[
+        "setuptools>=30.3.0",
+        "wheel",
         "adjustText==0.8",
         "altair==4.2.0",
         "flake8==6.0.0",
