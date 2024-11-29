@@ -12,6 +12,8 @@ from copy import copy
 
 import numpy as np
 import pandas as pd
+import re
+from typing import Dict, List, Tuple
 
 
 class Input:
@@ -23,84 +25,120 @@ class Input:
         """
         self.Table = Table
         patternlab = self.PatternLab()
-        assay = patternlab[0]  # Expression data
-        assay.columns = patternlab[1].Sample
-        norm_factor = patternlab[3]
-        assay = assay.divide(norm_factor, axis='columns')
-        assay = assay.replace(0, np.nan)
-        self.assay = assay
+        self.assay = patternlab[0]  # Expression data
         self.pdata = patternlab[1]  # Phenotype data
         self.rdata = patternlab[2]  # row/gene data
         # Extract analyzed conditions
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())
 
     def PatternLab(self):
-        """ Extract all PatternLab V information
         """
+        Parses the content of a .plp file and generates a structured DataFrame.
+        
+        Args:
+        - plp_content (str): Content of the .plp file as a string.
+        
+        Returns:
+        - pd.DataFrame: Generated DataFrame with parsed data.
+        """
+        with open(self.Table, "r") as file:
+            plp_content = file.read()
+        class_description_dict = {}
+        sparse_matrix_data = []
+        index_mapping = {}
+        secondary_labels = {}
 
-        df = self.Table
-        PLV_output = pd.read_excel(df)
-        # filtering contaminants
-        PLV_output = PLV_output[~PLV_output.Locus.str.startswith('contaminant')]
-        PLV_output = PLV_output[~PLV_output.Locus.str.startswith('Reverse')]
-        PLV_output = PLV_output.reset_index(drop=True)
+        current_section = None
+        file_name = None
+        normalization_factors = []
 
-        # Getting the Conditions used for PLV experiment
-        labels = pd.read_excel(df, sheet_name='Class Description')
-        labels = dict(zip(labels['Label'].astype(str), labels['Description']))
+        for line in plp_content.strip().split("\n"):
+            line = line.strip()
 
-        # Defining assay
-        # As suggested by PLV developers, for quantitation use XIC values
-        assay = PLV_output.iloc[:, PLV_output.columns.str.contains('XIC')]
+            # Handle section headers
+            if line.startswith("###Description"):
+                current_section = "Description"
+                continue
+            elif line.startswith("###SparseMatrix"):
+                current_section = "SparseMatrix"
+                continue
+            elif line.startswith("###Index"):
+                current_section = "Index"
+                continue
+            elif line.startswith("###SecondaryLabels"):
+                current_section = "SecondaryLabels"
+                continue
+            elif line.startswith("#ClassDescription"):
+                match = re.match(r"#ClassDescription\s+(\d+)\s+(.+)", line)
+                if match:
+                    class_description_dict[int(match.group(1))] = match.group(2).strip()
+                continue
 
-        # Defining pdata
-        # PLV output columns have several information regarding
-        # phenotype of each sample
-        pdata = pd.DataFrame(assay.columns, columns=['Data'])
-        pdata['Data'] = pdata['Data'].str.split('\n').str[1:]
-        pdata['Sample'] = pdata.Data.str[0].str.split(': ').str[1]
-        pdata['Condition'] = pdata.Data.str[2].str.split(': ').str[1]
-        pdata['Condition'] = pdata.Condition.replace(labels, regex=True)
-        pdata['Biological'] = pdata.Data.str[1].str.split(': ').str[1]
-        pdata = pdata.iloc[:, 1:]
+            # Parse content based on the current section
+            if current_section == "SparseMatrix":
+                if line.startswith("#"):
+                    # Extract file name if it's a comment line in SparseMatrix
+                    file_name = line.split("\\")[-1]
+                    continue
+                tokens = line.split()
+                if len(tokens) < 2:  # Skip malformed lines
+                    continue
+                class_id = int(tokens[0])
+                class_desc = class_description_dict.get(class_id, "Unknown")
+                row = {"FileName": f"{class_desc}:: {file_name}"}
+                for token in tokens[1:]:  # Skip the ClassID (first token)
+                    index, value = map(float, token.split(":"))
+                    row[int(index)] = value
+                sparse_matrix_data.append(row)
+            elif current_section == "Index":
+                parts = line.split("\t", maxsplit=2)
+                index_id = int(parts[0])
+                locus = parts[1].strip()
+                description = parts[2].strip() if len(parts) > 2 else ""
+                index_mapping[index_id] = {"Locus": locus, "Description": description}
+            elif current_section == "SecondaryLabels":
+                parts = line.split("\t")
+                file_name = parts[1].strip()
+                normalization_factor = float(parts[2])
+                secondary_labels[file_name] = normalization_factor
+                normalization_factors.append(normalization_factor)
+        min_norm_factor = min(normalization_factors)
+        # Create DataFrame
+        data = {}
+        for entry in sparse_matrix_data:
+            file_name = entry.pop("FileName")
+            for index_id, value in entry.items():
+                protein_info = index_mapping.get(index_id, {"Locus": f"Protein_{index_id}", "Description": ""})
+                locus = protein_info["Locus"]
+                description = protein_info["Description"]
 
-        # Defining rdata
-        rdata = PLV_output[['Locus', 'Description']]
-        Accession = rdata.Locus
-        gene_name = rdata['Description'].str.split('GN=').str[-1]
-        gene_name = gene_name.str.split(' ').str[0]
-        rdata = rdata.assign(Accession=Accession,
-                             gene_name=gene_name)
-        # Normalization factors
-        norm_factor = pd.read_excel(df, sheet_name='Normalization Factors')
-        norm_factor = dict(zip(norm_factor['File Name'], norm_factor['Normalization Factor']))
-        return (assay, pdata, rdata, norm_factor)
+                if locus not in data:
+                    data[locus] = {"Locus": locus, "Description": description}
 
-    def filtering_data(self):
-        assay = copy(self.assay)
-        rdata = copy(self.rdata)
-        assay.index = rdata.Locus
-        rdata.index = rdata.Locus
-        not_null_matrix = assay[assay > 0]
-        # If user use percentage of null values, filter according to percentage
-        if isinstance(self.filtering_method, int):
-            ncol = len(not_null_matrix.columns)
-            nan_count = not_null_matrix.apply(lambda x: (1 -
-                                                         x.isna().sum()/ncol)*100,
-                                              axis=1)
-            nan_count = nan_count[nan_count > self.filtering_method]
-            self.assay = assay[assay.index.isin(nan_count.index)]
-            self.rdata = rdata[rdata['Locus'].isin(nan_count.index)]
-        # If user use "minimum", proteins will be select if at least 2 samples
-        # present identified protein
-        elif self.filtering_method == 'minimum':
-            pdata = copy(self.pdata)
-            conditions = dict(zip(pdata.Sample, pdata.Condition))
-            valid_values = assay.rename(columns=conditions)
-            valid_values = not_null_matrix.rename(columns=conditions)
-            valid_values[valid_values.notna()] = 1
-            valid_values = valid_values.groupby(by=valid_values.columns,
-                                                axis=1).sum()
-            valid_values = valid_values[valid_values > 1].dropna()
-            self.assay = assay[assay.index.isin(valid_values.index)]
-            self.rdata = rdata[rdata['Locus'].isin(valid_values.index)]
+                data[locus][file_name] = value*min_norm_factor if value > 0 else np.nan
+
+        # Convert to DataFrame
+        df = pd.DataFrame.from_dict(data, orient="index")
+
+        # Move "Description" to the last column
+        description_col = df.pop("Description")
+        df["Description"] = description_col
+
+        # Reset index for cleaner presentation
+        df.reset_index(drop=True, inplace=True)
+
+        #OmicScope data:
+        rdata = df.rename({'Locus':'Accession'})[['Locus', 'Description']]
+        rdata.columns = ['Accession', 'Description']
+        rdata['gene_name'] = rdata['Description'].str.split('GN=').str[-1].str.split(' ').str[0]
+        # assay
+        assay = df.iloc[:, ~df.columns.isin(['Locus', 'Description'])]
+        # pdata
+        pdata = pd.DataFrame(assay.columns, columns=['Sample'])
+        pdata['Condition'] = pdata['Sample'].str.split(':: ').str[0]
+        pdata.Sample = pdata['Sample'].str.split(':: ').str[1]
+        pdata['Biological'] = pdata.index
+        pdata.Sample = pdata.Biological.astype(str) + '_' + pdata.Sample
+        #assay.columns
+        assay.columns = list(pdata.Sample)
+        return [assay, pdata, rdata]

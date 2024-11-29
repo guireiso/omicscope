@@ -28,8 +28,9 @@ in `OmicScope Web App <https://omicscope.ib.unicamp.br/>`__.
       options for quantitative proteomics using data-dependent
       acquisition, due to its high-confidence parameters for protein
       quantitation and identification.
-   -  **Input format:** Excel file exported by XIC section (user can
-      perform filtering steps prior to export excel file) - .xlsx.
+   -  **Input format:** PLP file exported by XIC section (user can
+      perform filtering steps prior to export plp file) - .plp.
+   - **This import method was empowered in collaboration with PatternLab developers.**   
 
 -  `MaxQuant <https://omicscope.readthedocs.io/en/latest/input.html#id20>`__
    (*Method: ‘MaxQuant’*)
@@ -177,15 +178,18 @@ the original .csv file, as follows:
 PatternLab
 ----------
 
-PatternLab exports an Excel file with an .xlsx extension, which contains
+PatternLab exports an plp file, which contains
 the same type of information as Progenesis, including assay, pdata, and
 rdata. However, this exported file does not include differential
 proteomics statistics. Therefore, *OmicScope* automatically performs
 statistical analyses for PatternLab data.
 
+For users aiming to use Statistical Workflows from T-Fold workflow in PatternLab,
+we advise using "Snapshot" import method.
+
 .. code:: ipython3
 
-    plv = omics.OmicScope('../../tests/data/proteins/patternlab.xlsx', Method='PatternLab')
+    plv = omics.OmicScope('../../tests/data/proteins/patternlab.plp', Method='PatternLab')
 
 MaxQuant
 --------
