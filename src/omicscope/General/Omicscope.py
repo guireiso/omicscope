@@ -247,6 +247,7 @@ class Omicscope(Input):
     def savefile(self, Path: str):
         from copy import copy
         import os
+        import pickle
         data = copy(self)
         experimental = data.experimental
         string = '-'.join(data.Conditions)
@@ -264,6 +265,8 @@ class Omicscope(Input):
                     'Expression:\n' + '-------\n' +
                     dfAsString)
             f.write(file.replace(os.linesep, '\n'))
+        with open(Path + '/' + string + '.results', 'wb') as bi:
+            pickle.dump(self, bi)
     __all__ = [
         'bar_ident',
         'heatmap',

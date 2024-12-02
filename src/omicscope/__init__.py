@@ -69,6 +69,16 @@ def OmicScope(Table: str,
             pvalue,
             PValue_cutoff,
             FoldChange_cutoff)
+    elif Method== 'OmicScope':
+        import pickle
+        from copy import copy
+        with open(Table, 'rb') as f:
+            omics = pickle.load(f)
+        try: 
+            if omics.Analysis == 'ORA' or  omics.Analysis == 'GSEA':
+                print("You've imported the EnrichmentScope outcomes.")
+        except: 
+            print("You've imported OmicScope module outcomes.")
     else:
         omics = Omicscope(
             Table,

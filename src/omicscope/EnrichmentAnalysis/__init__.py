@@ -63,6 +63,7 @@ class Enrichmentscope():
     def savefile(self, Path: str):
         from copy import copy
         import os
+        import pickle
         save = Path
         data = copy(self)
         string = '-'.join(data.OmicScope.Conditions)
@@ -89,6 +90,8 @@ class Enrichmentscope():
                     'Enrichment Analysis:\n' + '-------\n' +
                     enrichment)
             f.write(file.replace(os.linesep, '\n'))
+        with open(Path + '/' + string + '.results', 'wb') as bi:
+            pickle.dump(self, bi)
     __all__ = ['dotplot',
                'heatmap',
                'number_deps',
