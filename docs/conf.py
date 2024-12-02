@@ -40,7 +40,7 @@ project = 'OmicScope'
 year = '2022'
 author = 'Guilherme Reis-de-Oliveira'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '1.4.3'
+version = release = '1.4.4'
 
 pygments_style = 'trac'
 templates_path = ['.']
