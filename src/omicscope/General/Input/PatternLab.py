@@ -13,6 +13,7 @@ from copy import copy
 import numpy as np
 import pandas as pd
 import re
+from io import StringIO
 from typing import Dict, List, Tuple
 
 
@@ -41,8 +42,11 @@ class Input:
         Returns:
         - pd.DataFrame: Generated DataFrame with parsed data.
         """
-        with open(self.Table, "r") as file:
-            plp_content = file.read()
+        try:
+            with open(self.Table, "r") as file:
+                plp_content = file.read()
+        except TypeError:
+            plp_content = StringIO(self.Table.getvalue().decode("utf-8"))
         class_description_dict = {}
         sparse_matrix_data = []
         index_mapping = {}
