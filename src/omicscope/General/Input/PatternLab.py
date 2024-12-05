@@ -45,6 +45,7 @@ class Input:
         try:
             with open(self.Table, "r") as file:
                 plp_content = file.read()
+                plp_content.strip().split("\n")
         except TypeError:
             plp_content = StringIO(self.Table.getvalue().decode("utf-8"))
         class_description_dict = {}
@@ -56,8 +57,11 @@ class Input:
         file_name = None
         normalization_factors = []
 
-        for line in plp_content.strip().split("\n"):
-            line = line.strip()
+        for line in plp_content:
+            try:
+                line = line.strip()
+            except AttributeError: 
+                line = line
 
             # Handle section headers
             if line.startswith("###Description"):
