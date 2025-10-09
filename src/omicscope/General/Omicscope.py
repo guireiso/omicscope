@@ -106,6 +106,7 @@ class Omicscope(Input):
             from .Stats.Performed_Stat import imported_stat
             self.quant_data = imported_stat(self, statistics)
             self.expression = self.assay.copy()
+            self.excluded_values = None
             self.pdata['Sample'] = self.pdata['Sample'] + \
                 '.'+self.pdata['Condition']
             print('User already performed statistical analysis')
@@ -142,6 +143,13 @@ class Omicscope(Input):
                              "User did not add statistical column into rdata, " +
                              "neither specify 'static' or 'longitudinal' experimental design. "
                              )
+        # Whole data
+        if self.excluded_values is None:
+            self.whole_data = self.quant_data.copy()
+        else:
+            self.whole_data = pd.concat([self.quant_data, self.excluded_values])
+        
+        # Deps 
         self.deps = self.deps()
         if len(self.deps) == 0:
             print('ATTENTION: There is no differential regulation in your dataset')
@@ -149,6 +157,7 @@ class Omicscope(Input):
             print('OmicScope identifies: ' +
                   str(len(self.deps)) + ' deregulations')
 
+    # functions
     def define_conditions(self):
         """Determine conditions for statistical analysis
         """
@@ -216,7 +225,15 @@ class Omicscope(Input):
         nanvalues = nanvalues.notna()
         nanvalues.columns = pdata.Condition
         nanvalues = nanvalues.groupby(nanvalues.columns, axis=1).sum()
-        nanvalues[nanvalues <= 1] = np.nan
+        nanvalues[nanvalues < 2] = np.nan
+        # counting excluded values
+        excluded_values = nanvalues.isna().sum(axis=1)
+        excluded_values = excluded_values[excluded_values > 0]
+        excluded_values = expression[expression.index.isin(excluded_values.index)]
+        excluded_values = excluded_values.merge(self.rdata, how='left', left_index=True, right_on='Accession')
+        excluded_values = excluded_values.replace(np.nan, 0)
+        self.excluded_values = excluded_values
+        # selecting proteins that will be kept
         nanvalues = nanvalues.dropna()
         expression = expression[expression.index.isin(nanvalues.index)]
         rdata = rdata[rdata['Accession'].isin(nanvalues.index)]

@@ -44,8 +44,7 @@ class Input:
         """
         try:
             with open(self.Table, "r") as file:
-                plp_content = file.read()
-                plp_content.strip().split("\n")
+                plp_content = file.readlines()
         except TypeError:
             plp_content = StringIO(self.Table.getvalue().decode("utf-8"))
         class_description_dict = {}

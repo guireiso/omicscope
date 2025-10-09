@@ -68,9 +68,14 @@ class Input:
         df = df.rename(columns={'Anova (p)': 'pvalue',
                                 'q Value': 'pAdjusted'})
         # Defining assay
-        assay = df.iloc[:, df.columns.str.contains(".", regex=False)]
+        assay = df.copy().set_index('Accession')
+        assay = assay.iloc[:, assay.columns.str.contains(".", regex=False)]
+        assay = assay.select_dtypes(include=['number'])
+        assay = assay.dropna(axis=0)
+
         # Defining rdata
         rdata = df.iloc[:, ~df.columns.str.contains(".", regex=False)]
+        rdata = rdata[rdata['Accession'].isin(assay.index)]
         return (assay, rdata)
 
     def pdata(self):

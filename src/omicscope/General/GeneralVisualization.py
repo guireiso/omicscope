@@ -1270,6 +1270,7 @@ def PPInteractions(self, *Proteins,
     output_format = "json"
     method = "network"
     data = copy.copy(self)
+    conds = data.Conditions
     data = data.quant_data
     data = data[data[self.pvalue] <= pvalue]
     data = data.sort_values(self.pvalue)
@@ -1297,10 +1298,14 @@ def PPInteractions(self, *Proteins,
     string = pd.read_json(response.text)
     # Filter string results based on score
     string = string[string['score'] >= score_threshold]
-
-    norm = mpl.colors.TwoSlopeNorm(vmin=min(foldchange_range),
-                                   vmax=max(foldchange_range),
-                                   vcenter=0)
+    if len(conds)==2:
+        norm = mpl.colors.TwoSlopeNorm(vmin=min(foldchange_range),
+                                    vmax=max(foldchange_range),
+                                    vcenter=0)
+    else:
+        norm = mpl.colors.TwoSlopeNorm(vmin=min(foldchange_range),
+                                    vmax=max(foldchange_range),
+                                    vcenter=np.mean(foldchange_range))
     cmap = cm.RdBu_r
     m = cm.ScalarMappable(norm=norm, cmap=cmap)
     color_hex = [mcolors.to_hex(m.to_rgba(x)) for x in data['log2(fc)']]

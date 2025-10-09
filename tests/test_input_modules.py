@@ -22,7 +22,7 @@ class TestInput(object):
         assert 'Condition' in maxquantNone.pdata.columns
 
     def test_PatternLab(self):
-        patternLabNone = Input('tests//data//proteins//patternlab.xlsx',
+        patternLabNone = Input('tests//data//proteins//patternlab.plp',
                                Method='PatternLab')
         assert 'Sample' in patternLabNone.pdata.columns
         assert 'Condition' in patternLabNone.pdata.columns
