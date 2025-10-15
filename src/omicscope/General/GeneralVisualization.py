@@ -926,7 +926,7 @@ def bar_protein(self, *Proteins, logscale=True,
     """
     plt.rcParams['figure.dpi'] = dpi
     OmicScope = copy.copy(self)
-    df = copy.copy(OmicScope.quant_data)
+    df = copy.copy(OmicScope.whole_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
     # Get conditions
@@ -1005,7 +1005,7 @@ def boxplot_protein(self, *Proteins, logscale=True,
     """
     plt.rcParams['figure.dpi'] = dpi
     OmicScope = copy.copy(self)
-    df = copy.copy(OmicScope.quant_data)
+    df = copy.copy(OmicScope.whole_data)
     # Proteins to plot
     df = df[df['gene_name'].isin(Proteins)]
     # Get conditions
