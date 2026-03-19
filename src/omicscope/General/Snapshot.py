@@ -3,6 +3,7 @@ import warnings
 import os
 import numpy as np
 import pandas as pd
+from copy import copy
 
 warnings.filterwarnings("ignore")
 
@@ -48,6 +49,7 @@ class Omicscope_Snapshot():
             raise ValueError("Invalid pvalue specification. Expected one of: %s" % pvalues)
 
         self.quant_data[f'-log10({pvalue})'] = -np.log10(self.quant_data[pvalue])
+        self.whole_data = copy(self.quant_data)
 
         if len(self.deps) == 0:
             print('ATTENTION: There is no differential regulation in your dataset')
