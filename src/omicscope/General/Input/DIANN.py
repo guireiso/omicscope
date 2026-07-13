@@ -1,5 +1,6 @@
 
 import numpy as np
+from copy import copy
 import pandas as pd
 
 
@@ -37,15 +38,30 @@ class Input:
             'First.Protein.Description': 'FirstProteinDescription',
             'Run': 'Sample'
         })
-        table.columns = table.columns.str.replace('.', '', regex=False)
-        assay = pd.pivot_table(table, values='PGMaxLFQ', index='Accession', columns='Sample')
-        rdata = table[['Accession', 'ProteinIds', 'ProteinNames',
-                       'gene_name', 'FirstProteinDescription']]
-        rdata = rdata[rdata['Accession'].isin(assay.index)]
-        rdata = rdata.drop_duplicates('Accession')
+        try: 
+            table_old_version = copy(table)
+            table_old_version.columns = table_old_version.columns.str.replace('.', '', regex=False)
+            assay = pd.pivot_table(table_old_version, values='PGMaxLFQ', index='Accession', columns='Sample')
+            rdata = table_old_version[['Accession', 'ProteinNames',
+                        'gene_name', 'FirstProteinDescription']]
+            rdata = rdata[rdata['Accession'].isin(assay.index)]
+            rdata = rdata.drop_duplicates('Accession')
 
-        rdata['gene_name'] = np.where(rdata['gene_name'] == np.nan, rdata['Accession'], rdata['gene_name'])
-        rdata['gene_name'] = rdata.gene_name.str.split(';').str[0]
-        rdata['Description'] = rdata['FirstProteinDescription'] + ' GN=' + rdata['gene_name'] + ' PE'
-        rdata = rdata.sort_values('Accession')
+            rdata['gene_name'] = np.where(rdata['gene_name'] == np.nan, rdata['Accession'], rdata['gene_name'])
+            rdata['gene_name'] = rdata.gene_name.str.split(';').str[0]
+            rdata['Description'] = rdata['FirstProteinDescription'] + ' GN=' + rdata['gene_name'] + ' PE'
+            rdata = rdata.sort_values('Accession')
+        except KeyError:
+            assay = table.set_index('Accession')
+            assay = assay.iloc[:, assay.columns.str.contains(".", regex=False)]
+            assay.columns = assay.columns.str.split('.', regex=False).str[0]
+            assay.columns = assay.columns.str.replace('/', '\\', regex=False)
+            assay.columns = assay.columns.str.split('\\', regex=False).str[-1]
+            rdata = table[['Accession', 'ProteinNames',
+                        'gene_name', 'FirstProteinDescription']]
+            rdata = rdata[rdata['Accession'].isin(assay.index)]
+            rdata = rdata.drop_duplicates('Accession')
+            rdata['gene_name'] = np.where(rdata['gene_name'] == np.nan, rdata['Accession'], rdata['gene_name'])
+            rdata['gene_name'] = rdata.gene_name.str.split(';').str[0]
+            rdata['Description'] = rdata['FirstProteinDescription'] + ' GN=' + rdata['gene_name'] + ' PE'
         return assay, rdata
