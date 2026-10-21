@@ -188,8 +188,10 @@ def Longitudinal_pval(self, assay, pdata, df, ctrl):
         null_model = longitudinal_workflow[0]
         assay = longitudinal_workflow[2]
         assay = pd.DataFrame(assay)
-        df1 = df
-        df2 = len(assay.columns) - full_model_len
+        # Individual effects were projected out: they use rank(H_individual) residual degrees of freedom
+        n_individual = pd.Series(pdata.Individual).nunique()
+        df1 = np.linalg.matrix_rank(full_model) - np.linalg.matrix_rank(null_model)
+        df2 = len(assay.columns) - n_individual - np.linalg.matrix_rank(full_model)
 
     else:
         # While data from the different individuals was collected overtime
@@ -197,8 +199,9 @@ def Longitudinal_pval(self, assay, pdata, df, ctrl):
         pdata = pdata.loc[:, pdata.columns != 'Biological']
         full_model = Spline_Model_Full(self, pdata=pdata, df=df)
         null_model = Spline_Model_Null(self, pdata=pdata, df=df)
-        df1 = df
-        df2 = len(assay.columns) - len(full_model.columns)
+        # numerator df = interaction terms = df * (number of conditions - 1)
+        df1 = np.linalg.matrix_rank(full_model) - np.linalg.matrix_rank(null_model)
+        df2 = len(assay.columns) - np.linalg.matrix_rank(full_model)
     # Fi for each gene
     Ftest = assay.apply(lambda x:
                         Spline_Normalization(expression=x,
