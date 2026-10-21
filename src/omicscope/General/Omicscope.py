@@ -224,7 +224,7 @@ class Omicscope(Input):
         nanvalues = expression.replace(0, np.nan)
         nanvalues = nanvalues.notna()
         nanvalues.columns = pdata.Condition
-        nanvalues = nanvalues.groupby(nanvalues.columns, axis=1).sum()
+        nanvalues = nanvalues.T.groupby(level=0).sum().T
         nanvalues[nanvalues < 2] = np.nan
         # counting excluded values
         excluded_values = nanvalues.isna().sum(axis=1)

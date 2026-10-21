@@ -423,7 +423,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
     data1 = data.original
     totalMean = []
     for i in data1:
-        df = i.groupby('gene_name').mean()
+        df = i.groupby('gene_name').mean(numeric_only=True)
         df = df[df[self.pvalue] <= pvalue]
         df = df[[comparison_param]]
         totalMean.append(df)
@@ -439,7 +439,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
 
     # Inicializar um DataFrame vazio para armazenar as distâncias
 # Inicializar um DataFrame vazio para armazenar as distâncias
-    df_dist = pd.DataFrame(index=corr.columns, columns=corr.columns)
+    df_dist = pd.DataFrame(index=corr.columns, columns=corr.columns, dtype=float)
     # Calculate the distance between each group
     for col1 in corr.columns:
         for col2 in corr.columns:
@@ -454,7 +454,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
                     # For other methods, we use the non-zero quantitative values from each condition
                     distance = corr[[col1, col2]].dropna(axis=0)
                     distance = pairwise_distances(distance.T.to_numpy(),
-                                                  metric=metric, force_all_finite='allow-nan')
+                                                  metric=metric, ensure_all_finite='allow-nan')
                     df_dist.at[col1, col2] = distance[0][1]
             df = 1-df_dist
     corr = df
@@ -533,7 +533,7 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
     totalMean = []
     colors = data.colors
     for i in data1:
-        df = i.groupby('gene_name').mean()
+        df = i.groupby('gene_name').mean(numeric_only=True)
         df = df[df[self.pvalue] <= pvalue]
         df = df[[comparison_param]]
         totalMean.append(df)
@@ -549,7 +549,7 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
 
     # Inicializar um DataFrame vazio para armazenar as distâncias
     # Inicializar um DataFrame vazio para armazenar as distâncias
-    df_dist = pd.DataFrame(index=corr.columns, columns=corr.columns)
+    df_dist = pd.DataFrame(index=corr.columns, columns=corr.columns, dtype=float)
     # Calculate the distance between each group
     for col1 in corr.columns:
         for col2 in corr.columns:
@@ -564,7 +564,7 @@ def similarity_heatmap(self, pvalue=1, comparison_param='log2(fc)',
                     # For other methods, we use the non-zero quantitative values from each condition
                     distance = corr[[col1, col2]].dropna(axis=0)
                     distance = pairwise_distances(distance.T.to_numpy(),
-                                                  metric=metric, force_all_finite='allow-nan')
+                                                  metric=metric, ensure_all_finite='allow-nan')
                     df_dist.at[col1, col2] = distance[0][1]
             df = 1-df_dist
     corr = df
@@ -1000,9 +1000,9 @@ def circos_plot(self, vmax=1, vmin=-1, colormap='RdYlBu_r', colorproteins='darkc
     links, matrixes = linkproteins(deps, groups)
 
     # Mapping heatmap
-    matrixes = [y[['log2(fc)']].applymap(
+    matrixes = [y[['log2(fc)']].map(
         lambda x: vmax if x > vmax else x) for y in matrixes]
-    matrixes = [y[['log2(fc)']].applymap(
+    matrixes = [y[['log2(fc)']].map(
         lambda x: vmin if x < vmin else x) for y in matrixes]
     matrixes = [x[['log2(fc)']].T.to_numpy() for x in matrixes]
     # Config circos
@@ -1086,7 +1086,7 @@ def circular_term(self, *Terms, pvalue=0.05, vmin=-1, vmax=1, colormap='RdBu_r',
     data = [x[x['gene_name'].isin(enrichGenes)] for x in deps]
     data = [x[['gene_name', "log2(fc)"]] for x in data]
     data = [x.rename(columns={'log2(fc)': y}) for x, y in zip(data, groups)]
-    data = [x.groupby('gene_name').mean() for x in data]
+    data = [x.groupby('gene_name').mean(numeric_only=True) for x in data]
     data = pd.concat(data, axis=1).T
     data = data.sort_index(axis=1)
     matrix = data

@@ -211,14 +211,14 @@ def Longitudinal_pval(self, assay, pdata, df, ctrl):
     pvalue = pvalue
     # getting mean expression levels and log2fc
     expression.columns = pd.MultiIndex.from_frame(phenotypedata)
-    Mean_Conditions = expression.groupby('Condition', axis=1).mean(numeric_only=True)
+    Mean_Conditions = expression.T.groupby('Condition').mean(numeric_only=True).T
     control = Mean_Conditions.loc[:, Mean_Conditions.columns == ctrl].mean(axis=1)
     othergroups = Mean_Conditions.loc[:, Mean_Conditions.columns != ctrl].mean(axis=1)
     log2fc = othergroups.subtract(control)
     if log2fc.isnull().sum() > 0.5*len(log2fc):
         first_TC = pdata.TimeCourse.min()
         last_TC = pdata.TimeCourse.max()
-        Mean_Conditions = expression.groupby('TimeCourse', axis=1).mean(numeric_only=True)
+        Mean_Conditions = expression.T.groupby('TimeCourse').mean(numeric_only=True).T
         first_TC = Mean_Conditions.loc[:, Mean_Conditions.columns == first_TC].mean(axis=1)
         last_TC = Mean_Conditions.loc[:, Mean_Conditions.columns == last_TC].mean(axis=1)
         log2fc = last_TC.subtract(first_TC)
