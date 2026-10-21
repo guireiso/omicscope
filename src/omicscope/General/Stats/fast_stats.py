@@ -227,3 +227,38 @@ def qvalue(p, lambdas=np.arange(0.05, 0.96, 0.05)):
     tmp[order] = np.minimum(q, 1)
     out[ok] = tmp
     return out, pi0
+
+
+# ---------------------------------------------------------------------------- detection (presence/absence)
+
+
+@lru_cache(maxsize=None)
+def _detection_exact(detected, sizes):
+    """Exact test of equal detection rates among groups (Fisher-Freeman-Halton on a k x 2 table).
+
+    Under the null the detected counts follow a multivariate hypergeometric distribution given the
+    total; the p-value sums the probabilities of every table as or less likely than the observed one
+    (for two groups this is the two-sided Fisher exact test)."""
+    total = sum(detected)
+    logc = [special.gammaln(n + 1) - special.gammaln(np.arange(n + 1) + 1) - special.gammaln(n - np.arange(n + 1) + 1)
+            for n in sizes]
+    log_norm = special.gammaln(sum(sizes) + 1) - special.gammaln(total + 1) - special.gammaln(sum(sizes) - total + 1)
+    observed = sum(logc[g][d] for g, d in enumerate(detected)) - log_norm
+    # distribution of the log-probability via dynamic programming over groups
+    tables = {0: [0.0]}
+    for g, n in enumerate(sizes):
+        nxt = {}
+        for s, lps in tables.items():
+            for d in range(min(n, total - s) + 1):
+                nxt.setdefault(s + d, []).extend(lp + logc[g][d] for lp in lps)
+        tables = nxt
+    lps = np.array(tables.get(total, [])) - log_norm
+    return float(min(1.0, np.exp(lps[lps <= observed + 1e-7]).sum()))
+
+
+def detection_test(detected, sizes):
+    """Per-row exact test of different detection rates. detected: (rows, groups) counts; sizes: (rows, groups)
+    or (groups,) number of samples. Rows sharing a pattern are computed once."""
+    detected = np.asarray(detected, int)
+    sizes = np.broadcast_to(np.asarray(sizes, int), detected.shape)
+    return np.array([_detection_exact(tuple(d), tuple(n)) for d, n in zip(detected, sizes)])

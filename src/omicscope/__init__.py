@@ -29,6 +29,8 @@ def OmicScope(Table: str,
               welch: bool = False,
               moderated: bool = False,
               fdr: str = 'fdr_tsbh',
+              detection_layer: bool = True,
+              min_detected: int = 2,
               ** kwargs) -> Omicscope:
     """OmicScope - Differential Proteomics
 
@@ -68,6 +70,11 @@ def OmicScope(Table: str,
             borrow variance information across entities and gain power with few replicates. Defaults to False.
         fdr (str, optional): multiple-testing correction for pAdjusted: 'fdr_tsbh' (two-stage
             Benjamini-Hochberg), 'fdr_bh' (Benjamini-Hochberg) or 'qvalue' (Storey). Defaults to 'fdr_tsbh'.
+        detection_layer (bool, optional): keep entities detected in some conditions but (almost) absent in
+            others ("on/off"). They are tested on detection frequency (exact test, own FDR stratum),
+            labelled in 'Regulation' and get a censored log2(fc) bound (column 'fc_censored'). Defaults to True.
+        min_detected (int, optional): biological replicates in which an entity must be detected, in at
+            least one condition, to enter the detection layer. Defaults to 2.
 
     Returns:
         OmicScope: Return a OmicScope obj. The quantitation data is stored to obj.quant_data.
@@ -106,6 +113,8 @@ def OmicScope(Table: str,
             welch=welch,
             moderated=moderated,
             fdr=fdr,
+            detection_layer=detection_layer,
+            min_detected=min_detected,
             **kwargs)
 
     return omics

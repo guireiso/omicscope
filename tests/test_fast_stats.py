@@ -94,3 +94,23 @@ def test_games_howell_protects_unequal_variances_better_than_tukey():
     _, tukey = _null_pair_rate(False)
     _, games_howell = _null_pair_rate(True)
     assert games_howell < tukey
+
+
+def test_detection_test_matches_fisher_for_two_groups():
+    for d1, d2, n in [(5, 0, 5), (3, 0, 3), (4, 1, 5), (2, 2, 4)]:
+        ref = stats.fisher_exact([[d1, n - d1], [d2, n - d2]]).pvalue
+        assert fs.detection_test([[d1, d2]], [n, n])[0] == pytest.approx(ref, rel=1e-9)
+    # three replicates can never reach 0.05; five can
+    assert fs.detection_test([[3, 0]], [3, 3])[0] == pytest.approx(0.1)
+    assert fs.detection_test([[5, 0]], [5, 5])[0] < 0.01
+
+
+def test_detection_test_three_groups_sums_to_one():
+    from itertools import product
+    sizes = (4, 4, 4)
+    total = 5
+    probs = []
+    for d in product(range(5), repeat=3):
+        if sum(d) == total:
+            probs.append(fs.detection_test([d], sizes)[0])
+    assert max(probs) == pytest.approx(1.0)      # the most likely table has p = 1

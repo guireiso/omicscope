@@ -33,7 +33,7 @@ class Omicscope(Input):
                  normalization_method = None, imputation_method=None,
                  FoldChange_cutoff=0, logTransform=True, ExcludeContaminants=True,
                  degrees_of_freedom=2, independent_ttest=True, welch=False, moderated=False,
-                 fdr='fdr_tsbh', **kwargs):
+                 fdr='fdr_tsbh', detection_layer=True, min_detected=2, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -88,6 +88,9 @@ class Omicscope(Input):
         if fdr not in ('fdr_tsbh', 'fdr_bh', 'qvalue'):
             raise ValueError("Invalid fdr. Expected one of: 'fdr_tsbh', 'fdr_bh', 'qvalue'")
         self.welch, self.moderated, self.fdr = welch, moderated, fdr
+        self.detection_layer, self.min_detected = detection_layer, min_detected
+        self.ExperimentalDesign = ExperimentalDesign
+        self.partial_expression = None
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
             raise ValueError(
@@ -211,8 +214,9 @@ class Omicscope(Input):
         technical = copy(pdata_original)
         technical = technical.groupby(pdata_columns).agg(','.join).reset_index()
         technical.columns = pdata_columns + ['technical']
-        expression = expression.groupby(pdata_columns).mean(numeric_only=True)
-        self.Params['Params']['DataHandling_BeforeStat_1'] = 'Biological replicates abundance estimated as mean of technical measures'
+        expression = expression.replace(0, np.nan).groupby(pdata_columns).mean(numeric_only=True).fillna(0)
+        self.Params['Params']['DataHandling_BeforeStat_1'] = ('Biological replicates abundance estimated as mean of '
+                                                              'technical measures (missing technical values ignored)')
         pdata = expression.index.to_frame().reset_index(drop=True)
         Variables = pdata.loc[:, pdata.columns != 'Biological']
         Variables = Variables.apply(lambda x: '-'.join(x.astype(str)), axis=1)
@@ -231,10 +235,26 @@ class Omicscope(Input):
         nanvalues = nanvalues.notna()
         nanvalues.columns = pdata.Condition
         nanvalues = nanvalues.T.groupby(level=0).sum().T
+        self.detection_counts = nanvalues.copy()
+        self.group_sizes = pdata.Condition.value_counts()
+        complete = (nanvalues >= 2).all(axis=1)
+        partial = (nanvalues >= self.min_detected).any(axis=1) & ~complete
+        minprob = getattr(self, 'imputation_method', None) == 'minprob'
+        static = getattr(self, 'ExperimentalDesign', 'static') == 'static'
+        if (self.detection_layer and static) or minprob:
+            self.Params['Params']['DataHandling_BeforeStat_4'] = (
+                f'{int(partial.sum())} entities detected in >= {self.min_detected} replicates of some (not all) '
+                + ('conditions were imputed (MinProb)' if minprob else 'conditions were tested on detection frequency'))
+        else:
+            partial[:] = False
         nanvalues[nanvalues < 2] = np.nan
+        if minprob:                       # imputation needs them in the matrix
+            nanvalues.loc[partial] = nanvalues.loc[partial].fillna(0)
+        elif partial.any():
+            self.partial_expression = expression[expression.index.isin(partial[partial].index)]
         # counting excluded values
         excluded_values = nanvalues.isna().sum(axis=1)
-        excluded_values = excluded_values[excluded_values > 0]
+        excluded_values = excluded_values[(excluded_values > 0) & ~excluded_values.index.isin(partial[partial].index)]
         excluded_values = expression[expression.index.isin(excluded_values.index)]
         excluded_values = excluded_values.merge(self.rdata, how='left', left_index=True, right_on='Accession')
         excluded_values = excluded_values.replace(np.nan, 0)
@@ -242,6 +262,7 @@ class Omicscope(Input):
         # selecting proteins that will be kept
         nanvalues = nanvalues.dropna()
         expression = expression[expression.index.isin(nanvalues.index)]
+        self.partial_rdata = rdata[rdata['Accession'].isin(partial[partial].index)] if partial.any() else None
         rdata = rdata[rdata['Accession'].isin(nanvalues.index)]
         # New pdata
         pdata['Sample'] = Sample_name

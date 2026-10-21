@@ -41,6 +41,10 @@ def perform_static_stat(self):
         params = [expression, rdata, self.Conditions, pvalue, PValue_cutoff]
         data = anova(self, params=params)
         data = params[1].merge(data, on='Accession')
+    data['Test'] = 'intensity'
+    if getattr(self, 'partial_expression', None) is not None:
+        from .detection import detection_stratum
+        data = detection_stratum(self, data)
     data = data.sort_values('pvalue')
     data = data.reset_index(drop=True)
     # # Calculating CV
