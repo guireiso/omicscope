@@ -79,3 +79,4 @@ src/longitudinal.py
 src/omics_teste.py
 
 src/omicscope/PeptideLens/
+.venv/

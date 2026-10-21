@@ -459,7 +459,7 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
             df = 1-df_dist
     corr = df
     # Perform the absoltute_cuttoff for values
-    corr = df.applymap(lambda x: 0 if -absolute_similarity_cutoff <= x <= absolute_similarity_cutoff else x)
+    corr = df.map(lambda x: 0 if -absolute_similarity_cutoff <= x <= absolute_similarity_cutoff else x)
     corr.columns, corr.index = data.groups, data.groups
     corr = corr.replace(np.nan, 0)
     # Plotting graph
@@ -900,8 +900,8 @@ def linkproteins(deps, groups):
     matrixes = [x.reset_index(drop=True) for x in matrixes]
     # Retrieving links
     dataframes = copy(matrixes)
-    result = pd.DataFrame(
-        columns=['gene_name', 'query_chr', 'query_start', 'ref_chr', 'ref_start'])
+    rows = []
+    result_columns = ['gene_name', 'query_chr', 'query_start', 'ref_chr', 'ref_start']
     # Perform pairwise comparison between DataFrames
     for i in range(len(dataframes)-1):
         for j in range(i+1, len(dataframes)):
@@ -912,8 +912,8 @@ def linkproteins(deps, groups):
                                        ['gene_name'] == name].index[0]
                 index2 = dataframes[j][dataframes[j]
                                        ['gene_name'] == name].index[0]
-                result = result.append({'gene_name': name, 'query_chr': i, 'query_start': index1, 'ref_chr': j, 'ref_start': index2},
-                                       ignore_index=True)
+                rows.append({'gene_name': name, 'query_chr': i, 'query_start': index1, 'ref_chr': j, 'ref_start': index2})
+    result = pd.DataFrame(rows, columns=result_columns)
     result['query_end'], result['ref_end'] = result['query_start'] + \
         1, result['ref_start']+1
     group_dict = dict(enumerate(groups))
@@ -948,8 +948,8 @@ def linkenrichment(enrichment, groups, number_deps):
     matrixes = [x.set_index(pd.Index(y)) for x, y in zip(matrixes, indexes)]
     # Retrieving links
     dataframes = copy(matrixes)
-    result = pd.DataFrame(
-        columns=['db_term', 'query_chr', 'query_start', 'ref_chr', 'ref_start'])
+    rows = []
+    result_columns = ['db_term', 'query_chr', 'query_start', 'ref_chr', 'ref_start']
     # Perform pairwise comparison between DataFrames
     for i in range(len(dataframes)-1):
         for j in range(i+1, len(dataframes)):
@@ -960,8 +960,8 @@ def linkenrichment(enrichment, groups, number_deps):
                                        ['db_term'] == name].index[0]
                 index2 = dataframes[j][dataframes[j]
                                        ['db_term'] == name].index[0]
-                result = result.append({'db_term': name, 'query_chr': i, 'query_start': index1, 'ref_chr': j, 'ref_start': index2},
-                                       ignore_index=True)
+                rows.append({'db_term': name, 'query_chr': i, 'query_start': index1, 'ref_chr': j, 'ref_start': index2})
+    result = pd.DataFrame(rows, columns=result_columns)
     result['query_end'], result['ref_end'] = result['query_start'] + \
         1, result['ref_start']+1
     group_dict = dict(enumerate(group))

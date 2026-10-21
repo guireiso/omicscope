@@ -10,7 +10,7 @@ def quantile_normalization(assay):
     sorted_mean = sorted_values.mean(axis=1)
     # create a dictionary ranking proteins according to abundance
     rank_replace = {}
-    rank_replace = {rank + 1: abundance for rank, abundance in sorted_mean.iteritems()}
+    rank_replace = {rank + 1: abundance for rank, abundance in sorted_mean.items()}
     # 
     data = assay.rank()
     normalized_data = data.apply(pd.Series.map, arg=rank_replace)

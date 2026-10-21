@@ -15,7 +15,6 @@ also can produces ready-to-publish figures.
 """
 
 import copy
-import warnings
 
 import numpy as np
 

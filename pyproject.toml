@@ -1,31 +1,81 @@
 [build-system]
-requires = [
-        "setuptools>=30.3.0",
-        "wheel",
-        "adjustText==0.8",
-        "altair==4.2.0",
-        "flake8==6.0.0",
-        "gseapy==1.0.3",
-        "kneed==0.8.1",
-        "matplotlib==3.6.2",
-        "matplotlib-inline==0.1.6",
-        "networkx==2.8.8",
-        "openpyxl==3.0.10",
-        "pycirclize==0.4.0",
-        "packaging==21.3",
-        "pandas==1.5.1",
-        "pkginfo==1.9.4",
-        "scikit-learn==1.1.3",
-        "scipy==1.9.3",
-        "sphinx-rtd-theme",
-        "seaborn==0.12.1",
-        "statsmodels==0.13.5",
-        "tox==3.27.0",
-        "UpSetPlot==0.6.1",
-        "xlrd==2.0.1",
-        "zipp==3.11.0"]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.black]
+[project]
+name = "omicscope"
+dynamic = ["version"]
+description = "OmicScope: from quantitative proteomics to systems biology."
+readme = "README.rst"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Guilherme Reis-de-Oliveira", email = "guioliveirareis@gmail.com" }]
+requires-python = ">=3.10"
+keywords = ["Proteomics", "Omics", "Differential Expression", "Systems Biology"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "adjustText>=1.0",
+    "gseapy>=1.1",
+    "kneed>=0.8",
+    "matplotlib>=3.8",
+    "networkx>=3.0",
+    "numpy>=1.26",
+    "openpyxl>=3.1",
+    "pandas>=2.1",
+    "patsy>=0.5",
+    "pycirclize>=1.0",
+    "requests>=2.28",
+    "scikit-learn>=1.3",
+    "scipy>=1.11",
+    "seaborn>=0.13",
+    "statsmodels>=0.14",
+    "UpSetPlot>=0.9",
+    "xlrd>=2.0",
+]
+
+[project.scripts]
+omicscope = "omicscope.cli:main"
+
+[project.urls]
+Documentation = "https://omicscope.readthedocs.io/"
+Changelog = "https://omicscope.readthedocs.io/en/latest/changelog.html"
+Issues = "https://github.com/guireiso/omicscope/issues"
+Source = "https://github.com/guireiso/omicscope"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
+docs = ["sphinx>=7", "sphinx-rtd-theme>=2"]
+
+[tool.hatch.version]
+path = "src/omicscope/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/omicscope"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/README.rst", "/CHANGELOG.rst", "/LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --tb=short"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning"]
+
+[tool.ruff]
 line-length = 140
-target-version = ['py311']
-skip-string-normalization = true
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E9", "F"]
+ignore = ["F401", "F841", "F632"]  # F632: legacy identity checks kept as-is for now

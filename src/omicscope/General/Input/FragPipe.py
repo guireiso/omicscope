@@ -1,6 +1,5 @@
 
 from copy import copy
-import sys
 
 import pandas as pd
 

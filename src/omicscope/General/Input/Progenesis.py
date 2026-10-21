@@ -10,6 +10,13 @@ import numpy as np
 import pandas as pd
 
 
+def _to_numeric_if_possible(column):
+    try:
+        return pd.to_numeric(column)
+    except (ValueError, TypeError):
+        return column
+
+
 class Input:
     def __init__(self, Table, **kwargs):
         """   Progenesis output for OmicScope input
@@ -58,7 +65,7 @@ class Input:
         df = df.drop(1).reset_index(drop=True)
         df.columns = df.iloc[0]
         df = df.drop(df.index[0])
-        df = df.apply(pd.to_numeric, errors='ignore')
+        df = df.apply(_to_numeric_if_possible)
         df['Description'] = df.Description.astype(str)
 
         # Filtering unique peptides

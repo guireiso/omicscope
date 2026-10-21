@@ -8,13 +8,11 @@ and protein abundance normalized by XIC.
 
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
-from copy import copy
 
 import numpy as np
 import pandas as pd
 import re
 from io import StringIO
-from typing import Dict, List, Tuple
 
 
 class Input:

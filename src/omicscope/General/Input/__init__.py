@@ -22,6 +22,8 @@ class Input():
         Methods = ['Progenesis', 'General', 'PatternLab',
                    'MaxQuant', 'DIA-NN', 'FragPipe',
                    'ProteomeDiscoverer', 'RPKM']
+        if not hasattr(self, 'Params'):
+            self.Params = {'Params': {}}
         if Method not in Methods:
             raise ValueError("Invalid Method input. Expected one of: %s" % Methods)
         if Method == 'Progenesis':

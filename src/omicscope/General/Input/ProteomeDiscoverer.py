@@ -6,7 +6,6 @@ quantitative data as .xlsx.
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
 
-import numpy as np
 import pandas as pd
 
 
