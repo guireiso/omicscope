@@ -32,7 +32,7 @@ class Omicscope(Input):
                  pvalue='pAdjusted', PValue_cutoff=0.05, 
                  normalization_method = None, imputation_method=None,
                  FoldChange_cutoff=0, logTransform=True, ExcludeContaminants=True,
-                 degrees_of_freedom=2, independent_ttest=True, welch=False, moderated=False,
+                 degrees_of_freedom=2, independent_ttest=True, welch='auto', moderated=True,
                  fdr='fdr_tsbh', detection_layer=True, min_detected=2, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
@@ -83,8 +83,8 @@ class Omicscope(Input):
         self.pvalue = pvalue
         self.ControlGroup = ControlGroup
         self.ind_variables = independent_ttest
-        if welch and moderated:
-            raise ValueError("Choose either welch=True or moderated=True: moderation pools variances across entities.")
+        if welch not in (True, False, 'auto'):
+            raise ValueError("Invalid welch. Expected True, False or 'auto'.")
         if fdr not in ('fdr_tsbh', 'fdr_bh', 'qvalue'):
             raise ValueError("Invalid fdr. Expected one of: 'fdr_tsbh', 'fdr_bh', 'qvalue'")
         self.welch, self.moderated, self.fdr = welch, moderated, fdr

@@ -35,7 +35,7 @@ def ttest(self, params):
     pvalue = copy(params[5])
 
     if ind_variables is True:
-        welch, moderated = getattr(self, 'welch', False), getattr(self, 'moderated', False)
+        welch, moderated = getattr(self, '_use_welch', False), getattr(self, '_use_moderated', False)
         _, p, _ = fast_stats.ttest(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)].to_numpy(float),
                                    quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)].to_numpy(float),
                                    equal_var=not welch, moderated=moderated)
@@ -149,7 +149,7 @@ def anova(self, params):
     Conditions = params[2]
     pvalue = params[3]
 
-    welch, moderated = getattr(self, 'welch', False), getattr(self, 'moderated', False)
+    welch, moderated = getattr(self, '_use_welch', False), getattr(self, '_use_moderated', False)
     samples = quant_data.columns[quant_data.columns.str.contains('.', regex=False)]
     labels = np.array([next((c for c in Conditions if s.endswith(c)), None) for s in samples], dtype=object)
     _, stat, _, _ = fast_stats.anova(quant_data[samples].to_numpy(float), labels, list(Conditions),

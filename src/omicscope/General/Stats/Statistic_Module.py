@@ -10,6 +10,31 @@ import os
 import pandas as pd
 
 
+def choose_variance_model(self, expression, ratio_cutoff=2.0, min_replicates=4):
+    """Decide once, for the whole dataset, between pooled-variance (optionally moderated) and Welch tests.
+
+    welch='auto' uses Welch/Games-Howell when the median per-entity variance differs more than
+    `ratio_cutoff`-fold between conditions and every condition has >= `min_replicates` biological
+    replicates (with fewer, Welch has almost no power and the moderated pooled test is kept)."""
+    import numpy as np
+    labels = expression.columns.str.split('.').str[-1]
+    sizes = {c: int((labels == c).sum()) for c in self.Conditions}
+    medians = {c: float(np.nanmedian(expression.loc[:, labels == c].var(axis=1, ddof=1))) for c in self.Conditions}
+    ratio = max(medians.values()) / max(min(medians.values()), 1e-12)
+    self.variance_ratio = ratio
+    welch = self.welch
+    if welch == 'auto':
+        heteroscedastic = ratio > ratio_cutoff
+        welch = heteroscedastic and min(sizes.values()) >= min_replicates
+        note = (f'Variance ratio between conditions = {ratio:.2f} (median per-entity variance, log scale); '
+                + ('Welch tests selected' if welch else
+                   'heteroscedastic, but fewer than 4 replicates in a condition: pooled moderated test kept'
+                   if heteroscedastic else 'pooled-variance tests selected'))
+        self.Params['Params']['Stats_Variance_Model'] = note
+    self._use_welch = bool(welch)
+    self._use_moderated = bool(self.moderated) and not self._use_welch
+
+
 def perform_static_stat(self):
     """log2 transformation for expression
     """
@@ -27,6 +52,7 @@ def perform_static_stat(self):
         expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
         self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
+    choose_variance_model(self, expression)
     # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:
         from .Static_Statistics import ttest

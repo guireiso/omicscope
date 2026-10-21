@@ -50,3 +50,11 @@ def test_minprob_imputation_and_posthoc_with_detection_rows():
     res, _, _ = _run('static_onoff_3groups', pvalue='pTukey')
     det = res.quant_data[res.quant_data['Test'] == 'detection']
     assert det['pTukey'].notna().all()
+
+
+@pytest.mark.parametrize('name, welch', [('static_2groups_n3', False), ('static_4groups', True)])
+def test_variance_model_is_chosen_automatically(name, welch):
+    with contextlib.redirect_stdout(io.StringIO()):
+        res = omics.OmicScope(Table=f'tests/data/proteins/{name}.xlsx', Method='General')
+    assert res._use_welch is welch and res._use_moderated is (not welch)
+    assert 'Variance ratio' in res.Params['Params']['Stats_Variance_Model']

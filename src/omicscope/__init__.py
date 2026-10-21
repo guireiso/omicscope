@@ -26,8 +26,8 @@ def OmicScope(Table: str,
               ExcludeContaminants: bool = True,
               degrees_of_freedom: int = 2,
               independent_ttest=True,
-              welch: bool = False,
-              moderated: bool = False,
+              welch='auto',
+              moderated: bool = True,
               fdr: str = 'fdr_tsbh',
               detection_layer: bool = True,
               min_detected: int = 2,
@@ -64,10 +64,13 @@ def OmicScope(Table: str,
         degrees_of_freedom (int, optional): Degrees of freedom to run longitudinal analysis. Defaults to 2.
         independent_ttest (bool, optional): while running a t-test, the user can specify if data sampling
             is independent (default) or paired (independent_ttest=False). Defaults to True.
-        welch (bool, optional): do not assume equal variances among conditions: Welch t-test, Welch ANOVA
-            and Games-Howell post-hoc (instead of Tukey). Defaults to False.
+        welch (bool or 'auto', optional): do not assume equal variances among conditions: Welch t-test,
+            Welch ANOVA and Games-Howell post-hoc (instead of Tukey). 'auto' switches it on when the typical
+            variance differs more than 2-fold between conditions (median over all entities) and every
+            condition has at least 4 biological replicates. Defaults to 'auto'.
         moderated (bool, optional): empirical-Bayes moderated t/F statistics (limma; Smyth 2004), which
-            borrow variance information across entities and gain power with few replicates. Defaults to False.
+            borrow variance information across entities and gain power with few replicates. Applies to the
+            pooled-variance tests (not to Welch). Defaults to True.
         fdr (str, optional): multiple-testing correction for pAdjusted: 'fdr_tsbh' (two-stage
             Benjamini-Hochberg), 'fdr_bh' (Benjamini-Hochberg) or 'qvalue' (Storey). Defaults to 'fdr_tsbh'.
         detection_layer (bool, optional): keep entities detected in some conditions but (almost) absent in
