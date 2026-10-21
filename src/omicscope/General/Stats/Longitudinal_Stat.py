@@ -95,67 +95,55 @@ def Spline_Model_Null(self, pdata, df):
     return transformed_x
 
 
-def rm_zero_cols(matrix):
-    matrix = np.asarray(matrix)
-    module = abs(matrix)
-    matrix = matrix[:, module.sum(axis=0) > 10e-12]
-    return matrix
+def _rss(Y, X):
+    """Residual sum of squares of every row of Y regressed on X (least squares via the pseudo-inverse)."""
+    H = X @ np.linalg.pinv(X)
+    resid = Y - Y @ H.T
+    return np.sum(resid ** 2, axis=1)
 
 
-def projMatrix(matrix):
-    ginv = np.linalg.pinv(matrix.transpose() @ matrix)
-    H = matrix @ ginv @ matrix.transpose()
-    return H
+def spline_f_test(Y, full, null, individuals=None, moderated=False):
+    """Nested-model F test for every row of Y (entities x samples), vectorised per missing-value pattern.
 
+    Missing values (NaN) are left out of each entity's fit. With `moderated`, the residual variances are
+    shrunk by empirical Bayes (fast_stats.squeeze_var) and the denominator df grow by the prior df.
+    Returns (p-values, F statistics)."""
+    from scipy.stats import f as fdist
 
-def Individuals(expression, pdata):
-    expression = np.asmatrix(expression)
-    ind = pd.Series(pdata.Individual, dtype="category")
-    ind_matrix = dmatrix('~ -1 + individuals',
-                         {'individuals': ind})
-    Hi = projMatrix(ind_matrix)
-    fitInd = Hi @ expression.transpose()
-    fitInd = fitInd.transpose()
-    expression = expression - fitInd
-    return expression, Hi
-
-
-def Model_Adjustments(full_model, null_model, Individuals):
-    expression = Individuals[0]
-    Hi = Individuals[1]
-    # Full_model
-    full_model = np.asmatrix(full_model)
-    full_model = full_model - (Hi@full_model)
-    full_model = rm_zero_cols(full_model)
-    # Null model
-    null_model_original = copy(null_model)
-    null_model_adj = np.asmatrix(copy(null_model))
-    null_model_adj = null_model_adj - (Hi@null_model_adj)
-    null_model_adj = rm_zero_cols(null_model_adj)
-    if null_model_adj.size == 0:
-        null_model = null_model_original
-    else:
-        null_model = null_model_adj
-    return null_model, full_model, expression
-
-
-def longitudinal(expression, pdata, full_model, null_model):
-    individuals = Individuals(expression, pdata)
-    model_adjustment = Model_Adjustments(full_model=full_model,
-                                         null_model=null_model,
-                                         Individuals=individuals)
-    return (model_adjustment)
-
-
-def Spline_Normalization(expression, full_model, null_model):
-    import statsmodels.api as sm
-    expression = expression.reset_index(drop=True)
-    # Full Model
-    full = sm.GLM(expression, full_model).fit()
-    # Null Model
-    null = sm.GLM(expression, null_model).fit()
-    F_stat = (null.deviance - full.deviance)/full.deviance
-    return F_stat
+    from .fast_stats import squeeze_var
+    Y = np.asarray(Y, float)
+    if individuals is not None:
+        full, null = np.hstack([individuals, full]), np.hstack([individuals, null])
+    rss_full = np.full(len(Y), np.nan)
+    rss_null = np.full(len(Y), np.nan)
+    df1 = np.zeros(len(Y))
+    df2 = np.zeros(len(Y))
+    observed = ~np.isnan(Y)
+    patterns = {}
+    for i, m in enumerate(observed):
+        patterns.setdefault(m.tobytes(), []).append(i)
+    for rows in patterns.values():
+        m = observed[rows[0]]
+        if m.sum() < 3:
+            continue
+        rows = np.array(rows)
+        Xf, Xn = full[m], null[m]
+        rf, rn = np.linalg.matrix_rank(Xf), np.linalg.matrix_rank(Xn)
+        rss_full[rows] = _rss(Y[np.ix_(rows, m)], Xf)
+        rss_null[rows] = _rss(Y[np.ix_(rows, m)], Xn)
+        df1[rows], df2[rows] = rf - rn, m.sum() - rf
+    ok = (df1 > 0) & (df2 > 0) & np.isfinite(rss_full)
+    s2 = np.full(len(Y), np.nan)
+    s2[ok] = rss_full[ok] / df2[ok]
+    dfd = df2.copy()
+    if moderated and ok.sum() > 2:
+        post, d0, _ = squeeze_var(s2[ok], df2[ok])
+        s2[ok] = post
+        dfd[ok] = df2[ok] + d0
+    with np.errstate(invalid='ignore', divide='ignore'):
+        F = ((rss_null - rss_full) / df1) / s2
+        p = np.where(ok, fdist.sf(F, np.maximum(df1, 1), np.minimum(np.maximum(dfd, 1), 1e6)), np.nan)
+    return p, F
 
 
 def Longitudinal_pval(self, assay, pdata, df, ctrl):
@@ -174,44 +162,30 @@ def Longitudinal_pval(self, assay, pdata, df, ctrl):
     ctrl = ctrl
     phenotypedata = copy(pdata)
     expression = copy(assay)
-    # Calculating full and null models
-    # While data from the same individuals was collected overtime
-    if 'Individual' in pdata.columns:
-        self.Params['Params']['Stats_Workflow_3'] = 'Related sampling detected'
-        pdata2 = pdata.loc[:, pdata.columns != 'Individual']
-        pdata2 = pdata2.loc[:, pdata2.columns != 'Biological']
-        full_model = Spline_Model_Full(self, pdata=pdata2, df=df)
-        full_model_len = len(full_model.columns)
-        null_model = Spline_Model_Null(self, pdata=pdata2, df=df)
-        longitudinal_workflow = longitudinal(assay, pdata, full_model, null_model)
-        full_model = longitudinal_workflow[1]
-        null_model = longitudinal_workflow[0]
-        assay = longitudinal_workflow[2]
-        assay = pd.DataFrame(assay)
-        # Individual effects were projected out: they use rank(H_individual) residual degrees of freedom
-        n_individual = pd.Series(pdata.Individual).nunique()
-        df1 = np.linalg.matrix_rank(full_model) - np.linalg.matrix_rank(null_model)
-        df2 = len(assay.columns) - n_individual - np.linalg.matrix_rank(full_model)
-
+    related = 'Individual' in pdata.columns
+    self.Params['Params']['Stats_Workflow_3'] = 'Related sampling detected' if related else 'Independent sampling detected'
+    design = pdata.loc[:, ~pdata.columns.isin(['Individual', 'Biological'])]
+    full_model = Spline_Model_Full(self, pdata=design, df=df)
+    null_model = Spline_Model_Null(self, pdata=design, df=df)
+    # Individuals enter both models as fixed effects (equivalent to projecting them out, but it stays
+    # exact when an entity has missing samples and the residual df come out right)
+    individuals = (dmatrix('~ -1 + C(individuals)', {'individuals': pd.Series(pdata.Individual).astype(str).to_numpy()},
+                           return_type='dataframe').to_numpy() if related else None)
+    moderated = getattr(self, 'moderated', False)
+    pvalue, _ = spline_f_test(assay.to_numpy(float), full_model.to_numpy(float), null_model.to_numpy(float),
+                              individuals, moderated)
+    pvalue = pd.Series(pvalue, index=assay.index)
+    if moderated:
+        self.Params['Params']['Stats_Workflow_6'] = 'Moderated (empirical Bayes) F statistics'
+    # time effect common to the conditions: condition-only model vs condition + time spline
+    conditions = [c for c in design.columns if c != 'TimeCourse' and not c.startswith('feature')]
+    if len(design.Condition.drop_duplicates()) > 1 and conditions:
+        condition_only = dmatrix('~ ' + '+'.join(conditions), {c: design[c].to_numpy() for c in conditions},
+                                 return_type='dataframe').to_numpy(float)
+        ptime, _ = spline_f_test(assay.to_numpy(float), null_model.to_numpy(float), condition_only, individuals, moderated)
+        self.time_pvalues = pd.Series(ptime, index=assay.index)
     else:
-        # While data from the different individuals was collected overtime
-        self.Params['Params']['Stats_Workflow_3'] = 'Independent sampling detected'
-        pdata = pdata.loc[:, pdata.columns != 'Biological']
-        full_model = Spline_Model_Full(self, pdata=pdata, df=df)
-        null_model = Spline_Model_Null(self, pdata=pdata, df=df)
-        # numerator df = interaction terms = df * (number of conditions - 1)
-        df1 = np.linalg.matrix_rank(full_model) - np.linalg.matrix_rank(null_model)
-        df2 = len(assay.columns) - np.linalg.matrix_rank(full_model)
-    # Fi for each gene
-    Ftest = assay.apply(lambda x:
-                        Spline_Normalization(expression=x,
-                                             full_model=full_model,
-                                             null_model=null_model),
-                        axis=1)
-    stat = Ftest*df2/df1
-    from scipy.stats import f
-    pvalue = stat.apply(lambda x: 1-f.cdf(x, df1, df2))
-    pvalue = pvalue
+        self.time_pvalues = None
     # getting mean expression levels and log2fc
     expression.columns = pd.MultiIndex.from_frame(phenotypedata)
     Mean_Conditions = expression.T.groupby('Condition').mean(numeric_only=True).T
@@ -234,13 +208,18 @@ def Longitudinal_Stats(self, assay, pdata, degrees_of_freedom, pvalue, ctrl, PVa
     pdata = pdata.set_index(['Biological', 'Sample'])
     stat = Longitudinal_pval(self, assay=assay, pdata=pdata, df=degrees_of_freedom,
                              ctrl=ctrl)
-    pval = stat[0]
+    from .Static_Statistics import adjust_pvalues
+    pval = stat[0].fillna(1)
     quant_data['pvalue'] = list(pval)
-    #  Correcting multilple hypothesis test according to fdr_bh
-    pAdjusted = multipletests(pval, alpha=PValue_cutoff,
-                              method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
-
-    quant_data['pAdjusted'] = pAdjusted
+    quant_data['pAdjusted'] = adjust_pvalues(self, pval.to_numpy(), PValue_cutoff)
+    if getattr(self, 'time_pvalues', None) is not None:
+        ptime = self.time_pvalues.fillna(1)
+        quant_data['pTime'] = list(ptime)
+        message = self.Params['Params'].get('Stats_Workflow_5')
+        quant_data['pAdjusted_time'] = adjust_pvalues(self, ptime.to_numpy(), PValue_cutoff)
+        self.Params['Params']['Stats_Workflow_5'] = message
+        self.Params['Params']['Stats_Workflow_8'] = ('pTime: time effect shared by the conditions '
+                                                     '(condition-only model vs condition + time spline)')
     #  Mean abundance for each protein among conditions
     if self.logTransform is True:
         quant_data.loc[:, quant_data.columns.str.contains('.', regex=False)] = np.exp2(

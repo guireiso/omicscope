@@ -108,7 +108,7 @@ def perform_longitudinal_stat(self):
     self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Longitudinal Workflow'
     # Log-normalize data
     if log is True:
-        expression = expression.replace(0, 0.01)
+        expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
         self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
     from .Longitudinal_Stat import Longitudinal_Stats

@@ -26,3 +26,17 @@ def test_longitudinal_recovers_interactions(design, dof):
     assert called[monotonic].mean() >= 0.95
     if dof == 3:  # a transient peak needs the extra spline degree of freedom
         assert called[q['simulated_pattern'] == 'treatment_peak'].mean() >= 0.85
+
+
+@pytest.mark.parametrize('design', ['independent', 'related'])
+def test_moderated_spline_test_and_time_effect(design):
+    res = omics.OmicScope(Table=f'tests/data/proteins/longitudinal_{design}.xlsx', Method='General',
+                          ExperimentalDesign='longitudinal')          # defaults: moderated, df=2
+    q = res.quant_data
+    peak = q['simulated_pattern'] == 'treatment_peak'
+    assert (q.loc[peak, 'pAdjusted'] <= 0.05).mean() >= 0.9       # moderation recovers the transient peak
+    time_only = q['simulated_pattern'].isin({'time_up', 'time_down'})
+    no_time = q['simulated_pattern'].isin({'flat', 'condition_offset'})
+    assert (q.loc[time_only, 'pAdjusted_time'] <= 0.05).mean() >= 0.95
+    called = q['pAdjusted_time'] <= 0.05
+    assert (called & no_time).sum() / called.sum() <= 0.06
