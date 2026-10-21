@@ -26,6 +26,9 @@ def OmicScope(Table: str,
               ExcludeContaminants: bool = True,
               degrees_of_freedom: int = 2,
               independent_ttest=True,
+              welch: bool = False,
+              moderated: bool = False,
+              fdr: str = 'fdr_tsbh',
               ** kwargs) -> Omicscope:
     """OmicScope - Differential Proteomics
 
@@ -59,6 +62,12 @@ def OmicScope(Table: str,
         degrees_of_freedom (int, optional): Degrees of freedom to run longitudinal analysis. Defaults to 2.
         independent_ttest (bool, optional): while running a t-test, the user can specify if data sampling
             is independent (default) or paired (independent_ttest=False). Defaults to True.
+        welch (bool, optional): do not assume equal variances among conditions: Welch t-test, Welch ANOVA
+            and Games-Howell post-hoc (instead of Tukey). Defaults to False.
+        moderated (bool, optional): empirical-Bayes moderated t/F statistics (limma; Smyth 2004), which
+            borrow variance information across entities and gain power with few replicates. Defaults to False.
+        fdr (str, optional): multiple-testing correction for pAdjusted: 'fdr_tsbh' (two-stage
+            Benjamini-Hochberg), 'fdr_bh' (Benjamini-Hochberg) or 'qvalue' (Storey). Defaults to 'fdr_tsbh'.
 
     Returns:
         OmicScope: Return a OmicScope obj. The quantitation data is stored to obj.quant_data.
@@ -94,6 +103,9 @@ def OmicScope(Table: str,
             ExcludeContaminants,
             degrees_of_freedom,
             independent_ttest,
+            welch=welch,
+            moderated=moderated,
+            fdr=fdr,
             **kwargs)
 
     return omics

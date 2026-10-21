@@ -5,6 +5,21 @@ import numpy as np
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
+from . import fast_stats
+
+FDR_NAMES = {'fdr_tsbh': 'two-stage Benjamini-Hochberg', 'fdr_bh': 'Benjamini-Hochberg', 'qvalue': 'Storey q-value'}
+
+
+def adjust_pvalues(self, pvalues, alpha):
+    """Multiple-testing correction chosen by the user (self.fdr)."""
+    method = getattr(self, 'fdr', 'fdr_tsbh')
+    self.Params['Params']['Stats_Workflow_5'] = f'OmicScope performed {FDR_NAMES[method]} correction'
+    if method == 'qvalue':
+        q, pi0 = fast_stats.qvalue(pvalues)
+        self.Params['Params']['Stats_Workflow_5'] += f' (estimated proportion of null entities = {pi0:.2f})'
+        return q
+    return multipletests(pvalues, alpha=alpha, method=method)[1]
+
 
 def ttest(self, params):
     """Perform a T-test on the data
@@ -20,14 +35,14 @@ def ttest(self, params):
     pvalue = copy(params[5])
 
     if ind_variables is True:
-        from scipy.stats import ttest_ind
-
-        #  Perform an independent t-test
-        result = ttest_ind(copy(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)]),
-                           copy(
-                               quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
-                           axis=1, nan_policy='omit')
-        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed Independent T-test'
+        welch, moderated = getattr(self, 'welch', False), getattr(self, 'moderated', False)
+        _, p, _ = fast_stats.ttest(quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)].to_numpy(float),
+                                   quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)].to_numpy(float),
+                                   equal_var=not welch, moderated=moderated)
+        result = (None, p)
+        self.Params['Params']['Stats_Workflow_3'] = ('OmicScope performed moderated (empirical Bayes) T-test' if moderated
+                                                     else 'OmicScope performed Welch T-test' if welch
+                                                     else 'OmicScope performed Independent T-test')
 
         #  Perform a sample-related t-test
     elif ind_variables is False:
@@ -36,17 +51,15 @@ def ttest(self, params):
                            copy(
                                quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)]),
                            axis=1, nan_policy='omit')
-        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed Independent T-test'
+        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed Paired T-test'
 
     quant_data['pvalue'] = result[1]
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     self.Params['Params']['Stats_Workflow_4'] = 'OmicScope replaceD p-value = NaN to 1.0'
     quant_data = quant_data.sort_values('pvalue')
 
-    #  Correcting multilple hypothesis test according to fdr_bh
-    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'],alpha=params[6],
-                                            method='fdr_tsbh')[1]
-    self.Params['Params']['Stats_Workflow_5'] = 'OmicScope performed two-stage Benjamini-Hochberg correction'
+    #  Correcting multiple hypothesis test
+    quant_data['pAdjusted'] = adjust_pvalues(self, quant_data['pvalue'].to_numpy(), params[6])
 
     #  Mean abundance for each protein among conditions
     if self.logTransform is True:
@@ -102,7 +115,7 @@ def tukey_correction(df):
     return padj, comparison
 
 
-def Tukey_hsd(quant_data):
+def Tukey_hsd(quant_data, cutoff=0.05, method='tukey'):
     """Perform Tukey HSD test for each differentially regulated entity
     found according ANOVA's test.
 
@@ -116,15 +129,12 @@ def Tukey_hsd(quant_data):
        comparison [list]: Comparison for which p-value was evaluated. Entities
        that were not differentially regulated returned 2
     """
-    df = copy(quant_data)
-    df = df[df['pvalue'] < 0.05]
+    df = quant_data[quant_data['pAdjusted'] <= cutoff]
     df = df.iloc[:, df.columns.str.contains('.', regex=False)]
-    # Perform Tukey's post-hoc correction for each of differentially
-    # regulated entity according ANOVA's test
-    df = df.apply(lambda x: tukey_correction(x), axis=1)
-    df = pd.DataFrame(df.to_list(), columns=['pTukey',
-                                             'Comparison'], index=df.index)
-    return df
+    labels = df.columns.str.split('.').str[-1].to_numpy()
+    pairs, p = fast_stats.pairwise_posthoc(df.to_numpy(float), labels, sorted(set(labels)), method=method)
+    comparison = [f'{a}-vs-{b}' for a, b in pairs]
+    return pd.DataFrame({'pTukey': [list(row) for row in p], 'Comparison': [comparison] * len(df)}, index=df.index)
 
 
 def anova(self, params):
@@ -139,15 +149,15 @@ def anova(self, params):
     Conditions = params[2]
     pvalue = params[3]
 
-    # Perform ANOVA test according to SCI-PY algorithm
-    expression = []  # List of abundances for each group
-    for i in Conditions:
-        df = quant_data.iloc[:, quant_data.columns.str.endswith(i)]
-        df = df.to_numpy()
-        df = [x[~np.isnan(x)] for x in df]
-        expression.append(df)
-    stat = pd.DataFrame(expression).T
-    stat = stat.apply(lambda x: f_oneway(*x)[1], axis=1)
+    welch, moderated = getattr(self, 'welch', False), getattr(self, 'moderated', False)
+    samples = quant_data.columns[quant_data.columns.str.contains('.', regex=False)]
+    labels = np.array([next((c for c in Conditions if s.endswith(c)), None) for s in samples], dtype=object)
+    _, stat, _, _ = fast_stats.anova(quant_data[samples].to_numpy(float), labels, list(Conditions),
+                                     welch=welch, moderated=moderated)
+    if welch:
+        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed Welch ANOVA'
+    elif moderated:
+        self.Params['Params']['Stats_Workflow_3'] = 'OmicScope performed moderated (empirical Bayes) ANOVA'
     # Multiple hypothesis correction
     stat = pd.Series(stat)
     stat.index = quant_data.index
@@ -155,14 +165,14 @@ def anova(self, params):
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     self.Params['Params']['Stats_Workflow_4'] = 'OmicScope replaceD p-value = NaN to 1.0'
     quant_data = quant_data.sort_values('pvalue')
-    # BH-correction
-    quant_data['pAdjusted'] = multipletests(quant_data['pvalue'], alpha=params[4],
-                                            method='fdr_tsbh', is_sorted=False, returnsorted=False)[1]
-    self.Params['Params']['Stats_Workflow_5'] = 'OmicScope performed two-stage Benjamini-Hochberg correction'
-    # Perform Tukey's Post-hoc correction
+    # Multiple-testing correction
+    quant_data['pAdjusted'] = adjust_pvalues(self, quant_data['pvalue'].to_numpy(), params[4])
+    # Post-hoc test on the entities significant in the ANOVA (pAdjusted <= cutoff)
     if pvalue == 'pTukey':
-        Tukey = Tukey_hsd(quant_data)
-        self.Params['Params']['Stats_Workflow_6'] = 'OmicScope performed Tukey HSD correction with pAdjusted < 0.05'
+        method = 'games-howell' if welch else 'tukey'
+        Tukey = Tukey_hsd(quant_data, cutoff=params[4], method=method)
+        self.Params['Params']['Stats_Workflow_6'] = (f"OmicScope performed {'Games-Howell' if welch else 'Tukey HSD'} "
+                                                     f"post-hoc test on entities with pAdjusted <= {params[4]}")
         quant_data = quant_data.join(Tukey)
         quant_data = quant_data.explode(['pTukey', 'Comparison'])
         quant_data['pTukey'] = quant_data.pTukey.astype(float)

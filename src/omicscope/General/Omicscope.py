@@ -32,7 +32,8 @@ class Omicscope(Input):
                  pvalue='pAdjusted', PValue_cutoff=0.05, 
                  normalization_method = None, imputation_method=None,
                  FoldChange_cutoff=0, logTransform=True, ExcludeContaminants=True,
-                 degrees_of_freedom=2, independent_ttest=True, **kwargs):
+                 degrees_of_freedom=2, independent_ttest=True, welch=False, moderated=False,
+                 fdr='fdr_tsbh', **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -82,6 +83,11 @@ class Omicscope(Input):
         self.pvalue = pvalue
         self.ControlGroup = ControlGroup
         self.ind_variables = independent_ttest
+        if welch and moderated:
+            raise ValueError("Choose either welch=True or moderated=True: moderation pools variances across entities.")
+        if fdr not in ('fdr_tsbh', 'fdr_bh', 'qvalue'):
+            raise ValueError("Invalid fdr. Expected one of: 'fdr_tsbh', 'fdr_bh', 'qvalue'")
+        self.welch, self.moderated, self.fdr = welch, moderated, fdr
         pvalues = ['pvalue', 'pAdjusted', 'pTukey']
         if pvalue not in pvalues:
             raise ValueError(
