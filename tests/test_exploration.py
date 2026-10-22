@@ -117,3 +117,15 @@ def test_meta_analysis_rewards_consistency_not_single_hits():
     assert meta.loc['P0', 'consistency'] >= 0.75
     Meta.meta_plot(neb, top=15)
     plt.close('all')
+
+
+def test_one_extreme_study_cannot_carry_the_meta_analysis():
+    neb = _studies()
+    neb.original[0].loc[0:9, 'pvalue'] = 1e-80          # P0-P9 extreme in study 0 only ...
+    for df in neb.original[1:]:
+        df.loc[0:9, 'pvalue'] = 0.9                       # ... and flat elsewhere
+        df.loc[0:9, 'log2(fc)'] = -0.01
+    meta = Meta.meta_analysis(neb).set_index('gene_name')
+    assert (meta.loc[[f'P{i}' for i in range(10)], 'FDR'] > 0.05).all()
+    uncapped = Meta.meta_analysis(neb, z_cap=None).set_index('gene_name')
+    assert (uncapped.loc[[f'P{i}' for i in range(10)], 'FDR'] < 0.05).all()   # what the cap prevents

@@ -113,8 +113,8 @@ class Enrichment:
         gsea_result['Gene_set'] = db if isinstance(db, str) else 'custom'
         gsea_result = gsea_result[gsea_result['Adjusted P-value'] <= self.padjust_cutoff].copy()
         gsea_result['Genes'] = gsea_result['Genes'].astype(str).str.split(';').apply(lambda x: [g for g in x if g])
-        gsea_result['regulation'] = gsea_result['Genes'].apply(
-            lambda x: [foldchange[g.upper()] for g in x if g.upper() in foldchange])
+        # one value per gene (NaN if the symbol is not found), so Genes and regulation stay aligned
+        gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange.get(g.upper(), np.nan) for g in x])
         gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: sum(1 for i in x if i < 0))
         gsea_result['up-regulated'] = gsea_result['regulation'].apply(lambda x: sum(1 for i in x if i > 0))
         gsea_result['N_Proteins'] = gsea_result['down-regulated'] + gsea_result['up-regulated']

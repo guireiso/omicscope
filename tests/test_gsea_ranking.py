@@ -54,3 +54,9 @@ def test_mixed_case_gene_names_do_not_break_leading_edge():
     res = run(obj, sets, 'signed_p')
     assert res.loc['TRUE_UP', 'up-regulated'] > 0
     assert np.isfinite(res['-log10(pAdj)']).all()
+
+
+def test_public_entry_point_forwards_gsea_options():
+    import inspect
+    import omicscope as omics
+    assert 'gsea_options' in inspect.signature(omics.EnrichmentScope).parameters

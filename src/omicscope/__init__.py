@@ -128,7 +128,8 @@ def EnrichmentScope(OmicScope: Omicscope,
                     dbs: List[str] = ['KEGG_2021_Human'],
                     padjust_cutoff: float = 0.05,
                     organism: str = 'human',
-                    background=None) -> Enrichmentscope:
+                    background=None,
+                    **gsea_options) -> Enrichmentscope:
     """EnrichmentScope - Enrichment Analysis
 
         EnrichmentScope is the module designed to perform over-representation and Gene-Set Enrichment Analyses of proteins and genes.
@@ -144,6 +145,8 @@ def EnrichmentScope(OmicScope: Omicscope,
             as background. Alternatively, user can use all genes evaluated in study (Recommended, background = True). Still,
             user can define a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
             in the target organism on Uniprot.
+        **gsea_options: GSEA only. rank_by ('signed_p' (default), 'log2fc' or 'pi_score'), min_size (10),
+            max_size (500), permutation_num (1000), seed (123) and threads (4).
 
     Returns:
         Enrichmentscope: Return a EnrichmentScope obj. The results is stored to obj.results.
@@ -154,7 +157,8 @@ def EnrichmentScope(OmicScope: Omicscope,
         dbs,
         padjust_cutoff,
         organism,
-        background)
+        background,
+        **gsea_options)
 
     return enrichment
 
