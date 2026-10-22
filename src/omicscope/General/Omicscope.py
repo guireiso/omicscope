@@ -27,6 +27,12 @@ class Omicscope(Input):
     from .GeneralVisualization import pca
     from .GeneralVisualization import volcano
     from .GeneralVisualization import normalization_boxplot
+    from .Exploration import cv_plot
+    from .Exploration import cv_table
+    from .Exploration import missing_summary
+    from .Exploration import missing_values
+    from .Exploration import protein_embedding
+    from .Exploration import protein_map
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', PValue_cutoff=0.05, 
@@ -323,5 +329,11 @@ class Omicscope(Input):
         'MAplot',
         'k_trend',
         'volcano',
-        'normalization_boxplot'
+        'normalization_boxplot',
+        'missing_values',
+        'missing_summary',
+        'cv_plot',
+        'cv_table',
+        'protein_map',
+        'protein_embedding',
     ]

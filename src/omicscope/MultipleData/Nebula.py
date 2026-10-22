@@ -18,9 +18,12 @@ class nebula:
     from .MultipleVisualization import similarity_heatmap
     from .MultipleVisualization import similarity_network
     from .MultipleVisualization import whole_network
+    from .Meta import meta_analysis
+    from .Meta import meta_plot
 
     def __init__(self, folder, palette='Dark2', pvalue_cutoff=0.05):
         self.original_path = os.getcwd()
+        self.pvalue_cutoff = pvalue_cutoff
         self.read_omics(folder, palette=palette)
         self.group_data = []
         for o, g, l in zip(self.original, self.groups, self.labels):
@@ -133,4 +136,6 @@ class nebula:
         'stat_network',
         'whole_network',
         'protein_overlap',
+        'meta_analysis',
+        'meta_plot',
     ]

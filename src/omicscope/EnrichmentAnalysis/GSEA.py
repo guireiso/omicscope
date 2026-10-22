@@ -74,6 +74,7 @@ class Enrichment:
                           'two-group OmicScope object (e.g. drop the other groups) for GSEA.')
         self.ranking = rank_entities(OmicScope.quant_data, rank_by=rank_by)
         self.rank_by = rank_by
+        self.curves = {}
         dfs = [self.gsea(db=i) for i in dbs]
         results = pd.concat(dfs)
         self.results = results.sort_values('Adjusted P-value', ignore_index=True)
@@ -86,6 +87,11 @@ class Enrichment:
                               pd.to_numeric(self.OmicScope.quant_data['log2(fc)'], errors='coerce')))
         gsea_result = prerank(self.ranking, gene_sets=db, organism=self.organism,
                               no_plot=True, outdir=None, **self.params)
+        # running enrichment score and hit positions of each term, for the classic GSEA plot
+        self.curves.update({(db if isinstance(db, str) else 'custom', k): {'hits': np.asarray(v['hits'], int),
+                                                                           'RES': np.asarray(v['RES'], np.float32)}
+                            for k, v in gsea_result.results.items()
+                            if float(v['fdr']) <= self.padjust_cutoff})
         gsea_result = pd.DataFrame.from_dict(gsea_result.results).T
         if gsea_result.empty:
             return pd.DataFrame(columns=['Term', 'ES', 'NES', 'P-value', 'Adjusted P-value', 'Genes', 'Gene_set'])
@@ -104,7 +110,7 @@ class Enrichment:
         for col in ['ES', 'NES', 'P-value', 'Adjusted P-value', 'FWER p-val']:
             gsea_result[col] = pd.to_numeric(gsea_result[col], errors='coerce')
         gsea_result = gsea_result.sort_values('Adjusted P-value').reset_index(drop=True)
-        gsea_result['Gene_set'] = db
+        gsea_result['Gene_set'] = db if isinstance(db, str) else 'custom'
         gsea_result = gsea_result[gsea_result['Adjusted P-value'] <= self.padjust_cutoff].copy()
         gsea_result['Genes'] = gsea_result['Genes'].astype(str).str.split(';').apply(lambda x: [g for g in x if g])
         gsea_result['regulation'] = gsea_result['Genes'].apply(

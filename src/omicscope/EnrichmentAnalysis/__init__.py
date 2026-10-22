@@ -11,6 +11,9 @@ class Enrichmentscope():
     from .EnrichmentVisualization import gsea_heatmap
     from .EnrichmentVisualization import heatmap
     from .EnrichmentVisualization import number_deps
+    from .EnrichmentExtras import gsea_plot
+    from .EnrichmentExtras import term_foldchange
+    from .EnrichmentExtras import term_foldchange_table
 
     def __init__(self, OmicScope, Analysis, dbs,
                  padjust_cutoff=0.05, organism='Human', background=None, **gsea_options):
@@ -59,6 +62,7 @@ class Enrichmentscope():
         self.results = enrichment.results
         if Analysis == 'GSEA':
             self.ranking = enrichment.ranking   # the ranked list GSEA used, for running-score plots
+            self.curves = enrichment.curves
 
     def libraries(self):
         """Get Libraries from Enrichr
@@ -104,4 +108,7 @@ class Enrichmentscope():
                'number_deps',
                'enrichment_network',
                'enrichment_map',
-               'gsea_heatmap']
+               'gsea_heatmap',
+               'gsea_plot',
+               'term_foldchange',
+               'term_foldchange_table']
