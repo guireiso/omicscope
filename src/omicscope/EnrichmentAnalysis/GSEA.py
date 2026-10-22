@@ -14,27 +14,67 @@ also can produces ready-to-publish figures.
 @author: Reis-de-Oliveira G <guioliveirareis@gmail.com>
 """
 import copy
+import warnings
 
 import numpy as np
 import pandas as pd
 
+RANK_METRICS = ('signed_p', 'log2fc', 'pi_score')
+
+
+def rank_entities(quant_data, rank_by='signed_p', pvalue='pvalue'):
+    """Ranked list used by pre-ranked GSEA.
+
+    signed_p: sign(log2FC) * -log10(p). With a moderated t-test every protein shares the same degrees of
+        freedom, so this is the moderated t statistic on a monotone scale: precise and large changes go to
+        the extremes, noisy ones stay near the middle. Recommended.
+    log2fc: fold change only (the former OmicScope behaviour); ignores variability.
+    pi_score: log2FC * -log10(p) (Xiao et al. 2014).
+
+    Proteins without gene name or statistics are dropped and duplicated gene names keep the entry with the
+    largest absolute score, as GSEA needs one value per gene.
+    """
+    if rank_by not in RANK_METRICS:
+        raise ValueError(f'rank_by must be one of {RANK_METRICS}')
+    if pvalue not in quant_data.columns:
+        pvalue = 'pAdjusted' if 'pAdjusted' in quant_data.columns else None
+    df = quant_data[['gene_name', 'log2(fc)'] + ([pvalue] if pvalue else [])].copy()
+    df['gene_name'] = df['gene_name'].astype('string').str.strip()
+    df = df[df['gene_name'].notna() & (df['gene_name'] != '') & (df['gene_name'].str.lower() != 'nan')]
+    fc = pd.to_numeric(df['log2(fc)'], errors='coerce')
+    if rank_by == 'log2fc' or pvalue is None:
+        score = fc
+    else:
+        p = pd.to_numeric(df[pvalue], errors='coerce').clip(lower=1e-300, upper=1)
+        score = np.sign(fc) * -np.log10(p) if rank_by == 'signed_p' else fc * -np.log10(p)
+        # ties at p = 1 are broken by the fold change, so the order inside the middle of the list is still meaningful
+        score = score + fc * 1e-6
+    df['score'] = score
+    df = df[np.isfinite(df['score'])]
+    df = df.loc[df['score'].abs().groupby(df['gene_name']).idxmax()]
+    return df.set_index('gene_name')['score'].sort_values(ascending=False)
+
 
 class Enrichment:
     def __init__(self, OmicScope, dbs,
-                 organism='Human', padjust_cutoff=0.05, background=None):
+                 organism='Human', padjust_cutoff=0.05, background=None,
+                 rank_by='signed_p', min_size=10, max_size=500, permutation_num=1000, seed=123, threads=4):
 
         self.Analysis = 'GSEA'
         self.dbs = copy.copy(dbs)
         self.OmicScope = copy.copy(OmicScope)
         self.organism = str(organism).lower()   # gseapy only accepts lower-case organism names
         self.padjust_cutoff = copy.copy(padjust_cutoff)
-        dfs = []
-        for i in dbs:
-            try:
-                df = self.gsea(db=i)
-            except NotADirectoryError:
-                df = self.gsea(db=i)
-            dfs.append(df)
+        self.params = dict(min_size=min_size, max_size=max_size, permutation_num=permutation_num,
+                           seed=seed, threads=threads)
+        conditions = getattr(OmicScope, 'Conditions', None)
+        if conditions is not None and len(conditions) > 2:
+            warnings.warn('GSEA ranks proteins by a single comparison, but this dataset has more than two '
+                          'conditions: log2(fc) of each protein comes from its own post-hoc pair. Prefer a '
+                          'two-group OmicScope object (e.g. drop the other groups) for GSEA.')
+        self.ranking = rank_entities(OmicScope.quant_data, rank_by=rank_by)
+        self.rank_by = rank_by
+        dfs = [self.gsea(db=i) for i in dbs]
         results = pd.concat(dfs)
         self.results = results.sort_values('Adjusted P-value', ignore_index=True)
 
@@ -42,33 +82,37 @@ class Enrichment:
         """GSEA workflow according to gseapy
         """
         from gseapy import prerank
-        omics = copy.copy(self.OmicScope.quant_data)
-        omics = omics[['gene_name', "log2(fc)"]]
-        omics = omics.sort_values('log2(fc)',ascending=False).reset_index(drop=True)
-        foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
-        gsea_result = prerank(omics, gene_sets=db,
-                              no_plot=True, outdir=None,)
+        foldchange = dict(zip(self.OmicScope.quant_data['gene_name'].astype(str).str.upper(),
+                              pd.to_numeric(self.OmicScope.quant_data['log2(fc)'], errors='coerce')))
+        gsea_result = prerank(self.ranking, gene_sets=db, organism=self.organism,
+                              no_plot=True, outdir=None, **self.params)
         gsea_result = pd.DataFrame.from_dict(gsea_result.results).T
-        gsea_result = gsea_result.sort_values('fdr')
+        if gsea_result.empty:
+            return pd.DataFrame(columns=['Term', 'ES', 'NES', 'P-value', 'Adjusted P-value', 'Genes', 'Gene_set'])
         gsea_result = gsea_result.reset_index()
         gsea_result = gsea_result.rename(columns={
-                                'index':'Term',
-                                'es':'ES',
-                                'nes':'NES',
-                                'pval':'P-value',
-                                'fdr':'Adjusted P-value',
-                                'fwerp':'FWER p-val',
+                                'index': 'Term',
+                                'es': 'ES',
+                                'nes': 'NES',
+                                'pval': 'P-value',
+                                'fdr': 'Adjusted P-value',
+                                'fwerp': 'FWER p-val',
                                 'tag %': 'Overlap',
-                                'gene %':'Gene %',
-                                'lead_genes':'Genes',                        
+                                'gene %': 'Gene %',
+                                'lead_genes': 'Genes',
                                 })
-        gsea_result = gsea_result.reset_index()
+        for col in ['ES', 'NES', 'P-value', 'Adjusted P-value', 'FWER p-val']:
+            gsea_result[col] = pd.to_numeric(gsea_result[col], errors='coerce')
+        gsea_result = gsea_result.sort_values('Adjusted P-value').reset_index(drop=True)
         gsea_result['Gene_set'] = db
-        gsea_result = gsea_result[gsea_result['Adjusted P-value'] <= self.padjust_cutoff]
-        gsea_result['Genes'] = gsea_result['Genes'].str.split(';')
-        gsea_result['regulation'] = gsea_result['Genes'].apply(lambda x: [foldchange[i] for i in x if x != ['']])
-        gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i < 0]))
-        gsea_result['up-regulated'] = gsea_result['regulation'].apply(lambda x: len([i for i in x if i > 0]))
+        gsea_result = gsea_result[gsea_result['Adjusted P-value'] <= self.padjust_cutoff].copy()
+        gsea_result['Genes'] = gsea_result['Genes'].astype(str).str.split(';').apply(lambda x: [g for g in x if g])
+        gsea_result['regulation'] = gsea_result['Genes'].apply(
+            lambda x: [foldchange[g.upper()] for g in x if g.upper() in foldchange])
+        gsea_result['down-regulated'] = gsea_result['regulation'].apply(lambda x: sum(1 for i in x if i < 0))
+        gsea_result['up-regulated'] = gsea_result['regulation'].apply(lambda x: sum(1 for i in x if i > 0))
         gsea_result['N_Proteins'] = gsea_result['down-regulated'] + gsea_result['up-regulated']
-        gsea_result['-log10(pAdj)'] = gsea_result['Adjusted P-value'].apply(lambda x: -np.log10(x) if type(x) is float else 0)
+        # permutation FDR can be exactly 0: report it as below the resolution of the permutations
+        floor = 1 / (self.params['permutation_num'] + 1)
+        gsea_result['-log10(pAdj)'] = -np.log10(gsea_result['Adjusted P-value'].clip(lower=floor))
         return gsea_result
