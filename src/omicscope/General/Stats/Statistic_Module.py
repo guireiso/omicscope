@@ -35,13 +35,63 @@ def choose_variance_model(self, expression, ratio_cutoff=2.0, min_replicates=4):
     self._use_moderated = bool(self.moderated) and not self._use_welch
 
 
+def condition_last_sample_names(self):
+    """Make every biological sample name end with '.<Condition>'.
+
+    The static tests find the samples of each condition by that suffix. expression_function joins every
+    pdata column into the name in pdata order (e.g. 'BioRep_1.Ctrl-b1' when pdata has a Batch column),
+    so extra columns are moved before the dot: 'BioRep_1-b1.Ctrl'. pdata, expression, partial_expression
+    and excluded_values are renamed together."""
+    pdata = self.pdata
+    if all(str(s).endswith('.' + str(c)) for s, c in zip(pdata['Sample'], pdata['Condition'])):
+        return
+    extra = sorted(c for c in pdata.columns if c not in ('Sample', 'Condition', 'Biological', 'technical'))
+    new = pdata.apply(lambda r: 'BioRep_' + str(r['Biological'])
+                      + ''.join('-' + str(r[c]).replace('.', '_') for c in extra) + '.' + str(r['Condition']), axis=1)
+    names = dict(zip(pdata['Sample'], new))
+    self.pdata = pdata.assign(Sample=new)
+    self.expression = self.expression.rename(columns=names)
+    for attr in ('partial_expression', 'excluded_values'):
+        if getattr(self, attr, None) is not None:
+            setattr(self, attr, getattr(self, attr).rename(columns=names))
+
+
+def correct_batch(self, expression):
+    """Remove batch effects from the (log-scale) expression matrix before testing (batch_correction=True).
+
+    limma-style removeBatchEffect (Quality.remove_batch_effect): each entity is fitted as
+    y ~ condition + batch and the batch terms are subtracted. The tests then run on the corrected values
+    without counting the degrees of freedom spent on the batch terms, which slightly overstates them (p-values
+    a little optimistic with few samples per batch). Designs in which batch is confounded with condition
+    cannot be corrected and raise a ValueError. Missing values (0 or NaN) stay missing."""
+    import numpy as np
+
+    from ..Quality import remove_batch_effect
+    column = getattr(self, 'batch_column', 'Batch')
+    if column not in self.pdata.columns:
+        raise ValueError(f"batch_correction=True needs a '{column}' column in pdata with the batch of each sample.")
+    info = self.pdata.drop_duplicates('Sample').set_index('Sample').reindex(expression.columns)
+    missing = expression.isna() | (expression == 0) if not self.logTransform else expression.isna()
+    corrected = remove_batch_effect(expression.mask(missing), info['Condition'].to_numpy(), info[column].to_numpy())
+    if not self.logTransform:
+        corrected = corrected.mask(missing, expression)
+    n_batches = info[column].nunique()
+    self.Params['Params']['Stats_Batch_Correction'] = (
+        f"Batch effects ('{column}', {n_batches} batches) removed before testing by fitting each entity as "
+        "condition + batch and subtracting the batch terms (limma removeBatchEffect)")
+    return corrected
+
+
 def perform_static_stat(self):
-    """log2 transformation for expression
+    """log2 transformation for expression, optional batch correction (self.batch_correction, see
+    correct_batch: it slightly overstates the degrees of freedom of the tests, and confounded designs
+    cannot be corrected) and differential expression tests.
     """
     from copy import copy
 
     import numpy as np
     self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Static Workflow'
+    condition_last_sample_names(self)
     expression = copy(self.expression)
     log = copy(self.logTransform)
     rdata = copy(self.rdata)
@@ -52,6 +102,8 @@ def perform_static_stat(self):
         expression = expression.replace(0, np.nan)
         expression = np.log2(expression)
         self.Params['Params']['Stats_Workflow_2'] = 'OmicScope log2-transformed protein abundances'
+    if getattr(self, 'batch_correction', False):
+        expression = correct_batch(self, expression)
     choose_variance_model(self, expression)
     # Apply t-test if len(conditions) == 2
     if len(self.Conditions) == 2:

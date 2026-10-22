@@ -12,6 +12,7 @@ class Enrichmentscope():
     from .EnrichmentVisualization import heatmap
     from .EnrichmentVisualization import number_deps
     from .EnrichmentExtras import gsea_plot
+    from .ClusterEnrichment import collapse_terms
     from .EnrichmentExtras import term_foldchange
     from .EnrichmentExtras import term_foldchange_table
 
@@ -23,8 +24,9 @@ class Enrichmentscope():
                 OmicScope (Omicscope): Omicscope object
                 Analysis (str): Over-representation Analysis (ORA) or Gene-Set Enrichment Analysis (GSEA).
                 Defaults to 'ORA'.
-                dbs (List[str]): List of enrichment databases to perform the enrichment analysis.
-                Defaults to ['KEGG_2021_Human'].
+                dbs (List[str]): List of enrichment databases to perform the enrichment analysis:
+                Enrichr library names, gene-set dicts (term -> genes; Gene_set 'custom') or paths to .gmt
+                files (Gene_set = file name without extension). Defaults to ['KEGG_2021_Human'].
                 padjust_cutoff (float, optional): statistical cutoff. Defaults to 0.05.
                 organism (str, optional): Organism from which entities belong. Defaults to 'human'.
                 background (int, list, str, bool): Background genes. By default, all genes listed in the `gene_sets` input will be used 
@@ -49,6 +51,8 @@ class Enrichmentscope():
             from .GSEA import Enrichment
         else:
             raise ValueError('You must choose between ORA or GSEA workflow')
+        if isinstance(dbs, dict) or (isinstance(dbs, str) and dbs.lower().endswith('.gmt')):
+            dbs = [dbs]
         self.OmicScope = copy.copy(OmicScope)
         self.Analysis = Analysis
         self.dbs = copy.copy(dbs)
@@ -63,6 +67,7 @@ class Enrichmentscope():
         if Analysis == 'GSEA':
             self.ranking = enrichment.ranking   # the ranked list GSEA used, for running-score plots
             self.curves = enrichment.curves
+            self.rank_by = enrichment.rank_by
 
     def libraries(self):
         """Get Libraries from Enrichr
@@ -110,5 +115,6 @@ class Enrichmentscope():
                'enrichment_map',
                'gsea_heatmap',
                'gsea_plot',
+               'collapse_terms',
                'term_foldchange',
                'term_foldchange_table']

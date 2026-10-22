@@ -104,6 +104,50 @@ def ttest(X1, X2, equal_var=True, moderated=False):
     return t, p, diff
 
 
+def effect_sizes(X1, X2, equal_var=True, moderated=False, paired=False, level=0.95):
+    """Per-row effect of X1 vs X2 on the log scale.
+
+    Returns (difference of means, lower and upper bound of its `level` confidence interval, Hedges' g).
+    The interval uses the same standard error and degrees of freedom as the matching test (moderated,
+    Welch or paired), so it excludes 0 exactly when the nominal p-value is below 1 - level."""
+    with np.errstate(invalid='ignore', divide='ignore'):
+        if paired:
+            d = X1 - X2
+            n = np.sum(np.isfinite(d), axis=1)
+            diff = np.nanmean(d, axis=1)
+            sd = np.nanstd(d, axis=1, ddof=1)
+            se, df = sd / np.sqrt(n), n - 1
+            g = diff / sd * (1 - 3 / (4 * df - 1))
+        else:
+            n, mean, var = group_summary(np.hstack([X1, X2]), np.r_[np.zeros(X1.shape[1]), np.ones(X2.shape[1])], [0, 1])
+            diff = mean[:, 0] - mean[:, 1]
+            df_pool = n[:, 0] + n[:, 1] - 2
+            s2_pool = ((n[:, 0] - 1) * var[:, 0] + (n[:, 1] - 1) * var[:, 1]) / df_pool
+            if equal_var or moderated:
+                s2, df = s2_pool, df_pool
+                if moderated:
+                    s2, d0, _ = squeeze_var(s2, df)
+                    df = df + d0
+                se = np.sqrt(s2 * (1 / n[:, 0] + 1 / n[:, 1]))
+            else:
+                a, b = var[:, 0] / n[:, 0], var[:, 1] / n[:, 1]
+                se = np.sqrt(a + b)
+                df = (a + b) ** 2 / (a ** 2 / (n[:, 0] - 1) + b ** 2 / (n[:, 1] - 1))
+            g = diff / np.sqrt(s2_pool) * (1 - 3 / (4 * df_pool - 1))
+        half = stats.t.ppf(0.5 + level / 2, np.minimum(df, 1e6)) * se
+    return diff, diff - half, diff + half, g
+
+
+def eta_squared(X, labels, levels):
+    """Share of each row's variance explained by the groups (one-way ANOVA effect size)."""
+    n, mean, var = group_summary(X, labels, levels)
+    with np.errstate(invalid='ignore', divide='ignore'):
+        grand = np.nansum(n * mean, axis=1) / n.sum(axis=1)
+        between = np.nansum(n * (mean - grand[:, None]) ** 2, axis=1)
+        within = np.nansum((n - 1) * var, axis=1)
+        return between / (between + within)
+
+
 def anova(X, labels, levels, welch=False, moderated=False):
     """One-way ANOVA per row. Returns (F, p, residual df, residual variance (MSE))."""
     n, mean, var = group_summary(X, labels, levels)

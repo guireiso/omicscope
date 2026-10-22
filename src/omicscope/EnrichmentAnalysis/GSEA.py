@@ -83,13 +83,16 @@ class Enrichment:
         """GSEA workflow according to gseapy
         """
         from gseapy import prerank
+
+        from .ClusterEnrichment import gene_set_library
+        db, name = gene_set_library(db)   # .gmt files are read here; dicts are named 'custom'
         foldchange = dict(zip(self.OmicScope.quant_data['gene_name'].astype(str).str.upper(),
                               pd.to_numeric(self.OmicScope.quant_data['log2(fc)'], errors='coerce')))
         gsea_result = prerank(self.ranking, gene_sets=db, organism=self.organism,
                               no_plot=True, outdir=None, **self.params)
         # running enrichment score and hit positions of each term, for the classic GSEA plot
-        self.curves.update({(db if isinstance(db, str) else 'custom', k): {'hits': np.asarray(v['hits'], int),
-                                                                           'RES': np.asarray(v['RES'], np.float32)}
+        self.curves.update({(name, k): {'hits': np.asarray(v['hits'], int),
+                                        'RES': np.asarray(v['RES'], np.float32)}
                             for k, v in gsea_result.results.items()
                             if float(v['fdr']) <= self.padjust_cutoff})
         gsea_result = pd.DataFrame.from_dict(gsea_result.results).T
@@ -110,7 +113,7 @@ class Enrichment:
         for col in ['ES', 'NES', 'P-value', 'Adjusted P-value', 'FWER p-val']:
             gsea_result[col] = pd.to_numeric(gsea_result[col], errors='coerce')
         gsea_result = gsea_result.sort_values('Adjusted P-value').reset_index(drop=True)
-        gsea_result['Gene_set'] = db if isinstance(db, str) else 'custom'
+        gsea_result['Gene_set'] = name
         gsea_result = gsea_result[gsea_result['Adjusted P-value'] <= self.padjust_cutoff].copy()
         gsea_result['Genes'] = gsea_result['Genes'].astype(str).str.split(';').apply(lambda x: [g for g in x if g])
         # one value per gene (NaN if the symbol is not found), so Genes and regulation stay aligned

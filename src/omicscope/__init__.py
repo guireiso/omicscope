@@ -6,6 +6,8 @@ from .EnrichmentAnalysis import Enrichmentscope
 from .General.Omicscope import Omicscope
 from .General.Snapshot import Omicscope_Snapshot
 from .MultipleData.Nebula import nebula
+from .EnrichmentAnalysis.ClusterEnrichment import cluster_dotplot, read_gmt, write_gmt
+from .General.Quality import remove_batch_effect
 
 if __name__ != "__main__":
     print("OmicScope v " + __version__ + " For help: https://omicscope.readthedocs.io/en/latest/ or https://omicscope.ib.unicamp.br " +
@@ -31,6 +33,8 @@ def OmicScope(Table: str,
               fdr: str = 'fdr_tsbh',
               detection_layer: bool = True,
               min_detected: int = 2,
+              batch_correction: bool = False,
+              batch_column: str = 'Batch',
               ** kwargs) -> Omicscope:
     """OmicScope - Differential Proteomics
 
@@ -78,6 +82,10 @@ def OmicScope(Table: str,
             labelled in 'Regulation' and get a censored log2(fc) bound (column 'fc_censored'). Defaults to True.
         min_detected (int, optional): biological replicates in which an entity must be detected, in at
             least one condition, to enter the detection layer. Defaults to 2.
+        batch_correction (bool, optional): remove batch effects (pdata column `batch_column`) before testing,
+            with a linear model that keeps the condition effect. Confounded designs raise an error.
+            Defaults to False.
+        batch_column (str, optional): pdata column holding the batch of each sample. Defaults to 'Batch'.
 
     Returns:
         OmicScope: Return a OmicScope obj. The quantitation data is stored to obj.quant_data.
@@ -118,6 +126,8 @@ def OmicScope(Table: str,
             fdr=fdr,
             detection_layer=detection_layer,
             min_detected=min_detected,
+            batch_correction=batch_correction,
+            batch_column=batch_column,
             **kwargs)
 
     return omics

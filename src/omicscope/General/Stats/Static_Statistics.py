@@ -56,6 +56,15 @@ def ttest(self, params):
     quant_data['pvalue'] = result[1]
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     self.Params['Params']['Stats_Workflow_4'] = 'OmicScope replaceD p-value = NaN to 1.0'
+    # Effect size on the tested (log) scale: mean difference with its 95% CI and Hedges' g
+    X1 = quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)].to_numpy(float)
+    X2 = quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)].to_numpy(float)
+    diff, low, high, g = fast_stats.effect_sizes(
+        X1, X2, equal_var=not getattr(self, '_use_welch', False), moderated=getattr(self, '_use_moderated', False),
+        paired=ind_variables is False)
+    # added after the per-condition means: sample columns are found by suffix
+    effects = pd.DataFrame({'Mean difference': diff, 'CI95 low': low, 'CI95 high': high, "Hedges' g": g},
+                           index=quant_data.index)
     quant_data = quant_data.sort_values('pvalue')
 
     #  Correcting multiple hypothesis test
@@ -82,6 +91,7 @@ def ttest(self, params):
     quant_data['log2(fc)'] = np.log2(quant_data['fc'])
     #  -log10(pvalue)
     quant_data[f'-log10({pvalue})'] = -np.log10(quant_data[pvalue])
+    quant_data = quant_data.join(effects)
     quant_data = quant_data.reset_index()
     return quant_data
 
@@ -162,6 +172,8 @@ def anova(self, params):
     stat = pd.Series(stat)
     stat.index = quant_data.index
     quant_data['pvalue'] = stat
+    eta2 = pd.Series(fast_stats.eta_squared(quant_data[samples].to_numpy(float), labels, list(Conditions)),
+                     index=quant_data.index, name='Eta squared')   # share of variance explained by the conditions
     quant_data['pvalue'] = quant_data['pvalue'].replace(np.nan, 1)
     self.Params['Params']['Stats_Workflow_4'] = 'OmicScope replaceD p-value = NaN to 1.0'
     quant_data = quant_data.sort_values('pvalue')
@@ -243,5 +255,6 @@ def anova(self, params):
         quant_data = quant_data.iloc[:, ~
                                     quant_data.columns.isin(['Condition_All'])]
         
+    quant_data = quant_data.join(eta2)
     quant_data = quant_data.reset_index()
     return (quant_data)

@@ -33,13 +33,34 @@ class Omicscope(Input):
     from .Exploration import missing_values
     from .Exploration import protein_embedding
     from .Exploration import protein_map
+    from .Quality import sample_outliers
+    from .Quality import outlier_plot
+    from .Quality import batch_effect
+    from .Quality import batch_plot
+    from .Effects import effect_table
+    from .Effects import effect_plot
+    from .Multivariate import plsda
+    from .Multivariate import plsda_plot
+    from .Multivariate import roc_table
+    from .Multivariate import biomarker_panel
+    from .Multivariate import roc_plot
+    from .Modules import coexpression_modules
+    from .Modules import module_trait_plot
+    from .Modules import module_eigengene_plot
+    from .Power import power_analysis
+    from .Power import power_plot
+    from .Power import protein_variances
+    from .Report import methods_text
+    from .Report import reproducible_script
+    from ..EnrichmentAnalysis.ClusterEnrichment import cluster_enrichment
 
     def __init__(self, Table, Method, ControlGroup, ExperimentalDesign='static',
                  pvalue='pAdjusted', PValue_cutoff=0.05, 
                  normalization_method = None, imputation_method=None,
                  FoldChange_cutoff=0, logTransform=True, ExcludeContaminants=True,
                  degrees_of_freedom=2, independent_ttest=True, welch='auto', moderated=True,
-                 fdr='fdr_tsbh', detection_layer=True, min_detected=2, **kwargs):
+                 fdr='fdr_tsbh', detection_layer=True, min_detected=2, batch_correction=False,
+                 batch_column='Batch', **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -79,6 +100,8 @@ class Omicscope(Input):
         """
         import pandas as pd
         self.Params = {'Params': {}}
+        self.Method = Method
+        self.batch_correction, self.batch_column = batch_correction, batch_column
         super().__init__(Table, Method=Method, **kwargs)
         self.PValue_cutoff = PValue_cutoff
         self.FoldChange_cutoff = FoldChange_cutoff
@@ -216,7 +239,8 @@ class Omicscope(Input):
             rdata.append(self.rdata[i])
         expression = expression.set_index(rdata).T
         pdata_columns = list(self.pdata.columns)
-        pdata_columns = list(set(pdata_columns) - set(['Sample', 'Samples']))
+        # pdata order (not a set): sample names must not depend on hash randomisation
+        pdata_columns = [c for c in pdata_columns if c not in ('Sample', 'Samples')]
         technical = copy(pdata_original)
         technical = technical.groupby(pdata_columns).agg(','.join).reset_index()
         technical.columns = pdata_columns + ['technical']
@@ -336,4 +360,24 @@ class Omicscope(Input):
         'cv_table',
         'protein_map',
         'protein_embedding',
+        'sample_outliers',
+        'outlier_plot',
+        'batch_effect',
+        'batch_plot',
+        'effect_table',
+        'effect_plot',
+        'plsda',
+        'plsda_plot',
+        'roc_table',
+        'biomarker_panel',
+        'roc_plot',
+        'coexpression_modules',
+        'module_trait_plot',
+        'module_eigengene_plot',
+        'power_analysis',
+        'power_plot',
+        'protein_variances',
+        'methods_text',
+        'reproducible_script',
+        'cluster_enrichment',
     ]
