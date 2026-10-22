@@ -43,7 +43,7 @@ class Enrichment:
         self.OmicScope = copy.copy(OmicScope)
         self.padjust_cutoff = padjust_cutoff,
         self.dbs = copy.copy(dbs)
-        self.organism = copy.copy(organism)
+        self.organism = str(organism).lower()   # gseapy only accepts lower-case organism names
         self.background = background
         # Perform Over Representation Analysis
         try:

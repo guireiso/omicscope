@@ -26,7 +26,7 @@ class Enrichment:
         self.Analysis = 'GSEA'
         self.dbs = copy.copy(dbs)
         self.OmicScope = copy.copy(OmicScope)
-        self.organism = copy.copy(organism)
+        self.organism = str(organism).lower()   # gseapy only accepts lower-case organism names
         self.padjust_cutoff = copy.copy(padjust_cutoff)
         dfs = []
         for i in dbs:
