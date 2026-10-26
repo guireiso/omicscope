@@ -109,3 +109,20 @@ def test_timecourse_trait_and_figures(tmp_path):
     Modules.module_eigengene_plot(res, modules=out)
     assert (tmp_path / 'module_trait_plot.png').exists()
     plt.close('all')
+
+
+def test_module_network_stays_inside_the_module_and_writes_graphml(planted, tmp_path):
+    import matplotlib.pyplot as plt
+    import networkx as nx
+    res, truth, out = planted
+    mods = out['modules']
+    module = int(mods.loc[mods['module'] > 0, 'module'].mode()[0])
+    G = Modules.module_network(res, module, modules=out, top=60, edges_per_node=3)
+    members = set(mods.loc[mods['module'] == module, 'Accession'])
+    assert set(G.nodes) <= members and 3 <= G.number_of_nodes() <= 60
+    assert all(0 <= d['weight'] <= 1 for _, _, d in G.edges(data=True))
+    hubs = [v for v in G if G.nodes[v]['hub']]
+    assert hubs and min(G.nodes[v]['kME'] for v in hubs) >= max(G.nodes[v]['kME'] for v in G if not G.nodes[v]['hub'])
+    Modules.module_network_plot(res, module, modules=out, top=60, save=str(tmp_path) + '/')
+    plt.close('all')
+    assert nx.read_graphml(tmp_path / f'module_{module}_network.graphml').number_of_nodes() == G.number_of_nodes()

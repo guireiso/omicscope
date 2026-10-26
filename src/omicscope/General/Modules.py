@@ -5,6 +5,8 @@
   eigengenes with the experimental conditions (and TimeCourse, when present).
 - module_trait_plot: heatmap of module-trait correlations.
 - module_eigengene_plot: eigengene of each module in each sample, coloured by condition.
+- module_network / module_network_plot: co-expression network of one module (strongest topological
+  overlaps between its most connected proteins), with hub proteins highlighted.
 
 Workflow (Langfelder & Horvath, BMC Bioinformatics 2008):
 
@@ -283,7 +285,8 @@ def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge
             rows.append({'module': m, 'trait': trait, 'r': r, 'pvalue': p})
     module_trait = pd.DataFrame(rows, columns=['module', 'trait', 'r', 'pvalue'])
     return {'modules': modules, 'eigengenes': eigengenes, 'module_trait': module_trait, 'traits': traits,
-            'power': power, 'power_table': power_table, 'null_threshold': threshold}
+            'power': power, 'power_table': power_table, 'null_threshold': threshold,
+            'settings': {'pvalue': pvalue, 'max_proteins': max_proteins}}
 
 
 def module_trait_plot(self, modules=None, pvalue=1.0, power=None, min_module_size=20, merge_cut=0.25,
@@ -375,3 +378,90 @@ def module_eigengene_plot(self, modules=None, pvalue=1.0, power=None, min_module
         plt.savefig(save + 'module_eigengene_plot.' + ('svg' if vector else 'png'), dpi=dpi, bbox_inches='tight')
     plt.show()
     return eg
+
+
+def module_network(self, module, modules=None, top=150, edges_per_node=3, **module_options):
+    """Co-expression network of one module.
+
+    The proteins of the module with the highest kME (at most `top`) are linked by their topological overlap
+    (computed within the module with the module's soft-thresholding power); each protein keeps its
+    `edges_per_node` strongest links, which keeps the hubs and the structure of the module readable.
+
+    Args:
+        module (int): module number (as in coexpression_modules()['modules']['module']).
+        modules (dict, optional): result of coexpression_modules (computed with module_options if not given).
+        top (int, optional): most connected proteins kept. Defaults to 150.
+        edges_per_node (int, optional): strongest links kept per protein. Defaults to 3.
+
+    Returns:
+        networkx.Graph: nodes keyed by Accession with gene_name, kME, log2FC, hub (top 10% by kME);
+        edges with weight (topological overlap).
+    """
+    import networkx as nx
+    res = coexpression_modules(self, **module_options) if modules is None else modules
+    members = res['modules']
+    members = members[members['module'] == module].sort_values('kME', ascending=False).head(top)
+    if len(members) < 3:
+        raise ValueError(f'Module {module} has fewer than three proteins.')
+    settings = res.get('settings', {'pvalue': 1.0, 'max_proteins': 3000})
+    logm, _ = _expression_matrix(self, settings['pvalue'], settings['max_proteins'])
+    x = logm.loc[members['Accession']].to_numpy(float)
+    z = (x - x.mean(axis=1, keepdims=True)) / x.std(axis=1, keepdims=True)
+    base = np.clip((1 + (z @ z.T) / z.shape[1]) / 2, 0, 1)
+    tom = 1 - _tom_dissimilarity(base ** res['power'])
+    np.fill_diagonal(tom, 0)
+    fc = self.quant_data.drop_duplicates('Accession').set_index('Accession')['log2(fc)']
+    hub_cut = members['kME'].quantile(0.9)
+    G = nx.Graph()
+    for r in members.itertuples(index=False):
+        G.add_node(r.Accession, gene_name=str(r.gene_name), kME=float(r.kME),
+                   log2FC=float(fc.get(r.Accession, np.nan)), hub=bool(r.kME >= hub_cut))
+    acc = list(members['Accession'])
+    for i in range(len(acc)):
+        for j in np.argsort(tom[i])[::-1][:edges_per_node]:
+            G.add_edge(acc[i], acc[j], weight=float(tom[i, j]))
+    return G
+
+
+def module_network_plot(self, module, modules=None, top=150, edges_per_node=3, palette='RdBu_r', save=None,
+                        dpi=300, vector=True, **module_options):
+    """Co-expression network of one module (see module_network).
+
+    Node size is the module membership (kME), colour the log2 fold change, and hub proteins (top 10% kME) are
+    labelled.
+
+    Args:
+        module (int): module number.
+        modules (dict, optional): result of coexpression_modules.
+        top (int, optional): most connected proteins kept. Defaults to 150.
+        edges_per_node (int, optional): strongest links kept per protein. Defaults to 3.
+        palette (str, optional): diverging palette for fold change. Defaults to 'RdBu_r'.
+        save (str, optional): Path to save figure (also writes a GraphML for Cytoscape/Gephi). Defaults to None.
+        dpi (int, optional): figure resolution. Defaults to 300.
+        vector (bool, optional): Save figure as vector (.svg). Defaults to True.
+
+    Returns:
+        networkx.Graph: the network drawn.
+    """
+    import networkx as nx
+    G = module_network(self, module, modules=modules, top=top, edges_per_node=edges_per_node, **module_options)
+    pos = nx.spring_layout(G, weight='weight', seed=0)
+    fc = np.array([G.nodes[v]['log2FC'] for v in G])
+    lim = float(np.nanpercentile(np.abs(fc), 98)) if np.isfinite(fc).any() else 1
+    kme = np.array([G.nodes[v]['kME'] for v in G])
+    fig, ax = plt.subplots(figsize=(8, 7), dpi=dpi)
+    w = np.array([d['weight'] for _, _, d in G.edges(data=True)])
+    nx.draw_networkx_edges(G, pos, ax=ax, width=0.5 + 2.5 * w / max(w.max(), 1e-9), edge_color='#9aa3ad', alpha=0.6)
+    nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_size=30 + 300 * (kme - kme.min()) / max(np.ptp(kme), 1e-9),
+                                   node_color=np.nan_to_num(fc), cmap=palette, vmin=-(lim or 1), vmax=lim or 1,
+                                   edgecolors='#333', linewidths=0.4)
+    nx.draw_networkx_labels(G, pos, {v: G.nodes[v]['gene_name'] for v in G if G.nodes[v]['hub']}, ax=ax, font_size=9)
+    fig.colorbar(nodes, ax=ax, shrink=0.6, label='log2(fc)')
+    ax.set_title(f'Module {module}: {G.number_of_nodes()} proteins (labels: hubs)')
+    ax.axis('off')
+    if save is not None:
+        plt.savefig(save + f'module_{module}_network.' + ('svg' if vector else 'png'), dpi=dpi, bbox_inches='tight')
+        from .GraphExport import write_graphml
+        write_graphml(G, save + f'module_{module}_network.graphml', pos)
+    plt.show()
+    return G

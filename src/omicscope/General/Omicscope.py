@@ -34,6 +34,8 @@ class Omicscope(Input):
     from .Exploration import missing_values
     from .Exploration import protein_embedding
     from .Exploration import protein_map
+    from .Exploration import protein_profiles
+    from .Exploration import cluster_profile_plot
     from .Quality import sample_outliers
     from .Quality import outlier_plot
     from .Quality import batch_effect
@@ -48,6 +50,8 @@ class Omicscope(Input):
     from .Modules import coexpression_modules
     from .Modules import module_trait_plot
     from .Modules import module_eigengene_plot
+    from .Modules import module_network
+    from .Modules import module_network_plot
     from .Power import power_analysis
     from .Power import power_plot
     from .Power import protein_variances
@@ -376,6 +380,10 @@ class Omicscope(Input):
         'coexpression_modules',
         'module_trait_plot',
         'module_eigengene_plot',
+        'module_network',
+        'module_network_plot',
+        'protein_profiles',
+        'cluster_profile_plot',
         'power_analysis',
         'power_plot',
         'protein_variances',

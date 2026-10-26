@@ -6,6 +6,8 @@
   quantitative precision.
 - protein_map: t-SNE (or PCA) map of protein abundance profiles; proteins that change together across
   samples end up close together, coloured by k-means trend cluster.
+- cluster_profile_plot: the abundance profile (z-score per sample) of the proteins of each map cluster, or of
+  any selection of proteins: who the proteins of a group are and how they behave.
 
 Each figure has a matching function that returns the numbers behind it (missing_summary, cv_table,
 protein_embedding).
@@ -209,7 +211,8 @@ def protein_map(self, *Proteins, pvalue=0.05, method='tsne', perplexity=30, k_cl
     for _, r in emb[emb['gene_name'].isin(Proteins)].iterrows():
         ax.annotate(r['gene_name'], (r['x'], r['y']), xytext=(4, 4), textcoords='offset points', fontsize=9)
     name = 't-SNE' if method == 'tsne' else 'PC'
-    ax.set(xlabel=f'{name} 1', ylabel=f'{name} 2', xticks=[], yticks=[],
+    ax.set(xlabel=f'{name} 1 (only the grouping is meaningful)' if method == 'tsne' else 'PC 1', ylabel=f'{name} 2',
+           xticks=[], yticks=[],
            title=f'Protein co-expression map ({len(emb)} proteins, {self.pvalue} <= {pvalue})')
     ax.legend(title='cluster', frameon=False, bbox_to_anchor=(1, 1), loc='upper left')
     sns.despine()
@@ -217,3 +220,100 @@ def protein_map(self, *Proteins, pvalue=0.05, method='tsne', perplexity=30, k_cl
         plt.savefig(save + 'protein_map.' + ('svg' if vector else 'png'), dpi=dpi, bbox_inches='tight')
     plt.show()
     return emb
+
+
+def _sample_order(self, samples):
+    """Samples ordered by condition (control first), then time point, then name."""
+    pdata = self.pdata.drop_duplicates('Sample').set_index('Sample').reindex(samples)
+    rank = {c: i for i, c in enumerate(self.Conditions)}
+    keys = pd.DataFrame({'Sample': samples, 'c': pdata['Condition'].map(rank).to_numpy()})
+    if 'TimeCourse' in pdata.columns:
+        keys['t'] = pd.to_numeric(pdata['TimeCourse'], errors='coerce').to_numpy()
+    return list(keys.sort_values([k for k in ('c', 't', 'Sample') if k in keys.columns])['Sample'])
+
+
+def protein_profiles(self, *Proteins, accessions=None, pvalue=1.0):
+    """Abundance profiles (log2, z-scored per protein across samples) in long format.
+
+    Args:
+        *Proteins (str): gene names to include.
+        accessions (list, optional): accessions to include (e.g. the proteins of a protein-map cluster).
+        pvalue (float, optional): when no proteins are given, keep proteins with self.pvalue <= pvalue.
+
+    Returns:
+        pd.DataFrame: [Accession, gene_name, Sample, Condition, (TimeCourse), position, z]; `position` is the
+        order of the sample on the x axis (conditions, then time points).
+    """
+    from scipy.stats import zscore
+    qd = self.quant_data
+    if accessions is not None:
+        sel = qd[qd['Accession'].isin(list(accessions))]
+    elif Proteins:
+        sel = qd[qd['gene_name'].isin(Proteins)]
+    else:
+        sel = qd[qd[self.pvalue] <= pvalue]
+    mat, genes = _sample_matrix(self, sel)
+    logm = _log_matrix(self, mat).apply(lambda r: r.fillna(r.min()), axis=1)
+    logm = logm[logm.std(axis=1) > 0].dropna()
+    order = _sample_order(self, list(logm.columns))
+    z = pd.DataFrame(zscore(logm.to_numpy(float), axis=1), index=logm.index, columns=logm.columns)[order]
+    long = z.rename_axis('Accession').reset_index().melt(id_vars='Accession', var_name='Sample', value_name='z')
+    info = self.pdata.drop_duplicates('Sample').set_index('Sample')
+    long['gene_name'] = long['Accession'].map(genes)
+    long['Condition'] = long['Sample'].map(info['Condition'])
+    if 'TimeCourse' in info.columns:
+        long['TimeCourse'] = long['Sample'].map(info['TimeCourse'])
+    long['position'] = long['Sample'].map({s: i for i, s in enumerate(order)})
+    return long
+
+
+def cluster_profile_plot(self, embedding=None, pvalue=0.05, method='tsne', k_cluster=None, palette='Dark2',
+                         save=None, dpi=300, vector=True):
+    """Abundance profiles of the proteins in each protein-map cluster.
+
+    One panel per cluster: every protein as a thin line (z-score per sample, samples grouped by condition and
+    time) and the cluster mean as a thick line. It shows what the proteins of each island of the protein map
+    have in common.
+
+    Args:
+        embedding (pd.DataFrame, optional): result of protein_embedding (computed with the arguments below if
+            not given). Any subset of its rows (e.g. a selection of points) can be passed.
+        pvalue, method, k_cluster: passed to protein_embedding when `embedding` is None.
+        palette (str, optional): cluster colours. Defaults to 'Dark2'.
+        save (str, optional): Path to save figure. Defaults to None.
+        dpi (int, optional): figure resolution. Defaults to 300.
+        vector (bool, optional): Save figure as vector (.svg). Defaults to True.
+
+    Returns:
+        pd.DataFrame: the profiles drawn (protein_profiles plus the cluster of each protein).
+    """
+    emb = protein_embedding(self, pvalue=pvalue, method=method, k_cluster=k_cluster) if embedding is None else embedding
+    prof = protein_profiles(self, accessions=emb['Accession'])
+    prof['cluster'] = prof['Accession'].map(emb.set_index('Accession')['cluster'])
+    clusters = sorted(prof['cluster'].dropna().unique())
+    colors = dict(zip(clusters, sns.color_palette(palette, max(len(clusters), 3)).as_hex()))
+    order = prof.drop_duplicates('Sample').sort_values('position')
+    ncol = min(3, len(clusters))
+    nrow = int(np.ceil(len(clusters) / ncol))
+    fig, axes = plt.subplots(nrow, ncol, figsize=(5.2 * ncol, 3.4 * nrow), dpi=dpi, sharey=True, squeeze=False)
+    bounds = order.groupby('Condition', sort=False)['position'].agg(['min', 'max'])
+    for ax, c in zip(axes.flat, clusters):
+        sub = prof[prof['cluster'] == c]
+        wide = sub.pivot(index='Accession', columns='position', values='z')
+        ax.plot(wide.columns, wide.T.to_numpy(), color=colors[c], alpha=max(0.03, min(0.3, 8 / len(wide))), lw=0.8)
+        ax.plot(wide.columns, wide.mean().to_numpy(), color='#111', lw=2.4)
+        for k, (cond, b) in enumerate(bounds.iterrows()):
+            if k:
+                ax.axvline(b['min'] - 0.5, color='#999', lw=0.8, ls='--')
+            ax.text((b['min'] + b['max']) / 2, 1.02, cond, transform=ax.get_xaxis_transform(), ha='center', fontsize=9)
+        ax.axhline(0, color='#bbb', lw=0.6)
+        ax.set(xticks=[], ylabel='z-score')
+        ax.set_title(f'Cluster {c} ({len(wide)} proteins)', pad=22)
+        sns.despine(ax=ax)
+    for ax in axes.flat[len(clusters):]:
+        ax.axis('off')
+    plt.tight_layout()
+    if save is not None:
+        plt.savefig(save + 'cluster_profile_plot.' + ('svg' if vector else 'png'), dpi=dpi, bbox_inches='tight')
+    plt.show()
+    return prof

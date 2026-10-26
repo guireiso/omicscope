@@ -129,3 +129,21 @@ def test_one_extreme_study_cannot_carry_the_meta_analysis():
     assert (meta.loc[[f'P{i}' for i in range(10)], 'FDR'] > 0.05).all()
     uncapped = Meta.meta_analysis(neb, z_cap=None).set_index('gene_name')
     assert (uncapped.loc[[f'P{i}' for i in range(10)], 'FDR'] < 0.05).all()   # what the cap prevents
+
+
+def test_cluster_profiles_follow_the_planted_patterns(four_groups):
+    res, truth = four_groups
+    emb = res.protein_embedding(pvalue=0.05)
+    prof = res.protein_profiles(accessions=emb['Accession'])
+    n_samples = prof['Sample'].nunique()
+    assert len(prof) == len(emb) * n_samples
+    assert prof.groupby('Accession')['z'].mean().abs().max() < 1e-9          # z-scored per protein
+    first = prof.drop_duplicates('Sample').sort_values('position')['Condition']
+    assert list(dict.fromkeys(first)) == list(res.Conditions)                   # samples grouped by condition
+    # the mean profile of proteins planted up in D is highest in the D samples
+    up_d = truth.index[truth['simulated_shift_D'] > 0.8].intersection(emb['Accession'])
+    mean = prof[prof['Accession'].isin(up_d)].groupby('Condition')['z'].mean()
+    assert mean.idxmax() == 'D'
+    out = res.cluster_profile_plot(embedding=emb)
+    assert out['cluster'].notna().all()
+    plt.close('all')
