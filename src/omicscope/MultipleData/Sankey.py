@@ -3,7 +3,8 @@
 - sankey_table: the flows behind the diagram. A study flows into a term when the term is enriched in that
   study (width: its regulated proteins in the term); a term flows into each of its regulated proteins
   (width: number of studies in which the protein is regulated and the term enriched).
-- sankey_plot: the diagram, proteins coloured by their mean log2 fold change over those studies.
+- sankey_plot: the diagram; next to each protein, one cell per study with its log2 fold change in that study
+  (grey: not regulated), so proteins shared by several studies show whether they change the same way.
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -98,23 +99,41 @@ def sankey_plot(self, *Terms, top=40, palette='RdBu_r', vmin=-1, vmax=1, save=No
         b[4] += w * scale
     for (t, g), w in term_gene.items():
         a, b = pos[('T', t)], pos[('P', g)]
-        _ribbon(ax, a[0] + 0.03, a[3], b[0], b[4], w * scale, w * scale, cmap(norm(gene_fc[g])), 0.45)
+        _ribbon(ax, a[0] + 0.03, a[3], b[0], b[4], w * scale, w * scale, '#9fb0c2', 0.45)
         a[3] += w * scale
         b[4] += w * scale
+    # log2(fc) of each protein in every study (NaN where it is not regulated)
+    cutoff = getattr(self, 'pvalue_cutoff', 0.05)
+    per_study = {s: df[df[self.pvalue] <= cutoff].groupby('gene_name')['log2(fc)'].mean()
+                 for s, df in zip(self.groups, self.original) if s in studies}
+    cw = 0.045
     for (k, n), (x, y, h, _, _) in pos.items():
-        color = colors.get(n) if k == 'S' else '#34495e' if k == 'T' else cmap(norm(gene_fc[n]))
+        color = colors.get(n) if k == 'S' else '#34495e' if k == 'T' else '#8a96a3'
         ax.add_patch(Rectangle((x, y), 0.03, h, fc=color, ec='none'))
+        shift = 0.045
+        if k == 'P':
+            cell_h = min(max(h, 0.008), 0.02)
+            for i, st in enumerate(studies):
+                v = per_study[st].get(n, np.nan)
+                ax.add_patch(Rectangle((x + 0.045 + i * cw, y + h / 2 - cell_h / 2), cw * 0.85, cell_h,
+                                       fc=cmap(norm(v)) if np.isfinite(v) else '#eceff2', ec='#d6dbe0', lw=0.3))
+            shift = 0.06 + cw * len(studies)
         if k == 'S':
             ax.text(x - 0.02, y + h / 2, n, ha='right', va='center', fontsize=11)
         else:
-            ax.text(x + 0.045, y + h / 2, n, ha='left', va='center', fontsize=11 if k == 'T' else 7,
+            ax.text(x + shift, y + h / 2, n, ha='left', va='center', fontsize=11 if k == 'T' else 7,
                     fontweight='bold' if k == 'T' else 'normal', zorder=5,
                     bbox=dict(fc='white', ec='none', alpha=0.85, pad=1.5) if k == 'T' else None)
-    for x, label in [(0.015, 'Studies'), (1.015, 'Enriched terms'), (2.015, 'Proteins')]:
-        ax.text(x, 0.985, label, ha='center', fontsize=11, color='#5b6370', fontweight='bold')
+    for x, label in [(0.015, 'Studies'), (1.015, 'Enriched terms')]:
+        ax.text(x, 0.945, label, ha='center', va='bottom', fontsize=11, color='#5b6370', fontweight='bold')
+    for i, st in enumerate(studies):          # which study each cell column is
+        ax.text(2.045 + i * cw + cw * 0.42, 0.945, st, rotation=90, ha='center', va='bottom', fontsize=8,
+                color=colors[st])
+    ax.text(2.1 + cw * len(studies), 0.945, 'Proteins', ha='left', va='bottom', fontsize=11, color='#5b6370',
+            fontweight='bold')
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     fig.colorbar(sm, ax=ax, shrink=0.3, label='protein log2(fc)', pad=0.12)
-    ax.set(xlim=(-0.5, 2.9), ylim=(0, 1))
+    ax.set(xlim=(-0.5, 2.9), ylim=(0, 1.08))
     ax.axis('off')
     ax.set_title('Studies, enriched terms and their proteins', loc='left')
     if save is not None:
