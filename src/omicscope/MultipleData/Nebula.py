@@ -20,6 +20,8 @@ class nebula:
     from .MultipleVisualization import whole_network
     from .Meta import meta_analysis
     from .Meta import meta_plot
+    from .Sankey import sankey_plot
+    from .Sankey import sankey_table
 
     def __init__(self, folder, palette='Dark2', pvalue_cutoff=0.05):
         self.original_path = os.getcwd()
@@ -138,4 +140,6 @@ class nebula:
         'protein_overlap',
         'meta_analysis',
         'meta_plot',
+        'sankey_plot',
+        'sankey_table',
     ]
