@@ -13,6 +13,7 @@ Additionally, colors and color palettes follows the matplotlib and seaborn libra
 """
 
 import copy
+import io
 import itertools
 import random
 
@@ -1295,7 +1296,7 @@ def PPInteractions(self, *Proteins,
 
     }
     response = requests.post(request_url, data=params)
-    string = pd.read_json(response.text)
+    string = pd.read_json(io.StringIO(response.text))
     # Filter string results based on score
     string = string[string['score'] >= score_threshold]
     if len(conds)==2:
@@ -1380,7 +1381,9 @@ def PPInteractions(self, *Proteins,
     if labels is True:
         nx.draw_networkx_labels(G, pos, font_size=6)
     if save is not None:
-        nx.write_graphml(G, save + 'PPinteraction.graphml', named_key_ids=True)
+        from .GraphExport import write_graphml
+        nx.set_node_attributes(G, carac['regulation'].dropna().to_dict(), name='log2FC')
+        write_graphml(G, save + 'PPinteraction.graphml', pos=pos)
         if vector is True:
             plt.savefig(save + 'PPinteractions.svg', bbox_inches='tight')
         else:

@@ -1,27 +1,33 @@
 """ Protein co-expression modules (a light WGCNA).
 
-coexpression_modules: groups proteins whose abundances rise and fall together across samples into
-    modules, summarises each module by its eigengene (first principal component) and correlates the
-    eigengenes with the experimental conditions (and TimeCourse, when present).
-module_trait_plot: heatmap of module-trait correlations.
-module_eigengene_plot: eigengene of each module in each sample, coloured by condition.
+- coexpression_modules: groups proteins whose abundances rise and fall together across samples into
+  modules, summarises each module by its eigengene (first principal component) and correlates the
+  eigengenes with the experimental conditions (and TimeCourse, when present).
+- module_trait_plot: heatmap of module-trait correlations.
+- module_eigengene_plot: eigengene of each module in each sample, coloured by condition.
 
 Workflow (Langfelder & Horvath, BMC Bioinformatics 2008):
-    1. log2 abundances of the most variable proteins; missing values are filled with the lowest value
-       of the protein (missing = below the detection limit).
-    2. Signed adjacency a_ij = ((1 + r_ij) / 2) ** power. Signed networks keep positively and negatively
-       correlated proteins apart: a protein going up and one going down with the same factor belong to
-       different biological programs, and in an unsigned network they would be lumped together.
-    3. power: the smallest soft threshold whose scale-free fit (signed R^2 of log10 p(k) on log10 k)
-       reaches 0.8, or the best-fitting power when none does.
-    4. Topological overlap (TOM), which also rewards shared neighbours, and average-linkage clustering
-       of 1 - TOM.
-    5. Tree cut, top-down from the root: a branch is split in two when both halves have at least
-       min_module_size proteins and their eigengenes are not similar (r < 1 - merge_cut); smaller side
-       branches are set aside; a branch that cannot be split this way is a module.
-    6. Modules whose eigengenes correlate above 1 - merge_cut are merged, and every protein is assigned
-       to the module it correlates best with (kME), provided kME >= 0.5 and is significant (p < 0.05);
-       the others, and modules left with fewer than min_module_size proteins, go to module 0 (grey).
+
+1. log2 abundances of the most variable proteins; missing values are filled with the lowest value of
+   the protein (missing = below the detection limit).
+2. Signed adjacency a_ij = ((1 + r_ij) / 2) ** power. Signed networks keep positively and negatively
+   correlated proteins apart: a protein going up and one going down with the same factor belong to
+   different biological programs, and in an unsigned network they would be lumped together.
+3. power: the smallest soft threshold whose scale-free fit (signed R^2 of log10 p(k) on log10 k)
+   reaches 0.8, or the best-fitting power when none does.
+4. Topological overlap (TOM), which also rewards shared neighbours, and average-linkage clustering of
+   1 - TOM.
+5. Tree cut, top-down from the root: a branch is split in two when both halves have at least
+   min_module_size proteins and their eigengenes are not similar (r < 1 - merge_cut); smaller side
+   branches are set aside; a branch that cannot be split this way is a module.
+6. Modules whose eigengenes correlate above 1 - merge_cut are merged, and every protein is assigned to
+   the module it correlates best with (kME), provided kME >= 0.5 and is significant (p < 0.05); the
+   others, and modules left with fewer than min_module_size proteins, go to module 0 (grey).
+7. Clustering always finds some structure, even in noise. The same steps are run on data whose samples
+   are shuffled independently for each protein (null_rounds times); a module is kept only if its
+   eigengene explains more variance than every module found in the shuffled data. Likewise a protein
+   joins a module only if its kME beats what 95% of shuffled proteins reach against the best of all
+   modules. Without this, noise proteins form many small modules.
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -129,11 +135,12 @@ def _merge_modules(z, labels, merge_cut):
         labels[labels == mods[j]] = mods[i]
 
 
-def _assign_by_kme(z, labels, min_module_size):
+def _assign_by_kme(z, labels, min_module_size, threshold=None):
     """Assign each protein to the module it correlates best with; weak or non-significant kME goes to grey."""
     n = z.shape[1]
-    t = stats.t.ppf(0.975, n - 2)
-    threshold = max(0.5, t / np.sqrt(n - 2 + t ** 2))      # kME significant at p < 0.05
+    if threshold is None:
+        t = stats.t.ppf(0.975, n - 2)
+        threshold = max(0.5, t / np.sqrt(n - 2 + t ** 2))      # kME significant at p < 0.05
     for _ in range(3):
         mods = np.array([m for m in np.unique(labels) if m > 0])
         if len(mods) == 0:
@@ -159,7 +166,43 @@ def _assign_by_kme(z, labels, min_module_size):
     return labels, own
 
 
-def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge_cut=0.25, max_proteins=3000):
+def _variance_explained(z, labels):
+    """Share of the variance of each module's (z-scored) proteins captured by its eigengene."""
+    out = {}
+    for m in np.unique(labels):
+        if m > 0:
+            sv = np.linalg.svd(z[labels == m], compute_uv=False)
+            out[m] = float(sv[0] ** 2 / np.sum(sv ** 2))
+    return out
+
+
+def _modules_from(z, power, min_module_size, merge_cut):
+    from scipy.cluster.hierarchy import linkage
+    from scipy.spatial.distance import squareform
+    n = z.shape[1]
+    base = ((1 + (z @ z.T) / n) / 2).astype(np.float32)
+    np.clip(base, 0, 1, out=base)
+    diss = _tom_dissimilarity(base ** power)
+    del base
+    tree = linkage(squareform(diss.astype(float), checks=False), method='average')
+    del diss
+    labels = _cut_tree(z, tree, min_module_size, merge_cut)
+    labels = _merge_modules(z, labels, merge_cut)
+    return _assign_by_kme(z, labels, min_module_size)
+
+
+def _null_threshold(z, power, min_module_size, merge_cut, rounds, rng):
+    """Largest eigengene variance share of any module found in data shuffled within each protein."""
+    best = 0.0
+    for _ in range(rounds):
+        shuffled = np.array([rng.permutation(row) for row in z])
+        labels, _ = _modules_from(shuffled, power, min_module_size, merge_cut)
+        best = max([best] + list(_variance_explained(shuffled, labels).values()))
+    return best
+
+
+def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge_cut=0.25, max_proteins=3000,
+                         null_rounds=3, random_state=0):
     """Co-expression modules, their eigengenes and module-trait correlations.
 
     Args:
@@ -170,6 +213,9 @@ def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge
         merge_cut (float, optional): modules whose eigengenes correlate above 1 - merge_cut are merged.
             Defaults to 0.25.
         max_proteins (int, optional): network built on the most variable proteins. Defaults to 3000.
+        null_rounds (int, optional): shuffled data sets used to discard modules no stronger than noise
+            (0 keeps every module). Defaults to 3.
+        random_state (int, optional): seed of the shuffles. Defaults to 0.
 
     Returns:
         dict:
@@ -180,10 +226,8 @@ def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge
             'traits': [Sample, Condition, (TimeCourse)] in the order of the eigengenes.
             'power': soft-thresholding power used.
             'power_table': scale-free fit of each candidate power.
+            'null_threshold': eigengene variance share a module must exceed to be kept.
     """
-    from scipy.cluster.hierarchy import linkage
-    from scipy.spatial.distance import squareform
-
     logm, genes = _expression_matrix(self, pvalue, max_proteins)
     x = logm.to_numpy(float)
     z = (x - x.mean(axis=1, keepdims=True)) / x.std(axis=1, keepdims=True)
@@ -194,13 +238,25 @@ def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge
     if power is None:
         fit = power_table[power_table['R2'] >= 0.8]
         power = int(fit['power'].iloc[0] if len(fit) else power_table.loc[power_table['R2'].idxmax(), 'power'])
-    diss = _tom_dissimilarity(base ** power)
     del base
-    tree = linkage(squareform(diss.astype(float), checks=False), method='average')
-    del diss
-    labels = _cut_tree(z, tree, min_module_size, merge_cut)
-    labels = _merge_modules(z, labels, merge_cut)
-    labels, kme = _assign_by_kme(z, labels, min_module_size)
+    labels, kme = _modules_from(z, power, min_module_size, merge_cut)
+    threshold = 0.0
+    if null_rounds:
+        threshold = _null_threshold(z, power, min_module_size, merge_cut, null_rounds,
+                                    np.random.default_rng(random_state))
+        weak = [m for m, v in _variance_explained(z, labels).items() if v <= threshold]
+        labels = np.where(np.isin(labels, weak), 0, labels)
+        mods = [m for m in np.unique(labels) if m > 0]
+        if mods:
+            # membership cutoff: the best kME that proteins with shuffled samples reach in 95% of cases (it
+            # accounts for testing every module and for conditions with very different variances)
+            rng = np.random.default_rng(random_state + 1)
+            eg = np.array([_eigengene(z[labels == m]) for m in mods])
+            shuffled = np.array([rng.permutation(row) for row in z])
+            kme_cut = float(np.quantile((shuffled @ eg.T / z.shape[1]).max(axis=1), 0.95))
+            labels, kme = _assign_by_kme(z, labels, min_module_size, threshold=max(0.5, kme_cut))
+        else:
+            kme = np.full(len(z), np.nan)
 
     modules = pd.DataFrame({'Accession': logm.index, 'gene_name': genes.reindex(logm.index).to_numpy(),
                             'module': labels, 'kME': kme})
@@ -227,7 +283,7 @@ def coexpression_modules(self, pvalue=1.0, power=None, min_module_size=20, merge
             rows.append({'module': m, 'trait': trait, 'r': r, 'pvalue': p})
     module_trait = pd.DataFrame(rows, columns=['module', 'trait', 'r', 'pvalue'])
     return {'modules': modules, 'eigengenes': eigengenes, 'module_trait': module_trait, 'traits': traits,
-            'power': power, 'power_table': power_table}
+            'power': power, 'power_table': power_table, 'null_threshold': threshold}
 
 
 def module_trait_plot(self, modules=None, pvalue=1.0, power=None, min_module_size=20, merge_cut=0.25,

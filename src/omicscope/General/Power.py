@@ -1,8 +1,8 @@
 """ Sample-size planning from the variability observed in an OmicScope object.
 
-power_analysis: expected power of a two-sample t-test for a given log2 fold change and number of
-    samples per group, averaged over the protein-wise variances of the current experiment.
-power_plot: power against samples per group, one line per fold change.
+- power_analysis: expected power of a two-sample t-test for a given log2 fold change and number of
+  samples per group, averaged over the protein-wise variances of the current experiment.
+- power_plot: power against samples per group, one line per fold change.
 
 The variance of each protein is its pooled within-condition variance of the log2 abundances, shrunk
 towards the common prior of all proteins (limma's squeezeVar), which removes most of the sampling noise

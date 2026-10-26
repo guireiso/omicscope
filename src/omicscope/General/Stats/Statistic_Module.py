@@ -6,6 +6,7 @@ by OmicScope for differential expression analysis.
         analysis performed
 """
 import os
+import warnings
 
 import pandas as pd
 
@@ -91,6 +92,11 @@ def perform_static_stat(self):
 
     import numpy as np
     self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Static Workflow'
+    if 'TimeCourse' in self.pdata.columns and self.pdata['TimeCourse'].nunique() > 1:
+        note = ('pdata has a TimeCourse column but the static design was run: samples from different time points '
+                "are treated as independent replicates. Use ExperimentalDesign='longitudinal' for time courses.")
+        warnings.warn(note)
+        self.Params['Params']['Stats_Warning_TimeCourse'] = note
     condition_last_sample_names(self)
     expression = copy(self.expression)
     log = copy(self.logTransform)
@@ -158,6 +164,14 @@ def perform_longitudinal_stat(self):
     ctrl = copy(self.ctrl)
     PValue_cutoff = copy(self.PValue_cutoff)
     self.Params['Params']['Stats_Workflow_1'] = 'OmicScope performed Longitudinal Workflow'
+    if 'Individual' in pdata.columns:
+        shared = pdata.groupby('Individual')['Condition'].nunique()
+        if (shared > 1).any():
+            note = (f'Individual(s) {", ".join(map(str, shared.index[shared > 1][:5]))} appear in more than one condition '
+                    'and are modelled as the same person. If each condition has its own subjects, give every '
+                    'subject a unique Individual id (e.g. 1-4 in Control, 5-8 in Treated).')
+            warnings.warn(note)
+            self.Params['Params']['Stats_Warning_Individual'] = note
     # Log-normalize data
     if log is True:
         expression = expression.replace(0, np.nan)

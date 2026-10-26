@@ -76,11 +76,12 @@ def plsda(self, pvalue=1.0, n_components=2, cv_folds=5, permutations=100, max_fe
     proteins and tens of samples it ALWAYS separates the groups of the samples it was fitted on, even
     when there is no biological difference, so the score plot alone proves nothing. The separation is
     therefore judged by:
-      * cross-validated accuracy: stratified K-fold; the model (including z-scoring) is fitted on the
-        training samples and classes of the held-out samples are predicted by the argmax of the
-        predicted one-hot matrix;
-      * permutation p-value: the whole cross-validation is repeated with shuffled condition labels;
-        p = (1 + #{permuted accuracy >= observed}) / (1 + permutations).
+
+    * cross-validated accuracy: stratified K-fold; the model (including z-scoring) is fitted on the
+      training samples and classes of the held-out samples are predicted by the argmax of the
+      predicted one-hot matrix;
+    * permutation p-value: the whole cross-validation is repeated with shuffled condition labels;
+      p = (1 + number of permuted accuracies >= observed) / (1 + permutations).
 
     Scores and VIP come from the model fitted on all samples and proteins passing the p-value cutoff.
     To keep the cross-validation and permutations fast, they use the `max_features` proteins with the
@@ -235,7 +236,7 @@ def roc_table(self, control=None, case=None):
 
 
 def _t_abs(X, y):
-    """|Welch t| of each column of X between y == 1 and y == 0."""
+    """absolute Welch t of each column of X between y == 1 and y == 0."""
     a, b = X[y == 1], X[y == 0]
     with np.errstate(invalid='ignore', divide='ignore'):
         t = (a.mean(0) - b.mean(0)) / np.sqrt(a.var(0, ddof=1) / len(a) + b.var(0, ddof=1) / len(b))
@@ -245,7 +246,7 @@ def _t_abs(X, y):
 def biomarker_panel(self, control=None, case=None, n_features=5, cv_folds=5, repeats=10, random_state=0):
     """Cross-validated logistic-regression panel of the most discriminant proteins.
 
-    In each training fold the `n_features` proteins with the largest |Welch t| are selected, z-scored
+    In each training fold the `n_features` proteins with the largest absolute Welch t are selected, z-scored
     and combined by an L2-penalised logistic regression; the held-out samples are then scored. Because
     the selection is repeated inside every fold, the held-out samples never influence which proteins
     are chosen: selecting the proteins on all samples first and cross-validating afterwards gives high

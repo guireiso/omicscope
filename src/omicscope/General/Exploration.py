@@ -1,11 +1,11 @@
 """ Data-quality and exploratory views of an OmicScope object.
 
-missing_values: how many proteins each sample quantified and whether missing values depend on abundance
-    (values missing because they fall below the detection limit concentrate on low-abundance proteins).
-cv_plot: coefficient of variation of each protein within each condition, a standard measure of
-    quantitative precision.
-protein_map: t-SNE (or PCA) map of protein abundance profiles; proteins that change together across
-    samples end up close together, coloured by k-means trend cluster.
+- missing_values: how many proteins each sample quantified and whether missing values depend on abundance
+  (values missing because they fall below the detection limit concentrate on low-abundance proteins).
+- cv_plot: coefficient of variation of each protein within each condition, a standard measure of
+  quantitative precision.
+- protein_map: t-SNE (or PCA) map of protein abundance profiles; proteins that change together across
+  samples end up close together, coloured by k-means trend cluster.
 
 Each figure has a matching function that returns the numbers behind it (missing_summary, cv_table,
 protein_embedding).

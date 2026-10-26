@@ -2,12 +2,37 @@
 Installation
 ============
 
-Use the following command in the command line::
+OmicScope needs Python 3.12 or newer. Install it from PyPI::
 
     pip install omicscope
 
-**Note:** *OmicScope* uses the package SciPy, which requires a fortran compiler to be installed to build its source,
- which can be tricky on some systems. An alternative to this is to use Anaconda environment. 
- OmicScope can then be more easily installed within this environment, using the command line or preferred method.
+or add it to a project managed with `uv <https://docs.astral.sh/uv/>`__::
 
-**Setuptools Node**: For some systems, it may be necessary to install setuptools beforehand ('pip install setuptools'). Thanks @Harry-young-0.
+    uv add omicscope
+
+To try the development version::
+
+    pip install https://github.com/guireiso/omicscope/archive/main.zip
+
+All dependencies ship as binary wheels for Windows, macOS and Linux, so no compiler is needed.
+
+Development setup
+-----------------
+
+Clone the repository and let uv create the environment from the lock file::
+
+    git clone https://github.com/guireiso/omicscope
+    cd omicscope
+    uv sync
+    uv run pytest
+
+The documentation is built with::
+
+    uv sync --group docs
+    uv run sphinx-build docs docs/_build/html
+
+Web application
+---------------
+
+The OmicScope web application (https://omicscope.ib.unicamp.br) runs the same package in the browser, with
+interactive figures, and needs no installation.

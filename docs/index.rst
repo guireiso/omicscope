@@ -9,7 +9,9 @@ Contents
    installation
    input
    pdata
+   statistics
    omicscope
+   analyses
    enrichmentscope
    nebula
    reference/index

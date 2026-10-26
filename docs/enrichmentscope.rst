@@ -24,7 +24,7 @@ databases, with ``KEGG_2021_Human`` used by default. Users can also
 define alternative background sizes, target organisms, or pAdjusted
 cutoffs to consider terms enriched.
 
-.. code:: ipython3
+.. code:: python
 
     import omicscope as omics
     
@@ -91,7 +91,7 @@ Enrichment results are stored in ``object.results`` as a table
 |                                   | to GSEA analysis)                 |
 +-----------------------------------+-----------------------------------+
 
-.. code:: ipython3
+.. code:: python
 
     ora.results.head(4)
 
@@ -271,7 +271,7 @@ Additionally, the color of each dot corresponds to the number of
 proteins associated with that term, with darker blue indicating a higher
 number of associated proteins.
 
-.. code:: ipython3
+.. code:: python
 
     ora.dotplot(dpi=90, palette='PuBu')
 
@@ -299,7 +299,7 @@ of proteins that are shared between those pathways (terms). In the
 examples provided below, we highlight the default parameters and color
 coding based on fold change.
 
-.. code:: ipython3
+.. code:: python
 
     ora.heatmap(linewidths=0.5)
 
@@ -308,7 +308,7 @@ coding based on fold change.
 .. image:: enrichmentscope_files/enrichmentscope_9_0.png
 
 
-.. code:: ipython3
+.. code:: python
 
     # color based on protein fold-change
     ora.heatmap(linewidths=0.5, foldchange=True)
@@ -330,7 +330,7 @@ each group.
 questions often arise about the number of up- and down-regulated
 proteins associated with each term.
 
-.. code:: ipython3
+.. code:: python
 
     ora.number_deps(palette=['firebrick','darkcyan'] ,dpi = 90)
 
@@ -360,7 +360,7 @@ Gephi, have been specifically designed for this purpose. Users can
 export the plot to these external tools by specifying
 ``save=PATH_TO_SAVE``.
 
-.. code:: ipython3
+.. code:: python
 
     ora.enrichment_network(top = 10, dpi = 90)
 
@@ -401,7 +401,7 @@ while avoiding redundancy, users can look for the node that presents a
 higher degree (number of connections) inside each module and/or a lower
 p-value and consider that node to represent the whole module.
 
-.. code:: ipython3
+.. code:: python
 
     ora.enrichment_map(dpi=90, modules=True)
 

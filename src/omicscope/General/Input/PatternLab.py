@@ -16,7 +16,7 @@ from io import StringIO
 
 
 class Input:
-    def __init__(self, Table):
+    def __init__(self, Table, **kwargs):
         """  PatternLab V output for OmicScope input
 
         Args:
@@ -132,6 +132,8 @@ class Input:
         # Reset index for cleaner presentation
         df.reset_index(drop=True, inplace=True)
 
+        # Drop reverse (decoy) and contaminant proteins
+        df = df[~df['Locus'].astype(str).str.contains(r'^(?:Reverse_|contaminant_)')].reset_index(drop=True)
         #OmicScope data:
         rdata = df.rename({'Locus':'Accession'})[['Locus', 'Description']]
         rdata.columns = ['Accession', 'Description']

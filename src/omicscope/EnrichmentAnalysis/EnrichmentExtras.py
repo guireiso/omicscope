@@ -1,8 +1,8 @@
 """ Extra EnrichmentScope figures.
 
-gsea_plot: the classic GSEA running enrichment score of one term along the ranked protein list.
-term_foldchange: fold-change distribution of the proteins behind each top term (ORA or GSEA), showing
-    whether a term is driven by consistent up- or down-regulation or by a mix of both.
+- gsea_plot: the classic GSEA running enrichment score of one term along the ranked protein list.
+- term_foldchange: fold-change distribution of the proteins behind each top term (ORA or GSEA), showing
+  whether a term is driven by consistent up- or down-regulation or by a mix of both.
 """
 import matplotlib.pyplot as plt
 import numpy as np

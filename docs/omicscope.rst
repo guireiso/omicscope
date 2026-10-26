@@ -13,7 +13,7 @@ OmicScope Object
 After importing data into OmicScope, users can access both the input
 parameters and the resulting data.
 
-.. code:: ipython3
+.. code:: python
 
     
     import omicscope as omics
@@ -34,7 +34,7 @@ parameters and the resulting data.
 OmicScope records all steps in *Object.Params*, allowing users to
 document results and save all parameters utilized in the analysis.
 
-.. code:: ipython3
+.. code:: python
 
     import pandas as pd 
     # user can display using dictionary or pandas dataframe
@@ -105,7 +105,7 @@ Conditions
 Users can access the conditions evaluated during proteomics experiments
 by using the following code:
 
-.. code:: ipython3
+.. code:: python
 
     data.Conditions
 
@@ -128,7 +128,7 @@ here, we defined ``ControlGroup`` as ‘CTRL’ to fit scientific purposes.
 The ``ControlGroup``, whether user-defined or OmicScope-defined, can be
 accessed through ``object.ControlGroup`` (see below).
 
-.. code:: ipython3
+.. code:: python
 
     data.ControlGroup
 
@@ -154,7 +154,7 @@ proteins, such as identification results, gene names, p-values, adjusted
 p-values, abundance in each sample, mean abundance in each group, and
 fold-change.
 
-.. code:: ipython3
+.. code:: python
 
     data.quant_data.head()
 
@@ -339,7 +339,7 @@ Please note that each import method (See Input page) incorporates
 specific features associated with the outputs from the respective
 identification and quantitation software.
 
-.. code:: ipython3
+.. code:: python
 
     data.quant_data.columns
 
@@ -373,7 +373,7 @@ identification and quantitation software.
 A more concise dataset, containing only differentially regulated
 proteins, can be found in ``object.deps``.
 
-.. code:: ipython3
+.. code:: python
 
     data.deps
 
@@ -548,7 +548,7 @@ visualization.
 data, allowing you to evaluate the proportion of differentially
 regulated proteins in relation to the whole proteome analyzed.
 
-.. code:: ipython3
+.. code:: python
 
     data.bar_ident(logscale=True, dpi = 90)
 
@@ -585,7 +585,7 @@ proteomics, low abundance is often associated with missing values,
 greater variation in abundance, and challenges in performing statistical
 analyses.
 
-.. code:: ipython3
+.. code:: python
 
     data.DynamicRange('SAA1', 'MT-ND1',dpi = 90)
 
@@ -617,7 +617,7 @@ proxy for quality control of normalization methods, as the data should
 exhibit a normal distribution on the x-axis and a positively skewed
 distribution on the y-axis.
 
-.. code:: ipython3
+.. code:: python
 
     data.volcano('SAA1', 'MT-ND1',dpi = 96)
 
@@ -642,7 +642,7 @@ significant changes in expression. High deviations from zero on the
 y-axis may indicate that the data requires an alternative normalization
 method.
 
-.. code:: ipython3
+.. code:: python
 
     data.MAplot('SAA1', 'MT-ND1', dpi=96)
 
@@ -665,7 +665,7 @@ does not occur, users should consider trying alternative normalization
 methods and/or excluding potential sample outliers before performing
 differential proteomics analysis again.
 
-.. code:: ipython3
+.. code:: python
 
     data.normalization_boxplot(dpi=90)
 
@@ -696,7 +696,7 @@ Bar plot of proteins - `object.bar_protein(args) <https://omicscope.readthedocs.
 In the protein bar plot, OmicScope considers the mean as the estimator
 and adds error bars representing the standard error.
 
-.. code:: ipython3
+.. code:: python
 
     data.bar_protein('SAA1', 'MT-ND1', logscale=True, palette='viridis', dpi=90)
 
@@ -713,7 +713,7 @@ the protein abundance among conditions. The box represents the quartiles
 of the dataset, while the whiskers extend to show the rest of the
 distribution, excluding points that are identified as “outliers”.
 
-.. code:: ipython3
+.. code:: python
 
     data.boxplot_protein('SAA1', 'MT-ND1', palette='viridis', dpi=90)
 
@@ -761,7 +761,7 @@ performing longitudinal experimental designs, it is common practice not
 to perform column clustering to allow visualization of the protein
 abundance changing over time among conditions.
 
-.. code:: ipython3
+.. code:: python
 
     data.heatmap(dpi=90, linewidth=0)
 
@@ -789,7 +789,7 @@ between samples, it can be used to identify outliers, technical
 variations, reproducibility issues, normalization problems, and the
 impact of differentially regulated proteins on the entire proteome.
 
-.. code:: ipython3
+.. code:: python
 
     data.correlation(dpi=90, linewidth=0)
 
@@ -818,7 +818,7 @@ expected that samples from the same biological conditions should be
 closest together, while samples from distinct conditions should be
 further apart.
 
-.. code:: ipython3
+.. code:: python
 
     data.pca(pvalue = 0.05, dpi = 90)
 
@@ -859,7 +859,7 @@ suggest proteins that exhibit co-expression patterns. Additionally,
 OmicScope prints and stores the proteins belonging to each cluster,
 allowing further investigations on specific subset of proteins.
 
-.. code:: ipython3
+.. code:: python
 
     data.k_trend(dpi=96)
 
@@ -956,7 +956,7 @@ indicate protein fold changes, while the edge widths indicate the PPI
 score. When performing the Louvain clustering algorithm, the node edge
 color is also related to a specific module.
 
-.. code:: ipython3
+.. code:: python
 
     data.PPInteractions(pvalue=0.01, dpi=96)
 

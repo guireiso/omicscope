@@ -1,12 +1,12 @@
 """ Enrichment of protein clusters, custom gene sets and redundant terms.
 
-cluster_enrichment: over-representation analysis (the ORA workflow of EnrichmentScope) of each protein
-    group, e.g. co-expression modules or k-means trend clusters, in one long table.
-cluster_dotplot: compareCluster-style dotplot of the top terms of every cluster.
-read_gmt / write_gmt: custom gene sets in the GMT format (term, description, genes, tab separated).
-    EnrichmentScope accepts gene-set dicts and .gmt paths in `dbs` next to Enrichr library names.
-collapse_terms: groups enriched terms that share most of their proteins and keeps the most
-    significant term of each group as its representative.
+- cluster_enrichment: over-representation analysis (the ORA workflow of EnrichmentScope) of each protein
+  group, e.g. co-expression modules or k-means trend clusters, in one long table.
+- cluster_dotplot: compareCluster-style dotplot of the top terms of every cluster.
+- read_gmt / write_gmt: custom gene sets in the GMT format (term, description, genes, tab separated).
+  EnrichmentScope accepts gene-set dicts and .gmt paths in `dbs` next to Enrichr library names.
+- collapse_terms: groups enriched terms that share most of their proteins and keeps the most
+  significant term of each group as its representative.
 """
 from pathlib import Path
 

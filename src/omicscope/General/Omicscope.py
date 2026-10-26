@@ -8,6 +8,7 @@ all OmicScope workflow, being the input for all other modules.
 import warnings
 
 from .Input import Input
+from .Input.utils import match_samples, missing_samples_message, read_pdata
 from .Stats.imputation import value_imputation
 from .Stats.normalization import normalization
 
@@ -124,15 +125,13 @@ class Omicscope(Input):
         if pvalue not in pvalues:
             raise ValueError(
                 "Invalid pvalue specification. Expected one of: %s" % pvalues)
-        if 'pdata' in kwargs:
+        if kwargs.get('pdata') is not None:
             # If pdata was assigned by user, OmicScope read
             # excel or csv frames.
-            try:
-                self.pdata = pd.read_excel(kwargs['pdata'])
-            except ValueError:
-                self.pdata = pd.read_csv(kwargs['pdata'])
-                if self.pdata.shape[1] == 1:
-                    raise KeyError('OmicScope does not import pdata correctly. Please, confirm if data is xlsx, xls or csv.')
+            self.pdata = read_pdata(kwargs['pdata'])
+        # pdata sample names may differ from the data columns by folders/extensions
+        if self.pdata is not None:
+            self.assay, self.pdata = match_samples(self.assay, self.pdata)
 
         self.define_conditions()
 
@@ -227,6 +226,9 @@ class Omicscope(Input):
         assay = self.assay.copy()
         # Create a custom sorting key using the template
         sorting_samples = list(pdata_original.Sample)
+        missing = [s for s in sorting_samples if s not in assay.columns]
+        if missing:
+            raise ValueError(missing_samples_message(missing, assay.columns))
         assay = assay[sorting_samples]
         pdata = []
         for i in pdata_original.columns:

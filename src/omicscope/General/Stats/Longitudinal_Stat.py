@@ -90,7 +90,7 @@ def Spline_Model_Null(self, pdata, df):
                                 dictionary, return_type='dataframe')
     except PatsyError:
         transformed_x = pd.DataFrame([1] * len(pdata), columns=['Intercept'])
-    self.Params['Params']['Stats_Workflow_5'] = "NullModel: "+sentence
+    self.Params['Params']['Stats_Null_Model'] = "NullModel: "+sentence   # Stats_Workflow_5 is the FDR note
     transformed_x = transformed_x.reset_index(drop=True)
     return transformed_x
 

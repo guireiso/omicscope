@@ -47,8 +47,15 @@ class Input:
             if 'gene_name' not in self.rdata.columns:
                 self.rdata['gene_name'] = self.rdata['Description'].str.split(
                     'GN=').str[1].str.split(' ').str[0]
-        self.pdata = self.readxl(sheetno=2)
-        self.Conditions = list(self.pdata['Condition'].drop_duplicates())
+        try:
+            self.pdata = self.readxl(sheetno=2)
+            self.Conditions = list(self.pdata['Condition'].drop_duplicates())
+        except (ValueError, IndexError):
+            # a workbook with only assay and rdata is fine when an external pdata file is
+            # given: OmicScope reads it and it replaces the 3rd sheet anyway
+            if kwargs.get('pdata') is None:
+                raise
+            self.pdata, self.Conditions = None, []
         self.assay.index = self.rdata.Accession
 
     def readxl(self, sheetno):

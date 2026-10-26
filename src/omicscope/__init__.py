@@ -1,4 +1,4 @@
-__version__ = '1.6.0'
+__version__ = '2.0.0'
 from typing import List
 from typing import Optional
 
@@ -40,7 +40,7 @@ def OmicScope(Table: str,
 
         OmicScope was designed to be compatible with several Proteomics software,
         such as Progenesis Qi for Proteomics, PatternLab V, MaxQuant, 
-        DIA-NN, ProteomeDiscoverer, and FragPipe.
+        DIA-NN, Spectronaut, ProteomeDiscoverer, and FragPipe.
 
         Additionally, users can also input data from other Omics sources (e.g.Transcriptomics),
          using `General` and `Snapshot` methods. In General, users can analyse data in a pre-specified format using excel workbooks.

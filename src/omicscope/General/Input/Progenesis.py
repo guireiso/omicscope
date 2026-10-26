@@ -33,6 +33,7 @@ class Input:
         self.rdata = data[1]
         self.rdata['gene_name'] = self.rdata['Description'].str.split(
             'GN=').str[1].str.split(' ').str[0]
+        self.rdata['gene_name'] = self.rdata['gene_name'].fillna(self.rdata['Accession'])
         self.pdata = self.pdata()
         self.assay.columns = self.assay.columns.str.split('.', regex=False).str[0]
         self.assay.index = self.rdata['Accession']

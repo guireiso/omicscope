@@ -1,100 +1,89 @@
 Input
 =====
 
-*OmicScope* offers eight methods for integrating data into its pipeline,
-six of which rely on proteomic software for protein identification and
-quantitative analyses:
+*OmicScope* offers ten methods for integrating data into its pipeline.
+Seven of them read the output of proteomics software directly, one reads
+transcriptomics tables, and two (General and Snapshot) accept data from
+any source:
 
-**Important:** Examples for each data format can be easily downloadable
-in `OmicScope Web App <https://omicscope.ib.unicamp.br/>`__.
+**Important:** Examples for each data format, together with a matching
+pdata file, can be downloaded in the `OmicScope Web App
+<https://omicscope.ib.unicamp.br/>`__ (sidebar, *Example files*).
 
--  `Progenesis QI for
-   Proteomics <https://omicscope.readthedocs.io/en/latest/input.html#id19>`__
-   (*Method: ‘Progenesis’*)
+.. list-table::
+   :header-rows: 1
+   :widths: 22 18 38 22
 
-   -  Progenesis QI for Proteomics (Waters Corporation) is software that
-      enables protein quantification and identification (via APEX3D and
-      ProteinLynx Global Server) for experiments that use Data
-      Independent Acquisition (DIA).
-   -  **Input format:** Table with normalized abundance values - .csv
-      (recommended) or .xlsx/xls.
+   * - Software
+     - Method
+     - File to export
+     - pdata
+   * - Progenesis QI for Proteomics
+     - ``'Progenesis'``
+     - Protein measurements (.csv; .xls/.xlsx also accepted)
+     - optional
+   * - PatternLab V
+     - ``'PatternLab'``
+     - .plp file from the XIC module
+     - optional
+   * - MaxQuant
+     - ``'MaxQuant'``
+     - proteinGroups.txt (LFQ, intensity, iBAQ or TMT reporter intensities)
+     - **required**
+   * - DIA-NN
+     - ``'DIA-NN'``
+     - report.pg_matrix.tsv (recommended) or report.tsv
+     - **required**
+   * - Spectronaut
+     - ``'Spectronaut'``
+     - Protein pivot report, or a long report with R.Condition
+     - required for the pivot report
+   * - FragPipe
+     - ``'FragPipe'``
+     - combined_protein.tsv (label-free) or TMT-Integrator
+       abundance_protein_*.tsv (TMT)
+     - **required**
+   * - Proteome Discoverer
+     - ``'ProteomeDiscoverer'``
+     - Proteins table exported to Excel (label-free or TMT)
+     - optional
+   * - Transcriptomics
+     - ``'RPKM'``
+     - Tab-separated RPKM/FPKM/TPM table
+     - **required**
+   * - Any source
+     - ``'General'``
+     - Excel workbook with assay, rdata and pdata sheets
+     - included
+   * - Pre-analysed data
+     - ``'Snapshot'``
+     - Excel/csv with fold changes and p-values
+     - not used
 
--  `PatternLab
-   V <https://omicscope.readthedocs.io/en/latest/input.html#patternlab>`__
-   (*Method: ‘PatternLab’*)
+-  **Progenesis QI for Proteomics** (Waters) identifies and quantifies
+   proteins in DIA experiments. Export the protein table with normalized
+   abundances.
+-  **PatternLab V** is an integrated environment for shotgun proteomics.
+   Export the .plp file from the XIC section (filters can be applied
+   before exporting). *This import method was developed in collaboration
+   with the PatternLab developers.*
+-  **MaxQuant**, **DIA-NN**, **Spectronaut**, **FragPipe** and
+   **Proteome Discoverer** are covered in their own sections below.
+-  **General** imports data from any platform (including other omics)
+   organised in an Excel workbook with three sheets: assay, rdata and
+   pdata.
+-  **Snapshot** imports results that were already analysed elsewhere
+   (fold change, p-value and groups).
 
-   -  PatternLab V is an integrated computational environment for
-      analyzing shotgun proteomic data and is considered one of the best
-      options for quantitative proteomics using data-dependent
-      acquisition, due to its high-confidence parameters for protein
-      quantitation and identification.
-   -  **Input format:** PLP file exported by XIC section (user can
-      perform filtering steps prior to export plp file) - .plp.
-   - **This import method was empowered in collaboration with PatternLab developers.**   
-
--  `MaxQuant <https://omicscope.readthedocs.io/en/latest/input.html#id20>`__
-   (*Method: ‘MaxQuant’*)
-
-   -  MaxQuant is the most widely used software for quantitative
-      proteomics, offering users a range of parameter options for
-      quantitative analyses.
-   -  **Input format:** ProteinGroup.txt and `pdata <#pdata>`__.xlsx
-      files.
-   -  *Note: User must ensure sample names (indicated in LFQ Intensity
-      columns) are the same in ProteinGroup and pdata files.
-      Additionally, verify if LFQ Intensity and/or Intensities comprise
-      valid values.*
-
--  `DIA-NN <https://omicscope.readthedocs.io/en/latest/input.html#id21>`__
-   (*Method: ‘DIA-NN’*)
-
-   -  DIA-NN is a popular software that performs protein identification
-      and quantification for DIA experiments, offering users a variety
-      of parameter options for quantitative analyses.
-   -  **Input format:** main_output.tsv and `pdata <#pdata>`__.xlsx
-      files.
-   -  *Note: User must ensure Run columns in main_output.tsv match the
-      Sample column on pdata file. Additionally, verify if PG.MaxLFQ is
-      present and contains valid values in the main_output.tsv columns.*
-
--  `FragPipe <https://omicscope.readthedocs.io/en/latest/input.html#id23>`__
-   (*Method: ‘MaxQuant’*)
-
-   -  FragPipe is a suite of computational tools enabling comprehensive
-      analysis of mass spectrometry-based proteomics data.
-   -  **Input format:** combined_protein.tsv and `pdata <#pdata>`__.xlsx
-      files.
-   -  *Note: User must ensure sample names (indicated in MaxLFQ columns)
-      are the same in combined_protein and pdata files. Additionally,
-      verify if MaxLFQ and/or Intensities comprise valid values.*
-
--  `Proteome
-   Discoverer <https://omicscope.readthedocs.io/en/latest/input.html#id25>`__
-   (*Method: ‘MaxQuant’*)
-
-   -  Proteome Discoverer (Thermo Fisher Scientific) performs protein
-      identification and quantitation.
-   -  **Input format:** Quantitative data on protein levels (.xls/.xlsx
-      files) containing “Normalized” or “Abundance:” columns presenting
-      quantitative values.
-
--  `General <https://omicscope.readthedocs.io/en/latest/input.html#id26>`__
-   (*Method: ‘General’*)
-
-   -  To import data from other sources, this generic input method
-      requires users to import an Excel workbook with 3 sheets:
-      quantitative values (sheet1 = assay), protein features (sheet2 =
-      rdata), and sample information (sheet3 = pdata).
-   -  **Input format:** Excel file containing three sheets.
-
--  `Snapshot <https://omicscope.readthedocs.io/en/latest/input.html#id28>`__
-   (*Method: ‘Snapshot’*)
-
-   -  The Snapshot method is the simplest approach to be used in the
-      OmicScope workflow. It involves using a single, concise Excel
-      sheet that contains essential information about proteins in a
-      study, including fold change, p-value, and grouping.
-   -  **Input format:** Excel file.
+When a method needs pdata, the ``Sample`` column must contain the sample
+(run) names used in the quantitative file. OmicScope ignores folders,
+file extensions (``.raw``, ``.d``, ``.mzML``, ``.wiff``, ...), letter
+case and surrounding spaces when it matches the two, so
+``D:\data\Sample_01.raw`` in the data file matches ``Sample_01`` in
+pdata. If a pdata sample still cannot be found, the error message lists
+the sample names available in the data file. Samples that are in the data
+file but not in pdata are left out of the analysis, which is a simple way
+to analyse a subset of runs.
 
 For more information about the formatting of these import methods, see
 the appropriate sections below.
@@ -105,7 +94,7 @@ Import OmicScope
 First, OmicScope package must be imported in the Python programming
 environment.
 
-.. code:: ipython3
+.. code:: python
 
     import omicscope as omics
 
@@ -130,7 +119,7 @@ spreadsheets (with extensions .xls or .xlsx) that contain a **single
 sheet** for the Progenesis workflow, as many users may use Excel to
 visualize and handle data.
 
-.. code:: ipython3
+.. code:: python
 
     progenesis = omics.OmicScope('../../tests/data/proteins/progenesis.xls', Method='Progenesis')
 
@@ -150,7 +139,7 @@ format, see below). Furthermore, users can filter identifications based
 on the minimum number of unique peptides by specifying the parameter
 ``UniquePeptides`` (recommended: ``UniquePeptides = 1``).
 
-.. code:: ipython3
+.. code:: python
 
     progenesis_uniquepepfilt = omics.OmicScope('../../tests/data/proteins/progenesis.xls', Method='Progenesis', UniquePeptides=1)
     print('Original proteomics data: ' + str(len(progenesis.quant_data)) + '\n'+
@@ -187,105 +176,200 @@ statistical analyses for PatternLab data.
 For users aiming to use Statistical Workflows from T-Fold workflow in PatternLab,
 we advise using "Snapshot" import method.
 
-.. code:: ipython3
+.. code:: python
 
     plv = omics.OmicScope('../../tests/data/proteins/patternlab.plp', Method='PatternLab')
 
 MaxQuant
 --------
 
-MaxQuant exports the **proteinGroups.txt** file, which provides a
-comprehensive description of the assay and rdata. However, since pdata
-is missing in both cases, these methods **require** an additional Excel
-file for pdata. See the `pdata section <#pdata>`__ below for
-instructions on formatting this file.
+**File:** ``combined/txt/proteinGroups.txt``. **pdata:** required.
 
-**Troubleshooting:** If you encounter issues with MaxQuant data, please
-ensure the following:
+proteinGroups.txt has protein features and abundances but not the sample
+conditions, so a pdata file is required. See the `pdata section
+<#pdata>`__ below for its format. The ``Sample`` column holds the
+experiment names typed in MaxQuant, i.e. the text after the quantification
+prefix: ``CoV1`` for the column ``LFQ intensity CoV1``.
 
--  *LFQ Intensity or Intensity columns are present in the data*:
-   OmicScope typically uses LFQ Intensity columns for statistical
-   analysis, falling back to ‘Intensity’ columns if LFQ Intensity
-   columns are absent.
--  *LFQ Intensity or Intensity columns contain valid values*: MaxQuant
-   may sometimes export null values for quantitative data, hindering
-   OmicScope’s statistical analysis.
--  *Verify if the MaxQuant output includes the following columns (exact
-   labels)*: ‘Majority protein IDs’, ‘Fasta headers’, ‘Gene names’:
-   ‘gene_name’. Older versions of MaxQuant might use different column
-   labels, which can cause issues in OmicScope.
+OmicScope removes reverse hits, potential contaminants, proteins only
+identified by site and proteins with Andromeda score <= 0. The first gene
+of each protein group is used as ``gene_name``; when ``Gene names`` is
+empty, the gene is taken from the FASTA header (``GN=``) or, failing that,
+the accession is used.
 
-.. code:: ipython3
+Choose the abundance columns with ``quant_strategy``:
 
-    maxquant = omics.OmicScope('../../tests/data/proteins/MQ.txt', Method='MaxQuant',
-                               pdata='../../tests/data/proteins/MQ_pdata.xlsx')
+-  ``'LFQ intensity'`` (default)
+-  ``'Intensity'``
+-  ``'iBAQ'``
+-  ``'Reporter intensity corrected'`` (TMT/iTRAQ)
+-  ``'Reporter intensity'`` (TMT/iTRAQ, not corrected for isotopic
+   impurities)
+
+If the requested columns are missing, OmicScope uses ``Reporter intensity
+corrected`` (isobaric labelling) or ``Intensity`` instead. In TMT
+experiments, sample names are ``<channel> <experiment>`` (for example
+``1 Batch1`` for the column ``Reporter intensity corrected 1 Batch1``),
+or only ``<channel>`` when there is a single experiment.
+
+.. code:: python
+
+    maxquant = omics.OmicScope('proteinGroups.txt', Method='MaxQuant',
+                               pdata='MaxQuant_pdata.xlsx')
+    # TMT
+    tmt = omics.OmicScope('proteinGroups.txt', Method='MaxQuant',
+                          pdata='TMT_pdata.xlsx',
+                          quant_strategy='Reporter intensity corrected')
+
+**Troubleshooting:**
+
+-  Check that the quantitative columns contain valid values (MaxQuant
+   writes zeros when LFQ could not be computed).
+-  OmicScope expects the column labels of MaxQuant 1.6 and later
+   (``Majority protein IDs``, ``Fasta headers``, ``Gene names``).
 
 DIA-NN
 ------
 
-DIA-NN exports the **main_output.tsv** file, which provides a
-comprehensive description of the assay and rdata. However, since pdata
-is missing in both cases, these methods **require** an additional Excel
-file for pdata. See the `pdata section <#pdata>`__ below for
-instructions on formatting this file.
+**File:** ``report.pg_matrix.tsv`` (recommended) or ``report.tsv``.
+**pdata:** required.
 
-**IMPORTANT**: Main-output.tsv files from DIA-NN may be larger than 1
-GB, importing and analyzing these data can take a while.
+DIA-NN does not store the sample conditions, so a pdata file is required.
+OmicScope accepts:
 
-**Troubleshooting:** If you encounter issues with DIA-NN data, please
-ensure the following:
+-  **report.pg_matrix.tsv** (DIA-NN 1.8, 1.9 and 2.x): one row per protein
+   group and one column per run. It is small and loads fast. The values
+   are the MaxLFQ protein-group quantities, already filtered by DIA-NN at
+   1% FDR.
+-  **report.tsv** (main report of DIA-NN 1.8 and 1.9): one row per
+   precursor and run. OmicScope uses ``PG.MaxLFQ`` and keeps rows with
+   ``Q.Value`` <= 0.01 and ``PG.Q.Value`` <= 0.01 (change the latter with
+   ``pg_qvalue``). These files can be larger than 1 GB.
+-  **report.parquet** (main report of DIA-NN 2.x) is read only when the
+   ``pyarrow`` package is installed. Otherwise use
+   ``report.pg_matrix.tsv``, which DIA-NN 2.x still writes.
 
--  *PG.MaxLFQ column is present in the data*: OmicScope uses PG.MaxLFQ
-   columns for statistical analysis.
--  *PG.MaxLFQ contains valid values*: DIA-NN may sometimes export null
-   values for quantitative data, hindering OmicScope’s statistical
-   analysis.
+Sample names in pdata are the run names: the raw file names, as in the
+``Run`` column of report.tsv or the column headers of the matrix. Folders
+and extensions are ignored, so ``D:\Raw\HeLa_01.raw`` (matrix header),
+``HeLa_01`` (``Run`` column) and ``HeLa_01.raw`` all match the pdata
+sample ``HeLa_01``. Decoys and protein groups tagged as contaminants
+(``Cont_``, ``CON__``, ``contam_`` prefixes) are removed.
 
-.. code:: ipython3
+.. code:: python
 
-    diann = omics.OmicScope('../../tests/data/proteins/main_output.tsv', Method='DIA-NN',
-                               pdata='../../tests/data/proteins/pdata.xlsx')
+    diann = omics.OmicScope('report.pg_matrix.tsv', Method='DIA-NN',
+                            pdata='DIANN_pdata.xlsx')
+
+Spectronaut
+-----------
+
+**File:** a protein-level report exported from the *Report* perspective.
+**pdata:** required for pivot reports only.
+
+OmicScope reads the protein-group quantity (``PG.Quantity``) from two
+layouts:
+
+-  **Pivot report** (a pivot schema with protein-group columns): one
+   row per protein group and one ``[n] <run>.PG.Quantity`` column per run.
+   It does not contain the conditions, so pdata is required. Sample names
+   are the run names, i.e. the text between ``[n]`` and ``.PG.Quantity``
+   (``HeLa_01`` for ``[1] HeLa_01.PG.Quantity``).
+-  **Long report** (for example the *BGS Factory Report (Normal)*
+   schema, or a custom schema): one row per protein group (or precursor)
+   and run. Include at least ``R.Condition``, ``R.FileName``,
+   ``R.Replicate``, ``PG.ProteinGroups``, ``PG.Genes`` and
+   ``PG.Quantity``. Conditions and replicates are read from
+   ``R.Condition`` and ``R.Replicate``, so pdata is optional; pass one to
+   change the design.
+
+Values written as ``Filtered`` or ``NaN`` are treated as missing, and
+decimal commas are accepted. Decoys (``PG.IsDecoy``/``EG.IsDecoy``) and
+protein groups tagged as contaminants are removed.
+
+.. code:: python
+
+    # Long report: conditions taken from R.Condition
+    spectronaut = omics.OmicScope('Spectronaut_Report.tsv', Method='Spectronaut',
+                                  ControlGroup='Control')
+    # Pivot report
+    spectronaut = omics.OmicScope('Spectronaut_Report_Pivot.tsv', Method='Spectronaut',
+                                  pdata='Spectronaut_pdata.xlsx')
 
 FragPipe
 --------
 
-FragPipe exports the **combined_protein.tsv** file, which provides a
-comprehensive description of the assay and rdata. However, since pdata
-is missing in both cases, these methods **require** an additional Excel
-file for pdata. See the `pdata section <#2_pdata>`__ below for
-instructions on formatting this file.
+**File:** ``combined_protein.tsv`` (label-free) or
+``tmt-report/abundance_protein_MD.tsv`` (TMT). **pdata:** required.
 
-**Troubleshooting:** If you encounter issues with FragPipe data, please
-ensure the following:
+-  **Label-free (IonQuant):** OmicScope uses the ``<sample> MaxLFQ
+   Intensity`` columns, or ``<sample> Intensity`` when MaxLFQ was not
+   computed. Sample names are the experiment names set in the FragPipe
+   workflow (``IDHmut_1`` for ``IDHmut_1 MaxLFQ Intensity``).
+-  **TMT (TMT-Integrator):** use the protein report
+   ``abundance_protein_MD.tsv`` (``_None`` and ``_GN`` normalisation
+   variants also work). Sample names are the names given in the
+   annotation file, i.e. the columns after ``ReferenceIntensity``.
+   TMT-Integrator reports log2 abundances; OmicScope converts them back to
+   linear values so that the default ``logTransform=True`` gives the
+   original log2 values.
 
--  *MaxLFQ or Intensity columns are present in the data*: OmicScope uses
-   PG.MaxLFQ columns for statistical analysis.
--  *MaxLFQ or Intensity contain valid values*: FragPipe may sometimes
-   export null values for quantitative data, hindering OmicScope’s
-   statistical analysis.
+Decoys (``rev_``) and contaminants (``contam_``) are removed.
 
-.. code:: ipython3
+.. code:: python
 
-    fragpipe = omics.OmicScope('../../tests/data/proteins/fragpipe.txt', Method='FragPipe',
-                               pdata='../../tests/data/proteins/fragpipe.xlsx')
-    
+    fragpipe = omics.OmicScope('combined_protein.tsv', Method='FragPipe',
+                               pdata='FragPipe_pdata.xlsx')
 
 Proteome Discoverer
 -------------------
 
-Proteome Discoverer (PD) exports protein quantitation data in an Excel
-file containing a single sheet that comprises samples, protein groups,
-and quantitative values, used to separate between assay, rdata, and
-pdata.
+**File:** the *Proteins* table exported to Excel (File > Export > To
+Microsoft Excel). **pdata:** optional.
 
-Since PD allows users to select columns to be exported, we **strongly
-recommend** exporting the following columns: ‘Description’, ‘Accession’,
-‘Normalizing’/‘Abundance:’. When importing statistical analysis exported
-by PD, also use: ‘Abundance Ratio P-Value’, ‘Abundance Ratio Adj’.
+Proteome Discoverer (PD) writes samples, protein features and abundances
+in a single sheet. Export at least ``Accession``, ``Description`` and the
+``Abundances (Normalized)`` (or ``Abundance``) columns. To import the PD
+statistics instead of running OmicScope's tests, also export ``Abundance
+Ratio P-Value`` and ``Abundance Ratio Adj. P-Value``.
 
-.. code:: ipython3
+Conditions are read from the abundance headers. In ``Abundances
+(Normalized): F17: Sample, SCZ_5, CBD (SCZ)`` the last study factor
+(``CBD (SCZ)``) is the condition and the factor before it (``SCZ_5``) is
+the biological replicate, so files sharing it are averaged as technical
+replicates. With a single study factor (common in TMT, e.g. ``F1: 126,
+Sample, CTRL``), each file/channel is one biological replicate. Only
+master proteins are kept, and proteins flagged in the ``Contaminant``
+column are removed.
 
-    pd = omics.OmicScope('../../tests/data/proteins/pd.xlsx', Method='ProteomeDiscoverer')
+.. code:: python
+
+    pdisc = omics.OmicScope('ProteomeDiscoverer_proteins.xlsx', Method='ProteomeDiscoverer')
+
+RPKM (transcriptomics)
+----------------------
+
+**File:** tab-separated table with ``gene_name``, ``Accession`` and one
+column per sample holding RPKM, FPKM or TPM values. **pdata:** required.
+
+Values are transformed with log2(value + 1) before the analysis. Sample
+names in pdata are the column names of the table.
+
+.. code:: python
+
+    rpkm = omics.OmicScope('RPKM.tsv', Method='RPKM', pdata='RPKM_pdata.xlsx')
+
+Not supported directly
+----------------------
+
+Tools without a dedicated method can be imported with ``General``: put
+protein abundances in the first sheet (one column per sample), protein
+information in the second (at least ``Accession`` and ``gene_name``) and
+pdata in the third. This applies, for example, to PEAKS (protein table
+with ``Area`` columns), AlphaDIA (``pg.matrix.tsv``), quantms/MSstats
+protein-level results and Perseus matrices. Spectral-count exports such as
+Scaffold samples reports are not recommended for intensity-based
+statistics.
 
 General
 -------
@@ -306,7 +390,12 @@ pdata.
 For more information about how to properly format and import each of
 these sheets, see the respective sections below.
 
-.. code:: ipython3
+The pdata sheet can also be supplied as a separate file with
+``pdata=``. The workbook then only needs the assay and rdata sheets. For
+a time-course example in both layouts, see the *Longitudinal example*
+section of the pdata page.
+
+.. code:: python
 
     general = omics.OmicScope('../../tests/data/proteins/general.xlsx', Method='General')
 
@@ -317,7 +406,7 @@ The assay sheet should contain the abundance data for each
 protein/feature/transcript. The first row contains the sample names for
 each of the abundance values below.
 
-.. code:: ipython3
+.. code:: python
 
     import pandas as pd
     
@@ -414,7 +503,7 @@ The rdata sheet needs to have at least two columns: ‘Accession’ and
 
 Optionally, user may add “gene_name” column for alternative names.
 
-.. code:: ipython3
+.. code:: python
 
     rdata = pd.read_excel('../../tests/data/proteins/general.xlsx', sheet_name=1)
     rdata.head(3)
@@ -531,7 +620,7 @@ replicates. All replicates were injected twice for two instrumental
 replicates. These replicates will be averaged and not considered
 individual samples for T-Test purposes.
 
-.. code:: ipython3
+.. code:: python
 
     pdata = pd.read_excel('../../tests/data/proteins/general.xlsx', sheet_name=2)
     pdata

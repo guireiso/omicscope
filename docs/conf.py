@@ -5,23 +5,9 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
 
 
-autodoc_mock_imports = ['adjustText',
-                        'altair',
-                        'gseapy',
-                        'kneed',
-                        'matplotlib',
-                        'networkx',
-                        'numpy',
-                        'pandas',
-                        'scikit-learn',
-                        'sklearn',
-                        'scipy',
-                        'seaborn',
-                        'statsmodels',
-                        'UpSetPlot',
-                        'xlrd',
-                        'zipp',
-                        'pycirclize']
+# the documentation environment installs the real dependencies (uv sync --group docs): nothing is mocked,
+# numerical constants computed at import time need the real numpy/scipy
+autodoc_mock_imports = ['adjustText', 'UpSetPlot', 'pycirclize']
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -40,7 +26,7 @@ project = 'OmicScope'
 year = '2022'
 author = 'Guilherme Reis-de-Oliveira'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '1.6.0'
+version = release = '2.0.0'
 
 pygments_style = 'trac'
 templates_path = ['.']
@@ -63,7 +49,7 @@ html_sidebars = {
 }
 
 html_theme_path = ["."]
-html_logo = "logo.png"
+html_logo = "_static/brand/omicscope_2_logo.png"
 
 html_short_title = '%s-%s' % (project, version)
 

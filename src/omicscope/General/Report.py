@@ -52,7 +52,9 @@ def methods_text(self, enrichment=None):
     p, refs, s = _params(self), ['omicscope'], []
     method = p.get('ImportMethod', getattr(self, 'Method', 'the selected'))
     n_samples = len(self.pdata) if hasattr(self, 'pdata') else None
-    s.append(f"Quantitative data exported from {method} were analysed with OmicScope v{omicscope.__version__} [1]"
+    source = ('Quantitative data (OmicScope General format)' if str(method).startswith('General')
+              else f'Quantitative data exported from {method}')
+    s.append(f"{source} were analysed with OmicScope v{omicscope.__version__} [1]"
              + (f" ({n_samples} biological samples, conditions: {', '.join(map(str, self.Conditions))})."
                 if n_samples else '.'))
     if 'Stats_Workflow_1' in p and 'performed' in p.get('Stats_Workflow_1', ''):
@@ -82,7 +84,8 @@ def methods_text(self, enrichment=None):
                  'without condition-specific trajectories [%d].' % (len(refs) + 1))
         refs.append('storey2005')
     elif 'Stats_Workflow_3' in p:
-        test = p['Stats_Workflow_3'].replace('OmicScope performed ', '')
+        test = p['Stats_Workflow_3'].replace('OmicScope performed ', '').replace('T-test', 't-test')
+        test = test.replace('moderated (empirical Bayes) ', 'moderated ')
         sentence = f'Differential abundance was assessed with a {test}'
         if getattr(self, '_use_moderated', False):
             sentence += ', with protein variances shrunk towards a common prior (empirical Bayes) [%d]' % (len(refs) + 1)

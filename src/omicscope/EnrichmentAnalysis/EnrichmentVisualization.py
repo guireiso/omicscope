@@ -296,7 +296,9 @@ def enrichment_network(self, *Terms, top=5, labels=False,
         if labels is True:
             nx.draw_networkx_labels(G, pos, font_size=6)
         if save is not None:
-            nx.write_graphml(G, save + 'PPNetwork_'+i+'.graphml', named_key_ids=True)
+            from ..General.GraphExport import write_graphml
+            nx.set_node_attributes(G, dict(zip(carac.index, carac['type'].str.lower())), name='node_type')
+            write_graphml(G, save + 'PPNetwork_'+i+'.graphml', pos=pos)
             if vector is True:
                 plt.savefig(save + 'PPNetwork_'+i+'.svg', bbox_inches='tight')
             else:
@@ -353,7 +355,7 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         original = original.iloc[0:top,]
         # Subset ORA-results in Term, Genes, and regulation columns
         df = original[['Term', 'Genes', 'regulation']]
-        df = df.explode(['Genes', 'regulation'])
+        df = df.explode(['Genes', 'regulation']).reset_index(drop=True)
         # CrossTab and perform Pearson correlation among Terms
         df = pd.crosstab(df.Genes, df.Term)
         colnames = df.columns
@@ -461,7 +463,8 @@ def enrichment_map(self, *Terms, top=1000, modules=True, labels=False,
         if labels is True:
             nx.draw_networkx_labels(G, pos, carac.Label, font_size=6)
         if save is not None:
-            nx.write_graphml(G, save + 'PathMap.graphml', named_key_ids=True)
+            from ..General.GraphExport import write_graphml
+            write_graphml(G, save + 'PathMap.graphml', pos=pos)
             if vector is True:
                 plt.savefig(save + 'PathMap.svg', bbox_inches='tight')
             else:

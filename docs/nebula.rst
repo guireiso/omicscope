@@ -48,7 +48,7 @@ To export .omics files using the OmicScope Python package, simply invoke
 the ``savefile`` function and specify the folder path where you want to
 save the data. (code below)
 
-.. code:: ipython3
+.. code:: python
 
     # OmicScope Example
     import omicscope as omics
@@ -66,7 +66,7 @@ derived from the conditions extracted during the analysis. For example,
 if you analyzed data with conditions “COVID” and “CTRL,” the exported
 file name would be ‘COVID-CTRL.omics’.
 
-.. code:: ipython3
+.. code:: python
 
     data.Conditions
 
@@ -91,7 +91,7 @@ p-value threshold (defaults to 0.05)
 Nebula reports the number of imported groups/experiments, their names,
 and whether enrichment data is included.
 
-.. code:: ipython3
+.. code:: python
 
     import omicscope as omics
     
@@ -116,7 +116,7 @@ each group can be altered via the command line, granting users full
 control over experiment identification (see below). When using the web
 app, users can change names/colors using the sidebar.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.groups = ['Astrocytes', 'Human_Brain', 'Neurons', 'SHSY5Y']
     nebula.groups
@@ -136,7 +136,7 @@ differentially regulated proteins in each respective study, with the
 exact number displayed at the top of each bar. The light gray bars at
 the top represent the number of quantified proteins in each experiment.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.barplot(dpi=90)
 
@@ -161,7 +161,7 @@ color and size of the dot proportional to -log10(pAdjusted). This plot
 is useful for identifying pathways shared among all groups or for noting
 pathways that are unique to a specific condition compared to others.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.dotplot_enrichment(top=20, dpi=90, fig_height=10)
 
@@ -182,7 +182,7 @@ proteins in that subset of data. This visualization helps to compare the
 proportional sizes of up- and down-regulated proteins across different
 studies.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.diff_reg(dpi=90)
     
@@ -212,7 +212,7 @@ bar to see the number of proteins uniquely present in that comparison.
 Upset plot - Protein Level
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: ipython3
+.. code:: python
 
     nebula.protein_overlap(dpi=90)
 
@@ -224,7 +224,7 @@ Upset plot - Protein Level
 Upset plot - Enrichment Level - `object.enrichment_overlap() <https://omicscope.readthedocs.io/en/latest/reference/nebulavis.html#omicscope.MultipleData.MultipleVisualization.enrichment_overlap>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: ipython3
+.. code:: python
 
     nebula.enrichment_overlap(dpi=90)
 
@@ -263,7 +263,7 @@ indicates greater similarity between the two evaluated groups.
 Additionally, hierarchical clustering is performed to enhance the
 visualization of groups that exhibit greater similarities.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.similarity_heatmap(dpi=90, metric='jaccard')
     
@@ -281,7 +281,7 @@ analysis, nodes represent imported studies, while links are established
 based on a similarity index cutoff. The width of the links is also
 proportional to the index value.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.similarity_network(pvalue=1, absolute_similarity_cutoff=0.3, dpi=90)
 
@@ -331,7 +331,7 @@ exact test, two groups are statistically similar if the p-values are <=
 0.05. For other statistical approaches, two groups are similar if the
 p-values are > 0.05.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.stat_heatmap(pvalue=1, dpi=90)
 
@@ -354,7 +354,7 @@ also customize edge filtering based on obtained p-value (default:
 ``graph_pvalue=0.05``) to assign edges to the graph. The graph’s labels
 are displayed in the log10 scale.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.stat_network(protein_pvalue=1, graph_pvalue=0.05, dpi=90)
 
@@ -373,7 +373,7 @@ proteins shared among imported outcomes. This network can be exported as
 .graphml files, allowing for network visualization in third-party
 software to perform systems biology analysis.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.whole_network(dpi=90)
 
@@ -404,7 +404,7 @@ pathway/biological process/etc. chosen by the user. The diagram connects
 the groups where the protein exhibits differential regulation, while
 also highlighting the fold change in each group.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.circular_term('Amyotrophic lateral sclerosis')
 
@@ -423,7 +423,7 @@ If the .omics file contains enrichment analysis, the circos_plot
 function incorporates shared enrichment terms with orange links,
 offering insights into the number of pathways shared between groups.
 
-.. code:: ipython3
+.. code:: python
 
     nebula.circos_plot(colorenrichment='#F56A33', linewidth_heatmap=0)
 

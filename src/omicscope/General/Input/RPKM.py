@@ -3,10 +3,12 @@ from copy import copy
 import numpy as np
 import pandas as pd
 
+from .utils import read_table, require_pdata
+
 
 class Input:
 
-    def __init__(self, Table, pdata):
+    def __init__(self, Table, pdata=None):
         """ RPKM for transcriptomics analysis output
         RPKM method is composed by a tab-separated file and pdata table. 
         Following Transcriptomics guidelines, we suggest the use of RPKM/FPKM/TPM 
@@ -25,14 +27,11 @@ class Input:
 
         """
         self.Table = Table
-        data = pd.read_csv(copy(self.Table), sep='\t')
+        data = read_table(copy(self.Table))
         assay = data.drop(['gene_name', 'Accession'], axis='columns')
         assay = np.log2(assay+1)
         rdata = data[['gene_name', 'Accession']]
         self.assay = assay
         self.rdata = rdata
-        try:
-            self.pdata = pd.read_excel(pdata)
-        except ValueError:
-            self.pdata = pd.read_csv(pdata)
+        self.pdata = require_pdata(pdata, 'The RPKM table', 'the column names of the RPKM table')
         self.Conditions = list(self.pdata['Condition'].drop_duplicates())

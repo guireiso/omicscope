@@ -152,8 +152,9 @@ def whole_network(self, labels=False, save=None, vector=True, dpi=300):
     data = copy(self)
     network_frame = []
     for group, df, color in zip(data.groups, data.original, data.colors):
+        df = df.copy()      # data is a shallow copy: do not add columns to the loaded studies
         df['Experiment'] = group
-        df = df[df[self.pvalue] <= 0.05]
+        df = df[df[self.pvalue] <= 0.05].dropna(subset=['gene_name']).copy()
         df['Size'] = len(df)
         df['color'] = color
         network_frame.append(df)
@@ -199,7 +200,9 @@ def whole_network(self, labels=False, save=None, vector=True, dpi=300):
     if labels is True:
         nx.draw_networkx_labels(G, pos, font_size=6)
     if save is not None:
-        nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
+        from ..General.GraphExport import write_graphml
+        nx.set_node_attributes(G, dict(zip(carac.index, carac['type'].str.lower())), name='node_type')
+        write_graphml(G, save + 'PPNetwork.graphml', pos=pos)
         if vector is True:
             plt.savefig(save + 'PPNetwork.svg', bbox_inches='tight')
         else:
@@ -491,7 +494,8 @@ def similarity_network(self, pvalue=1, comparison_param='log2(fc)',
     labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=dict(zip(list(labels.keys()), weights)))
     if save is not None:
-        nx.write_graphml(G, save + 'Similarity_network.graphml', named_key_ids=True)
+        from ..General.GraphExport import write_graphml
+        write_graphml(G, save + 'Similarity_network.graphml', pos=pos)
         if vector is True:
             plt.savefig(save + 'Similarity_network.svg', bbox_inches='tight')
         else:
@@ -816,7 +820,13 @@ def stat_network(self, method='fisher', protein_pvalue=0.05, background_lenght=N
     labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=dict(zip(list(labels.keys()), weights)))
     if save is not None:
-        nx.write_graphml(G, save + 'PPNetwork.graphml', named_key_ids=True)
+        from ..General.GraphExport import write_graphml
+        export = G.copy()
+        if method == 'fisher':   # small p = strong overlap: weight = -log10(p), the p-value kept beside it
+            for _, _, d in export.edges(data=True):
+                d['pvalue'] = d['weight']
+                d['weight'] = float(-np.log10(max(d['weight'], 1e-300)))
+        write_graphml(export, save + 'groupNetwork.graphml', pos=pos)
         if vector is True:
             plt.savefig(save + 'groupNetwork.svg', bbox_inches='tight')
         else:

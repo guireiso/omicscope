@@ -1,13 +1,13 @@
 """ Sample-level quality control of an OmicScope object: outlying samples and batch effects.
 
-sample_outliers: flags samples that deviate from the other replicates of their condition, by a robust
-    distance in PCA space and by their correlation with the other replicates.
-outlier_plot: both criteria per sample, with the cutoffs and flagged samples labelled.
-remove_batch_effect: limma-style removal of batch effects from a log-scale matrix (y ~ condition + batch,
-    batch terms subtracted), used by the statistics when OmicScope is run with batch_correction=True.
-batch_effect: share of the variance of each protein explained by batch and by condition, before and
-    after the correction.
-batch_plot: PCA of the samples before and after the correction (colour = condition, marker = batch).
+- sample_outliers: flags samples that deviate from the other replicates of their condition, by a robust
+  distance in PCA space and by their correlation with the other replicates.
+- outlier_plot: both criteria per sample, with the cutoffs and flagged samples labelled.
+- remove_batch_effect: limma-style removal of batch effects from a log-scale matrix (y ~ condition +
+  batch, batch terms subtracted), used by the statistics when OmicScope is run with batch_correction=True.
+- batch_effect: share of the variance of each protein explained by batch and by condition, before and
+  after the correction.
+- batch_plot: PCA of the samples before and after the correction (colour = condition, marker = batch).
 """
 import matplotlib.pyplot as plt
 import numpy as np

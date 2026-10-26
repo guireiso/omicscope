@@ -3,7 +3,7 @@
 Each study gives a fold change and a p-value per protein. They are combined with Stouffer's method on
 signed z-scores, z = sign(log2FC) * Phi^-1(1 - p/2), Z = sum(z) / sqrt(k): proteins changing in the same
 direction in several studies reach strong combined evidence even if no single study is significant, and
-opposite changes cancel out. Each study's |z| is capped (default 5, p ~ 6e-7) so that one study with
+opposite changes cancel out. Each study's abs(z) is capped (default 5, p ~ 6e-7) so that one study with
 extreme p-values cannot carry the combination on its own. Combined p-values are corrected with
 Benjamini-Hochberg.
 
@@ -23,7 +23,7 @@ def meta_analysis(self, min_studies=2, z_cap=5.0):
 
     Args:
         min_studies (int, optional): minimum number of studies quantifying the protein. Defaults to 2.
-        z_cap (float, optional): maximum |z| contributed by one study (None: no cap). Defaults to 5.
+        z_cap (float, optional): maximum abs(z) contributed by one study (None: no cap). Defaults to 5.
 
     Returns:
         pd.DataFrame: one row per protein with the number of studies, studies significant at the Nebula
@@ -68,7 +68,7 @@ def meta_plot(self, top=30, min_studies=2, z_cap=5.0, palette='RdBu_r', save=Non
     Args:
         top (int, optional): number of proteins. Defaults to 30.
         min_studies (int, optional): minimum number of studies quantifying the protein. Defaults to 2.
-        z_cap (float, optional): maximum |z| contributed by one study. Defaults to 5.
+        z_cap (float, optional): maximum abs(z) contributed by one study. Defaults to 5.
         palette (str, optional): diverging palette. Defaults to 'RdBu_r'.
         save (str, optional): Path to save figure. Defaults to None.
         dpi (int, optional): figure resolution. Defaults to 300.
