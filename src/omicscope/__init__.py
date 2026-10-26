@@ -35,6 +35,7 @@ def OmicScope(Table: str,
               min_detected: int = 2,
               batch_correction: bool = False,
               batch_column: str = 'Batch',
+              exclude_samples: Optional[List[str]] = None,
               ** kwargs) -> Omicscope:
     """OmicScope - Differential Proteomics
 
@@ -86,6 +87,8 @@ def OmicScope(Table: str,
             with a linear model that keeps the condition effect. Confounded designs raise an error.
             Defaults to False.
         batch_column (str, optional): pdata column holding the batch of each sample. Defaults to 'Batch'.
+        exclude_samples (List[str], optional): samples to leave out (e.g. outliers flagged by sample_outliers),
+            by the names shown in the results or in the input file. Statistics are recomputed without them.
 
     Returns:
         OmicScope: Return a OmicScope obj. The quantitation data is stored to obj.quant_data.
@@ -128,6 +131,7 @@ def OmicScope(Table: str,
             min_detected=min_detected,
             batch_correction=batch_correction,
             batch_column=batch_column,
+            exclude_samples=exclude_samples,
             **kwargs)
 
     return omics

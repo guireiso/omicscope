@@ -48,6 +48,19 @@ flagged in the ``outlier`` column. Differences between conditions in noise level
 so a noisy condition is not flagged as a whole. In simulations an injected bad sample was always
 flagged and no clean sample was.
 
+To leave samples out, run the analysis again with ``exclude_samples``; the names shown in the results
+(or the sample names of the input file) are accepted, and the statistics are always recomputed without
+them (p-values imported from the input file are discarded):
+
+.. code-block:: python
+
+    flagged = data.sample_outliers().query('outlier')['Sample'].tolist()
+    data = omics.OmicScope('static_4groups.xlsx', Method='General', exclude_samples=flagged)
+
+Exclude a sample only when there is a reason, and only once: after removing samples the reference
+changes and another sample may then look borderline. ``methods_text()`` and ``reproducible_script()``
+record the exclusion.
+
 .. image:: figure/analyses/outlier_plot.png
    :width: 600
 

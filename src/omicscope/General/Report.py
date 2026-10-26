@@ -57,6 +57,9 @@ def methods_text(self, enrichment=None):
     s.append(f"{source} were analysed with OmicScope v{omicscope.__version__} [1]"
              + (f" ({n_samples} biological samples, conditions: {', '.join(map(str, self.Conditions))})."
                 if n_samples else '.'))
+    if getattr(self, 'excluded_samples', None):
+        s.append(f"{p.get('Excluded_Samples', 'Samples were excluded').split(':')[0].replace(' by the user', '')} "
+                 f"after quality control ({', '.join(self.excluded_samples)}).")
     if 'Stats_Workflow_1' in p and 'performed' in p.get('Stats_Workflow_1', ''):
         s.append('Technical replicates were averaged and proteins quantified in at least two biological replicates '
                  'of every condition were tested.')
@@ -162,6 +165,8 @@ def reproducible_script(self, table='your_data_file', pdata=None, enrichment=Non
         args['degrees_of_freedom'] = getattr(self, 'degrees_of_freedom', 2)
     if getattr(self, 'batch_correction', False):
         args['batch_correction'], args['batch_column'] = True, getattr(self, 'batch_column', 'Batch')
+    if getattr(self, 'excluded_samples', None):
+        args['exclude_samples'] = list(self.excluded_samples)
     if pdata:
         args['pdata'] = pdata
     lines = [f'# OmicScope v{omicscope.__version__}', 'import omicscope as omics', '',

@@ -18,7 +18,8 @@ Statistics
 
 New analyses
 
-* Quality control: missing values, coefficients of variation, sample outliers, batch effects.
+* Quality control: missing values, coefficients of variation, sample outliers, batch effects;
+  ``exclude_samples`` leaves samples out and recomputes the statistics.
 * Protein co-expression map (t-SNE/PCA) and co-expression modules (light WGCNA) with module-trait heatmap.
 * PLS-DA with cross-validated accuracy and permutation test; ROC/AUC per protein and cross-validated
   biomarker panels; power analysis.

@@ -65,7 +65,7 @@ class Omicscope(Input):
                  FoldChange_cutoff=0, logTransform=True, ExcludeContaminants=True,
                  degrees_of_freedom=2, independent_ttest=True, welch='auto', moderated=True,
                  fdr='fdr_tsbh', detection_layer=True, min_detected=2, batch_correction=False,
-                 batch_column='Batch', **kwargs):
+                 batch_column='Batch', exclude_samples=None, **kwargs):
         """  OmicScope was specially designed taking into account the
         proteomic workflow, in which proteins are identified, quantified
         and normalized with several softwares, such as Progenesis Qi for
@@ -102,6 +102,10 @@ class Omicscope(Input):
             degrees_of_freedom (int, optional): Degrees of freedom used to run longitudinal analysis. Defaults to 2.
             independent_ttest (bool, optional): If running a t-test, the user can specify if samples
                 are independent (default) or paired (independent_ttest=False). Defaults to True.
+            exclude_samples (list, optional): samples left out of the analysis (e.g. outliers flagged by
+                sample_outliers). Accepts the names shown in the results ('BioRep_3.Control'), the sample
+                names of the input file, or 'name.Condition'. Statistics are always recomputed without
+                them: p-values imported from the input file are discarded. Defaults to None.
         """
         import pandas as pd
         self.Params = {'Params': {}}
@@ -136,6 +140,9 @@ class Omicscope(Input):
         # pdata sample names may differ from the data columns by folders/extensions
         if self.pdata is not None:
             self.assay, self.pdata = match_samples(self.assay, self.pdata)
+        self.excluded_samples = []
+        if exclude_samples:
+            self._exclude_samples(exclude_samples)
 
         self.define_conditions()
 
@@ -219,6 +226,52 @@ class Omicscope(Input):
                     'The user-defined ControlGroup is not present in pdata.')
         self.Conditions = copy([self.ControlGroup]) + copy(self.experimental)
 
+    def _sample_aliases(self):
+        """Every name a sample can be referred to by, mapped to its row in the input pdata."""
+        pdata = self.pdata.reset_index(drop=True)
+        others = [c for c in pdata.columns if c not in ('Sample', 'Samples', 'Biological')]
+        extra = sorted(c for c in others if c != 'Condition')
+        aliases = {}
+        for i, r in pdata.iterrows():
+            names = {str(r['Sample']), f"{r['Sample']}.{r['Condition']}"}
+            if 'Biological' in pdata.columns:
+                bio = f"BioRep_{r['Biological']}"
+                names.add(bio + '.' + '-'.join(str(r[c]) for c in others))          # name given by the workflow
+                names.add(bio + ''.join('-' + str(r[c]).replace('.', '_') for c in extra) + '.' + str(r['Condition']))
+            for n in names:
+                aliases.setdefault(n, set()).add(i)
+        return pdata, aliases
+
+    def _exclude_samples(self, names):
+        """Remove samples (and their technical replicates) from pdata and assay before any processing."""
+        names = [names] if isinstance(names, str) else list(names)
+        pdata, aliases = self._sample_aliases()
+        unknown = [n for n in names if str(n) not in aliases]
+        if unknown:
+            shown = sorted({a for a in aliases if a.startswith('BioRep_')} or set(pdata['Sample'].astype(str)))
+            raise ValueError(f"Samples not found: {', '.join(map(str, unknown))}. Use the names shown in the results, "
+                             f"e.g. {', '.join(shown[:6])}{' ...' if len(shown) > 6 else ''}")
+        rows = sorted(set().union(*(aliases[str(n)] for n in names)))
+        removed = pdata.loc[rows, 'Sample'].astype(str).tolist()
+        kept = pdata.drop(index=rows).reset_index(drop=True)
+        unit = 'Biological' if 'Biological' in kept.columns else 'Sample'      # biological replicates, not runs
+        left = kept.groupby('Condition')[unit].nunique().reindex(pdata['Condition'].unique()).fillna(0)
+        if (left < 2).any():
+            raise ValueError('After excluding these samples, condition(s) '
+                             f"{', '.join(map(str, left.index[left < 2]))} would have fewer than two samples.")
+        self.pdata = kept
+        self.assay = self.assay.drop(columns=[c for c in removed if c in self.assay.columns])
+        self.excluded_samples = [str(n) for n in names]
+        self.Params['Params']['Excluded_Samples'] = (f'{len(removed)} sample(s) excluded by the user: '
+                                                    + ', '.join(removed))
+        statistics = ['Anova (p)', 'pvalue', 'p-value', 'q-value', 'q Value', 'qvalue', 'padj', 'p-adjusted',
+                      'p-adj', 'pAdjusted']
+        imported = [c for c in self.rdata.columns if c in statistics]
+        if imported:   # imported statistics include the excluded samples: recompute them instead
+            self.rdata = self.rdata.drop(columns=imported)
+            self.Params['Params']['Excluded_Samples_Stats'] = ('Statistics imported from the input were discarded '
+                                                              'and recomputed without the excluded samples')
+
     def expression_function(self):
         """Joins the technical replicates and organizes biological
         conditions.
@@ -226,6 +279,7 @@ class Omicscope(Input):
         from copy import copy
 
         import numpy as np
+        import pandas as pd
         pdata_original = self.pdata.copy()
         assay = self.assay.copy()
         # Create a custom sorting key using the template
@@ -256,10 +310,21 @@ class Omicscope(Input):
         pdata = expression.index.to_frame().reset_index(drop=True)
         Variables = pdata.loc[:, pdata.columns != 'Biological']
         Variables = Variables.apply(lambda x: '-'.join(x.astype(str)), axis=1)
-        self.Params['Params']['DataHandling_BeforeStat_2'] = 'Biological replicates was renamed as BioRep_. More info can be found in pdata'
         Sample_name = 'BioRep_' + \
             pdata['Biological'].astype(str) + \
             '.' + Variables
+        # one run per biological replicate: keep the sample names of the input, which users recognise
+        runs = technical.set_index(pdata_columns)['technical']
+        runs = [runs.loc[tuple(r)] for r in pdata[pdata_columns].itertuples(index=False)]
+        if all(',' not in str(r) for r in runs):
+            originals = [str(r)[:-len('.' + str(c))] if str(r).endswith('.' + str(c)) else str(r)
+                         for r, c in zip(runs, pdata['Condition'])]
+            named = pd.Series(originals) + '.' + Variables
+            if named.is_unique:
+                Sample_name = named
+        if Sample_name.str.startswith('BioRep_').any():
+            self.Params['Params']['DataHandling_BeforeStat_2'] = ('Biological replicates was renamed as BioRep_. '
+                                                                  'More info can be found in pdata')
         expression = expression.T
         expression.columns = Sample_name
         rdata = expression.index.to_frame().reset_index(drop=True)
