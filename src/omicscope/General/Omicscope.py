@@ -390,28 +390,16 @@ class Omicscope(Input):
         return (deps)
 
     def savefile(self, Path: str):
-        from copy import copy
-        import os
+        """Save the .omics file (for Nebula) and a pickle of the object (.results) in the folder `Path`."""
         import pickle
-        data = copy(self)
-        experimental = data.experimental
-        string = '-'.join(data.Conditions)
-        with open(Path + '/' + string + '.omics', 'w') as f:
-            dfAsString = data.quant_data[['gene_name', 'Accession', self.pvalue, 'log2(fc)', 'TotalMean']].to_csv(
-                sep='\t', index=False).replace('\r', "")
-            file = str("OmicScope" + "\n" +
-                    "This file is the output performed by OmicScope pipeline and can be used as input" +
-                    " for group comparisons having the controlling group used as used according to OmicScope." +
-                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: a Comprehensive Python" +
-                    "package designed for Shotgun Proteomics" +
-                    '\nControlGroup:' + '\t' + data.ctrl + '\n' +
-                    'Experimental:' + '\t' + '\t'.join(experimental) + '\n' +
-                    'Statistics:' + '\t' + self.pvalue + '\n' +
-                    'Expression:\n' + '-------\n' +
-                    dfAsString)
-            f.write(file.replace(os.linesep, '\n'))
+
+        from ..MultipleData.omics_file import omics_text
+        string = '-'.join(self.Conditions)
+        with open(Path + '/' + string + '.omics', 'w', encoding='utf-8', newline='\n') as f:
+            f.write(omics_text(self))
         with open(Path + '/' + string + '.results', 'wb') as bi:
             pickle.dump(self, bi)
+
     __all__ = [
         'bar_ident',
         'heatmap',

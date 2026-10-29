@@ -59,11 +59,11 @@ def ttest(self, params):
     # Effect size on the tested (log) scale: mean difference with its 95% CI and Hedges' g
     X1 = quant_data.iloc[:, quant_data.columns.str.endswith(Experimental)].to_numpy(float)
     X2 = quant_data.iloc[:, quant_data.columns.str.endswith(ControlGroup)].to_numpy(float)
-    diff, low, high, g = fast_stats.effect_sizes(
+    diff, low, high, g, se = fast_stats.effect_sizes(
         X1, X2, equal_var=not getattr(self, '_use_welch', False), moderated=getattr(self, '_use_moderated', False),
         paired=ind_variables is False)
     # added after the per-condition means: sample columns are found by suffix
-    effects = pd.DataFrame({'Mean difference': diff, 'CI95 low': low, 'CI95 high': high, "Hedges' g": g},
+    effects = pd.DataFrame({'Mean difference': diff, 'CI95 low': low, 'CI95 high': high, "Hedges' g": g, 'SE': se},
                            index=quant_data.index)
     quant_data = quant_data.sort_values('pvalue')
 

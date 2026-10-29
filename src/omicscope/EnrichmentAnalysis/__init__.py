@@ -77,37 +77,16 @@ class Enrichmentscope():
         return (libraries)
 
     def savefile(self, Path: str):
-        from copy import copy
-        import os
+        """Save the .omics file with the enrichment results (for Nebula) and a pickle of the object."""
         import pickle
-        save = Path
-        data = copy(self)
-        string = '-'.join(data.OmicScope.Conditions)
-        with open(save + '/' + string + '.omics', 'w') as f:
-            expression = data.OmicScope.quant_data[['gene_name', 'Accession',
-                                                    data.OmicScope.pvalue, 'log2(fc)', 'TotalMean']].to_csv(sep='\t', index=False).replace(
-                                                        '\r', "")
-            if self.Analysis == 'ORA':
-                enrichment = data.results[['Gene_set', 'Term', 'Overlap', 'Adjusted P-value', 'Genes']
-                                          ].to_csv(sep='\t', index=False).replace('\r', "")
-            elif self.Analysis == 'GSEA':
-                enrichment = data.results[['Gene_set', 'Term', 'NES', 'Overlap',
-                                           'Adjusted P-value', 'Genes']].to_csv(sep='\t', index=False).replace('\r', "")
-            file = str("OmicScope" + "\n" +
-                    "This file is the output performed by OmicScope pipeline and can be used as input" +
-                    " for group comparisons having the controlling group used as used according to OmicScope." +
-                    "Please, cite: Reis-de-Oliveira G, Martins-de-Souza D. OmicScope: an Comprehensive Python " +
-                    "library for Systems Biology Visualization" +
-                    '\nControlGroup:' + '\t' + data.OmicScope.ctrl + '\n' +
-                    'Experimental:' + '\t' + '\t'.join(data.OmicScope.experimental) + '\n' +
-                    'Statistics:' + '\t' + data.OmicScope.pvalue + '\n' +
-                    'Expression:\n' + '-------\n' +
-                    expression + '\n' +
-                    'Enrichment Analysis:\n' + '-------\n' +
-                    enrichment)
-            f.write(file.replace(os.linesep, '\n'))
+
+        from ..MultipleData.omics_file import omics_text
+        string = '-'.join(self.OmicScope.Conditions)
+        with open(Path + '/' + string + '.omics', 'w', encoding='utf-8', newline='\n') as f:
+            f.write(omics_text(self.OmicScope, enrichment=self))
         with open(Path + '/' + string + '.results', 'wb') as bi:
             pickle.dump(self, bi)
+
     __all__ = ['dotplot',
                'heatmap',
                'number_deps',

@@ -20,6 +20,16 @@ class nebula:
     from .MultipleVisualization import whole_network
     from .Meta import meta_analysis
     from .Meta import meta_plot
+    from .Meta import forest_plot
+    from .Meta import has_effect_sizes
+    from .Integration import shared_universe
+    from .Integration import overlap_test
+    from .Integration import overlap_matrix
+    from .Integration import concordance
+    from .Integration import concordance_table
+    from .Integration import concordance_plot
+    from .Integration import study_diagnostics
+    from .Integration import pvalue_histograms
     from .Sankey import sankey_plot
     from .Sankey import sankey_table
 
@@ -59,48 +69,22 @@ class nebula:
         ''')
 
     def read_omics(self, folder, palette):
-        path = folder  # use your path
-        all_files = glob.glob(path + "/*.omics")
+        from .omics_file import parse_omics
+        all_files = sorted(glob.glob(folder + "/*.omics"))
         if len(all_files) == 0:
             raise ValueError('Nebula cannot import .omics file.' +
                              ' Check if the selected folder contains respective files.')
-        groups = []
-        labels = []
-        original = []
-        enrichment = []
-        for i in all_files:
-            positions = []
-            with open(i, 'r') as archive:
-                lines = archive.readlines()
-                for n, line in enumerate(lines):
-                    line = line.replace('\r\n', '\n')
-                    if line == '-------\n':
-                        positions.append(n)
-                    if line.startswith('Experimental'):
-                        groups.append(line.split('\t')[-1].split('\n')[0])
-                        labels.append(line.split('\t')[-1].split('\n')[0])
-                    if line.startswith('Statistics'):
-                        self.pvalue = line.split('\t')[-1].split('\n')[0]
-                if len(positions) == 1:
-                    original.append(pd.read_csv(i, header=positions[0]+1, sep='\t'))
-                    enrichment.append(None)
-                else:
-                    original.append(pd.read_csv(i, header=positions[0]+1, sep='\t',
-                                                nrows=int(positions[1]-10)))
-                    enrichment_original = pd.read_csv(i, header=int(positions[1]),
-                                                      sep='\t')
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("'", '', regex=False)
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("[", '', regex=False)
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.replace("]", '', regex=False)
-                    enrichment_original['Genes'] = enrichment_original['Genes'].str.split(', ', regex=False)
-                    enrichment.append(enrichment_original)
-                archive.close()
-
-            self.groups = groups
-            self.colors = sns.color_palette(palette, as_cmap=False, n_colors=len(groups)).as_hex()
-            self.labels = labels
-            self.original = original
-            self.enrichment = enrichment
+        parsed = []
+        for path in all_files:
+            with open(path, encoding='utf-8') as handle:
+                parsed.append(parse_omics(handle.read()))
+        self.pvalue = parsed[-1]['pvalue']
+        self.groups = [p['group'] for p in parsed]
+        self.labels = [p['label'] for p in parsed]
+        self.original = [p['original'] for p in parsed]
+        self.enrichment = [p['enrichment'] for p in parsed]
+        self.metadata = [p['metadata'] for p in parsed]
+        self.colors = sns.color_palette(palette, as_cmap=False, n_colors=len(self.groups)).as_hex()
 
     def importing(self, original, group, label, pvalue_cutoff):
         df = original
@@ -142,4 +126,14 @@ class nebula:
         'meta_plot',
         'sankey_plot',
         'sankey_table',
+        'forest_plot',
+        'has_effect_sizes',
+        'shared_universe',
+        'overlap_test',
+        'overlap_matrix',
+        'concordance',
+        'concordance_table',
+        'concordance_plot',
+        'study_diagnostics',
+        'pvalue_histograms',
     ]

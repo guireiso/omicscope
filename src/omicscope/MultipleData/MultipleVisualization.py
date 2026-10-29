@@ -605,15 +605,13 @@ def overlap_fisher(group1, group2, union):
     """
     from scipy.stats import hypergeom
 
-    deps1 = set(group1)
-    deps2 = set(group2)
+    deps1 = set(group1) - {None}
+    deps2 = set(group2) - {None}
+    deps1 = {g for g in deps1 if g == g}          # drop NaN padding
+    deps2 = {g for g in deps2 if g == g}
     intersection = len(deps1.intersection(deps2))
-    distribution = min([len(deps1), len(deps2)])
-    [M, n, N] = [union, len(deps1), len(deps2)]
-    rv = hypergeom(M, n, N)
-    x = np.arange(intersection, distribution)
-    pval = sum(rv.pmf(x))
-    return pval
+    return float(hypergeom.sf(intersection - 1, union, len(deps1), len(deps2)))
+
 
 def distribution_test(self, protein_pvalue, 
                    method):
@@ -668,32 +666,20 @@ def distribution_test(self, protein_pvalue,
 
 def fisher_test(self, protein_pvalue,
                    background_lenght):
-    """This function performs a pair-wise statistical analysis using Fisher's exact test.
-    Fisher's exact test is a statistical test used to compare two nominal variables from two samples. 
-    In this context, it's used to compare the proportions of proteins with significant p-values
-    (determined by protein_pvalue) between groups.
+    """Pair-wise overlap of the regulated proteins of two studies (one-sided hypergeometric test).
+
+    Each pair is tested within its shared universe, the proteins quantified in both studies: a protein that one
+    study did not quantify is unknown there, not unchanged (see omicscope.MultipleData.Integration).
 
     Args:
         protein_pvalue (float): The cut-off value for protein p-values.
-        background_lenght (float, optional): The total number of entities in the background set (optional).
-        If not provided, all genes from the original data are used as the background (Recommended).
+        background_lenght (int, optional): fixed number of entities to use as background instead of the shared
+            universe of each pair (not recommended).
     Returns:
         matrix (DataFrame, pandas): P-value
     """
-    from scipy.spatial.distance import squareform, pdist
-    conditions = self.groups
-    pval = self.pvalue
-    if background_lenght is None:
-        union = set(pd.concat(self.original).gene_name)
-        union = len(union)
-    else:
-        union = background_lenght
-    sets = [set(x[x[pval] <= protein_pvalue].gene_name) for x in self.original]
-    sets = pd.DataFrame(sets)
-    matrix = pdist(sets, lambda u, v: overlap_fisher(u, v, union=union))
-    matrix = squareform(matrix)
-    matrix = pd.DataFrame(matrix, columns=conditions, index=conditions)
-    return matrix
+    from omicscope.MultipleData.Integration import overlap_matrix
+    return overlap_matrix(self, cutoff=protein_pvalue, background=background_lenght)
 
 def stat_matrix(self, method, protein_pvalue, background_lenght):
     """

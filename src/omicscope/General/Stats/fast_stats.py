@@ -107,7 +107,8 @@ def ttest(X1, X2, equal_var=True, moderated=False):
 def effect_sizes(X1, X2, equal_var=True, moderated=False, paired=False, level=0.95):
     """Per-row effect of X1 vs X2 on the log scale.
 
-    Returns (difference of means, lower and upper bound of its `level` confidence interval, Hedges' g).
+    Returns (difference of means, lower and upper bound of its `level` confidence interval, Hedges' g, standard
+    error of the difference).
     The interval uses the same standard error and degrees of freedom as the matching test (moderated,
     Welch or paired), so it excludes 0 exactly when the nominal p-value is below 1 - level."""
     with np.errstate(invalid='ignore', divide='ignore'):
@@ -135,7 +136,7 @@ def effect_sizes(X1, X2, equal_var=True, moderated=False, paired=False, level=0.
                 df = (a + b) ** 2 / (a ** 2 / (n[:, 0] - 1) + b ** 2 / (n[:, 1] - 1))
             g = diff / np.sqrt(s2_pool) * (1 - 3 / (4 * df_pool - 1))
         half = stats.t.ppf(0.5 + level / 2, np.minimum(df, 1e6)) * se
-    return diff, diff - half, diff + half, g
+    return diff, diff - half, diff + half, g, se
 
 
 def eta_squared(X, labels, levels):
