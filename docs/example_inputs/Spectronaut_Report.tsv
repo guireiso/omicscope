@@ -1,0 +1,1601 @@
+R.Condition	R.FileName	R.Replicate	PG.ProteinGroups	PG.Genes	PG.ProteinDescriptions	PG.Organisms	PG.Quantity
+Control	Control_1	1	P00738	HP	Haptoglobin	Homo sapiens	6345572.869533454
+Control	Control_2	2	P00738	HP	Haptoglobin	Homo sapiens	6509421.964416686
+Control	Control_3	3	P00738	HP	Haptoglobin	Homo sapiens	6260252.401050652
+Control	Control_4	4	P00738	HP	Haptoglobin	Homo sapiens	6339972.595519248
+Treated	Treated_1	1	P00738	HP	Haptoglobin	Homo sapiens	51241049.820060454
+Treated	Treated_2	2	P00738	HP	Haptoglobin	Homo sapiens	54956659.43963914
+Treated	Treated_3	3	P00738	HP	Haptoglobin	Homo sapiens	47294734.05127526
+Treated	Treated_4	4	P00738	HP	Haptoglobin	Homo sapiens	54145532.73982646
+Control	Control_1	1	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	24199699.79907307
+Control	Control_2	2	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	22899910.29801635
+Control	Control_3	3	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	21558620.705623478
+Control	Control_4	4	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	23536546.252825268
+Treated	Treated_1	1	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	176198238.78506172
+Treated	Treated_2	2	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	144028759.7388305
+Treated	Treated_3	3	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	162104641.05987895
+Treated	Treated_4	4	P02671	FGA	Fibrinogen alpha chain	Homo sapiens	162148442.42146817
+Control	Control_1	1	P02675	FGB	Fibrinogen beta chain	Homo sapiens	1470048.4998789183
+Control	Control_2	2	P02675	FGB	Fibrinogen beta chain	Homo sapiens	1476468.7517445777
+Control	Control_3	3	P02675	FGB	Fibrinogen beta chain	Homo sapiens	1340129.0613034214
+Control	Control_4	4	P02675	FGB	Fibrinogen beta chain	Homo sapiens	1404031.0953411525
+Treated	Treated_1	1	P02675	FGB	Fibrinogen beta chain	Homo sapiens	8541103.716871036
+Treated	Treated_2	2	P02675	FGB	Fibrinogen beta chain	Homo sapiens	9399331.63037883
+Treated	Treated_3	3	P02675	FGB	Fibrinogen beta chain	Homo sapiens	9454794.199213967
+Treated	Treated_4	4	P02675	FGB	Fibrinogen beta chain	Homo sapiens	9473195.88580915
+Control	Control_1	1	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	99498092.53061801
+Control	Control_2	2	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	93876067.90000066
+Control	Control_3	3	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	88738213.17828493
+Control	Control_4	4	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	88803094.83681487
+Treated	Treated_1	1	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	481400547.590425
+Treated	Treated_2	2	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	530568529.2319888
+Treated	Treated_3	3	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	529582745.2824187
+Treated	Treated_4	4	P02679	FGG	Fibrinogen gamma chain	Homo sapiens	641037181.3458993
+Control	Control_1	1	P01024	C3	Complement C3	Homo sapiens	43637141.96608191
+Control	Control_2	2	P01024	C3	Complement C3	Homo sapiens	43382679.69458601
+Control	Control_3	3	P01024	C3	Complement C3	Homo sapiens	46181666.33594735
+Control	Control_4	4	P01024	C3	Complement C3	Homo sapiens	32781313.04176813
+Treated	Treated_1	1	P01024	C3	Complement C3	Homo sapiens	200618327.5823857
+Treated	Treated_2	2	P01024	C3	Complement C3	Homo sapiens	202463765.50605384
+Treated	Treated_3	3	P01024	C3	Complement C3	Homo sapiens	196555694.52119604
+Treated	Treated_4	4	P01024	C3	Complement C3	Homo sapiens	233351776.2664054
+Control	Control_1	1	P00450	CP	Ceruloplasmin	Homo sapiens	15172924.128619215
+Control	Control_2	2	P00450	CP	Ceruloplasmin	Homo sapiens	12903145.957188787
+Control	Control_3	3	P00450	CP	Ceruloplasmin	Homo sapiens	12472838.234605806
+Control	Control_4	4	P00450	CP	Ceruloplasmin	Homo sapiens	10370303.726787135
+Treated	Treated_1	1	P00450	CP	Ceruloplasmin	Homo sapiens	46678689.1731279
+Treated	Treated_2	2	P00450	CP	Ceruloplasmin	Homo sapiens	56406105.03528563
+Treated	Treated_3	3	P00450	CP	Ceruloplasmin	Homo sapiens	52034661.60257293
+Treated	Treated_4	4	P00450	CP	Ceruloplasmin	Homo sapiens	45669587.558725536
+Control	Control_1	1	P02790	HPX	Hemopexin	Homo sapiens	11222475.22868377
+Control	Control_2	2	P02790	HPX	Hemopexin	Homo sapiens	11801708.398364289
+Control	Control_3	3	P02790	HPX	Hemopexin	Homo sapiens	12529975.39854908
+Control	Control_4	4	P02790	HPX	Hemopexin	Homo sapiens	11241562.95958785
+Treated	Treated_1	1	P02790	HPX	Hemopexin	Homo sapiens	44217331.4420124
+Treated	Treated_2	2	P02790	HPX	Hemopexin	Homo sapiens	45501866.230693385
+Treated	Treated_3	3	P02790	HPX	Hemopexin	Homo sapiens	46297749.10925642
+Treated	Treated_4	4	P02790	HPX	Hemopexin	Homo sapiens	40292869.775476515
+Control	Control_1	1	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	26728951.756125532
+Control	Control_2	2	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	30779204.36116231
+Control	Control_3	3	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	26675902.06594179
+Control	Control_4	4	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	21084420.2389209
+Treated	Treated_1	1	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	88004864.72425285
+Treated	Treated_2	2	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	72529242.09176394
+Treated	Treated_3	3	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	72051337.81825452
+Treated	Treated_4	4	P01023	A2M	Alpha-2-macroglobulin	Homo sapiens	93327011.17531726
+Control	Control_1	1	P01019	AGT	Angiotensinogen	Homo sapiens	12111370.730093822
+Control	Control_2	2	P01019	AGT	Angiotensinogen	Homo sapiens	11185643.556231659
+Control	Control_3	3	P01019	AGT	Angiotensinogen	Homo sapiens	9670066.59104762
+Control	Control_4	4	P01019	AGT	Angiotensinogen	Homo sapiens	10529047.910138743
+Treated	Treated_1	1	P01019	AGT	Angiotensinogen	Homo sapiens	38880430.85057635
+Treated	Treated_2	2	P01019	AGT	Angiotensinogen	Homo sapiens	38357238.31642235
+Treated	Treated_3	3	P01019	AGT	Angiotensinogen	Homo sapiens	41072415.77774212
+Treated	Treated_4	4	P01019	AGT	Angiotensinogen	Homo sapiens	44791470.47609016
+Control	Control_1	1	P02760	AMBP	Protein AMBP	Homo sapiens	12217752.388092166
+Control	Control_2	2	P02760	AMBP	Protein AMBP	Homo sapiens	13288814.979887176
+Control	Control_3	3	P02760	AMBP	Protein AMBP	Homo sapiens	12476364.599058691
+Control	Control_4	4	P02760	AMBP	Protein AMBP	Homo sapiens	12019579.629657645
+Treated	Treated_1	1	P02760	AMBP	Protein AMBP	Homo sapiens	34898106.81374001
+Treated	Treated_2	2	P02760	AMBP	Protein AMBP	Homo sapiens	39558298.32927524
+Treated	Treated_3	3	P02760	AMBP	Protein AMBP	Homo sapiens	32167516.132017326
+Treated	Treated_4	4	P02760	AMBP	Protein AMBP	Homo sapiens	40306796.39763031
+Control	Control_1	1	P10909	CLU	Clusterin	Homo sapiens	48039411.977792166
+Control	Control_2	2	P10909	CLU	Clusterin	Homo sapiens	41352809.315883234
+Control	Control_3	3	P10909	CLU	Clusterin	Homo sapiens	42306025.29731441
+Control	Control_4	4	P10909	CLU	Clusterin	Homo sapiens	35574796.788279496
+Treated	Treated_1	1	P10909	CLU	Clusterin	Homo sapiens	132388471.77294953
+Treated	Treated_2	2	P10909	CLU	Clusterin	Homo sapiens	114673351.80507015
+Treated	Treated_3	3	P10909	CLU	Clusterin	Homo sapiens	105448509.02080975
+Treated	Treated_4	4	P10909	CLU	Clusterin	Homo sapiens	104196943.42940205
+Control	Control_1	1	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	33417840.00655445
+Control	Control_2	2	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	29799483.304620974
+Control	Control_3	3	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	32840178.54647083
+Control	Control_4	4	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	28967519.793896087
+Treated	Treated_1	1	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	75557273.62502757
+Treated	Treated_2	2	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	66864512.21841655
+Treated	Treated_3	3	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	78751120.75358836
+Treated	Treated_4	4	P04003	C4BPA	C4b-binding protein alpha chain	Homo sapiens	70857341.27640103
+Control	Control_1	1	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	15926011.051127873
+Control	Control_2	2	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	21070233.00351934
+Control	Control_3	3	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	16837851.022981025
+Control	Control_4	4	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	15924445.240960803
+Treated	Treated_1	1	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	31117611.683172412
+Treated	Treated_2	2	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	27802193.937284406
+Treated	Treated_3	3	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	34670441.84188447
+Treated	Treated_4	4	P02746	C1QB	Complement C1q subcomponent subunit B	Homo sapiens	36589353.60578904
+Control	Control_1	1	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	15181336.343486762
+Control	Control_2	2	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	17952170.10421673
+Control	Control_3	3	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	14905077.291414475
+Control	Control_4	4	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	12541304.06383143
+Treated	Treated_1	1	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	2490763.207502378
+Treated	Treated_2	2	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	2388367.3761145407
+Treated	Treated_3	3	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	2590790.956700814
+Treated	Treated_4	4	P25705	ATP5F1A	ATP synthase subunit alpha, mitochondrial	Homo sapiens	2845378.819599759
+Control	Control_1	1	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	18619401.255303167
+Control	Control_2	2	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	20337127.903776653
+Control	Control_3	3	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	20937011.50998895
+Control	Control_4	4	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	19002621.783378374
+Treated	Treated_1	1	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	3584279.0156568005
+Treated	Treated_2	2	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	3975560.3842171123
+Treated	Treated_3	3	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	4313731.131709184
+Treated	Treated_4	4	P06576	ATP5F1B	ATP synthase subunit beta, mitochondrial	Homo sapiens	3700182.9397184127
+Control	Control_1	1	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	7212450.815388531
+Control	Control_2	2	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	7684813.880827867
+Control	Control_3	3	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	8037186.793209732
+Control	Control_4	4	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	7370414.684224124
+Treated	Treated_1	1	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	1583455.3144132195
+Treated	Treated_2	2	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	1600483.7601472186
+Treated	Treated_3	3	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	1464420.2021974844
+Treated	Treated_4	4	P36542	ATP5F1C	ATP synthase subunit gamma, mitochondrial	Homo sapiens	1609449.995720814
+Control	Control_1	1	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	9564395.468831765
+Control	Control_2	2	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	11952076.057166666
+Control	Control_3	3	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	9606977.36849316
+Control	Control_4	4	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	10631310.970244624
+Treated	Treated_1	1	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	2426049.1529808627
+Treated	Treated_2	2	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	2076244.1973663245
+Treated	Treated_3	3	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	2048174.309983941
+Treated	Treated_4	4	P48047	ATP5PO	ATP synthase subunit O, mitochondrial	Homo sapiens	2226624.235371283
+Control	Control_1	1	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	35621734.78661866
+Control	Control_2	2	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	31326547.160036243
+Control	Control_3	3	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	31057646.282425597
+Control	Control_4	4	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	24594548.13340058
+Treated	Treated_1	1	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	7976599.932830756
+Treated	Treated_2	2	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	8587103.541362694
+Treated	Treated_3	3	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	8705956.66498219
+Treated	Treated_4	4	P24539	ATP5PB	ATP synthase F(0) complex subunit B1, mitochondrial	Homo sapiens	8691942.28190422
+Control	Control_1	1	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	13778870.549782977
+Control	Control_2	2	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	13923873.708200503
+Control	Control_3	3	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	15545270.77275778
+Control	Control_4	4	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	14056892.271230923
+Treated	Treated_1	1	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	3048513.433355907
+Treated	Treated_2	2	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	4306643.355551043
+Treated	Treated_3	3	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	3462731.0401808983
+Treated	Treated_4	4	P13073	COX4I1	Cytochrome c oxidase subunit 4 isoform 1, mitochondrial	Homo sapiens	4468701.672144714
+Control	Control_1	1	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	3601471.1806422225
+Control	Control_2	2	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	3268956.6959287673
+Control	Control_3	3	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	3317465.9765862236
+Control	Control_4	4	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	3663275.2843621266
+Treated	Treated_1	1	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	800595.6425422246
+Treated	Treated_2	2	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	921810.4898170766
+Treated	Treated_3	3	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	920394.4790508539
+Treated	Treated_4	4	P20674	COX5A	Cytochrome c oxidase subunit 5A, mitochondrial	Homo sapiens	811913.4586683442
+Control	Control_1	1	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	11401103.825041745
+Control	Control_2	2	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	8707301.793321991
+Control	Control_3	3	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	8572064.999616887
+Control	Control_4	4	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	9510273.77282097
+Treated	Treated_1	1	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	3349619.8555521783
+Treated	Treated_2	2	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	2826805.763084521
+Treated	Treated_3	3	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	2827240.5586177204
+Treated	Treated_4	4	P10606	COX5B	Cytochrome c oxidase subunit 5B, mitochondrial	Homo sapiens	3171018.0774420626
+Control	Control_1	1	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	32820109.458325878
+Control	Control_2	2	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	35125880.33334433
+Control	Control_3	3	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	34886937.4315536
+Control	Control_4	4	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	36383191.10475949
+Treated	Treated_1	1	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	13260013.693646224
+Treated	Treated_2	2	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	16302051.052386496
+Treated	Treated_3	3	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	14789019.066586915
+Treated	Treated_4	4	P14854	COX6B1	Cytochrome c oxidase subunit 6B1	Homo sapiens	13488986.525544219
+Control	Control_1	1	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	12266205.807390347
+Control	Control_2	2	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	13751100.059594316
+Control	Control_3	3	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	13128065.439254267
+Control	Control_4	4	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	13775223.147475734
+Treated	Treated_1	1	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	5569194.593251931
+Treated	Treated_2	2	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	4344212.588700586
+Treated	Treated_3	3	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	3816880.971340744
+Treated	Treated_4	4	P15954	COX7C	Cytochrome c oxidase subunit 7C, mitochondrial	Homo sapiens	4813385.815718848
+Control	Control_1	1	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	14051298.741354855
+Control	Control_2	2	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	14357465.611178653
+Control	Control_3	3	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	13094497.637507886
+Control	Control_4	4	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	13602682.98088242
+Treated	Treated_1	1	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	6209697.01091734
+Treated	Treated_2	2	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	6244543.638944359
+Treated	Treated_3	3	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	6728846.44521617
+Treated	Treated_4	4	P08574	CYC1	Cytochrome c1, heme protein, mitochondrial	Homo sapiens	4677606.366869262
+Control	Control_1	1	P99999	CYCS	Cytochrome c	Homo sapiens	31481635.532576885
+Control	Control_2	2	P99999	CYCS	Cytochrome c	Homo sapiens	43502564.35523507
+Control	Control_3	3	P99999	CYCS	Cytochrome c	Homo sapiens	39807466.26361477
+Control	Control_4	4	P99999	CYCS	Cytochrome c	Homo sapiens	40581564.86805872
+Treated	Treated_1	1	P99999	CYCS	Cytochrome c	Homo sapiens	16691158.50703561
+Treated	Treated_2	2	P99999	CYCS	Cytochrome c	Homo sapiens	16365820.770783996
+Treated	Treated_3	3	P99999	CYCS	Cytochrome c	Homo sapiens	17553756.83005476
+Treated	Treated_4	4	P99999	CYCS	Cytochrome c	Homo sapiens	15592379.832388677
+Control	Control_1	1	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	139411496.44611293
+Control	Control_2	2	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	145628053.80752498
+Control	Control_3	3	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	165445117.58487475
+Control	Control_4	4	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	174648285.88071418
+Treated	Treated_1	1	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	97034029.70333284
+Treated	Treated_2	2	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	84947712.14304312
+Treated	Treated_3	3	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	85841746.9050868
+Treated	Treated_4	4	P38117	ETFB	Electron transfer flavoprotein subunit beta	Homo sapiens	97406835.99472675
+Control	Control_1	1	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	Filtered
+Control	Control_2	2	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	Filtered
+Control	Control_3	3	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	Filtered
+Control	Control_4	4	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	Filtered
+Treated	Treated_1	1	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	8504209.791059215
+Treated	Treated_2	2	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	6645444.726701523
+Treated	Treated_3	3	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	7894012.651326789
+Treated	Treated_4	4	P09914	IFIT1	Interferon-induced protein with tetratricopeptide repeats 1	Homo sapiens	6560440.554985659
+Control	Control_1	1	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	94938155.91293165
+Control	Control_2	2	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	96831278.25003503
+Control	Control_3	3	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	95349044.48012343
+Control	Control_4	4	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	97535849.59015526
+Treated	Treated_1	1	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	Filtered
+Treated	Treated_2	2	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	Filtered
+Treated	Treated_3	3	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	Filtered
+Treated	Treated_4	4	P24310	COX7A1	Cytochrome c oxidase subunit 7A1, mitochondrial	Homo sapiens	Filtered
+Control	Control_1	1	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	3811272.8866655943
+Control	Control_2	2	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	3234256.9899445577
+Control	Control_3	3	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	3651890.445564258
+Control	Control_4	4	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	3201494.377887686
+Treated	Treated_1	1	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	3896458.4135319777
+Treated	Treated_2	2	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	4921383.978792213
+Treated	Treated_3	3	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	4213544.719804537
+Treated	Treated_4	4	P05067	APP	Amyloid-beta precursor protein	Homo sapiens	3901490.395204716
+Control	Control_1	1	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	19000433.436744906
+Control	Control_2	2	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	21712137.44446705
+Control	Control_3	3	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	23605883.355049048
+Control	Control_4	4	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	20679561.608242426
+Treated	Treated_1	1	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	21152890.818898514
+Treated	Treated_2	2	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	17499475.17239202
+Treated	Treated_3	3	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	19094405.252060708
+Treated	Treated_4	4	Q9H3Q1	CDC42EP4	Cdc42 effector protein 4	Homo sapiens	17221492.23967349
+Control	Control_1	1	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	4758308.008694266
+Control	Control_2	2	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	4095879.0536819585
+Control	Control_3	3	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	4204639.00743855
+Control	Control_4	4	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	3818149.2526563075
+Treated	Treated_1	1	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	3350040.42408309
+Treated	Treated_2	2	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	3971472.24417957
+Treated	Treated_3	3	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	3649768.5217217086
+Treated	Treated_4	4	P01889	HLA-B	HLA class I histocompatibility antigen, B alpha chain	Homo sapiens	3525442.4876647587
+Control	Control_1	1	P55060	CSE1L	Exportin-2	Homo sapiens	91099283.58526468
+Control	Control_2	2	P55060	CSE1L	Exportin-2	Homo sapiens	91616078.72528566
+Control	Control_3	3	P55060	CSE1L	Exportin-2	Homo sapiens	88892036.12172528
+Control	Control_4	4	P55060	CSE1L	Exportin-2	Homo sapiens	83570151.46544516
+Treated	Treated_1	1	P55060	CSE1L	Exportin-2	Homo sapiens	81751652.48411015
+Treated	Treated_2	2	P55060	CSE1L	Exportin-2	Homo sapiens	90635495.0448663
+Treated	Treated_3	3	P55060	CSE1L	Exportin-2	Homo sapiens	102852208.29871663
+Treated	Treated_4	4	P55060	CSE1L	Exportin-2	Homo sapiens	76660401.27162427
+Control	Control_1	1	Q16658	FSCN1	Fascin	Homo sapiens	44351639.339453235
+Control	Control_2	2	Q16658	FSCN1	Fascin	Homo sapiens	46693152.212258406
+Control	Control_3	3	Q16658	FSCN1	Fascin	Homo sapiens	46710731.27904848
+Control	Control_4	4	Q16658	FSCN1	Fascin	Homo sapiens	44649691.77660556
+Treated	Treated_1	1	Q16658	FSCN1	Fascin	Homo sapiens	58031680.68775519
+Treated	Treated_2	2	Q16658	FSCN1	Fascin	Homo sapiens	49503639.5712207
+Treated	Treated_3	3	Q16658	FSCN1	Fascin	Homo sapiens	42863724.35777143
+Treated	Treated_4	4	Q16658	FSCN1	Fascin	Homo sapiens	39047903.616068125
+Control	Control_1	1	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	68143264.67084485
+Control	Control_2	2	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	80909766.6617893
+Control	Control_3	3	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	70778373.72962162
+Control	Control_4	4	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	54527911.587912604
+Treated	Treated_1	1	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	60120293.03045074
+Treated	Treated_2	2	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	70266210.33990325
+Treated	Treated_3	3	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	77518200.86725655
+Treated	Treated_4	4	Q9Y5K8	ATP6V1D	V-type proton ATPase subunit D	Homo sapiens	70398989.37723757
+Control	Control_1	1	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	5644578.089243781
+Control	Control_2	2	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	6213564.825853926
+Control	Control_3	3	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	6333090.743445128
+Control	Control_4	4	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	5180143.894069328
+Treated	Treated_1	1	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	5816610.17640148
+Treated	Treated_2	2	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	5031066.538712872
+Treated	Treated_3	3	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	4969105.880712595
+Treated	Treated_4	4	A6NFN9	ANKUB1	Protein ANKUB1	Homo sapiens	5908217.139724434
+Control	Control_1	1	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	33991788.014745295
+Control	Control_2	2	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	40116116.813502684
+Control	Control_3	3	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	40722672.28065242
+Control	Control_4	4	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	43106204.0290972
+Treated	Treated_1	1	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	34970489.81751924
+Treated	Treated_2	2	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	41005709.84224064
+Treated	Treated_3	3	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	38903181.77391707
+Treated	Treated_4	4	Q9P2T1	GMPR2	GMP reductase 2	Homo sapiens	45999284.405023046
+Control	Control_1	1	P35613	BSG	Basigin	Homo sapiens	8127403.952391013
+Control	Control_2	2	P35613	BSG	Basigin	Homo sapiens	7822904.4411656195
+Control	Control_3	3	P35613	BSG	Basigin	Homo sapiens	9248635.978061005
+Control	Control_4	4	P35613	BSG	Basigin	Homo sapiens	8032425.010787786
+Treated	Treated_1	1	P35613	BSG	Basigin	Homo sapiens	7674446.925521309
+Treated	Treated_2	2	P35613	BSG	Basigin	Homo sapiens	9651266.005946629
+Treated	Treated_3	3	P35613	BSG	Basigin	Homo sapiens	9181726.083202075
+Treated	Treated_4	4	P35613	BSG	Basigin	Homo sapiens	6353246.808962962
+Control	Control_1	1	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	8615832.111566938
+Control	Control_2	2	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	8449888.605827281
+Control	Control_3	3	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	10138624.071004745
+Control	Control_4	4	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	11050366.473430034
+Treated	Treated_1	1	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	11744026.019645412
+Treated	Treated_2	2	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	10203956.699956322
+Treated	Treated_3	3	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	8460459.999102436
+Treated	Treated_4	4	P16615	ATP2A2	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	Homo sapiens	8429499.833643679
+Control	Control_1	1	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	28587009.87522263
+Control	Control_2	2	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	33211455.934707846
+Control	Control_3	3	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	36002154.7958723
+Control	Control_4	4	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	25857927.93051799
+Treated	Treated_1	1	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	33627856.35135292
+Treated	Treated_2	2	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	34760491.28990432
+Treated	Treated_3	3	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	32617936.13287306
+Treated	Treated_4	4	P00492	HPRT1	Hypoxanthine-guanine phosphoribosyltransferase	Homo sapiens	44189540.70966574
+Control	Control_1	1	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	52959275.07762806
+Control	Control_2	2	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	50262060.68469845
+Control	Control_3	3	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	53375374.14794258
+Control	Control_4	4	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	47337041.16942797
+Treated	Treated_1	1	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	44682388.37500521
+Treated	Treated_2	2	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	52340332.78181841
+Treated	Treated_3	3	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	56476078.36836612
+Treated	Treated_4	4	Q16740	CLPP	ATP-dependent Clp protease proteolytic subunit, mitochondrial	Homo sapiens	48883766.05719324
+Control	Control_1	1	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	23838900.780943975
+Control	Control_2	2	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	20821783.77419493
+Control	Control_3	3	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	25653726.289103508
+Control	Control_4	4	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	22140352.148388103
+Treated	Treated_1	1	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	22888244.325332195
+Treated	Treated_2	2	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	23446694.830528058
+Treated	Treated_3	3	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	18811931.901706196
+Treated	Treated_4	4	Q6PUV4	CPLX2	Complexin-2	Homo sapiens	21245254.24983378
+Control	Control_1	1	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	9280057.601285864
+Control	Control_2	2	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	7692905.223014955
+Control	Control_3	3	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	8866997.45689438
+Control	Control_4	4	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	8401624.307616908
+Treated	Treated_1	1	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	6337418.520454883
+Treated	Treated_2	2	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	8248662.732074455
+Treated	Treated_3	3	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	6843865.6638462655
+Treated	Treated_4	4	Q14353	GAMT	Guanidinoacetate N-methyltransferase	Homo sapiens	7874778.220233954
+Control	Control_1	1	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	5734316.323849914
+Control	Control_2	2	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	6001095.775772238
+Control	Control_3	3	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	5943570.903972528
+Control	Control_4	4	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	6140524.525758623
+Treated	Treated_1	1	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	5714846.322752696
+Treated	Treated_2	2	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	5202898.62618624
+Treated	Treated_3	3	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	5390684.684595772
+Treated	Treated_4	4	P51659	HSD17B4	Peroxisomal multifunctional enzyme type 2	Homo sapiens	6585977.949925379
+Control	Control_1	1	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	121673918.16625203
+Control	Control_2	2	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	104191071.43420376
+Control	Control_3	3	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	111010065.44907567
+Control	Control_4	4	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	112574023.63348334
+Treated	Treated_1	1	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	88238020.7212964
+Treated	Treated_2	2	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	83708625.18785535
+Treated	Treated_3	3	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	101161296.12949143
+Treated	Treated_4	4	Q14894	CRYM	Ketimine reductase mu-crystallin	Homo sapiens	83537690.70619878
+Control	Control_1	1	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	34217471.9205093
+Control	Control_2	2	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	30185849.733368393
+Control	Control_3	3	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	32989352.939308405
+Control	Control_4	4	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	32556101.357355233
+Treated	Treated_1	1	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	37156267.71479993
+Treated	Treated_2	2	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	32909849.978504762
+Treated	Treated_3	3	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	31241051.025056813
+Treated	Treated_4	4	Q9P0K1	ADAM22	Disintegrin and metalloproteinase domain-containing protein 22	Homo sapiens	35379820.59355048
+Control	Control_1	1	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	56064642.6392384
+Control	Control_2	2	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	43346932.181229
+Control	Control_3	3	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	33642261.39937798
+Control	Control_4	4	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	41574839.998722784
+Treated	Treated_1	1	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	53802686.41547109
+Treated	Treated_2	2	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	41912625.290366344
+Treated	Treated_3	3	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	47047351.3807919
+Treated	Treated_4	4	Q9NQE9	HINT3	Histidine triad nucleotide-binding protein 3	Homo sapiens	46220432.55021141
+Control	Control_1	1	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	289409066.0562834
+Control	Control_2	2	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	285298687.51508445
+Control	Control_3	3	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	263399269.2236592
+Control	Control_4	4	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	250916342.42015472
+Treated	Treated_1	1	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	248469973.56996354
+Treated	Treated_2	2	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	258989679.07915056
+Treated	Treated_3	3	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	267383235.80596206
+Treated	Treated_4	4	P20648	ATP4A	Potassium-transporting ATPase alpha chain 1	Homo sapiens	224000666.28624687
+Control	Control_1	1	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	5888129.662697419
+Control	Control_2	2	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	6036841.108636029
+Control	Control_3	3	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	6130722.041544438
+Control	Control_4	4	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	5870263.408446127
+Treated	Treated_1	1	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	6592558.5622651195
+Treated	Treated_2	2	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	5997160.401542732
+Treated	Treated_3	3	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	5830268.289687405
+Treated	Treated_4	4	Q9Y285	FARSA	Phenylalanine--tRNA ligase alpha subunit	Homo sapiens	5330788.640943822
+Control	Control_1	1	Q9NQW6	ANLN	Anillin	Homo sapiens	377111045.2322378
+Control	Control_2	2	Q9NQW6	ANLN	Anillin	Homo sapiens	418736053.4750259
+Control	Control_3	3	Q9NQW6	ANLN	Anillin	Homo sapiens	413955485.3215157
+Control	Control_4	4	Q9NQW6	ANLN	Anillin	Homo sapiens	330761970.12265205
+Treated	Treated_1	1	Q9NQW6	ANLN	Anillin	Homo sapiens	450099759.1372009
+Treated	Treated_2	2	Q9NQW6	ANLN	Anillin	Homo sapiens	380054942.94435126
+Treated	Treated_3	3	Q9NQW6	ANLN	Anillin	Homo sapiens	372260020.83464223
+Treated	Treated_4	4	Q9NQW6	ANLN	Anillin	Homo sapiens	459099190.56141716
+Control	Control_1	1	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	965122813.7108688
+Control	Control_2	2	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	794197858.7335802
+Control	Control_3	3	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	824127298.7375832
+Control	Control_4	4	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	752975024.2680172
+Treated	Treated_1	1	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	930717874.93772
+Treated	Treated_2	2	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	939511957.708039
+Treated	Treated_3	3	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	817029384.0385866
+Treated	Treated_4	4	O75390	CS	Citrate synthase, mitochondrial	Homo sapiens	988309256.4366933
+Control	Control_1	1	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	139040609.79374486
+Control	Control_2	2	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	124760593.80132495
+Control	Control_3	3	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	136221703.42421147
+Control	Control_4	4	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	106401465.32112579
+Treated	Treated_1	1	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	122969421.00452366
+Treated	Treated_2	2	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	129725971.94133519
+Treated	Treated_3	3	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	126238798.39838432
+Treated	Treated_4	4	Q06136	KDSR	3-ketodihydrosphingosine reductase	Homo sapiens	156396821.419195
+Control	Control_1	1	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	48630958.55973431
+Control	Control_2	2	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	48914569.332096905
+Control	Control_3	3	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	41013424.674932
+Control	Control_4	4	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	46176920.440921
+Treated	Treated_1	1	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	43402158.688272744
+Treated	Treated_2	2	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	60110207.47999957
+Treated	Treated_3	3	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	45094477.25053834
+Treated	Treated_4	4	O75874	IDH1	Isocitrate dehydrogenase [NADP] cytoplasmic	Homo sapiens	47672382.9085138
+Control	Control_1	1	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	8316192.354259364
+Control	Control_2	2	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	7846513.494519701
+Control	Control_3	3	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	6328463.768430819
+Control	Control_4	4	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	7831724.5758344475
+Treated	Treated_1	1	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	7890401.969058849
+Treated	Treated_2	2	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	7191560.207008985
+Treated	Treated_3	3	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	7691133.406718792
+Treated	Treated_4	4	Q8NFZ8	CADM4	Cell adhesion molecule 4	Homo sapiens	7408911.332060192
+Control	Control_1	1	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	50237710.44801731
+Control	Control_2	2	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	54719409.43664167
+Control	Control_3	3	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	58146199.255142
+Control	Control_4	4	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	54589038.910573564
+Treated	Treated_1	1	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	61365776.701770246
+Treated	Treated_2	2	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	64391615.40607392
+Treated	Treated_3	3	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	59694187.237580895
+Treated	Treated_4	4	P25685	DNAJB1	DnaJ homolog subfamily B member 1	Homo sapiens	55815884.15993014
+Control	Control_1	1	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	11127146.866861308
+Control	Control_2	2	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	9796148.012911085
+Control	Control_3	3	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	10018635.791654177
+Control	Control_4	4	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	8920155.111660251
+Treated	Treated_1	1	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	9440991.308256516
+Treated	Treated_2	2	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	10713077.1934892
+Treated	Treated_3	3	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	10433453.108737271
+Treated	Treated_4	4	P07203	GPX1	Glutathione peroxidase 1	Homo sapiens	9471055.45364676
+Control	Control_1	1	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	16344084.15208942
+Control	Control_2	2	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	16671433.10405078
+Control	Control_3	3	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	14807764.466105366
+Control	Control_4	4	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	16018436.5650756
+Treated	Treated_1	1	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	15484205.44026208
+Treated	Treated_2	2	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	14138871.9841779
+Treated	Treated_3	3	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	16590505.286719179
+Treated	Treated_4	4	P61978	HNRNPK	Heterogeneous nuclear ribonucleoprotein K	Homo sapiens	16087747.1430554
+Control	Control_1	1	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	10028825.840540519
+Control	Control_2	2	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	10751012.336732207
+Control	Control_3	3	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	11572176.15532355
+Control	Control_4	4	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	8645765.724046716
+Treated	Treated_1	1	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	11902990.85088521
+Treated	Treated_2	2	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	12005804.980702136
+Treated	Treated_3	3	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	12492466.707972948
+Treated	Treated_4	4	P00352	ALDH1A1	Retinal dehydrogenase 1	Homo sapiens	10976604.989879472
+Control	Control_1	1	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	20619158.35457127
+Control	Control_2	2	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	25520213.516701486
+Control	Control_3	3	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	20721817.503171187
+Control	Control_4	4	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	25289513.632054895
+Treated	Treated_1	1	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	22284515.47316971
+Treated	Treated_2	2	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	21518407.15599547
+Treated	Treated_3	3	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	24649319.655150447
+Treated	Treated_4	4	P07384	CAPN1	Calpain-1 catalytic subunit	Homo sapiens	26865113.43037002
+Control	Control_1	1	P35612	ADD2	Beta-adducin	Homo sapiens	82334793.29547535
+Control	Control_2	2	P35612	ADD2	Beta-adducin	Homo sapiens	81578123.68826635
+Control	Control_3	3	P35612	ADD2	Beta-adducin	Homo sapiens	70214349.31002504
+Control	Control_4	4	P35612	ADD2	Beta-adducin	Homo sapiens	91243667.4297789
+Treated	Treated_1	1	P35612	ADD2	Beta-adducin	Homo sapiens	84325693.46488248
+Treated	Treated_2	2	P35612	ADD2	Beta-adducin	Homo sapiens	81358358.90939206
+Treated	Treated_3	3	P35612	ADD2	Beta-adducin	Homo sapiens	95884660.05671345
+Treated	Treated_4	4	P35612	ADD2	Beta-adducin	Homo sapiens	71103912.26716304
+Control	Control_1	1	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	7959556.805978327
+Control	Control_2	2	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	8392540.85856707
+Control	Control_3	3	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	8134467.655310107
+Control	Control_4	4	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	6511071.368151434
+Treated	Treated_1	1	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	8698583.6711031
+Treated	Treated_2	2	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	8361751.257397661
+Treated	Treated_3	3	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	9317835.806121558
+Treated	Treated_4	4	P18085	ARF4	ADP-ribosylation factor 4	Homo sapiens	10370115.976376206
+Control	Control_1	1	P42025	ACTR1B	Beta-centractin	Homo sapiens	4811612.594258655
+Control	Control_2	2	P42025	ACTR1B	Beta-centractin	Homo sapiens	5106643.793287747
+Control	Control_3	3	P42025	ACTR1B	Beta-centractin	Homo sapiens	5037344.916330276
+Control	Control_4	4	P42025	ACTR1B	Beta-centractin	Homo sapiens	4993919.6039291015
+Treated	Treated_1	1	P42025	ACTR1B	Beta-centractin	Homo sapiens	4836482.774426443
+Treated	Treated_2	2	P42025	ACTR1B	Beta-centractin	Homo sapiens	5107761.070784758
+Treated	Treated_3	3	P42025	ACTR1B	Beta-centractin	Homo sapiens	5517172.507489341
+Treated	Treated_4	4	P42025	ACTR1B	Beta-centractin	Homo sapiens	4491959.193415798
+Control	Control_1	1	Q8TC29	ENKUR	Enkurin	Homo sapiens	5849238.953812546
+Control	Control_2	2	Q8TC29	ENKUR	Enkurin	Homo sapiens	5059708.40897334
+Control	Control_3	3	Q8TC29	ENKUR	Enkurin	Homo sapiens	4953871.395914701
+Control	Control_4	4	Q8TC29	ENKUR	Enkurin	Homo sapiens	3799317.444598255
+Treated	Treated_1	1	Q8TC29	ENKUR	Enkurin	Homo sapiens	4794949.735554218
+Treated	Treated_2	2	Q8TC29	ENKUR	Enkurin	Homo sapiens	4337083.232021645
+Treated	Treated_3	3	Q8TC29	ENKUR	Enkurin	Homo sapiens	5095650.411247537
+Treated	Treated_4	4	Q8TC29	ENKUR	Enkurin	Homo sapiens	5301663.525085848
+Control	Control_1	1	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	5649073.6856997255
+Control	Control_2	2	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	4926529.746742649
+Control	Control_3	3	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	4973780.49119338
+Control	Control_4	4	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	5245573.599702949
+Treated	Treated_1	1	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	4030118.4191218284
+Treated	Treated_2	2	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	4791468.575230152
+Treated	Treated_3	3	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	4737464.690325981
+Treated	Treated_4	4	O95817	BAG3	BAG family molecular chaperone regulator 3	Homo sapiens	5291418.7548204
+Control	Control_1	1	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	2682986.421641108
+Control	Control_2	2	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	3039913.2734371647
+Control	Control_3	3	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	2757805.776668287
+Control	Control_4	4	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	3075324.3473310554
+Treated	Treated_1	1	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	3543552.459978177
+Treated	Treated_2	2	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	3308434.1178400805
+Treated	Treated_3	3	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	3104826.8447991465
+Treated	Treated_4	4	P40939	HADHA	Trifunctional enzyme subunit alpha, mitochondrial	Homo sapiens	3169279.751222659
+Control	Control_1	1	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	5170340.552380712
+Control	Control_2	2	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	4957304.758573751
+Control	Control_3	3	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	4918640.54906547
+Control	Control_4	4	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	5481280.694451717
+Treated	Treated_1	1	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	6259989.677689899
+Treated	Treated_2	2	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	4978610.155948786
+Treated	Treated_3	3	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	5639042.1530263275
+Treated	Treated_4	4	P35916	FLT4	Vascular endothelial growth factor receptor 3	Homo sapiens	4717652.215224354
+Control	Control_1	1	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	74226238.2407676
+Control	Control_2	2	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	92088746.20782748
+Control	Control_3	3	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	78428209.73981175
+Control	Control_4	4	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	78194523.40653472
+Treated	Treated_1	1	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	103438348.16721219
+Treated	Treated_2	2	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	84838689.56318584
+Treated	Treated_3	3	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	83844114.5299919
+Treated	Treated_4	4	P36888	FLT3	Receptor-type tyrosine-protein kinase FLT3	Homo sapiens	82245718.94667093
+Control	Control_1	1	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	8355759.328577699
+Control	Control_2	2	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	7434809.68743979
+Control	Control_3	3	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	8050438.6557174055
+Control	Control_4	4	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	8959854.092109758
+Treated	Treated_1	1	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	7740216.770607337
+Treated	Treated_2	2	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	6249081.409428234
+Treated	Treated_3	3	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	7475828.09268784
+Treated	Treated_4	4	O43491	EPB41L2	Band 4.1-like protein 2	Homo sapiens	8667894.066341802
+Control	Control_1	1	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	25980543.588626705
+Control	Control_2	2	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	24013293.01112519
+Control	Control_3	3	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	26821864.059191965
+Control	Control_4	4	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	20753494.14664259
+Treated	Treated_1	1	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	26410777.33697938
+Treated	Treated_2	2	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	23632341.57344707
+Treated	Treated_3	3	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	24806052.118025254
+Treated	Treated_4	4	Q9BX67	JAM3	Junctional adhesion molecule C	Homo sapiens	17174106.72655519
+Control	Control_1	1	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	4033115.811501245
+Control	Control_2	2	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	3765825.209292659
+Control	Control_3	3	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	4482397.063973702
+Control	Control_4	4	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	3748340.20624512
+Treated	Treated_1	1	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	3321940.8508524126
+Treated	Treated_2	2	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	3381200.085175804
+Treated	Treated_3	3	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	3834036.0845621913
+Treated	Treated_4	4	L0R819	ASDURF	ASNSD1 upstream open reading frame protein	Homo sapiens	3795242.011264407
+Control	Control_1	1	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	19409376.099471454
+Control	Control_2	2	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	18553256.042938273
+Control	Control_3	3	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	24271740.347881377
+Control	Control_4	4	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	20224067.642583795
+Treated	Treated_1	1	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	20585048.888049837
+Treated	Treated_2	2	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	19613845.1442439
+Treated	Treated_3	3	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	23976655.83478313
+Treated	Treated_4	4	P37235	HPCAL1	Hippocalcin-like protein 1	Homo sapiens	23281649.411832854
+Control	Control_1	1	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	1719248.709116172
+Control	Control_2	2	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	1896760.7742246797
+Control	Control_3	3	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	1737132.9449152614
+Control	Control_4	4	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	2318476.386694917
+Treated	Treated_1	1	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	2002103.222983308
+Treated	Treated_2	2	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	1857023.8891936673
+Treated	Treated_3	3	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	1845996.9027327637
+Treated	Treated_4	4	Q9Y696	CLIC4	Chloride intracellular channel protein 4	Homo sapiens	2023215.6869012108
+Control	Control_1	1	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	6838909.434375531
+Control	Control_2	2	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	8236719.304759433
+Control	Control_3	3	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	6371975.579104162
+Control	Control_4	4	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	6170864.50980351
+Treated	Treated_1	1	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	8124298.639329401
+Treated	Treated_2	2	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	6712345.140803992
+Treated	Treated_3	3	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	8132231.538937779
+Treated	Treated_4	4	Q9HCP0	CSNK1G1	Casein kinase I isoform gamma-1	Homo sapiens	7688229.121295323
+Control	Control_1	1	Q06828	FMOD	Fibromodulin	Homo sapiens	242676011.52273723
+Control	Control_2	2	Q06828	FMOD	Fibromodulin	Homo sapiens	262318522.21519446
+Control	Control_3	3	Q06828	FMOD	Fibromodulin	Homo sapiens	280916778.9583287
+Control	Control_4	4	Q06828	FMOD	Fibromodulin	Homo sapiens	273147277.9840996
+Treated	Treated_1	1	Q06828	FMOD	Fibromodulin	Homo sapiens	288421153.64345026
+Treated	Treated_2	2	Q06828	FMOD	Fibromodulin	Homo sapiens	262236967.46603897
+Treated	Treated_3	3	Q06828	FMOD	Fibromodulin	Homo sapiens	277023042.3169204
+Treated	Treated_4	4	Q06828	FMOD	Fibromodulin	Homo sapiens	310150417.9036266
+Control	Control_1	1	P13929	ENO3	Beta-enolase	Homo sapiens	9311564.900920218
+Control	Control_2	2	P13929	ENO3	Beta-enolase	Homo sapiens	7467261.996428819
+Control	Control_3	3	P13929	ENO3	Beta-enolase	Homo sapiens	7913358.284054556
+Control	Control_4	4	P13929	ENO3	Beta-enolase	Homo sapiens	8000376.596380339
+Treated	Treated_1	1	P13929	ENO3	Beta-enolase	Homo sapiens	7045040.259095557
+Treated	Treated_2	2	P13929	ENO3	Beta-enolase	Homo sapiens	8936963.504311705
+Treated	Treated_3	3	P13929	ENO3	Beta-enolase	Homo sapiens	8596751.153805189
+Treated	Treated_4	4	P13929	ENO3	Beta-enolase	Homo sapiens	8558120.647206392
+Control	Control_1	1	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	67081678.61402804
+Control	Control_2	2	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	74281903.96739294
+Control	Control_3	3	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	75004285.54154025
+Control	Control_4	4	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	76553326.98089235
+Treated	Treated_1	1	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	66665872.36031783
+Treated	Treated_2	2	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	70365439.57753566
+Treated	Treated_3	3	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	65167064.74366351
+Treated	Treated_4	4	Q8TD06	AGR3	Anterior gradient protein 3	Homo sapiens	65614752.765202105
+Control	Control_1	1	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	32780133.19774221
+Control	Control_2	2	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	29765919.586451046
+Control	Control_3	3	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	29130833.30398227
+Control	Control_4	4	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	31515948.89744648
+Treated	Treated_1	1	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	31720732.427265696
+Treated	Treated_2	2	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	27367379.290873814
+Treated	Treated_3	3	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	27672364.102681547
+Treated	Treated_4	4	P04899	GNAI2	Guanine nucleotide-binding protein G(i) subunit alpha-2	Homo sapiens	31875450.06299185
+Control	Control_1	1	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	14641248.166548138
+Control	Control_2	2	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	13563136.313580243
+Control	Control_3	3	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	15697200.656269351
+Control	Control_4	4	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	13719817.268123675
+Treated	Treated_1	1	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	11340028.6285451
+Treated	Treated_2	2	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	12761031.392930562
+Treated	Treated_3	3	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	11891379.899901709
+Treated	Treated_4	4	Q05707	COL14A1	Collagen alpha-1(XIV) chain	Homo sapiens	15615407.063345194
+Control	Control_1	1	O00410	IPO5	Importin-5	Homo sapiens	7837649.188626133
+Control	Control_2	2	O00410	IPO5	Importin-5	Homo sapiens	7528932.317832331
+Control	Control_3	3	O00410	IPO5	Importin-5	Homo sapiens	5844180.957873143
+Control	Control_4	4	O00410	IPO5	Importin-5	Homo sapiens	6377769.126495847
+Treated	Treated_1	1	O00410	IPO5	Importin-5	Homo sapiens	7320934.630254442
+Treated	Treated_2	2	O00410	IPO5	Importin-5	Homo sapiens	6180005.013933433
+Treated	Treated_3	3	O00410	IPO5	Importin-5	Homo sapiens	8201616.888776488
+Treated	Treated_4	4	O00410	IPO5	Importin-5	Homo sapiens	7357401.182171815
+Control	Control_1	1	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	82333150.43934648
+Control	Control_2	2	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	83018262.18664135
+Control	Control_3	3	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	75706535.55042747
+Control	Control_4	4	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	74977982.91191885
+Treated	Treated_1	1	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	68596850.28726147
+Treated	Treated_2	2	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	83771618.11345449
+Treated	Treated_3	3	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	87172860.20224895
+Treated	Treated_4	4	P00387	CYB5R3	NADH-cytochrome b5 reductase 3	Homo sapiens	81528241.28027062
+Control	Control_1	1	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	13057091.236713631
+Control	Control_2	2	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	12194239.438084677
+Control	Control_3	3	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	13801412.867052408
+Control	Control_4	4	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	10421057.729244798
+Treated	Treated_1	1	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	11987627.176049117
+Treated	Treated_2	2	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	12556643.49849056
+Treated	Treated_3	3	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	12753913.356974367
+Treated	Treated_4	4	P54764	EPHA4	Ephrin type-A receptor 4	Homo sapiens	13754462.463809818
+Control	Control_1	1	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	110579075.91908345
+Control	Control_2	2	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	114651840.99359271
+Control	Control_3	3	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	128414249.25908493
+Control	Control_4	4	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	130112058.6229277
+Treated	Treated_1	1	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	120671123.64566104
+Treated	Treated_2	2	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	128452016.83369505
+Treated	Treated_3	3	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	135039883.95536274
+Treated	Treated_4	4	O60262	GNG7	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7	Homo sapiens	117243045.91737239
+Control	Control_1	1	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	5914859.074085599
+Control	Control_2	2	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	7594110.987996405
+Control	Control_3	3	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	6168209.145839574
+Control	Control_4	4	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	8301472.854620964
+Treated	Treated_1	1	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	8184226.11324331
+Treated	Treated_2	2	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	6481623.575941325
+Treated	Treated_3	3	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	6101321.735772859
+Treated	Treated_4	4	P60953	CDC42	Cell division control protein 42 homolog	Homo sapiens	6367780.930217465
+Control	Control_1	1	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	17899897.743744157
+Control	Control_2	2	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	20589420.18423537
+Control	Control_3	3	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	15849082.16390226
+Control	Control_4	4	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	19751999.368318457
+Treated	Treated_1	1	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	14532319.472997598
+Treated	Treated_2	2	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	20445285.79880317
+Treated	Treated_3	3	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	17905701.28137214
+Treated	Treated_4	4	O14979	HNRNPDL	Heterogeneous nuclear ribonucleoprotein D-like	Homo sapiens	18399608.407979187
+Control	Control_1	1	O15484	CAPN5	Calpain-5	Homo sapiens	29659265.11045928
+Control	Control_2	2	O15484	CAPN5	Calpain-5	Homo sapiens	33052582.70522417
+Control	Control_3	3	O15484	CAPN5	Calpain-5	Homo sapiens	31168714.91904097
+Control	Control_4	4	O15484	CAPN5	Calpain-5	Homo sapiens	35741297.24237194
+Treated	Treated_1	1	O15484	CAPN5	Calpain-5	Homo sapiens	24931402.625952423
+Treated	Treated_2	2	O15484	CAPN5	Calpain-5	Homo sapiens	27295081.39439345
+Treated	Treated_3	3	O15484	CAPN5	Calpain-5	Homo sapiens	26071940.617288735
+Treated	Treated_4	4	O15484	CAPN5	Calpain-5	Homo sapiens	32311977.436021473
+Control	Control_1	1	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	22424175.27160665
+Control	Control_2	2	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	34410413.01463468
+Control	Control_3	3	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	26981388.659882408
+Control	Control_4	4	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	30345381.523751084
+Treated	Treated_1	1	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	24170412.2175231
+Treated	Treated_2	2	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	27276157.11168846
+Treated	Treated_3	3	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	28517132.179698657
+Treated	Treated_4	4	Q5VT06	CEP350	Centrosome-associated protein 350	Homo sapiens	24832694.14430044
+Control	Control_1	1	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	3514756.093806009
+Control	Control_2	2	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	4231577.240966252
+Control	Control_3	3	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	4105471.419169797
+Control	Control_4	4	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	3822279.278096825
+Treated	Treated_1	1	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	4417693.189559163
+Treated	Treated_2	2	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	2939801.1215798794
+Treated	Treated_3	3	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	3709625.9636557954
+Treated	Treated_4	4	Q16555	DPYSL2	Dihydropyrimidinase-related protein 2	Homo sapiens	3459067.75574342
+Control	Control_1	1	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	8495382.086600453
+Control	Control_2	2	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	8222627.504519803
+Control	Control_3	3	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	8273711.394518795
+Control	Control_4	4	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	6885620.909939364
+Treated	Treated_1	1	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	7766977.992833928
+Treated	Treated_2	2	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	8197335.969272519
+Treated	Treated_3	3	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	8384450.963677568
+Treated	Treated_4	4	Q9UM19	HPCAL4	Hippocalcin-like protein 4	Homo sapiens	6653706.563242752
+Control	Control_1	1	Q02246	CNTN2	Contactin-2	Homo sapiens	12237027.892594537
+Control	Control_2	2	Q02246	CNTN2	Contactin-2	Homo sapiens	13477192.290991625
+Control	Control_3	3	Q02246	CNTN2	Contactin-2	Homo sapiens	15188384.776416944
+Control	Control_4	4	Q02246	CNTN2	Contactin-2	Homo sapiens	14013153.743608646
+Treated	Treated_1	1	Q02246	CNTN2	Contactin-2	Homo sapiens	15158316.690514766
+Treated	Treated_2	2	Q02246	CNTN2	Contactin-2	Homo sapiens	10724193.148010697
+Treated	Treated_3	3	Q02246	CNTN2	Contactin-2	Homo sapiens	12772080.7511228
+Treated	Treated_4	4	Q02246	CNTN2	Contactin-2	Homo sapiens	13837326.4327221
+Control	Control_1	1	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	5947198.840965742
+Control	Control_2	2	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	4750486.015547748
+Control	Control_3	3	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	6484091.87637751
+Control	Control_4	4	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	5994223.1086682845
+Treated	Treated_1	1	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	5509020.629211188
+Treated	Treated_2	2	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	6549731.746153721
+Treated	Treated_3	3	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	4831203.739930456
+Treated	Treated_4	4	Q2KHM9	KIAA0753	Protein moonraker	Homo sapiens	5483413.229507305
+Control	Control_1	1	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	42820279.29600442
+Control	Control_2	2	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	40617102.59722986
+Control	Control_3	3	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	38157995.60701582
+Control	Control_4	4	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	38440366.669297114
+Treated	Treated_1	1	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	38122878.32760986
+Treated	Treated_2	2	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	42745562.79104484
+Treated	Treated_3	3	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	37843427.339655176
+Treated	Treated_4	4	Q9H147	DNTTIP1	Deoxynucleotidyltransferase terminal-interacting protein 1	Homo sapiens	41912401.887828685
+Control	Control_1	1	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	28125461.573043507
+Control	Control_2	2	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	39705828.31511917
+Control	Control_3	3	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	45038885.536616184
+Control	Control_4	4	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	36804562.73239323
+Treated	Treated_1	1	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	34628484.15615206
+Treated	Treated_2	2	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	33050605.22803877
+Treated	Treated_3	3	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	37578385.43042382
+Treated	Treated_4	4	Q00839	HNRNPU	Heterogeneous nuclear ribonucleoprotein U	Homo sapiens	32657441.52159477
+Control	Control_1	1	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1340591.1641395362
+Control	Control_2	2	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1169866.3902665034
+Control	Control_3	3	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1496996.2796057214
+Control	Control_4	4	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1416229.96065444
+Treated	Treated_1	1	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1424330.8361713716
+Treated	Treated_2	2	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1459357.1067212068
+Treated	Treated_3	3	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1356098.2890145546
+Treated	Treated_4	4	Q14974	KPNB1	Importin subunit beta-1	Homo sapiens	1488420.486441377
+Control	Control_1	1	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1576784.8029470567
+Control	Control_2	2	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1743112.4220623854
+Control	Control_3	3	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1713280.6542610794
+Control	Control_4	4	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1477061.325376808
+Treated	Treated_1	1	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1555284.487404048
+Treated	Treated_2	2	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1658754.5055570723
+Treated	Treated_3	3	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1663948.8178634287
+Treated	Treated_4	4	Q9NR23	GDF3	Growth/differentiation factor 3	Homo sapiens	1812340.3708495896
+Control	Control_1	1	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3250966.1270138742
+Control	Control_2	2	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3372791.6893959776
+Control	Control_3	3	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3249675.600280334
+Control	Control_4	4	Q7Z6K5	ARPIN	Arpin	Homo sapiens	2590260.610259383
+Treated	Treated_1	1	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3347555.8583168327
+Treated	Treated_2	2	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3106504.24936446
+Treated	Treated_3	3	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3334893.5534386905
+Treated	Treated_4	4	Q7Z6K5	ARPIN	Arpin	Homo sapiens	3131178.539261083
+Control	Control_1	1	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	20790464.4631486
+Control	Control_2	2	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	19327880.540137526
+Control	Control_3	3	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	20904465.735742066
+Control	Control_4	4	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	21063997.629959106
+Treated	Treated_1	1	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	18309269.982366327
+Treated	Treated_2	2	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	21138330.991786968
+Treated	Treated_3	3	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	19887760.44522994
+Treated	Treated_4	4	Q96KP4	CNDP2	Cytosolic non-specific dipeptidase	Homo sapiens	17397478.233164106
+Control	Control_1	1	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	209491215.2185655
+Control	Control_2	2	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	214116532.30681413
+Control	Control_3	3	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	241960819.0785299
+Control	Control_4	4	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	204485819.70895758
+Treated	Treated_1	1	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	249651481.80721128
+Treated	Treated_2	2	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	229702676.4587522
+Treated	Treated_3	3	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	170190102.51516825
+Treated	Treated_4	4	Q9NZ45	CISD1	CDGSH iron-sulfur domain-containing protein 1	Homo sapiens	190388904.22157153
+Control	Control_1	1	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	11066844.36813439
+Control	Control_2	2	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	8950012.45489659
+Control	Control_3	3	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	10940579.127347412
+Control	Control_4	4	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	12021809.457116824
+Treated	Treated_1	1	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	10125811.509321298
+Treated	Treated_2	2	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	12053195.067438941
+Treated	Treated_3	3	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	11948685.461354842
+Treated	Treated_4	4	P43155	CRAT	Carnitine O-acetyltransferase	Homo sapiens	10351288.76096254
+Control	Control_1	1	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	22857544.141973745
+Control	Control_2	2	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	23373278.383178473
+Control	Control_3	3	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	24022870.0722936
+Control	Control_4	4	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	19507860.852413926
+Treated	Treated_1	1	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	22593954.525275372
+Treated	Treated_2	2	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	19274403.213005904
+Treated	Treated_3	3	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	22128479.780026358
+Treated	Treated_4	4	Q2M2I8	AAK1	AP2-associated protein kinase 1	Homo sapiens	22419646.412230734
+Control	Control_1	1	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	3686408.5044163126
+Control	Control_2	2	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	3904938.465384752
+Control	Control_3	3	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	4272607.7731417045
+Control	Control_4	4	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	5574653.4715703
+Treated	Treated_1	1	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	3855237.7684472157
+Treated	Treated_2	2	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	4511206.150342281
+Treated	Treated_3	3	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	4058081.7540579014
+Treated	Treated_4	4	P17066	HSPA6	Heat shock 70 kDa protein 6	Homo sapiens	4282858.338755745
+Control	Control_1	1	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	5034688.699318314
+Control	Control_2	2	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	4693608.317003791
+Control	Control_3	3	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	4750215.721087453
+Control	Control_4	4	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	4781423.030360638
+Treated	Treated_1	1	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	4824739.942425149
+Treated	Treated_2	2	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	3629802.8499397393
+Treated	Treated_3	3	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	4730632.784036129
+Treated	Treated_4	4	Q96ID5	IGSF21	Immunoglobulin superfamily member 21	Homo sapiens	4504489.133022347
+Control	Control_1	1	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1521019.9098490865
+Control	Control_2	2	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1592041.454193429
+Control	Control_3	3	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1523902.6939983584
+Control	Control_4	4	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1568060.9270954388
+Treated	Treated_1	1	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1292086.4759393227
+Treated	Treated_2	2	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1529004.2228758726
+Treated	Treated_3	3	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1442959.6425673761
+Treated	Treated_4	4	P29218	IMPA1	Inositol monophosphatase 1	Homo sapiens	1446380.7587180033
+Control	Control_1	1	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	18538235.06948273
+Control	Control_2	2	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	15392025.028840357
+Control	Control_3	3	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	15109886.863337481
+Control	Control_4	4	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	14126935.10879107
+Treated	Treated_1	1	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	15704124.604643809
+Treated	Treated_2	2	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	18101216.130319126
+Treated	Treated_3	3	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	13616116.121854989
+Treated	Treated_4	4	O43708	GSTZ1	Maleylacetoacetate isomerase	Homo sapiens	16622834.30390065
+Control	Control_1	1	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	42034651.217474714
+Control	Control_2	2	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	50910193.51693951
+Control	Control_3	3	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	57243709.12464392
+Control	Control_4	4	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	51719538.10158247
+Treated	Treated_1	1	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	48272048.606991276
+Treated	Treated_2	2	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	52643604.57987565
+Treated	Treated_3	3	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	60622765.00949004
+Treated	Treated_4	4	P18507	GABRG2	Gamma-aminobutyric acid receptor subunit gamma-2	Homo sapiens	63876427.01590009
+Control	Control_1	1	Q13938	CAPS	Calcyphosin	Homo sapiens	12581022.200258473
+Control	Control_2	2	Q13938	CAPS	Calcyphosin	Homo sapiens	11540940.846659668
+Control	Control_3	3	Q13938	CAPS	Calcyphosin	Homo sapiens	11161295.18615333
+Control	Control_4	4	Q13938	CAPS	Calcyphosin	Homo sapiens	11910989.793573475
+Treated	Treated_1	1	Q13938	CAPS	Calcyphosin	Homo sapiens	9532732.732284592
+Treated	Treated_2	2	Q13938	CAPS	Calcyphosin	Homo sapiens	9720060.25927102
+Treated	Treated_3	3	Q13938	CAPS	Calcyphosin	Homo sapiens	12295675.188444935
+Treated	Treated_4	4	Q13938	CAPS	Calcyphosin	Homo sapiens	11751611.046409912
+Control	Control_1	1	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	104931884.57864924
+Control	Control_2	2	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	98041513.94909813
+Control	Control_3	3	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	87930864.88848564
+Control	Control_4	4	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	85629242.58379444
+Treated	Treated_1	1	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	105621082.52396853
+Treated	Treated_2	2	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	107223028.45479704
+Treated	Treated_3	3	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	85270571.1067974
+Treated	Treated_4	4	P09622	DLD	Dihydrolipoyl dehydrogenase, mitochondrial	Homo sapiens	88715843.59494264
+Control	Control_1	1	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	21246248.121515952
+Control	Control_2	2	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	23519179.76682498
+Control	Control_3	3	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	20727718.186279397
+Control	Control_4	4	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	19653797.50097518
+Treated	Treated_1	1	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	23799065.26736699
+Treated	Treated_2	2	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	22850616.925847463
+Treated	Treated_3	3	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	19979267.96461879
+Treated	Treated_4	4	Q9BPU6	DPYSL5	Dihydropyrimidinase-related protein 5	Homo sapiens	20051899.923906345
+Control	Control_1	1	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	17993268.475648608
+Control	Control_2	2	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	14033060.033301456
+Control	Control_3	3	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	15551238.51223024
+Control	Control_4	4	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	16798786.242560215
+Treated	Treated_1	1	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	16308440.002396137
+Treated	Treated_2	2	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	17658625.73288085
+Treated	Treated_3	3	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	13419294.421317551
+Treated	Treated_4	4	Q9Y376	CAB39	Calcium-binding protein 39	Homo sapiens	16061450.613094317
+Control	Control_1	1	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	33006144.837501794
+Control	Control_2	2	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	33117639.302831873
+Control	Control_3	3	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	33966143.47602318
+Control	Control_4	4	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	28333921.08221143
+Treated	Treated_1	1	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	37174982.98675915
+Treated	Treated_2	2	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	33534981.008618586
+Treated	Treated_3	3	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	33908685.31043338
+Treated	Treated_4	4	Q9UHP7	CLEC2D	C-type lectin domain family 2 member D	Homo sapiens	30126446.22748015
+Control	Control_1	1	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	31402849.407502227
+Control	Control_2	2	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	35390253.65400393
+Control	Control_3	3	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	30769607.451972406
+Control	Control_4	4	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	31450578.874411643
+Treated	Treated_1	1	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	31849933.929127384
+Treated	Treated_2	2	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	26005629.14359026
+Treated	Treated_3	3	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	30270216.82397875
+Treated	Treated_4	4	P40123	CAP2	Adenylyl cyclase-associated protein 2	Homo sapiens	33120752.20426726
+Control	Control_1	1	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	66773375.76228068
+Control	Control_2	2	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	69945411.27729505
+Control	Control_3	3	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	70013963.19127242
+Control	Control_4	4	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	59610364.67669776
+Treated	Treated_1	1	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	76380320.34090532
+Treated	Treated_2	2	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	61027021.8019841
+Treated	Treated_3	3	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	73408900.50099348
+Treated	Treated_4	4	O14576	DYNC1I1	Cytoplasmic dynein 1 intermediate chain 1	Homo sapiens	69283668.02902707
+Control	Control_1	1	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	5953529.355461013
+Control	Control_2	2	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	6211453.373785596
+Control	Control_3	3	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	6671289.678947512
+Control	Control_4	4	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	6712883.569752552
+Treated	Treated_1	1	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	5898559.006076325
+Treated	Treated_2	2	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	6063892.606661846
+Treated	Treated_3	3	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	5641189.463347733
+Treated	Treated_4	4	P25311	AZGP1	Zinc-alpha-2-glycoprotein	Homo sapiens	5298885.414129155
+Control	Control_1	1	P02792	FTL	Ferritin light chain	Homo sapiens	1066278.1667483745
+Control	Control_2	2	P02792	FTL	Ferritin light chain	Homo sapiens	861758.1874935774
+Control	Control_3	3	P02792	FTL	Ferritin light chain	Homo sapiens	894806.6559600212
+Control	Control_4	4	P02792	FTL	Ferritin light chain	Homo sapiens	1004761.8368121567
+Treated	Treated_1	1	P02792	FTL	Ferritin light chain	Homo sapiens	839608.843067279
+Treated	Treated_2	2	P02792	FTL	Ferritin light chain	Homo sapiens	1015336.0530452082
+Treated	Treated_3	3	P02792	FTL	Ferritin light chain	Homo sapiens	884774.0435185104
+Treated	Treated_4	4	P02792	FTL	Ferritin light chain	Homo sapiens	858255.1529139627
+Control	Control_1	1	O75369	FLNB	Filamin-B	Homo sapiens	18225359.75642081
+Control	Control_2	2	O75369	FLNB	Filamin-B	Homo sapiens	17720129.48432203
+Control	Control_3	3	O75369	FLNB	Filamin-B	Homo sapiens	19840602.270804446
+Control	Control_4	4	O75369	FLNB	Filamin-B	Homo sapiens	22435255.97461822
+Treated	Treated_1	1	O75369	FLNB	Filamin-B	Homo sapiens	20765031.323918205
+Treated	Treated_2	2	O75369	FLNB	Filamin-B	Homo sapiens	20318421.299217824
+Treated	Treated_3	3	O75369	FLNB	Filamin-B	Homo sapiens	18159825.673320293
+Treated	Treated_4	4	O75369	FLNB	Filamin-B	Homo sapiens	18880246.025935028
+Control	Control_1	1	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	7896817.132625884
+Control	Control_2	2	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	7759881.269387209
+Control	Control_3	3	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	7923324.749665425
+Control	Control_4	4	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	6888298.816418872
+Treated	Treated_1	1	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	9371814.46719505
+Treated	Treated_2	2	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	6782414.9978525685
+Treated	Treated_3	3	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	7672365.042789083
+Treated	Treated_4	4	P31942	HNRNPH3	Heterogeneous nuclear ribonucleoprotein H3	Homo sapiens	8487807.249678487
+Control	Control_1	1	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	14942376.958814085
+Control	Control_2	2	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	18007802.793301776
+Control	Control_3	3	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	13940043.406987254
+Control	Control_4	4	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	14940216.118345505
+Treated	Treated_1	1	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	12638737.385559617
+Treated	Treated_2	2	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	17967045.382549748
+Treated	Treated_3	3	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	14250357.777038807
+Treated	Treated_4	4	O15523	DDX3Y	ATP-dependent RNA helicase DDX3Y	Homo sapiens	15010576.785972636
+Control	Control_1	1	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	144105086.56210646
+Control	Control_2	2	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	137893194.1763663
+Control	Control_3	3	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	148591976.2733249
+Control	Control_4	4	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	142274168.58985916
+Treated	Treated_1	1	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	145912321.00185952
+Treated	Treated_2	2	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	126507889.56767145
+Treated	Treated_3	3	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	131800560.74980402
+Treated	Treated_4	4	Q02952	AKAP12	A-kinase anchor protein 12	Homo sapiens	143588375.4998147
+Control	Control_1	1	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	4553367.741510815
+Control	Control_2	2	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	4645649.657039932
+Control	Control_3	3	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	3888238.603839327
+Control	Control_4	4	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	3756877.737175466
+Treated	Treated_1	1	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	3695361.7166152853
+Treated	Treated_2	2	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	4008106.1846199366
+Treated	Treated_3	3	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	4166190.8576740497
+Treated	Treated_4	4	P14415	ATP1B2	Sodium/potassium-transporting ATPase subunit beta-2	Homo sapiens	3718962.484813038
+Control	Control_1	1	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	42459556.47175059
+Control	Control_2	2	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	46215644.024610914
+Control	Control_3	3	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	47965580.341048665
+Control	Control_4	4	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	40715227.942407526
+Treated	Treated_1	1	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	45910635.20831474
+Treated	Treated_2	2	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	37899930.60357103
+Treated	Treated_3	3	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	40407631.185044385
+Treated	Treated_4	4	P62873	GNB1	Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1	Homo sapiens	43759937.44616903
+Control	Control_1	1	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	50725121.30495818
+Control	Control_2	2	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	50028299.47080803
+Control	Control_3	3	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	55781097.61220967
+Control	Control_4	4	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	48934492.55146853
+Treated	Treated_1	1	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	54874166.85887438
+Treated	Treated_2	2	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	53643617.49420119
+Treated	Treated_3	3	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	57188953.21018894
+Treated	Treated_4	4	O43237	DYNC1LI2	Cytoplasmic dynein 1 light intermediate chain 2	Homo sapiens	58669571.990386866
+Control	Control_1	1	O75496	GMNN	Geminin	Homo sapiens	30024045.53866681
+Control	Control_2	2	O75496	GMNN	Geminin	Homo sapiens	28119209.529286917
+Control	Control_3	3	O75496	GMNN	Geminin	Homo sapiens	32879913.301188093
+Control	Control_4	4	O75496	GMNN	Geminin	Homo sapiens	30220054.996555846
+Treated	Treated_1	1	O75496	GMNN	Geminin	Homo sapiens	27018246.572287362
+Treated	Treated_2	2	O75496	GMNN	Geminin	Homo sapiens	30142237.688208368
+Treated	Treated_3	3	O75496	GMNN	Geminin	Homo sapiens	27779318.436432336
+Treated	Treated_4	4	O75496	GMNN	Geminin	Homo sapiens	22769726.970181596
+Control	Control_1	1	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	60881537.575448774
+Control	Control_2	2	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	64665381.17889683
+Control	Control_3	3	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	64135922.19996672
+Control	Control_4	4	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	57321705.324211486
+Treated	Treated_1	1	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	64860839.16376865
+Treated	Treated_2	2	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	70313792.41791303
+Treated	Treated_3	3	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	59744498.9636418
+Treated	Treated_4	4	Q9NUJ1	ABHD10	Mycophenolic acid acyl-glucuronide esterase, mitochondrial	Homo sapiens	69080242.11455768
+Control	Control_1	1	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	7617592.844962577
+Control	Control_2	2	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	9911380.36004516
+Control	Control_3	3	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	8866338.466545558
+Control	Control_4	4	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	8180939.961513337
+Treated	Treated_1	1	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	10552193.132226773
+Treated	Treated_2	2	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	9868773.40984314
+Treated	Treated_3	3	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	10377924.828717522
+Treated	Treated_4	4	Q9HAV5	EDA2R	Tumor necrosis factor receptor superfamily member 27	Homo sapiens	9710265.563750224
+Control	Control_1	1	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	7378516.074716402
+Control	Control_2	2	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	6838749.629571206
+Control	Control_3	3	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	7435837.403798346
+Control	Control_4	4	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	7054913.180721928
+Treated	Treated_1	1	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	6659538.411122748
+Treated	Treated_2	2	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	6977966.0525466
+Treated	Treated_3	3	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	6233774.038228133
+Treated	Treated_4	4	O14964	HGS	Hepatocyte growth factor-regulated tyrosine kinase substrate	Homo sapiens	7096618.25165546
+Control	Control_1	1	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	63721049.315139525
+Control	Control_2	2	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	61668245.744958594
+Control	Control_3	3	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	64565571.01908142
+Control	Control_4	4	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	58946902.790949605
+Treated	Treated_1	1	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	61083260.00673732
+Treated	Treated_2	2	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	61053197.59828947
+Treated	Treated_3	3	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	74334012.70494273
+Treated	Treated_4	4	P04406	GAPDH	Glyceraldehyde-3-phosphate dehydrogenase	Homo sapiens	53203740.78996951
+Control	Control_1	1	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	50407310.84570197
+Control	Control_2	2	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	37933888.13105725
+Control	Control_3	3	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	39509760.65014222
+Control	Control_4	4	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	42098758.213360265
+Treated	Treated_1	1	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	43433795.72660589
+Treated	Treated_2	2	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	40795027.77643013
+Treated	Treated_3	3	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	41859494.940992266
+Treated	Treated_4	4	P51452	DUSP3	Dual specificity protein phosphatase 3	Homo sapiens	47240263.36508696
+Control	Control_1	1	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	123466059.72374122
+Control	Control_2	2	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	98488255.28853098
+Control	Control_3	3	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	101449910.24906415
+Control	Control_4	4	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	93457287.52951245
+Treated	Treated_1	1	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	112050500.36366794
+Treated	Treated_2	2	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	93327711.9652133
+Treated	Treated_3	3	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	99513759.05783619
+Treated	Treated_4	4	A8TX70	COL6A5	Collagen alpha-5(VI) chain	Homo sapiens	84791856.01098259
+Control	Control_1	1	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	16510225.223399844
+Control	Control_2	2	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	27438714.61299123
+Control	Control_3	3	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	24242443.355483066
+Control	Control_4	4	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	23870803.96259797
+Treated	Treated_1	1	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	19734094.546503387
+Treated	Treated_2	2	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	18365663.50693333
+Treated	Treated_3	3	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	21196847.423596557
+Treated	Treated_4	4	Q96CN7	ISOC1	Isochorismatase domain-containing protein 1	Homo sapiens	21987082.66817352
+Control	Control_1	1	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	136105625.80369848
+Control	Control_2	2	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	126514732.39077148
+Control	Control_3	3	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	144173079.58155987
+Control	Control_4	4	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	130971132.95622878
+Treated	Treated_1	1	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	130467326.89434597
+Treated	Treated_2	2	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	142435206.8622755
+Treated	Treated_3	3	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	117990533.95717984
+Treated	Treated_4	4	P09211	GSTP1	Glutathione S-transferase P	Homo sapiens	131488497.9127494
+Control	Control_1	1	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	11074136.484302482
+Control	Control_2	2	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	10938605.721549526
+Control	Control_3	3	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	13699136.112592923
+Control	Control_4	4	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	13120605.664993003
+Treated	Treated_1	1	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	12390701.650904233
+Treated	Treated_2	2	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	13416627.507836878
+Treated	Treated_3	3	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	12188986.621171117
+Treated	Treated_4	4	P31150	GDI1	Rab GDP dissociation inhibitor alpha	Homo sapiens	13478912.731482586
+Control	Control_1	1	Q03135	CAV1	Caveolin-1	Homo sapiens	4071536.4112345413
+Control	Control_2	2	Q03135	CAV1	Caveolin-1	Homo sapiens	4375729.83446837
+Control	Control_3	3	Q03135	CAV1	Caveolin-1	Homo sapiens	4620715.788893311
+Control	Control_4	4	Q03135	CAV1	Caveolin-1	Homo sapiens	4005727.9337203554
+Treated	Treated_1	1	Q03135	CAV1	Caveolin-1	Homo sapiens	4146215.755125042
+Treated	Treated_2	2	Q03135	CAV1	Caveolin-1	Homo sapiens	3910828.2897750135
+Treated	Treated_3	3	Q03135	CAV1	Caveolin-1	Homo sapiens	4763752.615034395
+Treated	Treated_4	4	Q03135	CAV1	Caveolin-1	Homo sapiens	4236836.735766848
+Control	Control_1	1	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1350513.9489852698
+Control	Control_2	2	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1386410.6779474025
+Control	Control_3	3	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1292619.4906499006
+Control	Control_4	4	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1316921.2271900498
+Treated	Treated_1	1	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1332501.2327653784
+Treated	Treated_2	2	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1372506.130546217
+Treated	Treated_3	3	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1507978.4760728802
+Treated	Treated_4	4	Q8N568	DCLK2	Serine/threonine-protein kinase DCLK2	Homo sapiens	1173757.9534004105
+Control	Control_1	1	P55087	AQP4	Aquaporin-4	Homo sapiens	4261697.511133251
+Control	Control_2	2	P55087	AQP4	Aquaporin-4	Homo sapiens	3733813.980477211
+Control	Control_3	3	P55087	AQP4	Aquaporin-4	Homo sapiens	4898913.400337706
+Control	Control_4	4	P55087	AQP4	Aquaporin-4	Homo sapiens	3499931.596222374
+Treated	Treated_1	1	P55087	AQP4	Aquaporin-4	Homo sapiens	4295392.485701139
+Treated	Treated_2	2	P55087	AQP4	Aquaporin-4	Homo sapiens	4046080.943046509
+Treated	Treated_3	3	P55087	AQP4	Aquaporin-4	Homo sapiens	3981127.310567836
+Treated	Treated_4	4	P55087	AQP4	Aquaporin-4	Homo sapiens	4543184.965834109
+Control	Control_1	1	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	48923136.00874373
+Control	Control_2	2	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	42002936.93818152
+Control	Control_3	3	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	48580840.74673279
+Control	Control_4	4	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	47713973.304685265
+Treated	Treated_1	1	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	42919713.90770127
+Treated	Treated_2	2	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	39899100.68585171
+Treated	Treated_3	3	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	50235357.65376032
+Treated	Treated_4	4	P18505	GABRB1	Gamma-aminobutyric acid receptor subunit beta-1	Homo sapiens	49740859.89749033
+Control	Control_1	1	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	2828235.1334850728
+Control	Control_2	2	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	2540901.371900812
+Control	Control_3	3	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	3036101.186378339
+Control	Control_4	4	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	3814751.0600269204
+Treated	Treated_1	1	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	2725602.8192462926
+Treated	Treated_2	2	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	2830750.8342718
+Treated	Treated_3	3	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	2465244.305955708
+Treated	Treated_4	4	P55084	HADHB	Trifunctional enzyme subunit beta, mitochondrial	Homo sapiens	2467420.666009364
+Control	Control_1	1	Q9Y281	CFL2	Cofilin-2	Homo sapiens	11350698.49398901
+Control	Control_2	2	Q9Y281	CFL2	Cofilin-2	Homo sapiens	11967238.641184391
+Control	Control_3	3	Q9Y281	CFL2	Cofilin-2	Homo sapiens	9239621.307776107
+Control	Control_4	4	Q9Y281	CFL2	Cofilin-2	Homo sapiens	8859214.776225168
+Treated	Treated_1	1	Q9Y281	CFL2	Cofilin-2	Homo sapiens	8619271.797037171
+Treated	Treated_2	2	Q9Y281	CFL2	Cofilin-2	Homo sapiens	8898092.263348833
+Treated	Treated_3	3	Q9Y281	CFL2	Cofilin-2	Homo sapiens	9524039.171773482
+Treated	Treated_4	4	Q9Y281	CFL2	Cofilin-2	Homo sapiens	8331220.817794175
+Control	Control_1	1	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	214405159.48804742
+Control	Control_2	2	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	254185465.93906063
+Control	Control_3	3	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	226604466.69723162
+Control	Control_4	4	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	212677319.30269814
+Treated	Treated_1	1	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	204208750.6959891
+Treated	Treated_2	2	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	257279069.7268911
+Treated	Treated_3	3	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	206817645.48992446
+Treated	Treated_4	4	P42262	GRIA2	Glutamate receptor 2	Homo sapiens	227009667.7812873
+Control	Control_1	1	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	53039470.808254726
+Control	Control_2	2	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	50575405.85950433
+Control	Control_3	3	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	49297141.13131521
+Control	Control_4	4	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	49346109.326291926
+Treated	Treated_1	1	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	43380242.30225589
+Treated	Treated_2	2	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	44410770.438538544
+Treated	Treated_3	3	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	45597839.062388934
+Treated	Treated_4	4	O15540	FABP7	Fatty acid-binding protein, brain	Homo sapiens	35567170.02660099
+Control	Control_1	1	P22676	CALB2	Calretinin	Homo sapiens	148843466.44593638
+Control	Control_2	2	P22676	CALB2	Calretinin	Homo sapiens	153790356.75675577
+Control	Control_3	3	P22676	CALB2	Calretinin	Homo sapiens	154056467.9252889
+Control	Control_4	4	P22676	CALB2	Calretinin	Homo sapiens	153420658.12560585
+Treated	Treated_1	1	P22676	CALB2	Calretinin	Homo sapiens	158700213.12738737
+Treated	Treated_2	2	P22676	CALB2	Calretinin	Homo sapiens	159784937.97032186
+Treated	Treated_3	3	P22676	CALB2	Calretinin	Homo sapiens	183988397.02725747
+Treated	Treated_4	4	P22676	CALB2	Calretinin	Homo sapiens	157924339.57436368
+Control	Control_1	1	P12277	CKB	Creatine kinase B-type	Homo sapiens	5273407.961851076
+Control	Control_2	2	P12277	CKB	Creatine kinase B-type	Homo sapiens	4541049.545826205
+Control	Control_3	3	P12277	CKB	Creatine kinase B-type	Homo sapiens	4994918.8985799905
+Control	Control_4	4	P12277	CKB	Creatine kinase B-type	Homo sapiens	4977273.917409217
+Treated	Treated_1	1	P12277	CKB	Creatine kinase B-type	Homo sapiens	4718144.305366861
+Treated	Treated_2	2	P12277	CKB	Creatine kinase B-type	Homo sapiens	4048431.368051739
+Treated	Treated_3	3	P12277	CKB	Creatine kinase B-type	Homo sapiens	4204040.820329165
+Treated	Treated_4	4	P12277	CKB	Creatine kinase B-type	Homo sapiens	5061975.424829793
+Control	Control_1	1	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	769480.9240170479
+Control	Control_2	2	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	754205.3180072325
+Control	Control_3	3	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	721267.1692302864
+Control	Control_4	4	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	781057.3227588623
+Treated	Treated_1	1	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	821157.226682217
+Treated	Treated_2	2	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	938415.3114567136
+Treated	Treated_3	3	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	773172.0220960653
+Treated	Treated_4	4	Q9UKY7	CDV3	Protein CDV3 homolog	Homo sapiens	760524.5142030111
+Control	Control_1	1	O75477	ERLIN1	Erlin-1	Homo sapiens	113740790.70305704
+Control	Control_2	2	O75477	ERLIN1	Erlin-1	Homo sapiens	124786866.3277818
+Control	Control_3	3	O75477	ERLIN1	Erlin-1	Homo sapiens	140491463.71298832
+Control	Control_4	4	O75477	ERLIN1	Erlin-1	Homo sapiens	117253328.59541662
+Treated	Treated_1	1	O75477	ERLIN1	Erlin-1	Homo sapiens	95341131.0727788
+Treated	Treated_2	2	O75477	ERLIN1	Erlin-1	Homo sapiens	110973957.0470511
+Treated	Treated_3	3	O75477	ERLIN1	Erlin-1	Homo sapiens	98411439.02168457
+Treated	Treated_4	4	O75477	ERLIN1	Erlin-1	Homo sapiens	100193306.98111822
+Control	Control_1	1	O75955	FLOT1	Flotillin-1	Homo sapiens	3437925.295854714
+Control	Control_2	2	O75955	FLOT1	Flotillin-1	Homo sapiens	2749391.3010587753
+Control	Control_3	3	O75955	FLOT1	Flotillin-1	Homo sapiens	2647146.9723110553
+Control	Control_4	4	O75955	FLOT1	Flotillin-1	Homo sapiens	3286835.672404155
+Treated	Treated_1	1	O75955	FLOT1	Flotillin-1	Homo sapiens	2875023.129427078
+Treated	Treated_2	2	O75955	FLOT1	Flotillin-1	Homo sapiens	2536166.3704016185
+Treated	Treated_3	3	O75955	FLOT1	Flotillin-1	Homo sapiens	2870587.7325582067
+Treated	Treated_4	4	O75955	FLOT1	Flotillin-1	Homo sapiens	2468735.982265048
+Control	Control_1	1	P52790	HK3	Hexokinase-3	Homo sapiens	17129152.801302753
+Control	Control_2	2	P52790	HK3	Hexokinase-3	Homo sapiens	19095137.509463307
+Control	Control_3	3	P52790	HK3	Hexokinase-3	Homo sapiens	14378889.472529816
+Control	Control_4	4	P52790	HK3	Hexokinase-3	Homo sapiens	20174921.498693656
+Treated	Treated_1	1	P52790	HK3	Hexokinase-3	Homo sapiens	19235382.781001575
+Treated	Treated_2	2	P52790	HK3	Hexokinase-3	Homo sapiens	20445206.112715863
+Treated	Treated_3	3	P52790	HK3	Hexokinase-3	Homo sapiens	17994847.20644652
+Treated	Treated_4	4	P52790	HK3	Hexokinase-3	Homo sapiens	19580815.37520168
+Control	Control_1	1	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	19802643.88007537
+Control	Control_2	2	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	19937392.62651221
+Control	Control_3	3	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	22179498.428987376
+Control	Control_4	4	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	22007184.058143184
+Treated	Treated_1	1	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	21925279.670582544
+Treated	Treated_2	2	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	25251388.471646953
+Treated	Treated_3	3	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	21333946.339533124
+Treated	Treated_4	4	P63215	GNG3	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3	Homo sapiens	22997888.35103417
+Control	Control_1	1	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	5310810.909762054
+Control	Control_2	2	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	5209464.695059237
+Control	Control_3	3	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	5348931.956673662
+Control	Control_4	4	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	4281214.13862023
+Treated	Treated_1	1	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	4838344.010494545
+Treated	Treated_2	2	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	5746798.0591773
+Treated	Treated_3	3	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	4971268.856925005
+Treated	Treated_4	4	Q13642	FHL1	Four and a half LIM domains protein 1	Homo sapiens	5510320.386395547
+Control	Control_1	1	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	122023704.7513946
+Control	Control_2	2	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	84703614.51989171
+Control	Control_3	3	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	101409207.63777886
+Control	Control_4	4	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	108430902.24951799
+Treated	Treated_1	1	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	108256143.46235687
+Treated	Treated_2	2	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	110894595.74491905
+Treated	Treated_3	3	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	111087802.4694113
+Treated	Treated_4	4	Q8ND76	CCNY	Cyclin-Y	Homo sapiens	106754292.1433996
+Control	Control_1	1	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	107964534.85719357
+Control	Control_2	2	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	94447240.67791353
+Control	Control_3	3	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	141501278.18257785
+Control	Control_4	4	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	133642954.30804491
+Treated	Treated_1	1	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	126677542.07332306
+Treated	Treated_2	2	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	114658158.46074677
+Treated	Treated_3	3	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	105208390.14023276
+Treated	Treated_4	4	P68400	CSNK2A1	Casein kinase II subunit alpha	Homo sapiens	148969768.5814052
+Control	Control_1	1	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	30190484.36071063
+Control	Control_2	2	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	38632477.93756962
+Control	Control_3	3	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	34380525.915250376
+Control	Control_4	4	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	30283081.037612267
+Treated	Treated_1	1	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	30582097.961427197
+Treated	Treated_2	2	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	31865906.175497472
+Treated	Treated_3	3	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	31195625.992405277
+Treated	Treated_4	4	Q9UEY8	ADD3	Gamma-adducin	Homo sapiens	28736082.39108029
+Control	Control_1	1	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	16851634.824977893
+Control	Control_2	2	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	14656009.343616849
+Control	Control_3	3	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	17454538.9760022
+Control	Control_4	4	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	15827157.828445597
+Treated	Treated_1	1	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	16363749.886375902
+Treated	Treated_2	2	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	16318446.0999179
+Treated	Treated_3	3	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	15485892.087007707
+Treated	Treated_4	4	Q5EG05	CARD16	Caspase recruitment domain-containing protein 16	Homo sapiens	15959987.357226925
+Control	Control_1	1	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	21624863.985158816
+Control	Control_2	2	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	27004589.428334985
+Control	Control_3	3	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	18580698.034387313
+Control	Control_4	4	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	19740356.937389508
+Treated	Treated_1	1	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	20396311.10630544
+Treated	Treated_2	2	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	18626702.52068318
+Treated	Treated_3	3	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	18478835.24159046
+Treated	Treated_4	4	Q8IWE2	FAM114A1	Protein NOXP20	Homo sapiens	18057790.45190598
+Control	Control_1	1	P00167	CYB5A	Cytochrome b5	Homo sapiens	4228548.891536043
+Control	Control_2	2	P00167	CYB5A	Cytochrome b5	Homo sapiens	4022752.866127172
+Control	Control_3	3	P00167	CYB5A	Cytochrome b5	Homo sapiens	4327247.206221856
+Control	Control_4	4	P00167	CYB5A	Cytochrome b5	Homo sapiens	3664829.10983512
+Treated	Treated_1	1	P00167	CYB5A	Cytochrome b5	Homo sapiens	3874517.585939453
+Treated	Treated_2	2	P00167	CYB5A	Cytochrome b5	Homo sapiens	4672843.59741211
+Treated	Treated_3	3	P00167	CYB5A	Cytochrome b5	Homo sapiens	4595088.859175045
+Treated	Treated_4	4	P00167	CYB5A	Cytochrome b5	Homo sapiens	3613385.729175289
+Control	Control_1	1	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	13484879.916782454
+Control	Control_2	2	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	11687011.521275278
+Control	Control_3	3	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	11025299.24462687
+Control	Control_4	4	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	13340890.647880629
+Treated	Treated_1	1	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	13578846.5158672
+Treated	Treated_2	2	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	9543447.493834795
+Treated	Treated_3	3	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	13523099.544648757
+Treated	Treated_4	4	P00367	GLUD1	Glutamate dehydrogenase 1, mitochondrial	Homo sapiens	11731752.849983046
+Control	Control_1	1	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	13827920.927393042
+Control	Control_2	2	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	14041963.343173984
+Control	Control_3	3	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	16308958.70389864
+Control	Control_4	4	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	16622210.80409876
+Treated	Treated_1	1	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	15093063.533497382
+Treated	Treated_2	2	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	15796970.480629312
+Treated	Treated_3	3	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	18165579.398788933
+Treated	Treated_4	4	O95837	GNA14	Guanine nucleotide-binding protein subunit alpha-14	Homo sapiens	14525125.167501228
+Control	Control_1	1	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	5155499.381947437
+Control	Control_2	2	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	6047940.404725989
+Control	Control_3	3	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	6161833.676246724
+Control	Control_4	4	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	5635012.56101724
+Treated	Treated_1	1	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	5615633.888576011
+Treated	Treated_2	2	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	7159284.850724222
+Treated	Treated_3	3	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	5578522.4085701695
+Treated	Treated_4	4	P56211	ARPP19	cAMP-regulated phosphoprotein 19	Homo sapiens	5222802.028197718
+Control	Control_1	1	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	36235204.90506708
+Control	Control_2	2	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	52134454.08362022
+Control	Control_3	3	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	54656904.76349619
+Control	Control_4	4	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	42417149.27088946
+Treated	Treated_1	1	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	50887599.45029975
+Treated	Treated_2	2	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	46253526.16825067
+Treated	Treated_3	3	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	48246970.9419535
+Treated	Treated_4	4	Q99798	ACO2	Aconitate hydratase, mitochondrial	Homo sapiens	45085587.56777481
+Control	Control_1	1	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	2799246.9365658406
+Control	Control_2	2	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	3066341.9758955226
+Control	Control_3	3	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	2658888.835815325
+Control	Control_4	4	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	2613054.258213052
+Treated	Treated_1	1	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	2525145.44305297
+Treated	Treated_2	2	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	3151555.5217235284
+Treated	Treated_3	3	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	2571756.3989752936
+Treated	Treated_4	4	Q9BUT1	BDH2	3-hydroxybutyrate dehydrogenase type 2	Homo sapiens	2991493.6589505537
+Control	Control_1	1	P09104	ENO2	Gamma-enolase	Homo sapiens	8298971.194648882
+Control	Control_2	2	P09104	ENO2	Gamma-enolase	Homo sapiens	7569530.814919053
+Control	Control_3	3	P09104	ENO2	Gamma-enolase	Homo sapiens	8909084.01170913
+Control	Control_4	4	P09104	ENO2	Gamma-enolase	Homo sapiens	9676227.598058164
+Treated	Treated_1	1	P09104	ENO2	Gamma-enolase	Homo sapiens	10567972.322540158
+Treated	Treated_2	2	P09104	ENO2	Gamma-enolase	Homo sapiens	10256989.016671367
+Treated	Treated_3	3	P09104	ENO2	Gamma-enolase	Homo sapiens	9764745.643019794
+Treated	Treated_4	4	P09104	ENO2	Gamma-enolase	Homo sapiens	7293063.713422755
+Control	Control_1	1	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	1051555.0786050565
+Control	Control_2	2	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	858183.0270529381
+Control	Control_3	3	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	930569.9707695389
+Control	Control_4	4	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	1204225.281029071
+Treated	Treated_1	1	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	1110141.30168955
+Treated	Treated_2	2	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	894746.0758960895
+Treated	Treated_3	3	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	965488.0805185216
+Treated	Treated_4	4	Q14318	FKBP8	Peptidyl-prolyl cis-trans isomerase FKBP8	Homo sapiens	1086031.740393762
+Control	Control_1	1	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	30461624.099312868
+Control	Control_2	2	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	30247842.36306459
+Control	Control_3	3	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	27536216.709053565
+Control	Control_4	4	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	32709595.744541667
+Treated	Treated_1	1	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	33165544.68616487
+Treated	Treated_2	2	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	28486278.734078478
+Treated	Treated_3	3	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	25075947.805766825
+Treated	Treated_4	4	O43747	AP1G1	AP-1 complex subunit gamma-1	Homo sapiens	37325648.23619493
+Control	Control_1	1	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	39108190.83359414
+Control	Control_2	2	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	43921466.87384829
+Control	Control_3	3	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	38498325.88615714
+Control	Control_4	4	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	38942710.97770957
+Treated	Treated_1	1	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	46460981.617765516
+Treated	Treated_2	2	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	40716333.175269336
+Treated	Treated_3	3	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	45583730.49939623
+Treated	Treated_4	4	P08631	HCK	Tyrosine-protein kinase HCK	Homo sapiens	45697454.32625866
+Control	Control_1	1	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	34298429.6264462
+Control	Control_2	2	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	37296377.393896535
+Control	Control_3	3	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	39203165.59931814
+Control	Control_4	4	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	41156330.552754946
+Treated	Treated_1	1	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	35198324.787562475
+Treated	Treated_2	2	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	36227682.74579014
+Treated	Treated_3	3	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	32836464.215328194
+Treated	Treated_4	4	Q9UBI6	GNG12	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12	Homo sapiens	39255107.09257555
+Control	Control_1	1	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	642400426.1775681
+Control	Control_2	2	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	553715841.8796687
+Control	Control_3	3	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	613201953.583569
+Control	Control_4	4	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	628371415.8024417
+Treated	Treated_1	1	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	598285464.9175407
+Treated	Treated_2	2	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	590284514.4007758
+Treated	Treated_3	3	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	536950496.5877591
+Treated	Treated_4	4	P17693	HLA-G	HLA class I histocompatibility antigen, alpha chain G	Homo sapiens	642603512.7027425
+Control	Control_1	1	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	51585096.78123447
+Control	Control_2	2	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	59278149.37734098
+Control	Control_3	3	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	53334977.5815552
+Control	Control_4	4	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	58806245.83085768
+Treated	Treated_1	1	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	47647038.846204266
+Treated	Treated_2	2	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	56072032.35800688
+Treated	Treated_3	3	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	58143805.18342654
+Treated	Treated_4	4	Q9NUQ9	CYRIB	CYFIP-related Rac1 interactor B	Homo sapiens	58241950.96991514
+Control	Control_1	1	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	5009974.954310039
+Control	Control_2	2	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	4703682.882367628
+Control	Control_3	3	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	6129379.053374894
+Control	Control_4	4	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	5054787.486026284
+Treated	Treated_1	1	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	4558908.040580133
+Treated	Treated_2	2	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	5047854.862842918
+Treated	Treated_3	3	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	5339012.406615053
+Treated	Treated_4	4	P51553	IDH3G	Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial	Homo sapiens	4794115.527167188
+Control	Control_1	1	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	484142565.66586506
+Control	Control_2	2	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	509213573.09136087
+Control	Control_3	3	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	462025202.65329814
+Control	Control_4	4	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	515424686.7872589
+Treated	Treated_1	1	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	458661296.1112845
+Treated	Treated_2	2	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	442258490.53643966
+Treated	Treated_3	3	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	547077420.9021685
+Treated	Treated_4	4	O60268	KIAA0513	Uncharacterized protein KIAA0513	Homo sapiens	495681475.34931463
+Control	Control_1	1	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	5369148.036190416
+Control	Control_2	2	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	4407002.355536443
+Control	Control_3	3	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	4602098.7809915915
+Control	Control_4	4	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	4467252.247681278
+Treated	Treated_1	1	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	5285394.037109359
+Treated	Treated_2	2	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	5292153.339371664
+Treated	Treated_3	3	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	5540768.2168955915
+Treated	Treated_4	4	Q9UBS5	GABBR1	Gamma-aminobutyric acid type B receptor subunit 1	Homo sapiens	5908404.115992637
+Control	Control_1	1	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	38229963.50362
+Control	Control_2	2	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	38948695.55804685
+Control	Control_3	3	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	40720628.97130792
+Control	Control_4	4	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	46937627.35458466
+Treated	Treated_1	1	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	46130853.43234861
+Treated	Treated_2	2	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	40203142.38244889
+Treated	Treated_3	3	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	41627490.97673671
+Treated	Treated_4	4	P06493	CDK1	Cyclin-dependent kinase 1	Homo sapiens	46563931.14246741
+Control	Control_1	1	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	42590385.433156654
+Control	Control_2	2	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	46980113.016067415
+Control	Control_3	3	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	38876326.258707985
+Control	Control_4	4	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	41689449.55153004
+Treated	Treated_1	1	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	38162018.29897047
+Treated	Treated_2	2	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	47634293.47778595
+Treated	Treated_3	3	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	47023646.423953794
+Treated	Treated_4	4	Q9UIM3	FKBPL	FK506-binding protein-like	Homo sapiens	44475675.397850856
+Control	Control_1	1	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	6176391.679739475
+Control	Control_2	2	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	6440857.306316696
+Control	Control_3	3	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	6493697.721751923
+Control	Control_4	4	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	6660352.482963052
+Treated	Treated_1	1	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	5189279.218066011
+Treated	Treated_2	2	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	5147128.98423181
+Treated	Treated_3	3	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	6387163.885675917
+Treated	Treated_4	4	Q6ZNG2	DBX2	Homeobox protein DBX2	Homo sapiens	5352225.032327199
+Control	Control_1	1	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	79617958.09310962
+Control	Control_2	2	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	91206751.63352898
+Control	Control_3	3	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	106268200.96703282
+Control	Control_4	4	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	91120515.15333946
+Treated	Treated_1	1	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	103497414.18812005
+Treated	Treated_2	2	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	98703634.41558716
+Treated	Treated_3	3	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	83199964.97450066
+Treated	Treated_4	4	Q7Z4H3	HDDC2	5'-deoxynucleotidase HDDC2	Homo sapiens	100223021.48890254
+Control	Control_1	1	Q96FN4	CPNE2	Copine-2	Homo sapiens	26132887.48730695
+Control	Control_2	2	Q96FN4	CPNE2	Copine-2	Homo sapiens	24662694.857994568
+Control	Control_3	3	Q96FN4	CPNE2	Copine-2	Homo sapiens	22508013.602750514
+Control	Control_4	4	Q96FN4	CPNE2	Copine-2	Homo sapiens	30818616.23570701
+Treated	Treated_1	1	Q96FN4	CPNE2	Copine-2	Homo sapiens	23750688.52127772
+Treated	Treated_2	2	Q96FN4	CPNE2	Copine-2	Homo sapiens	21131767.52994972
+Treated	Treated_3	3	Q96FN4	CPNE2	Copine-2	Homo sapiens	28464483.94469594
+Treated	Treated_4	4	Q96FN4	CPNE2	Copine-2	Homo sapiens	24924682.983557872
+Control	Control_1	1	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	38669790.710670374
+Control	Control_2	2	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	33826091.85566457
+Control	Control_3	3	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	34142458.60835431
+Control	Control_4	4	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	36340889.56602938
+Treated	Treated_1	1	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	34611695.014432594
+Treated	Treated_2	2	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	34596828.05437154
+Treated	Treated_3	3	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	38259966.38256021
+Treated	Treated_4	4	Q9Y4L1	HYOU1	Hypoxia up-regulated protein 1	Homo sapiens	31135171.839329157
+Control	Control_1	1	Q16352	INA	Alpha-internexin	Homo sapiens	7647477.321115531
+Control	Control_2	2	Q16352	INA	Alpha-internexin	Homo sapiens	7437482.862033832
+Control	Control_3	3	Q16352	INA	Alpha-internexin	Homo sapiens	6111775.851497286
+Control	Control_4	4	Q16352	INA	Alpha-internexin	Homo sapiens	8099852.8418598315
+Treated	Treated_1	1	Q16352	INA	Alpha-internexin	Homo sapiens	7819182.225980503
+Treated	Treated_2	2	Q16352	INA	Alpha-internexin	Homo sapiens	8469105.842913654
+Treated	Treated_3	3	Q16352	INA	Alpha-internexin	Homo sapiens	6900635.205502492
+Treated	Treated_4	4	Q16352	INA	Alpha-internexin	Homo sapiens	6441858.925901747
+Control	Control_1	1	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	117207035.45886137
+Control	Control_2	2	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	76678430.80029117
+Control	Control_3	3	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	78484354.75265542
+Control	Control_4	4	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	90270641.6844255
+Treated	Treated_1	1	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	81474812.01656611
+Treated	Treated_2	2	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	88947399.59455287
+Treated	Treated_3	3	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	74259977.1664194
+Treated	Treated_4	4	Q96B67	ARRDC3	Arrestin domain-containing protein 3	Homo sapiens	71439162.3905642
+Control	Control_1	1	Q9H201	EPN3	Epsin-3	Homo sapiens	5413835.083330233
+Control	Control_2	2	Q9H201	EPN3	Epsin-3	Homo sapiens	6146178.306855536
+Control	Control_3	3	Q9H201	EPN3	Epsin-3	Homo sapiens	5711212.336704769
+Control	Control_4	4	Q9H201	EPN3	Epsin-3	Homo sapiens	6488399.278668992
+Treated	Treated_1	1	Q9H201	EPN3	Epsin-3	Homo sapiens	5576549.2530984385
+Treated	Treated_2	2	Q9H201	EPN3	Epsin-3	Homo sapiens	5843960.934444466
+Treated	Treated_3	3	Q9H201	EPN3	Epsin-3	Homo sapiens	5215125.870062819
+Treated	Treated_4	4	Q9H201	EPN3	Epsin-3	Homo sapiens	4924002.1808522
+Control	Control_1	1	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	1606723.3854686688
+Control	Control_2	2	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	1678120.7564037696
+Control	Control_3	3	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	2234890.456290295
+Control	Control_4	4	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	1594628.5886127185
+Treated	Treated_1	1	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	1663040.7432151008
+Treated	Treated_2	2	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	2101163.0964672286
+Treated	Treated_3	3	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	1700727.5786920926
+Treated	Treated_4	4	Q9UBM7	DHCR7	7-dehydrocholesterol reductase	Homo sapiens	1937375.7661749392
+Control	Control_1	1	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	78369710.00698376
+Control	Control_2	2	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	89761058.18474723
+Control	Control_3	3	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	104707804.45481542
+Control	Control_4	4	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	83226554.0773226
+Treated	Treated_1	1	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	101146552.99544193
+Treated	Treated_2	2	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	99637016.65378034
+Treated	Treated_3	3	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	93642775.04950732
+Treated	Treated_4	4	P15121	AKR1B1	Aldo-keto reductase family 1 member B1	Homo sapiens	96482096.58873002
+Control	Control_1	1	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	10597043.469440151
+Control	Control_2	2	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	9795120.875199074
+Control	Control_3	3	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	10907670.799332887
+Control	Control_4	4	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	10679736.250789773
+Treated	Treated_1	1	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	11554272.14938414
+Treated	Treated_2	2	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	9423579.220080225
+Treated	Treated_3	3	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	10021922.48410558
+Treated	Treated_4	4	P53675	CLTCL1	Clathrin heavy chain 2	Homo sapiens	8825107.811041502
+Control	Control_1	1	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	18877903.160953008
+Control	Control_2	2	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	16440879.178813351
+Control	Control_3	3	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	18872011.795241483
+Control	Control_4	4	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	17196464.088277306
+Treated	Treated_1	1	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	17389503.744144306
+Treated	Treated_2	2	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	18127890.479016464
+Treated	Treated_3	3	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	16387617.759207556
+Treated	Treated_4	4	Q5T2N8	ATAD3C	ATPase family AAA domain-containing protein 3C	Homo sapiens	16512189.610924715
+Control	Control_1	1	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	173067220.21692276
+Control	Control_2	2	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	174527888.7469326
+Control	Control_3	3	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	196914576.54501572
+Control	Control_4	4	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	177281507.04363438
+Treated	Treated_1	1	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	173880321.78144705
+Treated	Treated_2	2	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	200964877.88205016
+Treated	Treated_3	3	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	198248160.80810916
+Treated	Treated_4	4	P48735	IDH2	Isocitrate dehydrogenase [NADP], mitochondrial	Homo sapiens	181519327.07758775
+Control	Control_1	1	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	89333246.52328269
+Control	Control_2	2	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	62045490.5990933
+Control	Control_3	3	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	81731358.20441428
+Control	Control_4	4	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	71046956.14716999
+Treated	Treated_1	1	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	76768524.73981556
+Treated	Treated_2	2	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	67030251.39791727
+Treated	Treated_3	3	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	78070639.35564397
+Treated	Treated_4	4	Q86UW8	HAPLN4	Hyaluronan and proteoglycan link protein 4	Homo sapiens	62424647.24503374
+Control	Control_1	1	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	40070089.457230255
+Control	Control_2	2	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	37892018.366485514
+Control	Control_3	3	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	40503814.35269745
+Control	Control_4	4	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	35076748.39758714
+Treated	Treated_1	1	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	38540248.42562606
+Treated	Treated_2	2	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	34004256.156778164
+Treated	Treated_3	3	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	35539098.45285643
+Treated	Treated_4	4	Q9NVI7	ATAD3A	ATPase family AAA domain-containing protein 3A	Homo sapiens	35950425.58063425
+Control	Control_1	1	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	59767712.10080163
+Control	Control_2	2	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	60486530.12203637
+Control	Control_3	3	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	56057788.261938564
+Control	Control_4	4	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	62828365.46370046
+Treated	Treated_1	1	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	73991552.72863325
+Treated	Treated_2	2	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	85481907.56743775
+Treated	Treated_3	3	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	58354897.083540894
+Treated	Treated_4	4	Q8IYT3	CCDC170	Coiled-coil domain-containing protein 170	Homo sapiens	58841816.87514786
+Control	Control_1	1	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	6999008.014545093
+Control	Control_2	2	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	7120414.449920498
+Control	Control_3	3	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	5911711.635397604
+Control	Control_4	4	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	5321996.0774909975
+Treated	Treated_1	1	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	6945532.523825364
+Treated	Treated_2	2	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	7767159.142078499
+Treated	Treated_3	3	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	7836659.372941301
+Treated	Treated_4	4	Q6NVY1	HIBCH	3-hydroxyisobutyryl-CoA hydrolase, mitochondrial	Homo sapiens	6755995.708019832
+Control	Control_1	1	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	49552880.768661946
+Control	Control_2	2	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	42142268.04018538
+Control	Control_3	3	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	37099014.50830422
+Control	Control_4	4	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	42299196.83124481
+Treated	Treated_1	1	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	47757808.882774025
+Treated	Treated_2	2	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	43475447.013525344
+Treated	Treated_3	3	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	40442463.40409051
+Treated	Treated_4	4	Q96F85	CNRIP1	CB1 cannabinoid receptor-interacting protein 1	Homo sapiens	43134140.35383315
+Control	Control_1	1	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	69330341.21238382
+Control	Control_2	2	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	67922465.3978444
+Control	Control_3	3	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	69094785.12062527
+Control	Control_4	4	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	69633313.83513187
+Treated	Treated_1	1	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	74813433.3232637
+Treated	Treated_2	2	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	67884578.81168802
+Treated	Treated_3	3	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	65909644.175415486
+Treated	Treated_4	4	P49773	HINT1	Histidine triad nucleotide-binding protein 1	Homo sapiens	69501254.08917728
+Control	Control_1	1	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	45750469.88356384
+Control	Control_2	2	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	35903699.04818208
+Control	Control_3	3	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	48470692.10870252
+Control	Control_4	4	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	51321523.813123435
+Treated	Treated_1	1	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	43143820.3376473
+Treated	Treated_2	2	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	45864897.44474481
+Treated	Treated_3	3	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	39851887.554769
+Treated	Treated_4	4	P30038	ALDH4A1	Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial	Homo sapiens	46147930.57048811
+Control	Control_1	1	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	11898120.459507126
+Control	Control_2	2	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	13243722.600525783
+Control	Control_3	3	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	13798928.229892598
+Control	Control_4	4	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	11977863.763529114
+Treated	Treated_1	1	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	11584992.030931348
+Treated	Treated_2	2	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	12540115.880705643
+Treated	Treated_3	3	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	12258141.064311113
+Treated	Treated_4	4	Q9NVP1	DDX18	ATP-dependent RNA helicase DDX18	Homo sapiens	12568580.690920865
+Control	Control_1	1	P14625	HSP90B1	Endoplasmin	Homo sapiens	139416.82751718326
+Control	Control_2	2	P14625	HSP90B1	Endoplasmin	Homo sapiens	174910.11086898783
+Control	Control_3	3	P14625	HSP90B1	Endoplasmin	Homo sapiens	151952.9747663798
+Control	Control_4	4	P14625	HSP90B1	Endoplasmin	Homo sapiens	163616.46578400597
+Treated	Treated_1	1	P14625	HSP90B1	Endoplasmin	Homo sapiens	131976.23755715945
+Treated	Treated_2	2	P14625	HSP90B1	Endoplasmin	Homo sapiens	147024.70202179052
+Treated	Treated_3	3	P14625	HSP90B1	Endoplasmin	Homo sapiens	184463.11525436578
+Treated	Treated_4	4	P14625	HSP90B1	Endoplasmin	Homo sapiens	142657.84808636594
+Control	Control_1	1	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	34614494.378014304
+Control	Control_2	2	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	41757869.795003586
+Control	Control_3	3	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	33597961.49369644
+Control	Control_4	4	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	39294652.805725954
+Treated	Treated_1	1	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	30615521.132749192
+Treated	Treated_2	2	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	31973626.865437336
+Treated	Treated_3	3	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	33393577.02070572
+Treated	Treated_4	4	P50991	CCT4	T-complex protein 1 subunit delta	Homo sapiens	31765544.865129836
+Control	Control_1	1	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	20048876.118434858
+Control	Control_2	2	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	16086184.9153411
+Control	Control_3	3	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	17326881.803640563
+Control	Control_4	4	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	22164875.116674963
+Treated	Treated_1	1	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	19587588.244379997
+Treated	Treated_2	2	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	20349730.059691936
+Treated	Treated_3	3	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	23039633.815018207
+Treated	Treated_4	4	Q9NWU2	GID8	Glucose-induced degradation protein 8 homolog	Homo sapiens	16133515.516153323
+Control	Control_1	1	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	7749257.816427793
+Control	Control_2	2	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	12704189.925975908
+Control	Control_3	3	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	9164225.739722932
+Control	Control_4	4	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	10653953.433706611
+Treated	Treated_1	1	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	8920386.796022257
+Treated	Treated_2	2	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	8097451.199919559
+Treated	Treated_3	3	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	10475222.462670503
+Treated	Treated_4	4	O94973	AP2A2	AP-2 complex subunit alpha-2	Homo sapiens	11081688.386120722
+Control	Control_1	1	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	40565759.51086036
+Control	Control_2	2	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	33937487.36459595
+Control	Control_3	3	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	45617673.47576046
+Control	Control_4	4	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	53823794.59848225
+Treated	Treated_1	1	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	36906025.66273036
+Treated	Treated_2	2	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	47826333.32922548
+Treated	Treated_3	3	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	45462534.65648695
+Treated	Treated_4	4	A8MTJ3	GNAT3	Guanine nucleotide-binding protein G(t) subunit alpha-3	Homo sapiens	36441050.69264666
+Control	Control_1	1	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	25887949.213358283
+Control	Control_2	2	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	23759176.63788621
+Control	Control_3	3	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	22969309.92868952
+Control	Control_4	4	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	26619698.772653576
+Treated	Treated_1	1	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	23390160.35736732
+Treated	Treated_2	2	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	26629037.28601636
+Treated	Treated_3	3	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	30614250.25515606
+Treated	Treated_4	4	O43301	HSPA12A	Heat shock 70 kDa protein 12A	Homo sapiens	23848621.37130695
+Control	Control_1	1	P62805	H4C1	Histone H4	Homo sapiens	22607925.38965098
+Control	Control_2	2	P62805	H4C1	Histone H4	Homo sapiens	20355369.894271083
+Control	Control_3	3	P62805	H4C1	Histone H4	Homo sapiens	25347010.859150812
+Control	Control_4	4	P62805	H4C1	Histone H4	Homo sapiens	19022287.11840325
+Treated	Treated_1	1	P62805	H4C1	Histone H4	Homo sapiens	20498427.76975982
+Treated	Treated_2	2	P62805	H4C1	Histone H4	Homo sapiens	21497180.795193866
+Treated	Treated_3	3	P62805	H4C1	Histone H4	Homo sapiens	21231585.153392438
+Treated	Treated_4	4	P62805	H4C1	Histone H4	Homo sapiens	20091923.609648615
+Control	Control_1	1	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	2886949.856314084
+Control	Control_2	2	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	2551545.6304387464
+Control	Control_3	3	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	2106906.8433564208
+Control	Control_4	4	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	2973175.768950037
+Treated	Treated_1	1	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	3154820.629352561
+Treated	Treated_2	2	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	2486693.384801229
+Treated	Treated_3	3	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	3034879.7123983786
+Treated	Treated_4	4	P00966	ASS1	Argininosuccinate synthase	Homo sapiens	2493102.803687572
+Control	Control_1	1	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	2449631.2039473318
+Control	Control_2	2	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	2468029.9718074533
+Control	Control_3	3	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	3220393.4826710853
+Control	Control_4	4	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	3131358.6429323805
+Treated	Treated_1	1	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	2919935.7517185966
+Treated	Treated_2	2	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	2445100.5506232837
+Treated	Treated_3	3	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	2951782.8425402436
+Treated	Treated_4	4	Q04828	AKR1C1	Aldo-keto reductase family 1 member C1	Homo sapiens	2426267.2034653397
+Control	Control_1	1	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	28427231.76902472
+Control	Control_2	2	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	25168746.647408843
+Control	Control_3	3	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	25106068.938177273
+Control	Control_4	4	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	25228251.82916499
+Treated	Treated_1	1	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	21472745.267356955
+Treated	Treated_2	2	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	22193312.308039222
+Treated	Treated_3	3	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	26225214.049041566
+Treated	Treated_4	4	P38405	GNAL	Guanine nucleotide-binding protein G(olf) subunit alpha	Homo sapiens	23821654.909108613
+Control	Control_1	1	Q16643	DBN1	Drebrin	Homo sapiens	20093492.041288186
+Control	Control_2	2	Q16643	DBN1	Drebrin	Homo sapiens	20843746.586112224
+Control	Control_3	3	Q16643	DBN1	Drebrin	Homo sapiens	15685614.211912284
+Control	Control_4	4	Q16643	DBN1	Drebrin	Homo sapiens	15770878.993371746
+Treated	Treated_1	1	Q16643	DBN1	Drebrin	Homo sapiens	18124081.355250277
+Treated	Treated_2	2	Q16643	DBN1	Drebrin	Homo sapiens	22579953.200149108
+Treated	Treated_3	3	Q16643	DBN1	Drebrin	Homo sapiens	16992781.467645764
+Treated	Treated_4	4	Q16643	DBN1	Drebrin	Homo sapiens	19419036.96139168
+Control	Control_1	1	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	16787983.233835187
+Control	Control_2	2	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	18132747.75174246
+Control	Control_3	3	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	20950660.731523875
+Control	Control_4	4	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	19422137.334992018
+Treated	Treated_1	1	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	20976009.319904033
+Treated	Treated_2	2	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	20169832.21511438
+Treated	Treated_3	3	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	19879326.881511122
+Treated	Treated_4	4	Q9NYQ3	HAO2	Hydroxyacid oxidase 2	Homo sapiens	19833206.26986283

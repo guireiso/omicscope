@@ -8,7 +8,11 @@ any source:
 
 **Important:** Examples for each data format, together with a matching
 pdata file, can be downloaded in the `OmicScope Web App
-<https://omicscope.ib.unicamp.br/>`__ (sidebar, *Example files*).
+<https://omicscope.ib.unicamp.br/>`__ (sidebar, *Example files*) or from
+`docs/example_inputs <https://github.com/guireiso/omicscope/tree/modernize-uv/docs/example_inputs>`__.
+They all describe the same small Control vs Treated experiment with known
+changes, so the result of each file can be checked against
+``expected_results.csv``.
 
 .. list-table::
    :header-rows: 1

@@ -28,6 +28,17 @@ New analyses
 * Nebula protein meta-analysis (Stouffer, per-study z capped).
 * ``methods_text()`` and ``reproducible_script()`` for reporting.
 
+Inputs
+
+* Example inputs for every import method (``docs/example_inputs``): one Control vs Treated experiment with
+  planted changes, a shared pdata and the expected results; ``tests/test_example_inputs.py`` checks them.
+* RPKM: values were log-transformed twice (log2(RPKM + 1) by the importer, then log2 again by
+  ``logTransform``) and fold changes were ratios of log values. The importer now adds 1 and the statistics
+  apply log2 once, so fold changes are on the log2(RPKM + 1) scale.
+* Normalization and imputation no longer treat an abundance of exactly 1 (log2 = 0) as missing.
+* Proteome Discoverer: a condition named like a PD sample type (e.g. "Control") is no longer dropped.
+* Snapshot: condition names no longer start with a space.
+
 Other
 
 * Python 3.12+, uv project, pandas 3 / numpy 2 / matplotlib 3.10 compatibility.

@@ -1,0 +1,201 @@
+Accession,gene_name,Description,RefSeq,planted_log2FC,planted_change
+P00738,HP,Haptoglobin OS=Homo sapiens OX=9606 GN=HP PE=1 SV=1,NM_001126102.3,3.0,up-regulated (acute phase / complement)
+P02671,FGA,Fibrinogen alpha chain OS=Homo sapiens OX=9606 GN=FGA PE=1 SV=2,NM_000508.5,2.83,up-regulated (acute phase / complement)
+P02675,FGB,Fibrinogen beta chain OS=Homo sapiens OX=9606 GN=FGB PE=1 SV=2,NM_001184741.1,2.67,up-regulated (acute phase / complement)
+P02679,FGG,Fibrinogen gamma chain OS=Homo sapiens OX=9606 GN=FGG PE=1 SV=3,NM_000509.6,2.5,up-regulated (acute phase / complement)
+P01024,C3,Complement C3 OS=Homo sapiens OX=9606 GN=C3 PE=1 SV=2,NM_000064.4,2.33,up-regulated (acute phase / complement)
+P00450,CP,Ceruloplasmin OS=Homo sapiens OX=9606 GN=CP PE=1 SV=1,NM_000096.4,2.17,up-regulated (acute phase / complement)
+P02790,HPX,Hemopexin OS=Homo sapiens OX=9606 GN=HPX PE=1 SV=2,NM_000613.3,2.0,up-regulated (acute phase / complement)
+P01023,A2M,Alpha-2-macroglobulin OS=Homo sapiens OX=9606 GN=A2M PE=1 SV=3,NM_000014.6,1.83,up-regulated (acute phase / complement)
+P01019,AGT,Angiotensinogen OS=Homo sapiens OX=9606 GN=AGT PE=1 SV=1,NM_001382817.3,1.67,up-regulated (acute phase / complement)
+P02760,AMBP,Protein AMBP OS=Homo sapiens OX=9606 GN=AMBP PE=1 SV=1,NM_001633.4,1.5,up-regulated (acute phase / complement)
+P10909,CLU,Clusterin OS=Homo sapiens OX=9606 GN=CLU PE=1 SV=1,NM_001831.4,1.33,up-regulated (acute phase / complement)
+P04003,C4BPA,C4b-binding protein alpha chain OS=Homo sapiens OX=9606 GN=C4BPA PE=1 SV=2,NM_000715.4,1.17,up-regulated (acute phase / complement)
+P02746,C1QB,Complement C1q subcomponent subunit B OS=Homo sapiens OX=9606 GN=C1QB PE=1 SV=3,NM_000491.5,1.0,up-regulated (acute phase / complement)
+P25705,ATP5F1A,"ATP synthase subunit alpha, mitochondrial OS=Homo sapiens OX=9606 GN=ATP5F1A PE=1 SV=1",NM_001001935.3,-2.5,down-regulated (mitochondrial respiratory chain)
+P06576,ATP5F1B,"ATP synthase subunit beta, mitochondrial OS=Homo sapiens OX=9606 GN=ATP5F1B PE=1 SV=3",NM_001686.4,-2.38,down-regulated (mitochondrial respiratory chain)
+P36542,ATP5F1C,"ATP synthase subunit gamma, mitochondrial OS=Homo sapiens OX=9606 GN=ATP5F1C PE=1 SV=1",NM_001001973.3,-2.25,down-regulated (mitochondrial respiratory chain)
+P48047,ATP5PO,"ATP synthase subunit O, mitochondrial OS=Homo sapiens OX=9606 GN=ATP5PO PE=1 SV=1",NM_001697.3,-2.12,down-regulated (mitochondrial respiratory chain)
+P24539,ATP5PB,"ATP synthase F(0) complex subunit B1, mitochondrial OS=Homo sapiens OX=9606 GN=ATP5PB PE=1 SV=2",NM_001688.5,-2.0,down-regulated (mitochondrial respiratory chain)
+P13073,COX4I1,"Cytochrome c oxidase subunit 4 isoform 1, mitochondrial OS=Homo sapiens OX=9606 GN=COX4I1 PE=1 SV=1",NM_001318786.3,-1.88,down-regulated (mitochondrial respiratory chain)
+P20674,COX5A,"Cytochrome c oxidase subunit 5A, mitochondrial OS=Homo sapiens OX=9606 GN=COX5A PE=1 SV=2",NM_004255.4,-1.75,down-regulated (mitochondrial respiratory chain)
+P10606,COX5B,"Cytochrome c oxidase subunit 5B, mitochondrial OS=Homo sapiens OX=9606 GN=COX5B PE=1 SV=2",NM_001862.3,-1.62,down-regulated (mitochondrial respiratory chain)
+P14854,COX6B1,Cytochrome c oxidase subunit 6B1 OS=Homo sapiens OX=9606 GN=COX6B1 PE=1 SV=2,NM_001863.5,-1.5,down-regulated (mitochondrial respiratory chain)
+P15954,COX7C,"Cytochrome c oxidase subunit 7C, mitochondrial OS=Homo sapiens OX=9606 GN=COX7C PE=1 SV=1",NM_001867.3,-1.38,down-regulated (mitochondrial respiratory chain)
+P08574,CYC1,"Cytochrome c1, heme protein, mitochondrial OS=Homo sapiens OX=9606 GN=CYC1 PE=1 SV=3",NM_001916.5,-1.25,down-regulated (mitochondrial respiratory chain)
+P99999,CYCS,Cytochrome c OS=Homo sapiens OX=9606 GN=CYCS PE=1 SV=2,NM_018947.6,-1.12,down-regulated (mitochondrial respiratory chain)
+P38117,ETFB,Electron transfer flavoprotein subunit beta OS=Homo sapiens OX=9606 GN=ETFB PE=1 SV=3,NM_001014763.1,-1.0,down-regulated (mitochondrial respiratory chain)
+P09914,IFIT1,Interferon-induced protein with tetratricopeptide repeats 1 OS=Homo sapiens OX=9606 GN=IFIT1 PE=1 SV=2,NM_001270927.2,,only in Treated
+P24310,COX7A1,"Cytochrome c oxidase subunit 7A1, mitochondrial OS=Homo sapiens OX=9606 GN=COX7A1 PE=1 SV=2",NM_001864.4,,only in Control
+P05067,APP,Amyloid-beta precursor protein OS=Homo sapiens OX=9606 GN=APP PE=1 SV=3,NM_000484.4,0.0,unchanged
+Q9H3Q1,CDC42EP4,Cdc42 effector protein 4 OS=Homo sapiens OX=9606 GN=CDC42EP4 PE=1 SV=1,NM_012121.5,0.0,unchanged
+P01889,HLA-B,"HLA class I histocompatibility antigen, B alpha chain OS=Homo sapiens OX=9606 GN=HLA-B PE=1 SV=3",NM_005514.8,0.0,unchanged
+P55060,CSE1L,Exportin-2 OS=Homo sapiens OX=9606 GN=CSE1L PE=1 SV=3,NM_001256135.2,0.0,unchanged
+Q16658,FSCN1,Fascin OS=Homo sapiens OX=9606 GN=FSCN1 PE=1 SV=3,NM_003088.4,0.0,unchanged
+Q9Y5K8,ATP6V1D,V-type proton ATPase subunit D OS=Homo sapiens OX=9606 GN=ATP6V1D PE=1 SV=1,NM_015994.4,0.0,unchanged
+A6NFN9,ANKUB1,Protein ANKUB1 OS=Homo sapiens OX=9606 GN=ANKUB1 PE=2 SV=3,NM_001144960.3,0.0,unchanged
+Q9P2T1,GMPR2,GMP reductase 2 OS=Homo sapiens OX=9606 GN=GMPR2 PE=1 SV=1,NM_001002000.3,0.0,unchanged
+P35613,BSG,Basigin OS=Homo sapiens OX=9606 GN=BSG PE=1 SV=2,NM_001322243.2,0.0,unchanged
+P16615,ATP2A2,Sarcoplasmic/endoplasmic reticulum calcium ATPase 2 OS=Homo sapiens OX=9606 GN=ATP2A2 PE=1 SV=1,NM_001413013.1,0.0,unchanged
+P00492,HPRT1,Hypoxanthine-guanine phosphoribosyltransferase OS=Homo sapiens OX=9606 GN=HPRT1 PE=1 SV=2,NM_000194.3,0.0,unchanged
+Q16740,CLPP,"ATP-dependent Clp protease proteolytic subunit, mitochondrial OS=Homo sapiens OX=9606 GN=CLPP PE=1 SV=1",NM_006012.4,0.0,unchanged
+Q6PUV4,CPLX2,Complexin-2 OS=Homo sapiens OX=9606 GN=CPLX2 PE=1 SV=2,NM_001008220.2,0.0,unchanged
+Q14353,GAMT,Guanidinoacetate N-methyltransferase OS=Homo sapiens OX=9606 GN=GAMT PE=1 SV=1,NM_000156.6,0.0,unchanged
+P51659,HSD17B4,Peroxisomal multifunctional enzyme type 2 OS=Homo sapiens OX=9606 GN=HSD17B4 PE=1 SV=3,NM_000414.4,0.0,unchanged
+Q14894,CRYM,Ketimine reductase mu-crystallin OS=Homo sapiens OX=9606 GN=CRYM PE=1 SV=1,NM_001376256.1,0.0,unchanged
+Q9P0K1,ADAM22,Disintegrin and metalloproteinase domain-containing protein 22 OS=Homo sapiens OX=9606 GN=ADAM22 PE=1 SV=1,NM_001324417.2,0.0,unchanged
+Q9NQE9,HINT3,Histidine triad nucleotide-binding protein 3 OS=Homo sapiens OX=9606 GN=HINT3 PE=1 SV=1,NM_138571.5,0.0,unchanged
+P20648,ATP4A,Potassium-transporting ATPase alpha chain 1 OS=Homo sapiens OX=9606 GN=ATP4A PE=2 SV=5,NM_000704.3,0.0,unchanged
+Q9Y285,FARSA,Phenylalanine--tRNA ligase alpha subunit OS=Homo sapiens OX=9606 GN=FARSA PE=1 SV=3,NM_004461.3,0.0,unchanged
+Q9NQW6,ANLN,Anillin OS=Homo sapiens OX=9606 GN=ANLN PE=1 SV=2,NM_001284301.3,0.0,unchanged
+O75390,CS,"Citrate synthase, mitochondrial OS=Homo sapiens OX=9606 GN=CS PE=1 SV=2",NM_004077.3,0.0,unchanged
+Q06136,KDSR,3-ketodihydrosphingosine reductase OS=Homo sapiens OX=9606 GN=KDSR PE=1 SV=1,NM_002035.4,0.0,unchanged
+O75874,IDH1,Isocitrate dehydrogenase [NADP] cytoplasmic OS=Homo sapiens OX=9606 GN=IDH1 PE=1 SV=2,NM_001282386.1,0.0,unchanged
+Q8NFZ8,CADM4,Cell adhesion molecule 4 OS=Homo sapiens OX=9606 GN=CADM4 PE=1 SV=1,NM_145296.2,0.0,unchanged
+P25685,DNAJB1,DnaJ homolog subfamily B member 1 OS=Homo sapiens OX=9606 GN=DNAJB1 PE=1 SV=4,NM_001300914.2,0.0,unchanged
+P07203,GPX1,Glutathione peroxidase 1 OS=Homo sapiens OX=9606 GN=GPX1 PE=1 SV=4,NM_000581.4,0.0,unchanged
+P61978,HNRNPK,Heterogeneous nuclear ribonucleoprotein K OS=Homo sapiens OX=9606 GN=HNRNPK PE=1 SV=1,NM_001318186.2,0.0,unchanged
+P00352,ALDH1A1,Retinal dehydrogenase 1 OS=Homo sapiens OX=9606 GN=ALDH1A1 PE=1 SV=2,NM_000689.5,0.0,unchanged
+P07384,CAPN1,Calpain-1 catalytic subunit OS=Homo sapiens OX=9606 GN=CAPN1 PE=1 SV=1,NM_001198868.2,0.0,unchanged
+P35612,ADD2,Beta-adducin OS=Homo sapiens OX=9606 GN=ADD2 PE=1 SV=3,NM_001185054.2,0.0,unchanged
+P18085,ARF4,ADP-ribosylation factor 4 OS=Homo sapiens OX=9606 GN=ARF4 PE=1 SV=3,NM_001660.4,0.0,unchanged
+P42025,ACTR1B,Beta-centractin OS=Homo sapiens OX=9606 GN=ACTR1B PE=1 SV=1,NM_005735.4,0.0,unchanged
+Q8TC29,ENKUR,Enkurin OS=Homo sapiens OX=9606 GN=ENKUR PE=1 SV=1,NM_001270383.2,0.0,unchanged
+O95817,BAG3,BAG family molecular chaperone regulator 3 OS=Homo sapiens OX=9606 GN=BAG3 PE=1 SV=3,NM_004281.4,0.0,unchanged
+P40939,HADHA,"Trifunctional enzyme subunit alpha, mitochondrial OS=Homo sapiens OX=9606 GN=HADHA PE=1 SV=2",NM_000182.5,0.0,unchanged
+P35916,FLT4,Vascular endothelial growth factor receptor 3 OS=Homo sapiens OX=9606 GN=FLT4 PE=1 SV=3,NM_001354989.2,0.0,unchanged
+P36888,FLT3,Receptor-type tyrosine-protein kinase FLT3 OS=Homo sapiens OX=9606 GN=FLT3 PE=1 SV=2,NM_004119.3,0.0,unchanged
+O43491,EPB41L2,Band 4.1-like protein 2 OS=Homo sapiens OX=9606 GN=EPB41L2 PE=1 SV=1,NM_001135554.2,0.0,unchanged
+Q9BX67,JAM3,Junctional adhesion molecule C OS=Homo sapiens OX=9606 GN=JAM3 PE=1 SV=1,NM_001205329.2,0.0,unchanged
+L0R819,ASDURF,ASNSD1 upstream open reading frame protein OS=Homo sapiens OX=9606 GN=ASDURF PE=1 SV=1,NM_001353493.2,0.0,unchanged
+P37235,HPCAL1,Hippocalcin-like protein 1 OS=Homo sapiens OX=9606 GN=HPCAL1 PE=1 SV=3,NM_001258357.2,0.0,unchanged
+Q9Y696,CLIC4,Chloride intracellular channel protein 4 OS=Homo sapiens OX=9606 GN=CLIC4 PE=1 SV=4,NM_013943.3,0.0,unchanged
+Q9HCP0,CSNK1G1,Casein kinase I isoform gamma-1 OS=Homo sapiens OX=9606 GN=CSNK1G1 PE=1 SV=1,NM_001329605.2,0.0,unchanged
+Q06828,FMOD,Fibromodulin OS=Homo sapiens OX=9606 GN=FMOD PE=1 SV=2,NM_002023.5,0.0,unchanged
+P13929,ENO3,Beta-enolase OS=Homo sapiens OX=9606 GN=ENO3 PE=1 SV=5,NM_001193503.2,0.0,unchanged
+Q8TD06,AGR3,Anterior gradient protein 3 OS=Homo sapiens OX=9606 GN=AGR3 PE=1 SV=1,NM_176813.5,0.0,unchanged
+P04899,GNAI2,Guanine nucleotide-binding protein G(i) subunit alpha-2 OS=Homo sapiens OX=9606 GN=GNAI2 PE=1 SV=3,NM_001166425.2,0.0,unchanged
+Q05707,COL14A1,Collagen alpha-1(XIV) chain OS=Homo sapiens OX=9606 GN=COL14A1 PE=1 SV=3,NM_001384947.1,0.0,unchanged
+O00410,IPO5,Importin-5 OS=Homo sapiens OX=9606 GN=IPO5 PE=1 SV=4,NM_002271.6,0.0,unchanged
+P00387,CYB5R3,NADH-cytochrome b5 reductase 3 OS=Homo sapiens OX=9606 GN=CYB5R3 PE=1 SV=3,NM_000398.7,0.0,unchanged
+P54764,EPHA4,Ephrin type-A receptor 4 OS=Homo sapiens OX=9606 GN=EPHA4 PE=1 SV=1,NM_001304536.2,0.0,unchanged
+O60262,GNG7,Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7 OS=Homo sapiens OX=9606 GN=GNG7 PE=1 SV=1,NM_052847.3,0.0,unchanged
+P60953,CDC42,Cell division control protein 42 homolog OS=Homo sapiens OX=9606 GN=CDC42 PE=1 SV=2,NM_001039802.2,0.0,unchanged
+O14979,HNRNPDL,Heterogeneous nuclear ribonucleoprotein D-like OS=Homo sapiens OX=9606 GN=HNRNPDL PE=1 SV=3,NM_001207000.1,0.0,unchanged
+O15484,CAPN5,Calpain-5 OS=Homo sapiens OX=9606 GN=CAPN5 PE=1 SV=2,NM_001425321.1,0.0,unchanged
+Q5VT06,CEP350,Centrosome-associated protein 350 OS=Homo sapiens OX=9606 GN=CEP350 PE=1 SV=1,NM_014810.5,0.0,unchanged
+Q16555,DPYSL2,Dihydropyrimidinase-related protein 2 OS=Homo sapiens OX=9606 GN=DPYSL2 PE=1 SV=1,NM_001197293.3,0.0,unchanged
+Q9UM19,HPCAL4,Hippocalcin-like protein 4 OS=Homo sapiens OX=9606 GN=HPCAL4 PE=1 SV=3,NM_001282396.2,0.0,unchanged
+Q02246,CNTN2,Contactin-2 OS=Homo sapiens OX=9606 GN=CNTN2 PE=1 SV=1,NM_001346083.2,0.0,unchanged
+Q2KHM9,KIAA0753,Protein moonraker OS=Homo sapiens OX=9606 GN=KIAA0753 PE=1 SV=3,NM_001351225.2,0.0,unchanged
+Q9H147,DNTTIP1,Deoxynucleotidyltransferase terminal-interacting protein 1 OS=Homo sapiens OX=9606 GN=DNTTIP1 PE=1 SV=2,NM_052951.3,0.0,unchanged
+Q00839,HNRNPU,Heterogeneous nuclear ribonucleoprotein U OS=Homo sapiens OX=9606 GN=HNRNPU PE=1 SV=6,NM_004501.3,0.0,unchanged
+Q14974,KPNB1,Importin subunit beta-1 OS=Homo sapiens OX=9606 GN=KPNB1 PE=1 SV=2,NM_001276453.2,0.0,unchanged
+Q9NR23,GDF3,Growth/differentiation factor 3 OS=Homo sapiens OX=9606 GN=GDF3 PE=1 SV=3,NM_020634.3,0.0,unchanged
+Q7Z6K5,ARPIN,Arpin OS=Homo sapiens OX=9606 GN=ARPIN PE=1 SV=1,NM_001282380.2,0.0,unchanged
+Q96KP4,CNDP2,Cytosolic non-specific dipeptidase OS=Homo sapiens OX=9606 GN=CNDP2 PE=1 SV=2,NM_001168499.2,0.0,unchanged
+Q9NZ45,CISD1,CDGSH iron-sulfur domain-containing protein 1 OS=Homo sapiens OX=9606 GN=CISD1 PE=1 SV=1,NM_018464.5,0.0,unchanged
+P43155,CRAT,Carnitine O-acetyltransferase OS=Homo sapiens OX=9606 GN=CRAT PE=1 SV=5,NM_000755.5,0.0,unchanged
+Q2M2I8,AAK1,AP2-associated protein kinase 1 OS=Homo sapiens OX=9606 GN=AAK1 PE=1 SV=3,NM_001371575.1,0.0,unchanged
+P17066,HSPA6,Heat shock 70 kDa protein 6 OS=Homo sapiens OX=9606 GN=HSPA6 PE=1 SV=2,NM_002155.5,0.0,unchanged
+Q96ID5,IGSF21,Immunoglobulin superfamily member 21 OS=Homo sapiens OX=9606 GN=IGSF21 PE=2 SV=1,NM_032880.5,0.0,unchanged
+P29218,IMPA1,Inositol monophosphatase 1 OS=Homo sapiens OX=9606 GN=IMPA1 PE=1 SV=1,NM_001144878.2,0.0,unchanged
+O43708,GSTZ1,Maleylacetoacetate isomerase OS=Homo sapiens OX=9606 GN=GSTZ1 PE=1 SV=3,NM_001312660.2,0.0,unchanged
+P18507,GABRG2,Gamma-aminobutyric acid receptor subunit gamma-2 OS=Homo sapiens OX=9606 GN=GABRG2 PE=1 SV=2,NM_000816.3,0.0,unchanged
+Q13938,CAPS,Calcyphosin OS=Homo sapiens OX=9606 GN=CAPS PE=1 SV=2,NM_004058.5,0.0,unchanged
+P09622,DLD,"Dihydrolipoyl dehydrogenase, mitochondrial OS=Homo sapiens OX=9606 GN=DLD PE=1 SV=2",NM_000108.5,0.0,unchanged
+Q9BPU6,DPYSL5,Dihydropyrimidinase-related protein 5 OS=Homo sapiens OX=9606 GN=DPYSL5 PE=1 SV=1,NM_001253723.2,0.0,unchanged
+Q9Y376,CAB39,Calcium-binding protein 39 OS=Homo sapiens OX=9606 GN=CAB39 PE=1 SV=1,NM_001130849.2,0.0,unchanged
+Q9UHP7,CLEC2D,C-type lectin domain family 2 member D OS=Homo sapiens OX=9606 GN=CLEC2D PE=1 SV=1,NM_001004419.5,0.0,unchanged
+P40123,CAP2,Adenylyl cyclase-associated protein 2 OS=Homo sapiens OX=9606 GN=CAP2 PE=1 SV=1,NM_001363533.2,0.0,unchanged
+O14576,DYNC1I1,Cytoplasmic dynein 1 intermediate chain 1 OS=Homo sapiens OX=9606 GN=DYNC1I1 PE=1 SV=2,NM_001135556.2,0.0,unchanged
+P25311,AZGP1,Zinc-alpha-2-glycoprotein OS=Homo sapiens OX=9606 GN=AZGP1 PE=1 SV=2,NM_001185.4,0.0,unchanged
+P02792,FTL,Ferritin light chain OS=Homo sapiens OX=9606 GN=FTL PE=1 SV=2,NM_000146.4,0.0,unchanged
+O75369,FLNB,Filamin-B OS=Homo sapiens OX=9606 GN=FLNB PE=1 SV=2,NM_001164317.2,0.0,unchanged
+P31942,HNRNPH3,Heterogeneous nuclear ribonucleoprotein H3 OS=Homo sapiens OX=9606 GN=HNRNPH3 PE=1 SV=2,NM_001322434.2,0.0,unchanged
+O15523,DDX3Y,ATP-dependent RNA helicase DDX3Y OS=Homo sapiens OX=9606 GN=DDX3Y PE=1 SV=2,NM_001122665.3,0.0,unchanged
+Q02952,AKAP12,A-kinase anchor protein 12 OS=Homo sapiens OX=9606 GN=AKAP12 PE=1 SV=4,NM_001370346.1,0.0,unchanged
+P14415,ATP1B2,Sodium/potassium-transporting ATPase subunit beta-2 OS=Homo sapiens OX=9606 GN=ATP1B2 PE=1 SV=3,NM_001303263.2,0.0,unchanged
+P62873,GNB1,Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1 OS=Homo sapiens OX=9606 GN=GNB1 PE=1 SV=3,NM_001282538.2,0.0,unchanged
+O43237,DYNC1LI2,Cytoplasmic dynein 1 light intermediate chain 2 OS=Homo sapiens OX=9606 GN=DYNC1LI2 PE=1 SV=1,NM_001286157.2,0.0,unchanged
+O75496,GMNN,Geminin OS=Homo sapiens OX=9606 GN=GMNN PE=1 SV=1,NM_001251989.2,0.0,unchanged
+Q9NUJ1,ABHD10,"Mycophenolic acid acyl-glucuronide esterase, mitochondrial OS=Homo sapiens OX=9606 GN=ABHD10 PE=1 SV=1",NM_001272069.2,0.0,unchanged
+Q9HAV5,EDA2R,Tumor necrosis factor receptor superfamily member 27 OS=Homo sapiens OX=9606 GN=EDA2R PE=1 SV=2,NM_001199687.3,0.0,unchanged
+O14964,HGS,Hepatocyte growth factor-regulated tyrosine kinase substrate OS=Homo sapiens OX=9606 GN=HGS PE=1 SV=1,NM_004712.5,0.0,unchanged
+P04406,GAPDH,Glyceraldehyde-3-phosphate dehydrogenase OS=Homo sapiens OX=9606 GN=GAPDH PE=1 SV=3,NM_001256799.3,0.0,unchanged
+P51452,DUSP3,Dual specificity protein phosphatase 3 OS=Homo sapiens OX=9606 GN=DUSP3 PE=1 SV=1,NM_004090.4,0.0,unchanged
+A8TX70,COL6A5,Collagen alpha-5(VI) chain OS=Homo sapiens OX=9606 GN=COL6A5 PE=1 SV=1,NM_001278298.2,0.0,unchanged
+Q96CN7,ISOC1,Isochorismatase domain-containing protein 1 OS=Homo sapiens OX=9606 GN=ISOC1 PE=1 SV=3,NM_016048.2,0.0,unchanged
+P09211,GSTP1,Glutathione S-transferase P OS=Homo sapiens OX=9606 GN=GSTP1 PE=1 SV=2,NM_000852.4,0.0,unchanged
+P31150,GDI1,Rab GDP dissociation inhibitor alpha OS=Homo sapiens OX=9606 GN=GDI1 PE=1 SV=2,NM_001493.3,0.0,unchanged
+Q03135,CAV1,Caveolin-1 OS=Homo sapiens OX=9606 GN=CAV1 PE=1 SV=4,NM_001172895.1,0.0,unchanged
+Q8N568,DCLK2,Serine/threonine-protein kinase DCLK2 OS=Homo sapiens OX=9606 GN=DCLK2 PE=1 SV=4,NM_001040260.4,0.0,unchanged
+P55087,AQP4,Aquaporin-4 OS=Homo sapiens OX=9606 GN=AQP4 PE=1 SV=2,NM_001317384.3,0.0,unchanged
+P18505,GABRB1,Gamma-aminobutyric acid receptor subunit beta-1 OS=Homo sapiens OX=9606 GN=GABRB1 PE=1 SV=2,NM_000812.4,0.0,unchanged
+P55084,HADHB,"Trifunctional enzyme subunit beta, mitochondrial OS=Homo sapiens OX=9606 GN=HADHB PE=1 SV=3",NM_000183.3,0.0,unchanged
+Q9Y281,CFL2,Cofilin-2 OS=Homo sapiens OX=9606 GN=CFL2 PE=1 SV=1,NM_001243645.2,0.0,unchanged
+P42262,GRIA2,Glutamate receptor 2 OS=Homo sapiens OX=9606 GN=GRIA2 PE=1 SV=3,NM_000826.6,0.0,unchanged
+O15540,FABP7,"Fatty acid-binding protein, brain OS=Homo sapiens OX=9606 GN=FABP7 PE=1 SV=3",NM_001319039.2,0.0,unchanged
+P22676,CALB2,Calretinin OS=Homo sapiens OX=9606 GN=CALB2 PE=2 SV=2,NM_001740.5,0.0,unchanged
+P12277,CKB,Creatine kinase B-type OS=Homo sapiens OX=9606 GN=CKB PE=1 SV=1,NM_001362531.2,0.0,unchanged
+Q9UKY7,CDV3,Protein CDV3 homolog OS=Homo sapiens OX=9606 GN=CDV3 PE=1 SV=1,NM_001134422.2,0.0,unchanged
+O75477,ERLIN1,Erlin-1 OS=Homo sapiens OX=9606 GN=ERLIN1 PE=1 SV=2,NM_001100626.2,0.0,unchanged
+O75955,FLOT1,Flotillin-1 OS=Homo sapiens OX=9606 GN=FLOT1 PE=1 SV=3,NM_001318875.2,0.0,unchanged
+P52790,HK3,Hexokinase-3 OS=Homo sapiens OX=9606 GN=HK3 PE=1 SV=2,NM_002115.3,0.0,unchanged
+P63215,GNG3,Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3 OS=Homo sapiens OX=9606 GN=GNG3 PE=1 SV=1,NM_012202.5,0.0,unchanged
+Q13642,FHL1,Four and a half LIM domains protein 1 OS=Homo sapiens OX=9606 GN=FHL1 PE=1 SV=4,NM_001159699.2,0.0,unchanged
+Q8ND76,CCNY,Cyclin-Y OS=Homo sapiens OX=9606 GN=CCNY PE=1 SV=2,NM_001282852.2,0.0,unchanged
+P68400,CSNK2A1,Casein kinase II subunit alpha OS=Homo sapiens OX=9606 GN=CSNK2A1 PE=1 SV=1,NM_001362770.2,0.0,unchanged
+Q9UEY8,ADD3,Gamma-adducin OS=Homo sapiens OX=9606 GN=ADD3 PE=1 SV=1,NM_001121.4,0.0,unchanged
+Q5EG05,CARD16,Caspase recruitment domain-containing protein 16 OS=Homo sapiens OX=9606 GN=CARD16 PE=1 SV=1,NM_001394580.1,0.0,unchanged
+Q8IWE2,FAM114A1,Protein NOXP20 OS=Homo sapiens OX=9606 GN=FAM114A1 PE=1 SV=2,NM_001330764.2,0.0,unchanged
+P00167,CYB5A,Cytochrome b5 OS=Homo sapiens OX=9606 GN=CYB5A PE=1 SV=2,NM_001190807.3,0.0,unchanged
+P00367,GLUD1,"Glutamate dehydrogenase 1, mitochondrial OS=Homo sapiens OX=9606 GN=GLUD1 PE=1 SV=2",NM_001318900.1,0.0,unchanged
+O95837,GNA14,Guanine nucleotide-binding protein subunit alpha-14 OS=Homo sapiens OX=9606 GN=GNA14 PE=1 SV=1,NM_004297.4,0.0,unchanged
+P56211,ARPP19,cAMP-regulated phosphoprotein 19 OS=Homo sapiens OX=9606 GN=ARPP19 PE=1 SV=2,NM_001306191.2,0.0,unchanged
+Q99798,ACO2,"Aconitate hydratase, mitochondrial OS=Homo sapiens OX=9606 GN=ACO2 PE=1 SV=2",NM_001098.3,0.0,unchanged
+Q9BUT1,BDH2,3-hydroxybutyrate dehydrogenase type 2 OS=Homo sapiens OX=9606 GN=BDH2 PE=1 SV=2,NM_020139.4,0.0,unchanged
+P09104,ENO2,Gamma-enolase OS=Homo sapiens OX=9606 GN=ENO2 PE=1 SV=3,NM_001975.3,0.0,unchanged
+Q14318,FKBP8,Peptidyl-prolyl cis-trans isomerase FKBP8 OS=Homo sapiens OX=9606 GN=FKBP8 PE=1 SV=2,NM_001308373.2,0.0,unchanged
+O43747,AP1G1,AP-1 complex subunit gamma-1 OS=Homo sapiens OX=9606 GN=AP1G1 PE=1 SV=5,NM_001030007.2,0.0,unchanged
+P08631,HCK,Tyrosine-protein kinase HCK OS=Homo sapiens OX=9606 GN=HCK PE=1 SV=5,NM_001172129.3,0.0,unchanged
+Q9UBI6,GNG12,Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12 OS=Homo sapiens OX=9606 GN=GNG12 PE=1 SV=3,NM_018841.6,0.0,unchanged
+P17693,HLA-G,"HLA class I histocompatibility antigen, alpha chain G OS=Homo sapiens OX=9606 GN=HLA-G PE=1 SV=1",NM_001363567.2,0.0,unchanged
+Q9NUQ9,CYRIB,CYFIP-related Rac1 interactor B OS=Homo sapiens OX=9606 GN=CYRIB PE=1 SV=1,NM_001256763.2,0.0,unchanged
+P51553,IDH3G,"Isocitrate dehydrogenase [NAD] subunit gamma, mitochondrial OS=Homo sapiens OX=9606 GN=IDH3G PE=1 SV=1",NM_004135.4,0.0,unchanged
+O60268,KIAA0513,Uncharacterized protein KIAA0513 OS=Homo sapiens OX=9606 GN=KIAA0513 PE=1 SV=1,NM_001286565.1,0.0,unchanged
+Q9UBS5,GABBR1,Gamma-aminobutyric acid type B receptor subunit 1 OS=Homo sapiens OX=9606 GN=GABBR1 PE=1 SV=1,NM_001319053.2,0.0,unchanged
+P06493,CDK1,Cyclin-dependent kinase 1 OS=Homo sapiens OX=9606 GN=CDK1 PE=1 SV=3,NM_001170406.1,0.0,unchanged
+Q9UIM3,FKBPL,FK506-binding protein-like OS=Homo sapiens OX=9606 GN=FKBPL PE=1 SV=1,NM_022110.4,0.0,unchanged
+Q6ZNG2,DBX2,Homeobox protein DBX2 OS=Homo sapiens OX=9606 GN=DBX2 PE=2 SV=2,NM_001004329.3,0.0,unchanged
+Q7Z4H3,HDDC2,5'-deoxynucleotidase HDDC2 OS=Homo sapiens OX=9606 GN=HDDC2 PE=1 SV=1,NM_016063.3,0.0,unchanged
+Q96FN4,CPNE2,Copine-2 OS=Homo sapiens OX=9606 GN=CPNE2 PE=1 SV=3,NM_152727.6,0.0,unchanged
+Q9Y4L1,HYOU1,Hypoxia up-regulated protein 1 OS=Homo sapiens OX=9606 GN=HYOU1 PE=1 SV=1,NM_001130991.3,0.0,unchanged
+Q16352,INA,Alpha-internexin OS=Homo sapiens OX=9606 GN=INA PE=1 SV=2,NM_032727.4,0.0,unchanged
+Q96B67,ARRDC3,Arrestin domain-containing protein 3 OS=Homo sapiens OX=9606 GN=ARRDC3 PE=1 SV=1,NM_001329670.2,0.0,unchanged
+Q9H201,EPN3,Epsin-3 OS=Homo sapiens OX=9606 GN=EPN3 PE=2 SV=1,NM_017957.3,0.0,unchanged
+Q9UBM7,DHCR7,7-dehydrocholesterol reductase OS=Homo sapiens OX=9606 GN=DHCR7 PE=1 SV=1,NM_001163817.2,0.0,unchanged
+P15121,AKR1B1,Aldo-keto reductase family 1 member B1 OS=Homo sapiens OX=9606 GN=AKR1B1 PE=1 SV=3,NM_001346142.1,0.0,unchanged
+P53675,CLTCL1,Clathrin heavy chain 2 OS=Homo sapiens OX=9606 GN=CLTCL1 PE=1 SV=2,NM_001835.4,0.0,unchanged
+Q5T2N8,ATAD3C,ATPase family AAA domain-containing protein 3C OS=Homo sapiens OX=9606 GN=ATAD3C PE=2 SV=2,NM_001039211.3,0.0,unchanged
+P48735,IDH2,"Isocitrate dehydrogenase [NADP], mitochondrial OS=Homo sapiens OX=9606 GN=IDH2 PE=1 SV=2",NM_001289910.1,0.0,unchanged
+Q86UW8,HAPLN4,Hyaluronan and proteoglycan link protein 4 OS=Homo sapiens OX=9606 GN=HAPLN4 PE=2 SV=1,NM_023002.3,0.0,unchanged
+Q9NVI7,ATAD3A,ATPase family AAA domain-containing protein 3A OS=Homo sapiens OX=9606 GN=ATAD3A PE=1 SV=2,NM_001170535.3,0.0,unchanged
+Q8IYT3,CCDC170,Coiled-coil domain-containing protein 170 OS=Homo sapiens OX=9606 GN=CCDC170 PE=1 SV=3,NM_025059.4,0.0,unchanged
+Q6NVY1,HIBCH,"3-hydroxyisobutyryl-CoA hydrolase, mitochondrial OS=Homo sapiens OX=9606 GN=HIBCH PE=1 SV=2",NM_014362.4,0.0,unchanged
+Q96F85,CNRIP1,CB1 cannabinoid receptor-interacting protein 1 OS=Homo sapiens OX=9606 GN=CNRIP1 PE=1 SV=1,NM_001111101.2,0.0,unchanged
+P49773,HINT1,Histidine triad nucleotide-binding protein 1 OS=Homo sapiens OX=9606 GN=HINT1 PE=1 SV=2,NM_005340.7,0.0,unchanged
+P30038,ALDH4A1,"Delta-1-pyrroline-5-carboxylate dehydrogenase, mitochondrial OS=Homo sapiens OX=9606 GN=ALDH4A1 PE=1 SV=3",NM_001161504.2,0.0,unchanged
+Q9NVP1,DDX18,ATP-dependent RNA helicase DDX18 OS=Homo sapiens OX=9606 GN=DDX18 PE=1 SV=2,NM_006773.4,0.0,unchanged
+P14625,HSP90B1,Endoplasmin OS=Homo sapiens OX=9606 GN=HSP90B1 PE=1 SV=1,NM_003299.3,0.0,unchanged
+P50991,CCT4,T-complex protein 1 subunit delta OS=Homo sapiens OX=9606 GN=CCT4 PE=1 SV=4,NM_001256721.1,0.0,unchanged
+Q9NWU2,GID8,Glucose-induced degradation protein 8 homolog OS=Homo sapiens OX=9606 GN=GID8 PE=1 SV=1,NM_017896.3,0.0,unchanged
+O94973,AP2A2,AP-2 complex subunit alpha-2 OS=Homo sapiens OX=9606 GN=AP2A2 PE=1 SV=2,NM_001242837.2,0.0,unchanged
+A8MTJ3,GNAT3,Guanine nucleotide-binding protein G(t) subunit alpha-3 OS=Homo sapiens OX=9606 GN=GNAT3 PE=2 SV=2,NM_001102386.3,0.0,unchanged
+O43301,HSPA12A,Heat shock 70 kDa protein 12A OS=Homo sapiens OX=9606 GN=HSPA12A PE=1 SV=2,NM_001330164.2,0.0,unchanged
+P62805,H4C1,Histone H4 OS=Homo sapiens OX=9606 GN=H4C1 PE=1 SV=2,NM_003538.4,0.0,unchanged
+P00966,ASS1,Argininosuccinate synthase OS=Homo sapiens OX=9606 GN=ASS1 PE=1 SV=2,NM_000050.4,0.0,unchanged
+Q04828,AKR1C1,Aldo-keto reductase family 1 member C1 OS=Homo sapiens OX=9606 GN=AKR1C1 PE=1 SV=1,NM_001353.6,0.0,unchanged
+P38405,GNAL,Guanine nucleotide-binding protein G(olf) subunit alpha OS=Homo sapiens OX=9606 GN=GNAL PE=1 SV=1,NM_001142339.3,0.0,unchanged
+Q16643,DBN1,Drebrin OS=Homo sapiens OX=9606 GN=DBN1 PE=1 SV=4,NM_001363541.2,0.0,unchanged
+Q9NYQ3,HAO2,Hydroxyacid oxidase 2 OS=Homo sapiens OX=9606 GN=HAO2 PE=1 SV=1,NM_001005783.3,0.0,unchanged
