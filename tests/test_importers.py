@@ -173,6 +173,11 @@ def test_proteome_discoverer_pdata_parsing():
                     'Abundances (Normalized): F1: 127N, Sample, CTRL'])
     assert list(tmt['Condition']) == ['CTRL'] * 2
     assert list(tmt['Biological']) == ['F1: 126', 'F1: 127N']
+    # a study factor that is also a PD sample type ("Control") is a condition, not a sample type
+    named = pd_pdata(['Abundances (Normalized): F1: Sample, Control_1, Control',
+                      'Abundances (Normalized): F2: 126, Sample, Control'])
+    assert list(named['Condition']) == ['Control', 'Control']
+    assert list(named['Biological']) == ['Control_1', 'F2: 126']
 
 
 def test_clean_run_name():

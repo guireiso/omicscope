@@ -69,9 +69,9 @@ class Omicscope_Snapshot():
             self.deps = deps
             Conditions = pd.read_csv(self.Table,
                                      nrows=2, names=['Conditions'], sep='\t')
-            Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1]
+            Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1].str.strip()
             self.ctrl = self.ControlGroup = Conditions[0]
-            self.experimental = Conditions[1].split(',')
+            self.experimental = [c.strip() for c in Conditions[1].split(',')]
         except UnicodeDecodeError:
             quant_data = pd.read_excel(self.Table, header=2)
             quant_data['TotalMean'] = 1
@@ -86,9 +86,9 @@ class Omicscope_Snapshot():
             Conditions = Conditions.dropna(axis=1)
             Conditions.columns = ['Conditions']
             Conditions = Conditions.sort_values(by='Conditions')
-            Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1]
+            Conditions = self.Conditions = Conditions.Conditions.str.split(':').str[1].str.strip()
             self.ctrl = self.ControlGroup = Conditions[1]
-            self.experimental = Conditions[0].split(',')
+            self.experimental = [c.strip() for c in Conditions[0].split(',')]
 
     def savefile(self, Path: str):
         from copy import copy

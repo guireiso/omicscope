@@ -49,7 +49,8 @@ def normalization(self, expression):
     data = copy(expression)
     if self.logTransform is True:
         data = np.log2(data)
-        data = data.replace([0, np.inf, -np.inf], np.nan)
+        # log2(0) = -inf is a missing value; log2(1) = 0 is a measured one (e.g. RPKM + 1 for a silent gene)
+        data = data.replace([np.inf, -np.inf], np.nan)
     # apply normalization
     if self.normalization_method is None:
         normalized_data = data

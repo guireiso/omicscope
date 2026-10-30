@@ -67,7 +67,7 @@ class Input():
         elif Method=='RPKM':
             from .RPKM import Input
             self.Params['Params']['ImportMethod'] = 'RPKM - Transcriptomics'
-            self.Params['Params']['ImportWarning_1'] = 'LogTransformation using log(RPKM+1)'
+            self.Params['Params']['ImportWarning_1'] = 'Values + 1, so that the log2 transformation gives log2(RPKM + 1)'
         data = Input(Table, **kwargs)
         if Method == 'MaxQuant':
             self.Params['Params']['ImportWarning_1'] = f'Quantification using {data.quant_strategy} columns'

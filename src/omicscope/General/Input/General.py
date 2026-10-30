@@ -38,15 +38,12 @@ class Input:
 
         self.Table = Table
         self.assay = self.readxl(sheetno=0)
-        if ['gene_name'] is self.readxl(sheetno=1).columns:
-            self.rdata = self.readxl(sheetno=1)
-        else:
-            rdata = self.readxl(sheetno=1)
-            rdata.columns = rdata.columns.str.replace('.', '', regex=False)
-            self.rdata = rdata
-            if 'gene_name' not in self.rdata.columns:
-                self.rdata['gene_name'] = self.rdata['Description'].str.split(
-                    'GN=').str[1].str.split(' ').str[0]
+        rdata = self.readxl(sheetno=1)
+        rdata.columns = rdata.columns.str.replace('.', '', regex=False)
+        self.rdata = rdata
+        if 'gene_name' not in self.rdata.columns:
+            self.rdata['gene_name'] = self.rdata['Description'].str.split(
+                'GN=').str[1].str.split(' ').str[0]
         try:
             self.pdata = self.readxl(sheetno=2)
             self.Conditions = list(self.pdata['Condition'].drop_duplicates())

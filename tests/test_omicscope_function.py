@@ -22,7 +22,7 @@ class TestOmicScope(object):
     def test_snapshot(self):
         snapshot = omics.OmicScope(Table='tests//data//proteins//snapshot.xlsx',
                                    Method='Snapshot')
-        assert snapshot.ControlGroup == ' CTRL'
+        assert snapshot.ControlGroup == 'CTRL'          # no leading space from 'ControlGroup: CTRL'
 
     def test_longitudinal(self, tmp_path):
         import pandas as pd

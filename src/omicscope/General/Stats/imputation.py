@@ -7,7 +7,8 @@ def value_imputation(self, expression):
     data = copy(expression)
     if self.logTransform is True:
         data = np.log2(data)
-        data = data.replace([0, np.inf, -np.inf], np.nan)
+        # log2(0) = -inf is a missing value; log2(1) = 0 is a measured one
+        data = data.replace([np.inf, -np.inf], np.nan)
     # remove proteins presenting only NaN
     data = data.T
     if self.imputation_method is None:

@@ -1,6 +1,5 @@
 
 from copy import copy
-import numpy as np
 import pandas as pd
 
 from .utils import read_table, require_pdata
@@ -29,7 +28,9 @@ class Input:
         self.Table = Table
         data = read_table(copy(self.Table))
         assay = data.drop(['gene_name', 'Accession'], axis='columns')
-        assay = np.log2(assay+1)
+        # +1 here and log2 in the statistics (logTransform) give log2(value + 1); logging here as well
+        # transformed the data twice and turned fold changes into ratios of log values
+        assay = assay + 1
         rdata = data[['gene_name', 'Accession']]
         self.assay = assay
         self.rdata = rdata

@@ -24,10 +24,14 @@ def pd_pdata(columns):
         label = column.split(': ', 1)[-1]
         tokens = [t.strip() for t in label.split(',')]
         file_channel = tokens[0]
+        factors = tokens[1:]
+        # the sample type sits right after the file (label-free) or the channel (TMT); only that
+        # position is skipped, so a study factor named e.g. "Control" is kept
         first = file_channel.split(':')
         if first[-1].strip() in SAMPLE_TYPES:
             file_channel = ':'.join(first[:-1]).strip()
-        factors = [t for t in tokens[1:] if t not in SAMPLE_TYPES]
+        elif factors and factors[0] in SAMPLE_TYPES:
+            factors = factors[1:]
         condition = factors[-1] if factors else file_channel
         biological = factors[-2] if len(factors) >= 2 else file_channel
         rows.append([column, condition, biological])
