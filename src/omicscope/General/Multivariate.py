@@ -26,7 +26,7 @@ def _filled_log(self, data):
     """log2 matrix (proteins x samples) with missing values set to each protein's minimum."""
     mat, genes = _sample_matrix(self, data)
     logm = _log_matrix(self, mat)
-    logm = logm.apply(lambda r: r.fillna(r.min()), axis=1)   # missing = below detection
+    logm = logm.where(logm.notna(), logm.min(axis=1), axis=0)   # missing = below detection
     logm = logm.dropna()
     return logm[logm.std(axis=1) > 0], genes
 

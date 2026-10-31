@@ -50,7 +50,7 @@ def _expression_matrix(self, pvalue, max_proteins):
     logm = _log_matrix(self, mat)
     # filling many missing values with the minimum would create correlation from the missing pattern alone
     logm = logm[logm.notna().mean(axis=1) >= 0.5]
-    logm = logm.apply(lambda r: r.fillna(r.min()), axis=1)
+    logm = logm.where(logm.notna(), logm.min(axis=1), axis=0)
     logm = logm[logm.std(axis=1) > 0].dropna()
     logm = logm.loc[logm.var(axis=1).sort_values(ascending=False).index[:max_proteins]]
     if logm.shape[1] < 4:

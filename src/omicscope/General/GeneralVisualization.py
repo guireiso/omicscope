@@ -738,13 +738,16 @@ def DynamicRange(self, *Proteins, color='#565059',
     accession = dict(zip(df.Accession, df.gene_name))
     df = df.set_index('Accession')
     df = df.loc[:, df.columns.str.contains('.', regex=False)]
-    df = np.log10(df).transpose()
-    # Getting Mean, Max and Min values for each protein
-    df = df.describe().transpose()
+    df = np.log10(df)
+    # Mean, spread and quartiles of every protein at once (describe() ran once per protein: ~5 s)
+    quartiles = df.quantile([0.25, 0.5, 0.75], axis=1).T
+    df = pd.DataFrame({'count': df.count(axis=1).astype(float), 'mean': df.mean(axis=1), 'std': df.std(axis=1),
+                       'min': df.min(axis=1), '25%': quartiles[0.25], '50%': quartiles[0.5],
+                       '75%': quartiles[0.75], 'max': df.max(axis=1)})
     df = df.dropna()
     df = df.reset_index()
     # Applying Dictionary to get gene name
-    df['gene_name'] = df.Accession.replace(accession)
+    df['gene_name'] = df.Accession.map(accession)
     # Ranking entities
     df['rank'] = df['mean'].rank(method='first')
     # Return variation for each protein
@@ -1208,8 +1211,8 @@ def k_trend(self, pvalue=0.05, k_cluster=None,
     k_data_protein = k_data.reset_index().melt(id_vars=['Accession', 'cluster'],
                                                var_name='sample')
     dictionary = dict(zip(pdata['sample'], pdata['Condition']))
-    k_data_protein['Condition'] = k_data_protein[['sample']].replace(dictionary)
-    k_data_protein['gene_name'] = k_data_protein[['Accession']].replace(protein_dictionary)
+    k_data_protein['Condition'] = k_data_protein['sample'].replace(dictionary)
+    k_data_protein['gene_name'] = k_data_protein['Accession'].map(protein_dictionary).fillna(k_data_protein['Accession'])
     g = sns.catplot(
         data=k_data_protein, x="sample", y="value", hue="Condition", col="cluster",
         capsize=.2, palette="viridis",

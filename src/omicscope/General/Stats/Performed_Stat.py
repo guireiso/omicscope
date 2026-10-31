@@ -74,8 +74,8 @@ def imported_stat(self, statistics):
 
             quant_data = quant_data.rename(columns=statistical_dictionary)
             quant_data[f'-log10({self.pvalue})'] = -np.log10(quant_data[self.pvalue])
-            quant_data['CV'] = quant_data.iloc[:,quant_data.columns.str.contains('.',regex=False)]\
-                .apply(lambda x: np.std(x, ddof=1) / np.mean(x), axis=1)
+            values = quant_data.iloc[:, quant_data.columns.str.contains('.', regex=False)]
+            quant_data['CV'] = values.std(axis=1, ddof=1) / values.mean(axis=1)   # missing values skipped
 
             if self.ExcludeContaminants is True:
                 self.Params['Params']['Stats_Warning_2'] = 'Drop protein contaminants based on Frankenfield, 2022'
