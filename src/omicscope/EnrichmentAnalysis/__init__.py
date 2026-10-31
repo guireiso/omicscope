@@ -17,7 +17,7 @@ class Enrichmentscope():
     from .EnrichmentExtras import term_foldchange_table
 
     def __init__(self, OmicScope, Analysis, dbs,
-                 padjust_cutoff=0.05, organism='Human', background=None, **gsea_options):
+                 padjust_cutoff=0.05, organism='Human', background=None, source='Enrichr', **gsea_options):
         """EnrichmentScope is the module designed to perform over-representation
             and Gene-Set Enrichment Analyses of proteins and genes.
             Args:
@@ -33,6 +33,11 @@ class Enrichmentscope():
                     as background. Alternatively, user can use all genes evaluated in study (Recommended, background = True). Still,
                     user can insert a specific number (integer) to use as background (Not recommended), such as number of reviewed proteins 
                     in the target organism on Uniprot.
+                source (str, optional): 'Enrichr' (default; ORA and GSEA with every Enrichr library, few organisms)
+                    or 'STRING' (ORA only; GO, KEGG, Reactome, WikiPathways, domains, tissues, diseases... for about
+                    12,500 organisms). With STRING, dbs are STRING categories (codes such as 'Process', 'KEGG',
+                    'RCTM', or names such as 'GO Biological Process'; None = all) and organism is the NCBI taxonomy
+                    ID (9606 = human; see omicscope.EnrichmentAnalysis.STRING.string_species()).
                 **gsea_options: GSEA only. rank_by ('signed_p' (default): sign(log2FC) * -log10(p); 'log2fc';
                     'pi_score'), min_size (default 10: proteomics covers a fraction of each gene set),
                     max_size (500), permutation_num (1000), seed (123) and threads (4).
@@ -45,14 +50,21 @@ class Enrichmentscope():
 
         """
 
+        source = 'STRING' if str(source).lower() == 'string' else 'Enrichr'
         if Analysis == 'ORA':
             from .ORA import Enrichment
         elif Analysis == 'GSEA':
+            if source == 'STRING':
+                raise ValueError('STRING enrichment is over-representation only (Analysis="ORA"); use Enrichr for GSEA.')
             from .GSEA import Enrichment
         else:
             raise ValueError('You must choose between ORA or GSEA workflow')
-        if isinstance(dbs, dict) or (isinstance(dbs, str) and dbs.lower().endswith('.gmt')):
+        if source == 'STRING':
+            from .STRING import category_names
+            dbs = category_names(dbs)
+        elif isinstance(dbs, dict) or (isinstance(dbs, str) and dbs.lower().endswith('.gmt')):
             dbs = [dbs]
+        self.source = source
         self.OmicScope = copy.copy(OmicScope)
         self.Analysis = Analysis
         self.dbs = copy.copy(dbs)
@@ -60,6 +72,8 @@ class Enrichmentscope():
         self.padjust_cutoff = copy.copy(padjust_cutoff)
         if gsea_options and Analysis != 'GSEA':
             raise ValueError(f'Options {sorted(gsea_options)} only apply to GSEA')
+        if source == 'STRING':
+            gsea_options['source'] = source
         enrichment = Enrichment(OmicScope=OmicScope, dbs=dbs,
                                 padjust_cutoff=padjust_cutoff, organism=organism,
                                 background=background, **gsea_options)

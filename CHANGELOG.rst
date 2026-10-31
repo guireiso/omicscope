@@ -23,6 +23,8 @@ New analyses
 * Protein co-expression map (t-SNE/PCA) and co-expression modules (light WGCNA) with module-trait heatmap.
 * PLS-DA with cross-validated accuracy and permutation test; ROC/AUC per protein and cross-validated
   biomarker panels; power analysis.
+* STRING as a second enrichment source (``EnrichmentScope(source='STRING')``, also in ``cluster_enrichment``):
+  ORA for about 12,500 organisms; one request returns every category and genes are mapped once.
 * GSEA ranked by signed p-value by default, GSEA running-score plot, fold change per term, enrichment per
   cluster, custom gene sets (GMT or dict), redundant-term collapsing.
 * Nebula protein meta-analysis (Stouffer, per-study z capped).

@@ -31,6 +31,8 @@ REFERENCES = {
     'gseapy': 'Fang Z, et al. GSEApy: a comprehensive package for performing gene set enrichment analysis in Python. '
               'Bioinformatics 39, btac757 (2023).',
     'gsea': 'Subramanian A, et al. Gene set enrichment analysis. PNAS 102, 15545-15550 (2005).',
+    'string': 'Szklarczyk D, et al. The STRING database in 2023: protein-protein association networks and functional '
+              'enrichment analyses for any sequenced genome of interest. Nucleic Acids Res 51, D638-D646 (2023).',
     'contaminants': 'Frankenfield AM, et al. Protein contaminants matter: building universal protein contaminant '
                     'libraries for DDA and DIA proteomics. J Proteome Res 21, 2104-2113 (2022).',
 }
@@ -129,6 +131,11 @@ def methods_text(self, enrichment=None):
                      f'run with GSEApy [%d] against {dbs}; gene sets with FDR <= {enrichment.padjust_cutoff} '
                      'were reported.' % (len(refs) + 1, len(refs) + 2))
             refs += ['gsea', 'gseapy']
+        elif getattr(enrichment, 'source', 'Enrichr') == 'STRING':
+            s.append(f'Over-representation analysis of the differentially abundant proteins was run with STRING v12 '
+                     f'[%d] (NCBI taxonomy ID {enrichment.organism}) against {dbs}; terms with FDR <= '
+                     f'{enrichment.padjust_cutoff} were reported.' % (len(refs) + 1))
+            refs.append('string')
         else:
             s.append(f'Over-representation analysis of the differentially abundant proteins was run with GSEApy '
                      f'[%d] against {dbs}; terms with adjusted p <= {enrichment.padjust_cutoff} were reported.'
@@ -176,9 +183,12 @@ def reproducible_script(self, table='your_data_file', pdata=None, enrichment=Non
     if enrichment is not None:
         dbs = enrichment.dbs if isinstance(enrichment.dbs, (list, tuple)) else [enrichment.dbs]
         extra = ''
+        organism = repr(str(enrichment.organism))
         if enrichment.Analysis == 'GSEA':
             extra = f", rank_by={getattr(enrichment, 'rank_by', 'signed_p')!r}"
+        if getattr(enrichment, 'source', 'Enrichr') == 'STRING':
+            extra, organism = ", source='STRING'", int(enrichment.organism)
         lines += ['', f'enrichment = omics.EnrichmentScope(data, Analysis={enrichment.Analysis!r}, dbs={list(dbs)!r}, '
-                      f'padjust_cutoff={enrichment.padjust_cutoff!r}, organism={str(enrichment.organism)!r}{extra})',
+                      f'padjust_cutoff={enrichment.padjust_cutoff!r}, organism={organism}{extra})',
                   "enrichment.results.to_csv('enrichment_results.csv', index=False)"]
     return '\n'.join(lines) + '\n'

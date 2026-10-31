@@ -29,7 +29,7 @@ class Enrichment:
 
     def __init__(self, OmicScope, dbs,
                  padjust_cutoff=0.05,
-                 organism='Human', background=None, save=''):
+                 organism='Human', background=None, save='', source='Enrichr'):
         """Over-Representation Analysis (also known as Enrichment Analysis)
 
         Args:
@@ -48,7 +48,9 @@ class Enrichment:
         self.OmicScope = copy.copy(OmicScope)
         self.padjust_cutoff = padjust_cutoff
         self.dbs = copy.copy(dbs)
-        self.organism = str(organism).lower()   # gseapy only accepts lower-case organism names
+        self.source = source
+        # gseapy only accepts lower-case organism names; STRING takes an NCBI taxonomy ID
+        self.organism = int(organism) if source == 'STRING' else str(organism).lower()
         self.background = background
         # Perform Over Representation Analysis
         try:
@@ -72,6 +74,10 @@ class Enrichment:
         omics = omics.loc[(omics['log2(fc)'] <= -foldchange_cutoff) | (omics['log2(fc)'] >= foldchange_cutoff)]
         genes = list(omics[omics[self.OmicScope.pvalue] <= pvalue_cutoff]['gene_name'].dropna())
         foldchange = dict(zip(omics.gene_name.str.upper(), omics['log2(fc)']))
+        if self.source == 'STRING':
+            from .STRING import run_string
+            return run_string(genes, species=self.organism, dbs=self.dbs, background=background,
+                              padjust_cutoff=self.padjust_cutoff, foldchange=foldchange)
         return run_enrichr(genes, self.dbs, organism=self.organism, background=background,
                            padjust_cutoff=self.padjust_cutoff, foldchange=foldchange)
 

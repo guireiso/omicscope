@@ -78,7 +78,8 @@ def _cluster_genes(clusters):
     return out
 
 
-def cluster_enrichment(omicscope, clusters, dbs, organism='human', padjust_cutoff=0.05, background=True):
+def cluster_enrichment(omicscope, clusters, dbs, organism='human', padjust_cutoff=0.05, background=True,
+                       source='Enrichr'):
     """Over-representation analysis of each protein cluster.
 
     Args:
@@ -91,6 +92,8 @@ def cluster_enrichment(omicscope, clusters, dbs, organism='human', padjust_cutof
         padjust_cutoff (float, optional): adjusted p-value cutoff. Defaults to 0.05.
         background (bool, list, int, optional): True uses every protein quantified in the experiment
             (recommended); None uses all genes of the gene sets; a list or a number as in EnrichmentScope.
+        source (str, optional): 'Enrichr' (default) or 'STRING' (dbs are STRING categories and organism an
+            NCBI taxonomy ID; every gene is mapped once and each cluster costs one request).
 
     Returns:
         pd.DataFrame: ORA results of all clusters with 'Cluster', 'Cluster_size' (genes in the cluster) and
@@ -102,9 +105,23 @@ def cluster_enrichment(omicscope, clusters, dbs, organism='human', padjust_cutof
         background = list(qd['gene_name'].dropna().astype(str).drop_duplicates())
     foldchange = dict(zip(qd['gene_name'].astype(str).str.upper(), pd.to_numeric(qd['log2(fc)'], errors='coerce')))
     out = []
-    for name, genes in _cluster_genes(clusters).items():
-        df = run_enrichr(genes, dbs, organism=organism, background=background,
-                         padjust_cutoff=padjust_cutoff, foldchange=foldchange)
+    clusters = _cluster_genes(clusters)
+    if str(source).lower() == 'string':
+        from .STRING import StringSession
+        from .STRING import _background_list
+        background = _background_list(background)
+        everything = [g for genes in clusters.values() for g in genes] + (background or [])
+        session = StringSession(everything, organism)
+
+        def enrich(genes):
+            return session.enrich(genes, dbs=dbs, background=background, padjust_cutoff=padjust_cutoff,
+                                  foldchange=foldchange)
+    else:
+        def enrich(genes):
+            return run_enrichr(genes, dbs, organism=organism, background=background,
+                               padjust_cutoff=padjust_cutoff, foldchange=foldchange)
+    for name, genes in clusters.items():
+        df = enrich(genes)
         if df.empty:
             continue
         df = df.drop(columns='index', errors='ignore')

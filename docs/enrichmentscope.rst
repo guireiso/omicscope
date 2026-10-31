@@ -42,6 +42,36 @@ cutoffs to consider terms enriched.
     OmicScope identifies: 697 deregulations
     
 
+Enrichr or STRING
+-----------------
+
+Two sources of gene sets are available:
+
+- **Enrichr** (default): ORA and GSEA with every Enrichr library (GO, KEGG,
+  Reactome, MSigDB, cell types, drugs and more), for human, mouse, yeast,
+  fly, fish and worm.
+- **STRING** (``source='STRING'``): ORA with the `STRING
+  <https://string-db.org>`__ annotation of about 12,500 organisms (GO,
+  KEGG, Reactome, WikiPathways, MSigDB Hallmark, UniProt keywords, Pfam,
+  InterPro and SMART domains, tissues, diseases, phenotypes and more). The
+  organism is its NCBI taxonomy ID and ``dbs`` lists STRING categories, by
+  code (``'Process'``, ``'KEGG'``, ``'RCTM'``...) or name (``'GO Biological
+  Process'``...); ``dbs=None`` keeps all of them. One request returns every
+  category. STRING has no GSEA here: its ranked analysis needs an API key
+  and asynchronous jobs.
+
+.. code:: python
+
+    from omicscope.EnrichmentAnalysis.STRING import string_species
+    string_species().query("name.str.contains('Plasmodium falciparum')")   # taxonomy IDs
+
+    enr = omics.EnrichmentScope(data, Analysis='ORA', source='STRING', organism=36329,
+                                dbs=['Process', 'KEGG'], background=True)
+
+STRING results have the same columns as Enrichr results, so every figure
+and export works with both; ``Odds Ratio`` is empty and ``Combined Score``
+is −log10(p).
+
 Enrichment results
 ------------------
 
