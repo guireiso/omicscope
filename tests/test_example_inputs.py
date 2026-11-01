@@ -79,3 +79,10 @@ def test_example_inputs_are_reproducible(tmp_path):
     assert len(text_files) >= 9
     for f in text_files:        # Excel files carry a timestamp, so only text files are compared
         assert filecmp.cmp(tmp_path / f, os.path.join(EX, f), shallow=False), f
+
+
+def test_snapshot_example_writes_omics_file():
+    from omicscope.MultipleData.omics_file import omics_text, parse_omics
+    data = Omicscope_Snapshot(os.path.join(EX, 'Snapshot.xlsx'))
+    parsed = parse_omics(omics_text(data))       # Snapshot results carry no Params
+    assert parsed['group'] == 'Treated' and len(parsed['original']) == len(data.quant_data)

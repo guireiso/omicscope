@@ -168,7 +168,7 @@ def volcano_Multicond(self, *Proteins, pvalue=0.05, palette='viridis',
     df_initial = OmicScope.quant_data
     dropped_inf = copy.copy(df_initial)
     dropped_inf = dropped_inf.replace([np.inf, -np.inf], np.nan)
-    dropped_inf = dropped_inf.dropna()
+    dropped_inf = dropped_inf.dropna(subset=['log2(fc)', f'-log10({OmicScope.pvalue})'])
     fc = df_initial['log2(fc)']
     fc = fc.replace(np.inf, dropped_inf['log2(fc)'].max() + 1)
     fc = fc.replace(-np.inf, dropped_inf['log2(fc)'].min() - 1)
@@ -309,7 +309,7 @@ def volcano_2cond(self, *Proteins, pvalue=0.05, bcol='darkcyan',
     df_initial = OmicScope.quant_data
     dropped_inf = copy.copy(df_initial)
     dropped_inf = dropped_inf.replace([np.inf, -np.inf], np.nan)
-    dropped_inf = dropped_inf.dropna()
+    dropped_inf = dropped_inf.dropna(subset=['log2(fc)', f'-log10({OmicScope.pvalue})'])
     fc = df_initial['log2(fc)']
     fc = fc.replace(np.inf, dropped_inf['log2(fc)'].max() + 1)
     fc = fc.replace(-np.inf, dropped_inf['log2(fc)'].min() - 1)
@@ -511,7 +511,7 @@ def heatmap(self, *Proteins, pvalue=0.05, c_cluster=True,
     heatmap = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     heatmap = heatmap.loc[(heatmap['log2(fc)'] <= -FoldChange_cutoff)
                           | (heatmap['log2(fc)'] >= FoldChange_cutoff)]
-    heatmap = heatmap.dropna()
+    heatmap = heatmap.dropna(subset=list(heatmap.columns[heatmap.columns.str.contains('.', regex=False)]))   # gaps in other columns (e.g. on/off labels) do not matter
     # Filtering for specific proteins
     if len(Proteins) > 0:
         heatmap = heatmap[heatmap['gene_name'].isin(Proteins)]
@@ -635,7 +635,7 @@ def correlation(self, *Proteins, pvalue=1.0,
     pearson = df[df.loc[:, OmicScope.pvalue] <= pvalue]
     pearson = pearson.loc[(pearson['log2(fc)'] <= -FoldChange_cutoff)
                           | (pearson['log2(fc)'] >= FoldChange_cutoff)]
-    pearson = pearson.dropna()
+    pearson = pearson.dropna(subset=list(pearson.columns[pearson.columns.str.contains('.', regex=False)]))   # gaps in other columns (e.g. on/off labels) do not matter
     # Filtering for specific proteins
     if len(Proteins) > 0:
         pearson = pearson[pearson['gene_name'].isin(Proteins)]

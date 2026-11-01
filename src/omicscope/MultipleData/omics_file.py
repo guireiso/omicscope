@@ -34,7 +34,8 @@ TRANSCRIPTOME_METHODS = ('RPKM',)
 
 def data_type(omicscope):
     """'transcriptome' for RNA-seq inputs, 'proteome' otherwise."""
-    method = str(getattr(omicscope, 'Method', '') or omicscope.Params.get('Params', {}).get('ImportMethod', ''))
+    params = getattr(omicscope, 'Params', None) or {}      # Snapshot results carry no Params
+    method = str(getattr(omicscope, 'Method', '') or params.get('Params', {}).get('ImportMethod', ''))
     return 'transcriptome' if method.split(' ')[0] in TRANSCRIPTOME_METHODS else 'proteome'
 
 
